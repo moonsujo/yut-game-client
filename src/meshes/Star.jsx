@@ -8,7 +8,7 @@ import { animated } from "@react-spring/three";
 
 export default function Star({ position=[0,0,0], rotation=[0,0,0], scale=1, color='yellow' }) {
   const { scene } = useGLTF(
-    "models/star.glb"
+    "/models/star.glb"
   );
 
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -28,4 +28,4 @@ export default function Star({ position=[0,0,0], rotation=[0,0,0], scale=1, colo
   );
 }
 
-useGLTF.preload("models/star.glb");
+useGLTF.preload("/models/star.glb");

@@ -21,10 +21,10 @@ import YootMesh from "./meshes/YootMesh.jsx";
 THREE.ColorManagement.legacyMode = false;
 
 export default function Yoot({ device }) {
-  const nodes = useGLTF("/models/yoot.glb").nodes;
-  const materials = useGLTF("/models/yoot.glb").materials;
-  const nodesRhino = useGLTF("/models/yoot-rhino.glb").nodes;
-  const materialsRhino = useGLTF("/models/yoot-rhino.glb").materials;
+  const nodes = useGLTF("//models/yoot.glb").nodes;
+  const materials = useGLTF("//models/yoot.glb").materials;
+  const nodesRhino = useGLTF("//models/yoot-rhino.glb").nodes;
+  const materialsRhino = useGLTF("//models/yoot-rhino.glb").materials;
   
   const [yootThrowValues] = useAtom(yootThrowValuesAtom);
   const [initialYootThrow] = useAtom(initialYootThrowAtom);

@@ -37,7 +37,7 @@ export default function Home2() {
   const [client] = useAtom(clientAtom)
   
   const { scene, materials } = useGLTF(
-    "models/yoot.glb"
+    "/models/yoot.glb"
   );
 
   function Pieces() {

@@ -4,7 +4,7 @@ import { Float, Text3D, useGLTF } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 
 export default function BonusTurn(props) {
-  const { nodes, materials } = useGLTF("models/boom-wrap.glb");
+  const { nodes, materials } = useGLTF("/models/boom-wrap.glb");
 
   return <Float>
     <animated.group {...props} dispose={null}>
@@ -50,4 +50,4 @@ export default function BonusTurn(props) {
     </animated.group>
   </Float>
 }
-useGLTF.preload('models/boom-wrap.glb')
+useGLTF.preload('/models/boom-wrap.glb')

@@ -11,7 +11,7 @@ import { useGLTF } from "@react-three/drei";
 
 export default function SaturnConstellation(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('models/Saturn 3.glb')
+  const { nodes, materials, animations } = useGLTF('/models/Saturn 3.glb')
 
   const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
   console.log(particlesGeometry)

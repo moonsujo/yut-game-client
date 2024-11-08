@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import React from "react";
 
 export default function Fox() {
-  const fox = useGLTF("/models/fox/Fox.gltf");
+  const fox = useGLTF("//models/fox/Fox.gltf");
 
   return (
     <primitive

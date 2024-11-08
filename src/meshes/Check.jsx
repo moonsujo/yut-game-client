@@ -9,7 +9,7 @@ export default function Check({
   color="green"
 }) {
   const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
-  const { nodes } = useGLTF("/models/check.glb");
+  const { nodes } = useGLTF("//models/check.glb");
   return (
     <animated.group position={position} rotation={rotation} scale={scale}>
       <mesh
@@ -26,4 +26,4 @@ export default function Check({
   );
 }
 
-useGLTF.preload("/models/check.glb");
+useGLTF.preload("//models/check.glb");

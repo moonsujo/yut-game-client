@@ -648,7 +648,7 @@ export default function Game() {
     // declared at the top. don't pass it in as a prop
     // because that will make other components render
 
-  const { nodes, materials } = useGLTF("/models/rounded-rectangle.glb");
+  const { nodes, materials } = useGLTF("//models/rounded-rectangle.glb");
 
   function InviteInstructions() {
     const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)

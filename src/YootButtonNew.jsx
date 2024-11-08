@@ -10,9 +10,9 @@ import { useParams } from "wouter";
 import layout from './layout';
 
 export default function YootButtonNew({ position, rotation, scale, hasThrow, device }) {
-  const { nodes, materials } = useGLTF("/models/rounded-rectangle.glb");
-  const { scene } = useGLTF("/models/yoot-for-button.glb");
-  const yootMaterials = useGLTF("/models/yoot-for-button.glb").materials
+  const { nodes, materials } = useGLTF("//models/rounded-rectangle.glb");
+  const { scene } = useGLTF("//models/yoot-for-button.glb");
+  const yootMaterials = useGLTF("//models/yoot-for-button.glb").materials
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const yootNodes = useGraph(clone).nodes
   let buttonRef = useRef();

@@ -11,7 +11,7 @@ import { useAtom } from "jotai";
 
 export default function TripleCatchAlert({ position, rotation }) {
   
-  const { nodes, materials } = useGLTF('models/alert-background.glb')
+  const { nodes, materials } = useGLTF('/models/alert-background.glb')
   const [turn] = useAtom(turnAtom)
 
   const initialScale = 1
@@ -81,7 +81,7 @@ export default function TripleCatchAlert({ position, rotation }) {
   }
 
   function BamImage({position, rotation, scale, color}) {
-    const { nodes, materials } = useGLTF('models/bam-emoji.glb')
+    const { nodes, materials } = useGLTF('/models/bam-emoji.glb')
     return (
       <group position={position} rotation={rotation} scale={scale} dispose={null}>
         <mesh
@@ -268,5 +268,5 @@ export default function TripleCatchAlert({ position, rotation }) {
   </animated.group>
 }
 
-useGLTF.preload('models/alert-background.glb')
-useGLTF.preload('models/bam-emoji.glb')
+useGLTF.preload('/models/alert-background.glb')
+useGLTF.preload('/models/bam-emoji.glb')

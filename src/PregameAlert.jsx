@@ -43,7 +43,7 @@ export default function PregameAlert() {
 
   function PregameTie({ position, rotation, scale }) {
 
-    const { nodes, materials } = useGLTF('models/alert-background.glb')
+    const { nodes, materials } = useGLTF('/models/alert-background.glb')
     
     const borderMesh0Ref = useRef();
     const borderMesh1Ref = useRef();

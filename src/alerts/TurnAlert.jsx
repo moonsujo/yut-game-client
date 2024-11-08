@@ -10,7 +10,7 @@ import { mainAlertAtom, teamsAtom, turnAtom } from "../GlobalState";
 import { formatName } from "../helpers/helpers";
 
 export default function TurnAlert({position, rotation}) {
-    const { nodes, materials } = useGLTF('models/alert-background.glb')
+    const { nodes, materials } = useGLTF('/models/alert-background.glb')
     
     const [turn] = useAtom(turnAtom)
     const [teams] = useAtom(teamsAtom)

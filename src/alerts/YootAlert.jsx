@@ -6,7 +6,7 @@ import Star from "../meshes/Star";
 import { animated, useSpring } from "@react-spring/three";
 
 export default function YootAlert({ position, rotation }) {
-  const { nodes, materials } = useGLTF('models/alert-background.glb')
+  const { nodes, materials } = useGLTF('/models/alert-background.glb')
 
   const initialScale = 1
   const springs = useSpring({

@@ -6,7 +6,7 @@ import { TextureLoader } from "three/src/loaders/TextureLoader";
 // import HelperArrow from "./HelperArrow";
 
 export default function Saturn({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
-  const { nodes, materials } = useGLTF("models/Saturn 3.glb");
+  const { nodes, materials } = useGLTF("/models/Saturn 3.glb");
   const satelliteTexture1 = useLoader(
     TextureLoader,
     "textures/saturn-satellite-texture-map-1.jpg"
@@ -165,4 +165,4 @@ export default function Saturn({ position=[0,0,0], rotation=[0,0,0], scale=1 }) 
   );
 }
 
-useGLTF.preload("models/Saturn 3.glb");
+useGLTF.preload("/models/Saturn 3.glb");
