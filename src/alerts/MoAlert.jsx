@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { mainAlertAtom } from "../GlobalState";
 
 export default function MoAlert({ position, rotation }) {
-  const { nodes, materials } = useGLTF('/models/alert-background.glb')
+  const { nodes, materials } = useGLTF('models/alert-background.glb')
   const [_mainAlert, setMainAlert] = useAtom(mainAlertAtom)
 
   const initialScale = 1

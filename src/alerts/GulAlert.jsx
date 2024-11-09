@@ -2,7 +2,7 @@ import { Text3D, useGLTF } from "@react-three/drei";
 import { animated } from "@react-spring/three";
 
 export default function GulAlert({ position, rotation, scale }) {
-  const { nodes, materials } = useGLTF('/models/alert-background.glb')
+  const { nodes, materials } = useGLTF('models/alert-background.glb')
   return (
     <animated.group position={position} rotation={rotation} scale={scale}>
       {/* <mesh

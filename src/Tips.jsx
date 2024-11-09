@@ -85,10 +85,10 @@
 //     </group>
 //   }
 //   function YootButtonTip() {
-//     const nodes = useGLTF("/models/yoot-highlight.glb").nodes;
-//     const materials = useGLTF("/models/yoot-highlight.glb").materials;
-//     const nodesRhino = useGLTF("/models/yoot-rhino-highlight.glb").nodes;
-//     const materialsRhino = useGLTF("/models/yoot-rhino-highlight.glb").materials;
+//     const nodes = useGLTF("models/yoot-highlight.glb").nodes;
+//     const materials = useGLTF("models/yoot-highlight.glb").materials;
+//     const nodesRhino = useGLTF("models/yoot-rhino-highlight.glb").nodes;
+//     const materialsRhino = useGLTF("models/yoot-rhino-highlight.glb").materials;
 //     const [yootButtonPressed, setYootButtonPressed] = useState(false)
 //     const NUM_YOOTS = 4;
 //     let yoots = [];
@@ -273,5 +273,5 @@
 //   </>
 // }
 
-// useGLTF.preload("/models/yoot-highlight.glb")
-// useGLTF.preload("/models/yoot-rhino-highlight.glb")
+// useGLTF.preload("models/yoot-highlight.glb")
+// useGLTF.preload("models/yoot-rhino-highlight.glb")

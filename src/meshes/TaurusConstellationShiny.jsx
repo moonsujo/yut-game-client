@@ -113,7 +113,7 @@ function TaurusConstellationShiny(props){
   const freshnellMesh = useRef();
   const lightRef = useRef();
   const {scene} = useThree();
-  const {nodes} = useGLTF('/models/'+props.meshDir);
+  const {nodes} = useGLTF('models/'+props.meshDir);
   const lightTexture = useLoader(TextureLoader, 'textures/'+props.lightTexDir);
   const caustic = useLoader(TextureLoader, 'textures/caustics/caust00.png');
   const noise = useLoader(TextureLoader, 'textures/noise.png');

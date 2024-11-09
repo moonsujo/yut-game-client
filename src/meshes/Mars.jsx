@@ -4,7 +4,7 @@ import { useGLTF } from "@react-three/drei";
 import { animated } from "@react-spring/three";
 
 export default function Mars({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
-  const { nodes, materials } = useGLTF("/models/Mars 4.glb");
+  const { nodes, materials } = useGLTF("models/Mars 4.glb");
 
   const mars = useRef();
 
@@ -26,4 +26,4 @@ export default function Mars({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
   );
 }
 
-useGLTF.preload("/models/Mars 4.glb");
+useGLTF.preload("models/Mars 4.glb");

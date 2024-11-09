@@ -11,7 +11,7 @@ import { useAnimations, useGLTF } from '@react-three/drei';
 
 export default function YootNew({ animation, scale, position }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/models/yoot-animated.glb')
+  const { nodes, materials, animations } = useGLTF('models/yoot-animated.glb')
   const { actions, mixer } = useAnimations(animations, group)
 
   useEffect(() => {
@@ -65,4 +65,4 @@ export default function YootNew({ animation, scale, position }) {
   </group>
 }
 
-useGLTF.preload('/models/yoot-animated.glb')
+useGLTF.preload('models/yoot-animated.glb')

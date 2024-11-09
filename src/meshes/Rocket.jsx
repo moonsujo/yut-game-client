@@ -18,7 +18,7 @@ export default function Rocket({
   selection=null
 }) {
   const { scene, materials } = useGLTF(
-    "/models/rocket.glb"
+    "models/rocket.glb"
   );
   
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -245,4 +245,4 @@ export default function Rocket({
   )
 }
 
-useGLTF.preload("/models/rocket.glb")
+useGLTF.preload("models/rocket.glb")

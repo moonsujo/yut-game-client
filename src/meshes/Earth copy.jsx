@@ -4,7 +4,7 @@ import { useGLTF } from "@react-three/drei";
 import { animated } from "@react-spring/three";
 
 export default function Earth({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
-  const { nodes, materials } = useGLTF("/models/earth-round.glb");
+  const { nodes, materials } = useGLTF("models/earth-round.glb");
 
   const earth = useRef();
 
@@ -58,4 +58,4 @@ export default function Earth({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
   );
 }
 
-useGLTF.preload("/models/earth-round.glb");
+useGLTF.preload("models/earth-round.glb");

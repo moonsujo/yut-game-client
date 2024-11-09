@@ -7,7 +7,7 @@ export default function Cancel({
   scale,
   color="red"
 }) {
-  const { nodes } = useGLTF("//models/cancel.glb");
+  const { nodes } = useGLTF("/models/cancel.glb");
   const scaleArray = [1 * scale, 0.1 * scale, 1 * scale]
   return (
     <group dispose={null} position={position} rotation={rotation} scale={scaleArray}>
@@ -24,4 +24,4 @@ export default function Cancel({
   );
 }
 
-useGLTF.preload("//models/cancel.glb");
+useGLTF.preload("/models/cancel.glb");

@@ -3,7 +3,7 @@ import { animated } from "@react-spring/three";
 import OutToken from "../moveTokens/OutToken";
 
 export default function OutAlert({ position, rotation, scale }) {
-  const { nodes, materials } = useGLTF('/models/alert-background.glb')
+  const { nodes, materials } = useGLTF('models/alert-background.glb')
   return (
     <animated.group position={position} rotation={rotation} scale={scale}>
       <mesh

@@ -32,7 +32,7 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import tilePositions from './tilePositions';
 
 export default function Alert({ position, rotation }) {
-    const { nodes, materials } = useGLTF('/models/alert-background.glb')
+    const { nodes, materials } = useGLTF('models/alert-background.glb')
     
     const [alerts] = useAtom(alertsAtom)
     const [gamePhase] = useAtom(gamePhaseAtom)

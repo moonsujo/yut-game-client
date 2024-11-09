@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import Star from "./meshes/Star";
 
 export default function UfosGoFirst({ position, rotation, scale }) {
-  const { nodes, materials } = useGLTF('/models/alert-background.glb')
+  const { nodes, materials } = useGLTF('models/alert-background.glb')
 
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();

@@ -15,9 +15,9 @@ export default function YootButton({
   // yoots with material
   // get texture of yoot
   // set color to grey/yellow
-  const { nodes, materials } = useGLTF("//models/rounded-rectangle.glb");
-  const { scene } = useGLTF("//models/yoot-for-button.glb");
-  const yootMaterials = useGLTF("//models/yoot-for-button.glb").materials
+  const { nodes, materials } = useGLTF("/models/rounded-rectangle.glb");
+  const { scene } = useGLTF("/models/yoot-for-button.glb");
+  const yootMaterials = useGLTF("/models/yoot-for-button.glb").materials
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const yootNodes = useGraph(clone).nodes
   let buttonRef = useRef();
@@ -149,5 +149,5 @@ export default function YootButton({
   </group>
 }
 
-useGLTF.preload('//models/rounded-rectangle.glb')
-useGLTF.preload("//models/yoot-for-button.glb")
+useGLTF.preload('/models/rounded-rectangle.glb')
+useGLTF.preload("/models/yoot-for-button.glb")

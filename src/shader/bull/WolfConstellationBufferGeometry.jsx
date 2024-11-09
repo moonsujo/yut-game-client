@@ -11,7 +11,7 @@ import { useGLTF } from "@react-three/drei";
 
 export default function WolfConstellationBufferGeometry(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/models/wolf-constellation-thin-3.glb')
+  const { nodes, materials, animations } = useGLTF('models/wolf-constellation-thin-3.glb')
 
   const count = nodes.wolf.geometry.attributes.position.count;
   const randomArray = new Float32Array(count/4);

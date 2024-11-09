@@ -11,7 +11,7 @@ export default function YootMesh({
   active=true
 }) {
   const { scene, materials } = useGLTF(
-    "/models/yoot.glb"
+    "models/yoot.glb"
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
@@ -38,4 +38,4 @@ export default function YootMesh({
   );
 }
 
-useGLTF.preload("/models/yoot.glb")
+useGLTF.preload("models/yoot.glb")

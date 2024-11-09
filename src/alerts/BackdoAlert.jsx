@@ -3,7 +3,7 @@ import { animated } from "@react-spring/three";
 import BackdoToken from "../moveTokens/BackdoToken";
 
 export default function BackdoAlert({ position, rotation, scale }) {
-  const { nodes, materials } = useGLTF('/models/alert-background.glb')
+  const { nodes, materials } = useGLTF('models/alert-background.glb')
   return (
     <animated.group position={position} rotation={rotation} scale={scale}>
       {/* <mesh

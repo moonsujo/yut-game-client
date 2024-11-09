@@ -14,7 +14,7 @@ import { boomTextAtom } from './GlobalState';
   // throw the yoot
   // button click - start game
 export default function BoomText({ rotation, initialScale }) {
-  const { nodes, materials } = useGLTF("/models/boom-wrap.glb");
+  const { nodes, materials } = useGLTF("models/boom-wrap.glb");
   const [_text, setText] = useAtom(boomTextAtom)
 
   // Prevent text from re-appearing on re-render

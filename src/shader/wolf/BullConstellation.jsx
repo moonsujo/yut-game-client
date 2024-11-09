@@ -11,7 +11,7 @@ import { useGLTF } from "@react-three/drei";
 
 export default function BullConstellation(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/models/bull-constellation-thin.glb')
+  const { nodes, materials, animations } = useGLTF('models/bull-constellation-thin.glb')
 
   const count = nodes.BezierCurve001.geometry.attributes.position.count;
   const randomArray = new Float32Array(count/4);
