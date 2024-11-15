@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Float, Text3D, useGLTF } from "@react-three/drei";
 import { animated } from "@react-spring/three";
 import { useAtom } from "jotai";
@@ -217,6 +217,10 @@ export default function Home2() {
       e.stopPropagation();
       socket.emit('createRoom', { hostId: client._id }, ({ roomId }) => {
         setLocation(`/${roomId}`)
+        
+        const audio = new Audio('sounds/effects/boot-up.mp3')
+        audio.volume = 0.3;
+        audio.play();
       })
     }
 
