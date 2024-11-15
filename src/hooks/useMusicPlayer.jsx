@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 export default function useMusicPlayer() {
   // playlist
 
-  const [audioTimeout, setAudioTimeout] = useState(null);
-  const [audio, setAudio] = useState(null);
+  const [songTimeout, setSongTimeout] = useState(null);
+  const [songIndex, setSongIndex] = useState(0);
 
   // length: seconds
   const songs = [
@@ -24,16 +24,32 @@ export default function useMusicPlayer() {
 
   function playMusic() {
 
-    function playRandomSong() {
-      const randomSong = songs[Math.floor(Math.random() * songs.length)]
-      playSong(randomSong.path)
-      const audioTimeout = setTimeout(() => {
-        playRandomSong();
-      }, randomSong.length * 1000)
-      setAudioTimeout(audioTimeout)
-    }
+    // function playRandomSong() {
+    //   const randomSong = songs[Math.floor(Math.random() * songs.length)]
+    //   playSong(randomSong.path)
+    //   const audioTimeout = setTimeout(() => {
+    //     playRandomSong();
+    //   }, randomSong.length * 1000)
+    //   setAudioTimeout(audioTimeout)
+    // }
 
-    playRandomSong();
+    // playRandomSong();
+
+    // play songs in order
+    const song = songs[songIndex]
+    playSong(song.path)
+    const songTimeout = setTimeout(() => {
+      let nextSongIndex;
+      if (songIndex+1 === songs.length) {
+        nextSongIndex = 0;
+      } else {
+        nextSongIndex = songIndex++;
+      }
+      const nextSong = songs[nextSongIndex]
+      playSong(nextSong.path)
+      setSongIndex(nextSongIndex)
+    }, song.length * 1000)
+    setSongTimeout(songTimeout)
   }
 
   useEffect(() => {
@@ -46,7 +62,6 @@ export default function useMusicPlayer() {
     const audio = new Audio(path);
     audio.volume=0.3;
     audio.play();
-    setAudio(audio);
   }
 
   return [playMusic]
