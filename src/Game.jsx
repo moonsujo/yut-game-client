@@ -140,7 +140,7 @@ export default function Game() {
       useFrame((state) => {
         const time = state.clock.elapsedTime;
         letsPlayTextMaterial.color.setHSL(Math.cos(time * 3) * 0.05 + 0.07, 1, 0.3);
-        letsPlayButton.current.scale.x = Math.cos(time * 2) * 0.2 + 0.8;
+        // letsPlayButton.current.scale.x = Math.cos(time * 2) * 0.2 + 0.8;
       })
   
       const backdropHeight = layout[device].game.letsPlayButton.activeButton.backdropHeight
@@ -1088,17 +1088,12 @@ export default function Game() {
         device={device}
         /> }
         { (29 in legalTiles) && <ScoreButtons
-          position={layout[device].game.scoreButtons.position}
-          rotation={layout[device].game.scoreButtons.rotation}
-          buttonPos={layout[device].game.scoreButtons.buttons.position}
-          text={layout[device].game.scoreButtons.text}
-          textSize={layout[device].game.scoreButtons.textSize}
-          lineHeight={layout[device].game.scoreButtons.lineHeight}
+          device={device}
           legalTiles={legalTiles}
-          enabled={hasTurn}
+          hasTurn={hasTurn}
         /> }
         <PiecesOnBoard/>
-        { (gamePhase === 'pregame' || gamePhase === 'game') && (device === 'landscapeDesktop' || (device === 'portrait' && !(29 in legalTiles))) && <MoveList
+        { (gamePhase === 'pregame' || gamePhase === 'game') && (device === 'landscapeDesktop' || (device === 'portrait' && !(29 in legalTiles && legalTiles[29].length > 1))) && <MoveList
           position={layout[device].game.moveList.position}
           rotation={layout[device].game.moveList.rotation}
           tokenScale={layout[device].game.moveList.tokenScale}
