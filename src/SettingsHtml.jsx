@@ -1,32 +1,40 @@
-import { Html, Image, Text3D } from "@react-three/drei";
-import Star from "./meshes/Star";
-import { useEffect, useRef, useState } from "react";
+import { Html } from "@react-three/drei";
+import { useRef, useState } from "react";
 import { useAtomValue } from "jotai";
-import { clientAtom, hostAtom, spectatorsAtom, teamsAtom } from "./GlobalState";
+import { backdoRuleOnAtom, clientAtom, deviceAtom, hostAtom, spectatorsAtom, teamsAtom, timerOnAtom } from "./GlobalState";
 import HtmlColors from "./HtmlColors";
+import layout from './layout'
 
-export default function SettingsHostHtml(props) {
+export default function SettingsHtml(props) {
   // #region state setters and getters
+  const device = useAtomValue(deviceAtom)
+  const client = useAtomValue(clientAtom)
+  const host = useAtomValue(hostAtom)
+
   const [mainMenuOpen, setMainMenuOpen] = useState(true)
   // edit players
   const [editGuestsOpen, setEditGuestsOpen] = useState(false)
-  const [editGuestsHover, setEditGuestsHover] = useState(false)
   const [guestBeingEditted, setGuestBeingEditted] = useState(null)
   const [editAGuestOpen, setEditAGuestOpen] = useState(false)
   // the rest
   const [resetGameOpen, setResetGameOpen] = useState(false)
-  const [resetGameHover, setResetGameHover] = useState(false)
   const [pauseGame, setPauseGame] = useState(false)
-  const [pauseGameHover, setPauseGameHover] = useState(false)
   const [setGameRulesOpen, setSetGameRulesOpen] = useState(false)
-  const [setGameRulesHover, setSetGameRulesHover] = useState(false)
+  const [viewGuestsOpen, setViewGuestsOpen] = useState(false)
+  const [viewGameRulesOpen, setViewGameRulesOpen] = useState(false)
   const [audioOpen, setAudioOpen] = useState(false)
-  const [audioHover, setAudioHover] = useState(false)
   const [languageOpen, setLanguageOpen] = useState(false)
-  const [languageHover, setLanguageHover] = useState(false)
   const [inviteFriendsOpen, setInviteFriendsOpen] = useState(false)
-  const [inviteFriendsHover, setInviteFriendsHover] = useState(false)
   // #endregion
+
+  // helper functions
+  function formatName(name) {
+    if (name.length > 8) {
+      return name.slice(0, 8) + '...'
+    } else {
+      return name
+    }
+  }
 
   function BackButton() {
     const [hover, setHover] = useState(false)
@@ -50,11 +58,20 @@ export default function SettingsHostHtml(props) {
       } else if (setGameRulesOpen) {
         setSetGameRulesOpen(false)
         setMainMenuOpen(true)
+      } else if (viewGuestsOpen) {
+        setViewGuestsOpen(false)
+        setMainMenuOpen(true)
+      } else if (viewGameRulesOpen) {
+        setViewGameRulesOpen(false)
+        setMainMenuOpen(true)
       } else if (audioOpen) {
         setAudioOpen(false)
         setMainMenuOpen(true)
       } else if (languageOpen) {
         setLanguageOpen(false)
+        setMainMenuOpen(true)
+      } else if (inviteFriendsOpen) {
+        setInviteFriendsOpen(false)
         setMainMenuOpen(true)
       }
     }
@@ -92,6 +109,8 @@ export default function SettingsHostHtml(props) {
       setEditAGuestOpen(false)
       setResetGameOpen(false)
       setSetGameRulesOpen(false)
+      setViewGuestsOpen(false)
+      setViewGameRulesOpen(false)
       setAudioOpen(false)
       setLanguageOpen(false)
       setInviteFriendsOpen(false)
@@ -117,8 +136,6 @@ export default function SettingsHostHtml(props) {
   }
 
   const teams = useAtomValue(teamsAtom)
-  const client = useAtomValue(clientAtom)
-  const host = useAtomValue(hostAtom)
   const spectators = useAtomValue(spectatorsAtom)
   function guestList() {
     // you first, host, team rockets, team ufos, and spectators
@@ -239,14 +256,14 @@ export default function SettingsHostHtml(props) {
       </button>
     }
     return <group name='edit-guests' 
-      position={[-7.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.editGuests.position}
+      rotation={layout[device].game.settings.editGuests.rotation}>
       <Html transform>
         <div style={{
           position: 'absolute',
           top: '0px',
           left: '0px',
-          width: '350px',
+          width: layout[device].game.settings.editGuests.containerWidth,
           backgroundColor: '#090F16',
           border: '2px solid #F1EE92',
           borderRadius: '5px',
@@ -271,8 +288,8 @@ export default function SettingsHostHtml(props) {
               <CloseButton/>
             </div>
           </div>
-          { guestList().map((value, _index) => {
-            return <div style={{
+          { guestList().map((value, index) => {
+            return <div key={index} style={{
               display: 'flex',
               justifyContent: 'space-between',
               backgroundColor: mapTeamToBackgroundColor(value.team),
@@ -286,7 +303,7 @@ export default function SettingsHostHtml(props) {
                 padding: '5px',
                 margin: '5px'
               }}>
-                {value.name}
+                {formatName(value.name)}
               </p>
               { value.isYou && !value.isHost && <p style={{
                 fontFamily: 'Luckiest Guy',
@@ -506,11 +523,10 @@ export default function SettingsHostHtml(props) {
         SET TEAM TO UFOS
       </button>
     }
-
     return <Html 
       transform
-      position={[-7.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.editAGuest.position}
+      rotation={layout[device].game.settings.editAGuest.rotation}>
       <div style={{
         position: 'absolute',
         top: '0px',
@@ -629,8 +645,8 @@ export default function SettingsHostHtml(props) {
     }
     return <Html 
       transform
-      position={[-7.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.resetGame.position}
+      rotation={layout[device].game.settings.resetGame.rotation}>
         <div style={{
           position: 'absolute',
           top: '0px',
@@ -653,7 +669,7 @@ export default function SettingsHostHtml(props) {
               margin: '3px',
               fontSize: '22px',
             }}>
-              EDIT Guests
+              RESET GAME
             </p>
             <div>
               <BackButton/>
@@ -712,8 +728,8 @@ export default function SettingsHostHtml(props) {
     }
     return <Html 
       transform
-      position={[-7.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.setGameRules.position}
+      rotation={layout[device].game.settings.setGameRules.rotation}>
       <div style={{
         position: 'absolute',
         top: '0px',
@@ -824,6 +840,183 @@ export default function SettingsHostHtml(props) {
               }}>
               </div>
             </div>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            1 MINUTE AFTER EVERY THROW. ON EXPIRE, ONE OF THE AVAILABLE MOVES WILL BE CHOSEN RANDOMLY.
+          </p>
+        </div>
+      </div>
+    </Html>
+  }
+  function ViewGuests() {
+    return <group name='view-guests' 
+      position={layout[device].game.settings.editGuests.position}
+      rotation={layout[device].game.settings.editGuests.rotation}>
+      <Html transform>
+        <div style={{
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          width: layout[device].game.settings.editGuests.containerWidth,
+          backgroundColor: '#090F16',
+          border: '2px solid #F1EE92',
+          borderRadius: '5px',
+          padding: '5px',
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}>
+            <p style={{
+              fontFamily: 'Luckiest Guy',
+              color: '#F1EE92',
+              textAlign: 'left',
+              padding: '0px',
+              margin: '3px',
+              fontSize: '22px',
+            }}>
+              VIEW GUESTS
+            </p>
+            <div>
+              <BackButton/>
+              <CloseButton/>
+            </div>
+          </div>
+          { guestList().map((value, index) => {
+            return <div key={index} style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              backgroundColor: mapTeamToBackgroundColor(value.team),
+              margin: '3px',
+              borderRadius: '5px',
+              fontSize: '20px'
+            }}>
+              <p style={{
+                fontFamily: 'Luckiest Guy',
+                color: mapTeamToPlayerColor(value.team),
+                padding: '5px',
+                margin: '5px'
+              }}>
+                {formatName(value.name)}
+              </p>
+              { value.isYou && !value.isHost && <p style={{
+                fontFamily: 'Luckiest Guy',
+                color: mapTeamToPlayerColor(-1), // grey
+                padding: '5px',
+                margin: '5px'
+              }}>
+                YOU
+              </p>}
+              { !value.isYou && value.isHost && <p style={{
+                fontFamily: 'Luckiest Guy',
+                color: mapTeamToPlayerColor(-1), // grey
+                padding: '5px',
+                margin: '5px'
+              }}>
+                HOST
+              </p>}
+              { value.isYou && value.isHost && <p style={{
+                fontFamily: 'Luckiest Guy',
+                color: mapTeamToPlayerColor(-1), // grey
+                padding: '5px',
+                margin: '5px'
+              }}>
+                HOST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; YOU
+              </p>}
+            </div>
+          })}
+        </div>
+      </Html>
+    </group>
+  }
+  function ViewGameRules() {
+    const backdoRuleOn = useAtomValue(backdoRuleOnAtom)
+    const timerOn = useAtomValue(timerOnAtom)
+    return <Html 
+      transform
+      position={layout[device].game.settings.setGameRules.position}
+      rotation={layout[device].game.settings.setGameRules.rotation}>
+      <div style={{
+        position: 'absolute',
+        top: '0px',
+        left: '0px',
+        width: '350px',
+        backgroundColor: '#090F16',
+        border: '2px solid #F1EE92',
+        borderRadius: '5px',
+        fontFamily: 'Luckiest Guy',
+        padding: '5px',
+        color: '#F1EE92',
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}>
+          <p style={{
+            color: '#F1EE92',
+            textAlign: 'left',
+            padding: '0px',
+            margin: '3px',
+            fontSize: '22px',
+          }}>
+            VIEW GAME RULES
+          </p>
+          <div>
+            <BackButton/>
+            <CloseButton/>
+          </div>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+            }}>BACKDO LAUNCH</p>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+              color: backdoRuleOn ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ backdoRuleOn ? "ON" : "OFF"}</p>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            IF A TEAM THROWS A BACKDO (-1) AND HAS NO PIECES ON THE BOARD, THEY CAN PUT A PIECE ON THE STAR BEHIND EARTH.
+          </p>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+            }}>TIMER</p>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+              color: timerOn ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ timerOn ? "ON" : "OFF"}</p>
           </div>
           <p style={{
             padding: '3px',
@@ -1006,8 +1199,8 @@ export default function SettingsHostHtml(props) {
 
     return <Html 
       transform
-      position={[-5.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.audio.position}
+      rotation={layout[device].game.settings.audio.rotation}>
       <div style={{
         position: 'absolute',
         top: '0px',
@@ -1241,8 +1434,8 @@ export default function SettingsHostHtml(props) {
 
     return <Html 
       transform
-      position={[-7.5, 0, -2.5]}
-      rotation={[-Math.PI/2, 0, 0]}>
+      position={layout[device].game.settings.language.position}
+      rotation={layout[device].game.settings.language.rotation}>
       <div style={{
         position: 'absolute',
         top: '0px',
@@ -1281,7 +1474,159 @@ export default function SettingsHostHtml(props) {
       </div>
     </Html>
   }
+  function InviteFriends() {
+    const [checkmarkVisible, setCheckmarkVisible] = useState(false)
+    const [checkmarkTimer, setCheckmarkTimer] = useState(null)
+    function CopyButton() {
+      const [copyButtonHover, setCopyButtonHover] = useState(false)
+  
+      function handleMouseOver () {
+        setCopyButtonHover(true)
+      }
+      function handleMouseOut () {
+        setCopyButtonHover(false)
+      }
+      
+      function copyURLToClipboard() {
+        const url = window.location.href;
+      
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          // Modern browsers with Clipboard API support
+          navigator.clipboard.writeText(url)
+            .then(() => {
+            })
+            .catch(err => {
+              console.error("Failed to copy URL: ", err);
+            });
+        } else {
+          // Fallback for older browsers
+          const tempInput = document.createElement("input");
+          document.body.appendChild(tempInput);
+          tempInput.value = url;
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+        }
+      }
+
+      function handleMouseUp() {
+        copyURLToClipboard();
+        clearTimeout(checkmarkTimer)
+        setCheckmarkVisible(true);
+        setCheckmarkTimer(setTimeout(() => {
+          setCheckmarkVisible(false);
+        }, 2000))
+      }
+  
+      return <button 
+        className='edit-player-actions-button'
+        style={{
+          fontFamily: 'Luckiest Guy',
+          fontSize: `20px`,
+          border: `2px solid ${copyButtonHover ? '#009E14' : '#F1EE92'}`,
+          borderRadius: '5px',
+          margin: '3px',
+          padding: '1px 5px 1px 5px',
+          color: `${copyButtonHover ? '#009E14' : '#F1EE92'}`,
+          backgroundColor: '#090F16',
+          position: 'relative'}}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+        onMouseUp={handleMouseUp}
+        type="submit">
+        COPY
+      </button>
+    }
+    return <Html 
+      transform
+      position={layout[device].game.settings.inviteFriends.position}
+      rotation={layout[device].game.settings.inviteFriends.rotation}>
+        <div style={{
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          width: '400px',
+          backgroundColor: '#090F16',
+          border: '2px solid #F1EE92',
+          borderRadius: '5px',
+          fontFamily: 'Luckiest Guy',
+          padding: '10px',
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}>
+            <p style={{
+              color: '#F1EE92',
+              textAlign: 'left',
+              padding: '0px',
+              margin: '3px',
+              fontSize: '22px',
+            }}>
+              INVITE FRIENDS
+            </p>
+            <div>
+              <BackButton/>
+              <CloseButton/>
+            </div>
+          </div>
+          <p style={{
+            color: '#F1EE92',
+            textAlign: 'center',
+            padding: '0px',
+            margin: '10px',
+            fontSize: '30px',
+          }}>
+            JOIN THIS ROOM!
+          </p>
+          <div style={{
+            display:'flex',
+            justifyContent: 'center'
+          }}>
+            <p style={{
+              color: '#F1EE92',
+              textAlign: 'center',
+              padding: '0px',
+              margin: '2px',
+              fontSize: '30px',
+            }}>
+              YUTNORI.APP/<span style={{color:HtmlColors.infoGreen}}>ABCD</span>
+            </p>
+            <CopyButton/>
+            <div style={{
+              width: '0px', 
+              height: '0px',
+              position: 'absolute',
+              left: '378px',
+              top: '107px'}}>
+                {checkmarkVisible && <img src='images/green-checkmark.svg' width='30px'/>}
+            </div>
+          </div>
+          <div style={{display:'flex', padding: '20px'}}>
+            <img src="images/qr-code-sample.png" style={{
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '10px',
+              marginBottom: '10px',
+              width: '200px'
+            }}/>
+            <p style={{
+              color: '#F1EE92',
+              textAlign: 'left',
+              padding: '0px',
+              margin: '10px',
+              fontSize: '30px',
+              width: '200px'
+            }}>
+              SCAN THE QR CODE, OR ENTER THE LINK INTO A BROWSER.
+            </p>
+          </div>
+        </div>
+    </Html>
+  }
   function MainMenuHtml() {
+    // for host
     function EditGuestsButton() {
       const [hover, setHover] = useState(false);
       function handleMouseEnter() {
@@ -1414,6 +1759,73 @@ export default function SettingsHostHtml(props) {
         SET GAME RULES
       </button>
     }
+    // for guest
+    function ViewGuestsButton() {
+      const [hover, setHover] = useState(false);
+      function handleMouseEnter() {
+        setHover(true)
+      }
+      function handleMouseOut() {
+        setHover(false)
+      }
+      function handleMouseUp() {
+        setViewGuestsOpen(true)
+        setMainMenuOpen(false)
+      }
+      return <button 
+        onMouseEnter={handleMouseEnter}
+        onMouseOut={handleMouseOut}
+        onMouseUp={handleMouseUp}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          backgroundColor: '#090F16',
+          margin: '3px',
+          border: `2px solid ${hover ? '#009E14' : '#F1EE92'}`,
+          borderRadius: '5px',
+          width: 'calc(100% - 6px)', // margin 3px both sides
+          padding: '5px',
+          color: hover ? '#009E14' : '#F1EE92',
+          fontFamily: 'Luckiest Guy',
+          fontSize: '20px'
+        }}>
+        VIEW GUESTS
+      </button>
+    }
+    function ViewGameRulesButton() {
+      const [hover, setHover] = useState(false);
+      function handleMouseEnter() {
+        setHover(true)
+      }
+      function handleMouseOut() {
+        setHover(false)
+      }
+      function handleMouseUp() {
+        setViewGameRulesOpen(true)
+        setMainMenuOpen(false)
+      }
+      return <button 
+        onMouseEnter={handleMouseEnter}
+        onMouseOut={handleMouseOut}
+        onMouseUp={handleMouseUp}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          backgroundColor: '#090F16',
+          margin: '3px',
+          border: `2px solid ${hover ? '#009E14' : '#F1EE92'}`,
+          borderRadius: '5px',
+          width: 'calc(100% - 6px)', // margin 3px both sides
+          padding: '5px',
+          color: hover ? '#009E14' : '#F1EE92',
+          fontFamily: 'Luckiest Guy',
+          fontSize: '20px'
+        }}>
+        VIEW GAME RULES
+      </button>
+    }
+
+    // for both
     function AudioButton() {
       const [hover, setHover] = useState(false);
       function handleMouseEnter() {
@@ -1495,7 +1907,9 @@ export default function SettingsHostHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // remove player from the room
+        console.log('button click')
+        setMainMenuOpen(false)
+        setInviteFriendsOpen(true)
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1521,8 +1935,8 @@ export default function SettingsHostHtml(props) {
     return <group name='main-menu'>
       <Html
         transform
-        position={[-4.5, 3, -1.3]}
-        rotation={[-Math.PI/2, 0, 0]}>
+        position={layout[device].game.settings.mainMenu.position}
+        rotation={layout[device].game.settings.mainMenu.rotation}>
         <div style={{
           position: 'absolute',
           top: '0px',
@@ -1552,10 +1966,12 @@ export default function SettingsHostHtml(props) {
             </div>
           </div>
           <div className='main-menu-buttons'>
-            <EditGuestsButton/>
-            <ResetGameButton/>
-            <PauseGameButton/>
-            <SetGameRulesButton/>
+            { client.socketId === host.socketId && <EditGuestsButton/> }
+            { client.socketId === host.socketId && <ResetGameButton/> }
+            { client.socketId === host.socketId && <PauseGameButton/> }
+            { client.socketId === host.socketId && <SetGameRulesButton/> }
+            { client.socketId !== host.socketId && <ViewGuestsButton/> }
+            { client.socketId !== host.socketId && <ViewGameRulesButton/> }
             <AudioButton/>
             <LanguageButton/>
             <InviteFriendsButton/>
@@ -1564,14 +1980,18 @@ export default function SettingsHostHtml(props) {
       </Html>
     </group>
   }
+
   return <group {...props}>
     { mainMenuOpen && <MainMenuHtml/> }
     { editGuestsOpen && <EditGuests/> }
     { editAGuestOpen && <EditAGuest/> }
     { resetGameOpen && <ResetGame/> }
     { setGameRulesOpen && <SetGameRules/> }
+    { viewGuestsOpen && <ViewGuests/> }
+    { viewGameRulesOpen && <ViewGameRules/> }
     { audioOpen && <Audio2/> }
     { languageOpen && <Language/> }
+    { inviteFriendsOpen && <InviteFriends/> }
   </group>
 }
 
