@@ -1,18 +1,46 @@
-import { useEffect, useMemo } from "react";
-import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { useAtom, useSetAtom } from "jotai";
 
 import { io } from "socket.io-client";
 
 import { 
   pregameAlertAtom, 
   clientAtom, 
-  disconnectAtom, displayMovesAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, hostAtom, initialYootThrowAtom, legalTilesAtom, messagesAtom, particleSettingAtom, pieceTeam0Id0Atom, pieceTeam0Id1Atom, pieceTeam0Id2Atom, pieceTeam0Id3Atom, pieceTeam1Id0Atom, pieceTeam1Id1Atom, pieceTeam1Id2Atom, pieceTeam1Id3Atom, readyToStartAtom, roomAtom, selectionAtom, spectatorsAtom, teamsAtom, tilesAtom, turnAtom, winnerAtom, yootActiveAtom, yootThrowValuesAtom, yootThrownAtom, moveResultAtom, throwResultAtom, throwAlertAtom, turnAlertActiveAtom, animationPlayingAtom, throwCountAtom, gameLogsAtom, yootAnimationAtom, 
+  disconnectAtom, 
+  displayMovesAtom, 
+  gamePhaseAtom, 
+  hasTurnAtom, 
+  helperTilesAtom, 
+  hostAtom, 
+  initialYootThrowAtom, 
+  legalTilesAtom, 
+  messagesAtom, 
+  particleSettingAtom, 
+  pieceTeam0Id0Atom, 
+  pieceTeam0Id1Atom, 
+  pieceTeam0Id2Atom, 
+  pieceTeam0Id3Atom, 
+  pieceTeam1Id0Atom, 
+  pieceTeam1Id1Atom, 
+  pieceTeam1Id2Atom, 
+  pieceTeam1Id3Atom, 
+  readyToStartAtom, 
+  roomAtom, 
+  selectionAtom, spectatorsAtom, teamsAtom, tilesAtom, turnAtom, winnerAtom, yootActiveAtom, yootThrowValuesAtom, yootThrownAtom, moveResultAtom, throwResultAtom, throwAlertAtom, turnAlertActiveAtom, animationPlayingAtom, throwCountAtom, gameLogsAtom, yootAnimationAtom, 
   yootOutcomeAtom,
   currentPlayerNameAtom,
   alertsAtom,
   catchOutcomeAtom,
   pieceAnimationPlayingAtom,
-  catchPathAtom} from "./GlobalState.jsx";
+  catchPathAtom,
+  connectedToServerAtom,
+  settingsOpenAtom,
+  pauseGameAtom,
+  backdoLaunchAtom,
+  timerAtom,
+  nakAtom,
+  yutMoCatchAtom
+} from "./GlobalState.jsx";
 import { clientHasTurn } from "./helpers/helpers.js";
 import { checkJoin } from "./SocketManagerHelper.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -20,6 +48,7 @@ import * as THREE from 'three';
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
+import initialState from "../initialState.js";
 
 // const ENDPOINT = 'localhost:5000';
 
@@ -39,7 +68,7 @@ export const socket = io(
 // doesn't work when another app is running on the same port
 export const SocketManager = () => {
   const [_client, setClient] = useAtom(clientAtom);
-  const [_teams, setTeams] = useAtom(teamsAtom)
+  const [teams, setTeams] = useAtom(teamsAtom)
   const [_turn, setTurn] = useAtom(turnAtom);
   const [_room] = useAtom(roomAtom);
   const [_messages, setMessages] = useAtom(messagesAtom);
@@ -97,6 +126,13 @@ export const SocketManager = () => {
   ] 
 
   const [playMusic] = useMusicPlayer();
+  const setConnectedToServer = useSetAtom(connectedToServerAtom)
+  const setSettingsOpen = useSetAtom(settingsOpenAtom);
+  const setPauseGame = useSetAtom(pauseGameAtom);
+  const setBackdoLaunch = useSetAtom(backdoLaunchAtom);
+  const setTimer = useSetAtom(timerAtom)
+  const setNak = useSetAtom(nakAtom)
+  const setYutMoCatch = useSetAtom(yutMoCatchAtom)
 
   useEffect(() => {
 
@@ -105,6 +141,7 @@ export const SocketManager = () => {
     socket.on('connect', () => {
       // joinRoom sent first
       console.log('[SocketManager] connect') // runs on complete
+      setConnectedToServer(true)
     })
     
     socket.on('connect_error', err => { 
@@ -127,7 +164,6 @@ export const SocketManager = () => {
     }
 
     socket.on('room', (room) => {
-
       setMessages(room.messages)
       setTeams(room.teams)
       setSpectators(room.spectators)
@@ -143,7 +179,7 @@ export const SocketManager = () => {
 
       // Set host name for display
       if (room.host !== null) {
-          setHost(room.host)
+        setHost(room.host)
       }
 
       findAndStoreClient(room.spectators, room.teams);
@@ -244,7 +280,7 @@ export const SocketManager = () => {
 
       setGameLogs(room.gameLogs)
 
-
+      setPauseGame(room.paused)
     })
 
     socket.on('throwYoot', ({ yootOutcome, yootAnimation, teams, turn }) => {
@@ -549,29 +585,167 @@ export const SocketManager = () => {
         }
     })
 
-    socket.on("reset", ({ gamePhase, tiles, turn, teams }) => {
-      setGamePhase(gamePhase);
-      setTiles(tiles);
-      setTurn(turn);
-      setTeams(teams);
-      setPieceTeam0Id0(teams[0].pieces[0])
-      setPieceTeam0Id1(teams[0].pieces[1])
-      setPieceTeam0Id2(teams[0].pieces[2])
-      setPieceTeam0Id3(teams[0].pieces[3])
-      setPieceTeam1Id0(teams[1].pieces[0])
-      setPieceTeam1Id1(teams[1].pieces[1])
-      setPieceTeam1Id2(teams[1].pieces[2])
-      setPieceTeam1Id3(teams[1].pieces[3])
-      
-      if (teams[0].players.length > 0 && 
-        teams[1].players.length > 0 &&
-        allPlayersConnected(teams)) {
-          setReadyToStart(true)
-        } else {
-          setReadyToStart(false)
-        }
+    socket.on("reset", () => {
+      setGamePhase('lobby');
+      setTiles(initialState.initialTiles);
+      setTurn(initialState.initialTurn);
+      setLegalTiles({})
+      setSelection(null)
 
-      setParticleSetting(null)
+      console.log('[reset] teams[0].players', teams[0].players)
+      setTeams((teams) => {
+        console.log('[reset][setTeams] teams', teams)
+        const newTeams = [...teams] // make shallow copy
+        newTeams[0].pieces = JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces))
+        newTeams[0].throws = 0
+        newTeams[0].moves = JSON.parse(JSON.stringify(initialState.initialTeams[0].moves)),
+        newTeams[0].pregameRoll = null
+        newTeams[1].pieces = JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces))
+        newTeams[1].throws = 0
+        newTeams[1].moves = JSON.parse(JSON.stringify(initialState.initialTeams[1].moves)),
+        newTeams[1].pregameRoll = null
+        
+        if (teams[0].players.length > 0 && 
+          teams[1].players.length > 0 &&
+          allPlayersConnected(teams)) {
+            setReadyToStart(true)
+          } else {
+            setReadyToStart(false)
+          }
+
+        return newTeams;
+      })
+
+      setPieceTeam0Id0(JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces[0])))
+      setPieceTeam0Id1(JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces[1])))
+      setPieceTeam0Id2(JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces[2])))
+      setPieceTeam0Id3(JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces[3])))
+      setPieceTeam1Id0(JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces[0])))
+      setPieceTeam1Id1(JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces[1])))
+      setPieceTeam1Id2(JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces[2])))
+      setPieceTeam1Id3(JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces[3])))
+    })
+
+    socket.on("setAway", ({ player }) => {
+      setTeams((teams) => {
+        console.log('[setAway] teams', teams) // prints mutated value, the same one as 'newTeams'
+        const newTeams = [...teams] // make shallow copy
+        const newPlayers = [...newTeams[player.team].players]; // make shallow copy of nested array
+        const awayPlayerIndex = newPlayers.findIndex((currentPlayer) => currentPlayer.name === player.name)
+        newPlayers[awayPlayerIndex].status = player.status
+        newTeams[player.team] = {
+          ...newTeams[player.team],
+          players: newPlayers
+        }
+        console.log('[setAway] newTeams', newTeams)
+        return newTeams;
+      })
+
+      setClient((client) => {
+        if (player.name === client.name && player.team === client.team) {
+          const newClient = {
+            ...client,
+            status: player.status
+          }
+          return newClient
+        }
+        return client
+      })
+    })
+
+    socket.on("setTeam", ({ user, prevTeam }) => {
+      // set with new info from server; setState works weirdly in useEffect
+      console.log('[setTeam] user', user)
+      setSpectators((spectators) => {
+        const newSpectators = [...spectators]
+        if (prevTeam === -1) {
+          const changingSpectatorIndex = newSpectators.findIndex((spectator) => spectator.name === user.name)
+          newSpectators.splice(changingSpectatorIndex, 1);
+        } else if (prevTeam === 0 || prevTeam === 1) {
+          newSpectators.push(user);
+        }
+        return newSpectators
+      })
+      setTeams((teams) => {
+        const newTeams = [...teams]
+        if (prevTeam === -1) { // add to a team
+          const newPlayers = [...newTeams[user.team].players];
+          newPlayers.push(user)
+          newTeams[user.team] = {
+            ...newTeams[user.team],
+            players: newPlayers
+          }
+        } else if (prevTeam === 0 || prevTeam === 1) { // remove from a team
+          const newPlayers = [...newTeams[prevTeam].players];
+          const changingPlayerIndex = newPlayers.findIndex((player) => player.name === user.name)
+          newPlayers.splice(changingPlayerIndex, 1);
+
+          newTeams[prevTeam] = {
+            ...newTeams[prevTeam],
+            players: newPlayers
+          }
+        }
+        return newTeams
+      })
+      if (user.socketId === socket.id) {
+        setClient(user)
+      }
+      setHost((host) => {
+        if (user.socketId === host.socketId) {
+          return user
+        }
+        return host
+      })
+    })
+
+    socket.on("assignHost", ({ newHost }) => {
+      console.log('[assignHost]')
+      if (newHost.team !== -1) {
+        // use the setter to access the latest state.
+        // if I use the one from the outside, players arrays are empty
+        setTeams((teams) => { 
+          const newHostIndex = teams[newHost.team].players.findIndex((player) => player.name === newHost.name)
+          setHost(JSON.parse(JSON.stringify(teams[newHost.team].players[newHostIndex])))
+          return teams
+        })
+      } else {
+        setSpectators((spectators) => { 
+          const newHostIndex = spectators.findIndex((spectator) => spectator.name === newHost.name)
+          setHost(JSON.parse(JSON.stringify(spectators[newHostIndex])))
+          return spectators
+        })
+      }
+    })
+
+    socket.on("kick", ({ team, name }) => {
+      console.log('[kick]')
+      if (team === -1) {
+        // use the setter to access the latest state.
+        // if I use the one from the outside, players arrays are empty
+        setSpectators((spectators) => {
+          const newSpectators = [...spectators]
+          const changingSpectatorIndex = newSpectators.findIndex((spectator) => spectator.name === name)
+          newSpectators.splice(changingSpectatorIndex, 1);
+          return newSpectators
+        })
+      } else if (team === 0 || team === 1) {
+        setTeams((teams) => {
+          const newTeams = [...teams]
+          const newPlayers = [...newTeams[team].players];
+          const changingPlayerIndex = newPlayers.findIndex((player) => player.name === name)
+          newPlayers.splice(changingPlayerIndex, 1);
+          newTeams[team] = {
+            ...newTeams[team],
+            players: newPlayers
+          }
+          return newTeams
+        })
+      }
+    })
+
+    socket.on("pause", ({ flag }) => {
+      setPauseGame(flag)
+      setAlerts([])
     })
 
     socket.on("userDisconnect", ({ spectators, teams, gamePhase, host }) => {
@@ -579,7 +753,7 @@ export const SocketManager = () => {
       setTeams(teams);
       setHost(host);
       
-      findAndStoreClient(spectators, teams)
+      // findAndStoreClient(spectators, teams)
       
       if (gamePhase === 'lobby' && 
         teams[0].players.length > 0 && 
@@ -591,12 +765,35 @@ export const SocketManager = () => {
         }
     })
 
+    
+    socket.on('kicked', () => {
+      setSettingsOpen(false)
+      setDisconnect(true);
+
+      localStorage.removeItem('yootGame')
+    })
+
+    socket.on('setGameRule', ({ rule, flag }) => {
+      if (rule === 'backdoLaunch') {
+        setBackdoLaunch(flag)
+      } else if (rule === 'timer') {
+        setTimer(flag)
+      } else if (rule === 'nak') {
+        setNak(flag)
+      } else if (rule === 'yutMoCatch') {
+        setYutMoCatch(flag)
+      }
+    })
+
     socket.on('disconnect', () => {
+      console.log('[SocketManager][disconnect]') // runs on component unmount
+      setSettingsOpen(false)
       setDisconnect(true);
     })
 
     return () => {
       socket.disconnect()
+      console.log('[SocketManager][useEffect][disconnected]')
 
       socket.off();
     }

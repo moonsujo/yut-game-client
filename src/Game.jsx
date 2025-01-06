@@ -1,6 +1,6 @@
 // js
 import React, { useEffect, useRef, useState } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import layout from "./layout.js";
 import { useSpring, animated } from '@react-spring/three';
 
@@ -35,6 +35,8 @@ import {
   teamsAtom,
   hasTurnAtom,
   settingsOpenAtom,
+  connectedToServerAtom,
+  pauseGameAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -54,6 +56,7 @@ import YootButtonNew from "./YootButtonNew.jsx";
 import useResponsiveSetting from "./hooks/useResponsiveSetting.jsx";
 import MeteorsRealShader from "./shader/meteorsReal/MeteorsRealShader.jsx";
 import SettingsHtml from "./SettingsHtml.jsx";
+import PauseGame from "./PauseGame.jsx";
 
 // There should be no state
 export default function Game() {
@@ -76,16 +79,28 @@ export default function Game() {
   const [client] = useAtom(clientAtom)
   const [teams] = useAtom(teamsAtom)
   const [yootAnimation] = useAtom(yootAnimationAtom);
+  const pauseGame = useAtomValue(pauseGameAtom)
   
   const params = useParams();
+  const connectedToServer = useAtomValue(connectedToServerAtom)
 
   useEffect(() => {
-    socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+    // socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
     return (() => {
       // remove player from room (grey text)
       socket.emit('disconnectFromRoom', { roomId: params.id.toUpperCase() });
     })
   }, [])
+
+  useEffect(() => {
+    if (connectedToServer) {
+      console.log('[Game] calling addUser')
+      socket.emit('addUser', {}, () => {
+        console.log('add user callback, roomId:', params.id)
+        socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+      })
+    }
+  }, [connectedToServer])
 
   function LetsPlayButton({ position }) {
 
@@ -882,6 +897,9 @@ export default function Game() {
           position={layout[device].game.disconnectModal.position}
           rotation={layout[device].game.disconnectModal.rotation}
         /> }
+        { pauseGame && <PauseGame
+          position={[0, 5, 2]}
+        />}
         <LetsPlayButton
           position={layout[device].game.letsPlayButton.position}
           rotation={layout[device].game.letsPlayButton.rotation}

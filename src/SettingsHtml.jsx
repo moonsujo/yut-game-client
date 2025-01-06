@@ -1,9 +1,11 @@
 import { Html } from "@react-three/drei";
 import { useRef, useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import { backdoRuleOnAtom, clientAtom, deviceAtom, hostAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerOnAtom } from "./GlobalState";
+import { backdoLaunchAtom, clientAtom, deviceAtom, hostAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "./GlobalState";
 import HtmlColors from "./HtmlColors";
 import layout from './layout'
+import { socket } from "./SocketManager";
+import { useParams } from "wouter";
 
 // global state
 // audio
@@ -13,6 +15,7 @@ export default function SettingsHtml(props) {
   const device = useAtomValue(deviceAtom)
   const client = useAtomValue(clientAtom)
   const host = useAtomValue(hostAtom)
+  const params = useParams()
 
   const [mainMenuOpen, setMainMenuOpen] = useState(true)
   const setSettingsOpen = useSetAtom(settingsOpenAtom)
@@ -22,7 +25,7 @@ export default function SettingsHtml(props) {
   const [editAGuestOpen, setEditAGuestOpen] = useState(false)
   // the rest
   const [resetGameOpen, setResetGameOpen] = useState(false)
-  const [pauseGame, setPauseGame] = useState(false)
+  const pauseGame = useAtomValue(pauseGameAtom)
   const [setGameRulesOpen, setSetGameRulesOpen] = useState(false)
   const [viewGuestsOpen, setViewGuestsOpen] = useState(false)
   const [viewGameRulesOpen, setViewGameRulesOpen] = useState(false)
@@ -147,8 +150,8 @@ export default function SettingsHtml(props) {
     const guests = [] // includes host (and you)
 
     // -1 team: spectator
-    function formatGuest({ name, connectionState, isHost, isYou, team }) {
-      return { name, connectionState, isHost, isYou, team }
+    function formatGuest({ name, connectionState, isHost, isYou, team, status, _id }) {
+      return { name, connectionState, isHost, isYou, team, status, _id }
     }
     if (client.socketId === host.socketId) {
       guests.push(formatGuest({ 
@@ -156,7 +159,9 @@ export default function SettingsHtml(props) {
         connectionState: client.connectedToRoom,
         isYou: true,
         isHost: true,
-        team: client.team
+        team: client.team,
+        status: client.status,
+        _id: client._id
       })) // 'host, you'
     } else {
       guests.push(formatGuest({
@@ -164,14 +169,18 @@ export default function SettingsHtml(props) {
         connectionState: client.connectedToRoom,
         isYou: true,
         isHost: false,
-        team: client.team
+        team: client.team,
+        status: client.status,
+        _id: client._id
       })) // 'you'
       guests.push(formatGuest({
         name: host.name,
         connectionState: host.connectedToRoom,
         isYou: false,
         isHost: true,
-        team: host.team
+        team: host.team,
+        status: host.status,
+        _id: host._id
       })) // 'host'
     }
     for (let teamId = 0; teamId < 2; teamId++) {
@@ -182,7 +191,9 @@ export default function SettingsHtml(props) {
             connectionState: player.connectedToRoom,
             isYou: false,
             isHost: false,
-            team: player.team
+            team: player.team,
+            status: player.status,
+            _id: player._id
           }))
         }
       }
@@ -194,7 +205,9 @@ export default function SettingsHtml(props) {
           connectionState: spectator.connectedToRoom,
           isYou: false,
           isHost: false,
-          team: spectator.team
+          team: spectator.team,
+          status: spectator.status,
+          _id: spectator._id
         }))
       }
     }
@@ -309,6 +322,7 @@ export default function SettingsHtml(props) {
                 margin: '5px'
               }}>
                 {formatName(value.name)}
+                {value.status === 'away' && ' (AWAY)'}
               </p>
               { value.isYou && !value.isHost && <p style={{
                 fontFamily: 'Luckiest Guy',
@@ -342,7 +356,7 @@ export default function SettingsHtml(props) {
     </group>
   }
   function EditAGuest() {
-    function SetAwayButton() {
+    function SetAwayHostButton() {
       const [hover, setHover] = useState(false);
       function handleMouseEnter() {
         setHover(true)
@@ -352,6 +366,13 @@ export default function SettingsHtml(props) {
       }
       function handleMouseUp() {
         // set player as away (skip to next player when he's chosen)
+        socket.emit('setAway', { 
+          roomId: params.id.toUpperCase(), 
+          clientId: client._id, 
+          name: guestBeingEditted.name, 
+          team: guestBeingEditted.team, 
+          status: guestBeingEditted.status === 'away' ? 'playing' : 'away' 
+        });
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -370,7 +391,7 @@ export default function SettingsHtml(props) {
           fontFamily: 'Luckiest Guy',
           fontSize: '20px'
         }}>
-        SET AWAY
+        { guestBeingEditted.status === 'away' ? 'SET RETURNED' : 'SET AWAY' }
       </button>
     }
     function SetSpectatorButton() {
@@ -383,6 +404,14 @@ export default function SettingsHtml(props) {
       }
       function handleMouseUp() {
         // set player to spectator
+        socket.emit('setTeam', ({
+          roomId: params.id.toUpperCase(),
+          clientId: client._id,
+          userId: guestBeingEditted._id,
+          name: guestBeingEditted.name,
+          currTeamId: guestBeingEditted.team,
+          newTeamId: -1
+        }))
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -413,7 +442,13 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // assign player to host
+        socket.emit('assignHost', { 
+          roomId: params.id.toUpperCase(),
+          clientId: client._id,
+          userId: guestBeingEditted._id,
+          team: guestBeingEditted.team,
+          name: guestBeingEditted.name
+        })
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -444,7 +479,14 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // remove player from the room
+        socket.emit('kick', { 
+          roomId: params.id.toUpperCase(),
+          clientId: client._id,
+          team: guestBeingEditted.team,
+          name: guestBeingEditted.name,
+        })
+        setEditAGuestOpen(false)
+        setEditGuestsOpen(true)
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -475,7 +517,13 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // remove player from the room
+        socket.emit('setTeam', ({
+          roomId: params.id.toUpperCase(),
+          clientId: client._id,
+          name: guestBeingEditted.name,
+          currTeamId: guestBeingEditted.team,
+          newTeamId: 0
+        }))
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -506,7 +554,13 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // remove player from the room
+        socket.emit('setTeam', ({
+          roomId: params.id.toUpperCase(),
+          clientId: client._id,
+          name: guestBeingEditted.name,
+          currTeamId: guestBeingEditted.team,
+          newTeamId: 1
+        }))
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -571,7 +625,7 @@ export default function SettingsHtml(props) {
           <AssignHostButton/>
           <KickButton/>
         </div> : <div className='player-buttons'>
-          <SetAwayButton/>
+          <SetAwayHostButton/>
           <SetSpectatorButton/>
           <AssignHostButton/>
           <KickButton/>
@@ -590,7 +644,9 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // reset game
+        socket.emit('reset', { roomId: params.id.toUpperCase(), clientId: client._id })
+        setSettingsOpen(false)
+        setMainMenuOpen(false)
       }
 
       return <button 
@@ -624,7 +680,8 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // reset game
+        setResetGameOpen(false)
+        setMainMenuOpen(true)
       }
 
       return <button 
@@ -702,10 +759,14 @@ export default function SettingsHtml(props) {
     </Html>
   }
   function SetGameRules() {
-    const [backdoLaunchOn, setBackdoLaunchOn] = useState(false)
+    const backdoLaunch = useAtomValue(backdoLaunchAtom)
+    const timer = useAtomValue(timerAtom)
+    const nak = useAtomValue(nakAtom)
+    const yutMoCatch = useAtomValue(yutMoCatchAtom)
     const [backdoLaunchToggleHover, setBackdoLaunchToggleHover] = useState(false)
-    const [timerOn, setTimerOn] = useState(false)
     const [timerToggleHover, setTimerToggleHover] = useState(false)
+    const [nakThrowToggleHover, setNakThrowToggleHover] = useState(false)
+    const [bonusThrowCatchToggleHover, setBonusThrowCatchToggleHover] = useState(false)
 
     function handleBackdoLaunchTogglePointerEnter() {
       setBackdoLaunchToggleHover(true)
@@ -714,10 +775,10 @@ export default function SettingsHtml(props) {
       setBackdoLaunchToggleHover(false)
     }
     function handleBackdoLaunchTogglePointerUp() {
-      if (!backdoLaunchOn) 
-        setBackdoLaunchOn(true)
+      if (!backdoLaunch) 
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'backdoLaunch', flag: true }))
       else
-        setBackdoLaunchOn(false)
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'backdoLaunch', flag: false }))
     }
     function handleTimerTogglePointerEnter() {
       setTimerToggleHover(true)
@@ -726,10 +787,34 @@ export default function SettingsHtml(props) {
       setTimerToggleHover(false)
     }
     function handleTimerTogglePointerUp() {
-      if (!timerOn) 
-        setTimerOn(true)
+      if (!timer) 
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'timer', flag: true }))
       else
-        setTimerOn(false)
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'timer', flag: false }))
+    }
+    function handleNakThrowTogglePointerEnter() {
+      setNakThrowToggleHover(true)
+    }
+    function handleNakThrowTogglePointerLeave() {
+      setNakThrowToggleHover(false)
+    }
+    function handleNakThrowTogglePointerUp() {
+      if (!nak) 
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'nak', flag: true }))
+      else
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'nak', flag: false }))
+    }
+    function handleBonusThrowCatchTogglePointerEnter() {
+      setBonusThrowCatchToggleHover(true)
+    }
+    function handleBonusThrowCatchTogglePointerLeave() {
+      setBonusThrowCatchToggleHover(false)
+    }
+    function handleBonusThrowCatchTogglePointerUp() {
+      if (!yutMoCatch) 
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'yutMoCatch', flag: true }))
+      else
+        socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'yutMoCatch', flag: false }))
     }
     return <Html 
       transform
@@ -739,7 +824,7 @@ export default function SettingsHtml(props) {
         position: 'absolute',
         top: '0px',
         left: '0px',
-        width: '350px',
+        width: '400px',
         backgroundColor: '#090F16',
         border: '2px solid #F1EE92',
         borderRadius: '5px',
@@ -795,7 +880,7 @@ export default function SettingsHtml(props) {
                 margin: '3px',
                 padding: '0px',
                 borderRadius: '5px',
-                backgroundColor: backdoLaunchOn ? HtmlColors.starYellow : !backdoLaunchToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
+                backgroundColor: backdoLaunch ? HtmlColors.starYellow : !backdoLaunchToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
                 width: 'calc(100% - 6px)',
                 height: 'calc(100% - 6px)'
               }}>
@@ -839,7 +924,7 @@ export default function SettingsHtml(props) {
                 margin: '3px',
                 padding: '0px',
                 borderRadius: '5px',
-                backgroundColor: timerOn ? HtmlColors.starYellow : !timerToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
+                backgroundColor: timer ? HtmlColors.starYellow : !timerToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
                 width: 'calc(100% - 6px)',
                 height: 'calc(100% - 6px)'
               }}>
@@ -851,6 +936,94 @@ export default function SettingsHtml(props) {
             margin: '3px',
           }}>
             1 MINUTE AFTER EVERY THROW. ON EXPIRE, ONE OF THE AVAILABLE MOVES WILL BE CHOSEN RANDOMLY.
+          </p>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '3px',
+              fontSize: '20px',
+            }}>NAK THROW (OUT OF BOUNDS)</p>
+            <div id='nakToggle' style={{
+              width: '20px',
+              height: '20px',
+              backgroundColor: HtmlColors.spaceDark,
+              border: '2px solid #F1EE92',
+              borderRadius: '5px',
+              margin: '3px'
+            }}
+            onPointerEnter={handleNakThrowTogglePointerEnter}
+            onPointerLeave={handleNakThrowTogglePointerLeave}
+            onPointerUp={handleNakThrowTogglePointerUp}
+            >
+              <div id='nakToggleState' style={{
+                margin: '3px',
+                padding: '0px',
+                borderRadius: '5px',
+                backgroundColor: nak ? HtmlColors.starYellow : !nakThrowToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
+                width: 'calc(100% - 6px)',
+                height: 'calc(100% - 6px)'
+              }}>
+              </div>
+            </div>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            PLAYER MIGHT THROW THE YUT OUT OF BOUNDS. IT EARNS 0 SPACES FORWARD. 
+          </p>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '3px',
+              fontSize: '20px',
+            }}>BONUS THROW ON YUT OR MO CATCH</p>
+            <div id='yutMoCatchToggle' style={{
+              width: '20px',
+              height: '20px',
+              backgroundColor: HtmlColors.spaceDark,
+              border: '2px solid #F1EE92',
+              borderRadius: '5px',
+              margin: '3px'
+            }}
+            onPointerEnter={handleBonusThrowCatchTogglePointerEnter}
+            onPointerLeave={handleBonusThrowCatchTogglePointerLeave}
+            onPointerUp={handleBonusThrowCatchTogglePointerUp}
+            >
+              <div id='yutMoCatchToggleState' style={{
+                margin: '3px',
+                padding: '0px',
+                borderRadius: '5px',
+                backgroundColor: yutMoCatch ? HtmlColors.starYellow : !bonusThrowCatchToggleHover ? HtmlColors.spaceDark : HtmlColors.starYellowHover,
+                width: 'calc(100% - 6px)',
+                height: 'calc(100% - 6px)'
+              }}>
+              </div>
+            </div>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            GET A BONUS THROW WHEN YOU CATCH WITH A YUT (4) OR A MO (5).
           </p>
         </div>
       </div>
@@ -906,6 +1079,7 @@ export default function SettingsHtml(props) {
                 margin: '5px'
               }}>
                 {formatName(value.name)}
+                {value.status === 'away' && ' (AWAY)'}
               </p>
               { value.isYou && !value.isHost && <p style={{
                 fontFamily: 'Luckiest Guy',
@@ -938,8 +1112,10 @@ export default function SettingsHtml(props) {
     </group>
   }
   function ViewGameRules() {
-    const backdoRuleOn = useAtomValue(backdoRuleOnAtom)
-    const timerOn = useAtomValue(timerOnAtom)
+    const backdoLaunch = useAtomValue(backdoLaunchAtom)
+    const timer = useAtomValue(timerAtom)
+    const nak = useAtomValue(nakAtom)
+    const yutMoCatch = useAtomValue(yutMoCatchAtom)
     return <Html 
       transform
       position={layout[device].game.settings.setGameRules.position}
@@ -992,8 +1168,8 @@ export default function SettingsHtml(props) {
               padding: '0px',
               margin: '5px',
               fontSize: '20px',
-              color: backdoRuleOn ? HtmlColors.starYellow : HtmlColors.disabledGrey
-            }}>{ backdoRuleOn ? "ON" : "OFF"}</p>
+              color: backdoLaunch ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ backdoLaunch ? "ON" : "OFF"}</p>
           </div>
           <p style={{
             padding: '3px',
@@ -1020,14 +1196,70 @@ export default function SettingsHtml(props) {
               padding: '0px',
               margin: '5px',
               fontSize: '20px',
-              color: timerOn ? HtmlColors.starYellow : HtmlColors.disabledGrey
-            }}>{ timerOn ? "ON" : "OFF"}</p>
+              color: timer ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ timer ? "ON" : "OFF"}</p>
           </div>
           <p style={{
             padding: '3px',
             margin: '3px',
           }}>
             1 MINUTE AFTER EVERY THROW. ON EXPIRE, ONE OF THE AVAILABLE MOVES WILL BE CHOSEN RANDOMLY.
+          </p>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+            }}>NAK THROW (OUT OF BOUNDS)</p>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+              color: nak ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ nak ? "ON" : "OFF"}</p>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            PLAYER MIGHT THROW THE YUT OUT OF BOUNDS. IT EARNS 0 SPACES FORWARD. 
+          </p>
+        </div>
+        <div style={{
+          backgroundColor: '#313131',
+          borderRadius: '5px',
+          margin: '5px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+            }}>BONUS THROW ON YUT OR MO CATCH</p>
+            <p style={{
+              padding: '0px',
+              margin: '5px',
+              fontSize: '20px',
+              color: yutMoCatch ? HtmlColors.starYellow : HtmlColors.disabledGrey
+            }}>{ yutMoCatch ? "ON" : "OFF"}</p>
+          </div>
+          <p style={{
+            padding: '3px',
+            margin: '3px',
+          }}>
+            GET A BONUS THROW WHEN YOU CATCH WITH A YUT (4) OR A MO (5).
           </p>
         </div>
       </div>
@@ -1706,9 +1938,9 @@ export default function SettingsHtml(props) {
       }
       function handleMouseUp() {
         if (!pauseGame)
-          setPauseGame(true)
+          socket.emit('pauseGame', { roomId: params.id.toUpperCase(), clientId: client._id, flag: true  });
         else 
-          setPauseGame(false)
+          socket.emit('pauseGame', { roomId: params.id.toUpperCase(), clientId: client._id, flag: false });
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1764,6 +1996,7 @@ export default function SettingsHtml(props) {
         SET GAME RULES
       </button>
     }
+
     // for guest
     function ViewGuestsButton() {
       const [hover, setHover] = useState(false);
@@ -1936,6 +2169,45 @@ export default function SettingsHtml(props) {
         INVITE FRIENDS
       </button>
     }
+    function SetAwayButton() {
+      console.log('[SetAwayButton] client', client)
+      const [hover, setHover] = useState(false);
+      function handleMouseEnter() {
+        setHover(true)
+      }
+      function handleMouseOut() {
+        setHover(false)
+      }
+      function handleMouseUp() {
+        // set player as away (skip to next player when he's chosen)
+        socket.emit('setAway', { 
+          roomId: params.id.toUpperCase(), 
+          clientId: client._id, 
+          name: client.name,
+          team: client.team,
+          status: client.status !== 'away' ? 'away' : 'playing' 
+        });
+      }
+      return <button 
+        onMouseEnter={handleMouseEnter}
+        onMouseOut={handleMouseOut}
+        onMouseUp={handleMouseUp}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          backgroundColor: '#090F16',
+          margin: '3px',
+          border: `2px solid ${hover ? '#009E14' : '#F1EE92'}`,
+          borderRadius: '5px',
+          width: 'calc(100% - 6px)', // margin 3px both sides
+          padding: '5px',
+          color: hover ? '#009E14' : '#F1EE92',
+          fontFamily: 'Luckiest Guy',
+          fontSize: '20px'
+        }}>
+        { client.status !== 'away' ? 'SET AWAY' : 'SET RETURNED' }
+      </button>
+    }
 
     return <group name='main-menu'>
       <Html
@@ -1977,6 +2249,7 @@ export default function SettingsHtml(props) {
             { client.socketId === host.socketId && <SetGameRulesButton/> }
             { client.socketId !== host.socketId && <ViewGuestsButton/> }
             { client.socketId !== host.socketId && <ViewGameRulesButton/> }
+            { client.team !== -1 && <SetAwayButton/> }
             <AudioButton/>
             <LanguageButton/>
             <InviteFriendsButton/>
