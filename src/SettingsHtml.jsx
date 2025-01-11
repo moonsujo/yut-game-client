@@ -1,11 +1,14 @@
 import { Html } from "@react-three/drei";
 import { useRef, useState } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
-import { backdoLaunchAtom, clientAtom, deviceAtom, hostAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "./GlobalState";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { backdoLaunchAtom, clientAtom, deviceAtom, gamePhaseAtom, hostAtom, languageAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "./GlobalState";
 import HtmlColors from "./HtmlColors";
 import layout from './layout'
 import { socket } from "./SocketManager";
 import { useParams } from "wouter";
+import { useFrame } from "@react-three/fiber";
+import translations from "./translations";
+import './style.css';
 
 // global state
 // audio
@@ -25,12 +28,14 @@ export default function SettingsHtml(props) {
   const [editAGuestOpen, setEditAGuestOpen] = useState(false)
   // the rest
   const [resetGameOpen, setResetGameOpen] = useState(false)
+  const gamePhase = useAtomValue(gamePhaseAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
   const [setGameRulesOpen, setSetGameRulesOpen] = useState(false)
   const [viewGuestsOpen, setViewGuestsOpen] = useState(false)
   const [viewGameRulesOpen, setViewGameRulesOpen] = useState(false)
   const [audioOpen, setAudioOpen] = useState(false)
   const [languageOpen, setLanguageOpen] = useState(false)
+  const [language, setLanguage] = useAtom(languageAtom)
   const [inviteFriendsOpen, setInviteFriendsOpen] = useState(false)
   // #endregion
 
@@ -1543,6 +1548,17 @@ export default function SettingsHtml(props) {
       </div>
     </Html>
   }
+  function getFont(language) {
+    if (language === 'english') {
+      return 'Luckiest Guy'
+    } else if (language === 'korean') {
+      return 'MaplestoryBold'
+    } else if (language === 'chinese') {
+      return 'BoboheiBold'
+    } else {
+      return 'Luckiest Guy'
+    }
+  }
   function Language() {
     function EnglishButton() {
       const [hover, setHover] = useState(false);
@@ -1553,7 +1569,7 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // set player as away (skip to next player when he's chosen)
+        setLanguage('english')
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1572,7 +1588,7 @@ export default function SettingsHtml(props) {
           fontSize: '20px',
           whiteSpace: 'pre'
         }}>
-          ENGLISH  <img src='images/us-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
+          {translations.languages.english}  <img src='images/us-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
         </button>
     }
     function KoreanButton() {
@@ -1584,7 +1600,7 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // set player as away (skip to next player when he's chosen)
+        setLanguage('korean')
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1599,11 +1615,11 @@ export default function SettingsHtml(props) {
           width: 'calc(100% - 6px)', // margin 3px both sides
           padding: '5px',
           color: hover ? '#009E14' : '#F1EE92',
-          fontFamily: 'Luckiest Guy',
+          fontFamily: 'MaplestoryBold',
           fontSize: '20px',
           whiteSpace: 'pre'
         }}>
-          KOREAN  <img src='images/south-korean-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
+          {translations.languages.korean}  <img src='images/south-korean-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
         </button>
     }
     function SpanishButton() {
@@ -1615,7 +1631,7 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // set player as away (skip to next player when he's chosen)
+        setLanguage('spanish')
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1634,7 +1650,7 @@ export default function SettingsHtml(props) {
           fontSize: '20px',
           whiteSpace: 'pre'
         }}>
-          SPANISH  <img src='images/spanish-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
+          {translations.languages.spanish}  <img src='images/spanish-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
         </button>
     }
     function ChineseButton() {
@@ -1646,7 +1662,7 @@ export default function SettingsHtml(props) {
         setHover(false)
       }
       function handleMouseUp() {
-        // set player as away (skip to next player when he's chosen)
+        setLanguage('chinese')
       }
       return <button 
         onMouseEnter={handleMouseEnter}
@@ -1661,11 +1677,11 @@ export default function SettingsHtml(props) {
           width: 'calc(100% - 6px)', // margin 3px both sides
           padding: '5px',
           color: hover ? '#009E14' : '#F1EE92',
-          fontFamily: 'Luckiest Guy',
+          fontFamily: 'BoboheiBold',
           fontSize: '20px',
           whiteSpace: 'pre'
         }}>
-          CHINESE  <img src='images/chinese-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
+          {translations.languages.chinese}  <img src='images/chinese-flag.png' width='25px' style={{ position: 'relative', top: '3px', pointerEvents: 'none' }} />    
         </button>
     }
 
@@ -1688,14 +1704,14 @@ export default function SettingsHtml(props) {
           justifyContent: 'space-between'
         }}>
           <p style={{
-            fontFamily: 'Luckiest Guy',
+            fontFamily: getFont(language),
             color: '#F1EE92',
             textAlign: 'left',
             padding: '0px',
             margin: '3px',
             fontSize: '22px',
           }}>
-            SET LANGUAGE
+            {translations.language[language]}
           </p>
           <div>
             <BackButton/>
@@ -1712,10 +1728,18 @@ export default function SettingsHtml(props) {
     </Html>
   }
   function InviteFriends() {
-    const [checkmarkVisible, setCheckmarkVisible] = useState(false)
+    const [checkmarkOpacity, setCheckmarkOpacity] = useState(0)
     const [checkmarkTimer, setCheckmarkTimer] = useState(null)
+    const [copyButtonHover, setCopyButtonHover] = useState(false)
+
+    useFrame(() => {
+      if (checkmarkOpacity > 0) {
+        setCheckmarkOpacity((opacity) => opacity-0.01)
+        setCopyButtonHover(false)
+      }
+    })
+
     function CopyButton() {
-      const [copyButtonHover, setCopyButtonHover] = useState(false)
   
       function handleMouseOver () {
         setCopyButtonHover(true)
@@ -1749,10 +1773,7 @@ export default function SettingsHtml(props) {
       function handleMouseUp() {
         copyURLToClipboard();
         clearTimeout(checkmarkTimer)
-        setCheckmarkVisible(true);
-        setCheckmarkTimer(setTimeout(() => {
-          setCheckmarkVisible(false);
-        }, 2000))
+        setCheckmarkOpacity(1.5)
       }
   
       return <button 
@@ -1774,6 +1795,7 @@ export default function SettingsHtml(props) {
         COPY
       </button>
     }
+
     return <Html 
       transform
       position={layout[device].game.settings.inviteFriends.position}
@@ -1836,7 +1858,11 @@ export default function SettingsHtml(props) {
               position: 'absolute',
               left: '378px',
               top: '107px'}}>
-                {checkmarkVisible && <img src='images/green-checkmark.svg' width='30px'/>}
+              <img 
+                src='images/green-checkmark.svg' 
+                width='30px' 
+                style={{ opacity: checkmarkOpacity }}
+              />
             </div>
           </div>
           <div style={{display:'flex', padding: '20px'}}>
@@ -2245,7 +2271,7 @@ export default function SettingsHtml(props) {
           <div className='main-menu-buttons'>
             { client.socketId === host.socketId && <EditGuestsButton/> }
             { client.socketId === host.socketId && <ResetGameButton/> }
-            { client.socketId === host.socketId && <PauseGameButton/> }
+            { client.socketId === host.socketId && (gamePhase === 'pregame' || gamePhase === 'game') && <PauseGameButton/> }
             { client.socketId === host.socketId && <SetGameRulesButton/> }
             { client.socketId !== host.socketId && <ViewGuestsButton/> }
             { client.socketId !== host.socketId && <ViewGameRulesButton/> }

@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { socket } from "../SocketManager";
 import React from "react";
 import { useFrame } from "@react-three/fiber";
-import { animationPlayingAtom, clientAtom, gamePhaseAtom, hasTurnAtom, selectionAtom, teamsAtom, tilesAtom, turnAtom, yootThrownAtom } from "../GlobalState";
+import { animationPlayingAtom, backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, pauseGameAtom, selectionAtom, teamsAtom, tilesAtom, turnAtom, yootThrownAtom } from "../GlobalState";
 import { useParams } from "wouter";
 import { getLegalTiles } from "../helpers/legalTiles";
 import * as THREE from 'three';
@@ -35,6 +35,8 @@ export default function Tile({
   const [gamePhase] = useAtom(gamePhaseAtom)
   const [animationPlaying] = useAtom(animationPlayingAtom)
   const params = useParams()
+  const paused = useAtomValue(pauseGameAtom)
+  const backdoLaunch = useAtomValue(backdoLaunchAtom)
 
   const group = useRef()
   const wrapperMat = useRef();
@@ -56,11 +58,11 @@ export default function Tile({
     event.stopPropagation();
     const team = client.team
     let pieces = tiles[tile]
-    if (gamePhase === "game" && hasTurn && !animationPlaying) {
+    if (gamePhase === "game" && hasTurn && !animationPlaying && !paused) {
       if (selection === null) {
         if (pieces.length > 0 && pieces[0].team === team) {
           let history = tiles[tile][0].history
-          let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history)
+          let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch)
           if (!(Object.keys(legalTiles).length === 0)) {
             socket.emit("select", { roomId: params.id.toUpperCase(), selection: { tile, pieces }, legalTiles })
           }
@@ -75,6 +77,31 @@ export default function Tile({
       }
     }
   }
+
+  // refactor
+  // function handlePointerDown(event) {
+  //   event.stopPropagation();
+  //   const team = client.team
+  //   let pieces = tiles[tile]
+  //   if (gamePhase === "game" && hasTurn && !animationPlaying && !paused) {
+  //     if (selection === null) {
+  //       if (pieces.length > 0 && pieces[0].team === team) {
+  //         let history = tiles[tile][0].history
+  //         let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history)
+  //         if (!(Object.keys(legalTiles).length === 0)) {
+  //           socket.emit("select", { roomId: params.id.toUpperCase(), selection: { tile, pieces }, legalTiles })
+  //         }
+  //       }
+  //     } else if (selection.tile !== tile && legalTileInfo) {
+  //       // Server clears legalTiles and selection
+  //       // When they're called separately, the order of operation is not kept
+  //       socket.emit("move", { roomId: params.id.toUpperCase(), tile });
+  //     } else {
+  //       socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
+
+  //     }
+  //   }
+  // }
 
   function hasValidMove(team) {
     const moves = teams[team].moves

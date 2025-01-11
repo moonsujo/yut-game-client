@@ -41,7 +41,7 @@ import {
   nakAtom,
   yutMoCatchAtom
 } from "./GlobalState.jsx";
-import { clientHasTurn } from "./helpers/helpers.js";
+import { clientHasTurn, isBackdoMovesWithoutPieces, movesIsEmpty } from "./helpers/helpers.js";
 import { checkJoin } from "./SocketManagerHelper.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
 import * as THREE from 'three';
@@ -50,9 +50,9 @@ import { TextureLoader } from 'three'
 import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
 import initialState from "../initialState.js";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
-const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
+// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -132,7 +132,7 @@ export const SocketManager = () => {
   const setBackdoLaunch = useSetAtom(backdoLaunchAtom);
   const setTimer = useSetAtom(timerAtom)
   const setNak = useSetAtom(nakAtom)
-  const setYutMoCatch = useSetAtom(yutMoCatchAtom)
+  const [yutMoCatch, setYutMoCatch] = useAtom(yutMoCatchAtom)
 
   useEffect(() => {
 
@@ -281,12 +281,20 @@ export const SocketManager = () => {
       setGameLogs(room.gameLogs)
 
       setPauseGame(room.paused)
+
+      setBackdoLaunch(room.rules.backdoLaunch)
+      setTimer(room.rules.timer)
+      setNak(room.rules.nak)
+      setYutMoCatch(room.rules.yutMoCatch)
     })
 
     socket.on('throwYoot', ({ yootOutcome, yootAnimation, teams, turn }) => {
       setYootOutcome(yootOutcome)
       setYootAnimation(yootAnimation)
       setThrowCount(teams[turn.team].throws)
+      const audio = new Audio('sounds/effects/throw.mp3');
+      audio.volume=0.3;
+      audio.play();
     })
 
     socket.on('gameStart', ({ teams, gamePhase, turn, gameLogs }) => {
@@ -356,9 +364,15 @@ export const SocketManager = () => {
         }
       } else if (gamePhaseUpdate === 'game') {
         let yootOutcomeAlertName = `yootOutcome${yootOutcome}`
-        if (yootOutcome === 0 && teams[turnPrev.team].throws === 0) {
-          setAlerts([yootOutcomeAlertName, 'turn'])
+        if ((yootOutcome === 0 || yootOutcome === -1) && teams[turnPrev.team].throws === 0 && movesIsEmpty(teams[turnPrev.team].moves)) {
+          setAlerts([yootOutcomeAlertName, 'turn']) // add 'no available moves' alert
+          // server determines if turn was skipped
         } else {
+          if (yootOutcome === 4) {
+            const audio = new Audio('sounds/effects/yut.wav');
+            audio.volume=0.3;
+            audio.play();
+          }
           setAlerts([yootOutcomeAlertName])
         }
         setThrowCount(teams[turnUpdate.team].throws)
@@ -409,7 +423,7 @@ export const SocketManager = () => {
       return numPiecesCaught;
     }
 
-    socket.on("move", ({ teamsUpdate, turnUpdate, legalTiles, tiles, gameLogs, selection }) => {
+    socket.on("move", ({ teamsUpdate, turnUpdate, legalTiles, tiles, gameLogs, selection, moveUsed }) => {
       let teamsPrev;
       setTeams((prev) => {
         teamsPrev = prev;
@@ -433,7 +447,9 @@ export const SocketManager = () => {
       if (numPiecesCaught > 0) {
         alerts.push(`catch${opposingTeam}${numPiecesCaught}`)
         setCatchPath(gameLogs[gameLogs.length-1].content.path)
-        setThrowCount(teamsUpdate[turnUpdate.team].throws)
+        if (yutMoCatch || (moveUsed !== 4 && moveUsed !== 5)) {
+          setThrowCount(teamsUpdate[turnUpdate.team].throws)
+        }
       } else { // 2. join / pass turn
         let joined = checkJoin(teamsPrev[turnPrev.team].pieces, teamsUpdate[turnPrev.team].pieces)
         if (joined.result) {
@@ -592,9 +608,7 @@ export const SocketManager = () => {
       setLegalTiles({})
       setSelection(null)
 
-      console.log('[reset] teams[0].players', teams[0].players)
       setTeams((teams) => {
-        console.log('[reset][setTeams] teams', teams)
         const newTeams = [...teams] // make shallow copy
         newTeams[0].pieces = JSON.parse(JSON.stringify(initialState.initialTeams[0].pieces))
         newTeams[0].throws = 0
