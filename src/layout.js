@@ -1433,8 +1433,10 @@ export default {
         scale: 1.4
       },
       throwCount: {
-        position: [1.7, 0, -0.8],
-        orientation: 'leftRight'
+        position: [-1.3, 0, 1.25],
+        // position: [1.7, 0, -0.8],
+        orientation: 'downUp'
+        // orientation: 'leftRight'
       },
       scoreButtons: {
         single: {
