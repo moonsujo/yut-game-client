@@ -37,6 +37,9 @@ import {
   settingsOpenAtom,
   connectedToServerAtom,
   pauseGameAtom,
+  timerAtom,
+  animationPlayingAtom,
+  turnExpireTimeAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -81,6 +84,9 @@ export default function Game() {
   const [teams] = useAtom(teamsAtom)
   const [yootAnimation] = useAtom(yootAnimationAtom);
   const pauseGame = useAtomValue(pauseGameAtom)
+  const timer = useAtomValue(timerAtom)
+  const animationPlaying = useAtomValue(animationPlayingAtom)
+  const turnExpireTime = useAtomValue(turnExpireTimeAtom)
   
   const params = useParams();
   const connectedToServer = useAtomValue(connectedToServerAtom)
@@ -946,7 +952,7 @@ export default function Game() {
           scale={0.22}
           position={[0, 2, 0]}
         /> }
-        { (gamePhase === 'pregame' || gamePhase === 'game') && <YootButtonNew
+        { (gamePhase === 'pregame' || gamePhase === 'game') && turn.team !== -1 && <YootButtonNew
           position={layout[device].game.yootButton.position}
           rotation={layout[device].game.yootButton.rotation}
           scale={layout[device].game.yootButton.scale}
@@ -1003,7 +1009,12 @@ export default function Game() {
       {/* { parseInt(client.team) === -1 && <InitialJoinTeamModal position={[0, 2.7, 1]} />} */}
       {/* host */}
       { gamePhase !== 'finished' && <DisplayHostAndSpectating/> }
-      { (gamePhase === 'pregame' || gamePhase === 'game') && <Timer position={layout[device].game.timer.position} scale={[layout[device].game.timer.scaleX, 1, 1]}/> }
+      { timer && !animationPlaying && (gamePhase === 'pregame' || gamePhase === 'game') && <Timer 
+        position={layout[device].game.timer.position} 
+        scale={[layout[device].game.timer.scaleX, 1, 1]}
+        boxArgs={layout[device].game.timer.boxArgs}
+        heightMultiplier={layout[device].game.timer.heightMultiplier}
+      /> }
       <MeteorsRealShader/>
     </>
   );

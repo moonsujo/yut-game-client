@@ -1,36 +1,38 @@
 import { useEffect, useRef, useState } from "react";
-import { timeLeftAtom, timerOnAtom, turnExpireTimeAtom } from "./GlobalState";
+import { animationPlayingAtom, hasTurnAtom, pauseGameAtom, remainingTimeAtom, timeLeftAtom, timerOnAtom, turnExpireTimeAtom, turnStartTimeAtom } from "./GlobalState";
 import { useAtom, useAtomValue } from "jotai";
 import { useFrame } from "@react-three/fiber";
 import { socket } from "./SocketManager";
 
-const FULL_TIME_REMAINING = 60000;
-export default function Timer(props) {
-  const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom);
-  const turnExpireTime = useAtomValue(turnExpireTimeAtom)
-  const [currentTime, setCurrentTime] = useState(Date.now())
+export default function Timer({ position, scale, boxArgs, heightMultiplier }) {
+  // console.log('[Timer]')
+  const [turnStartTime, setTurnStartTime] = useAtom(turnStartTimeAtom)
+  const [turnExpireTime, setTurnExpireTime] = useAtom(turnExpireTimeAtom)
+  const [remainingTime, setRemainingTime] = useAtom(remainingTimeAtom)
+  const paused = useAtomValue(pauseGameAtom)
   
-  useFrame((state, delta) => {
-    console.log('[Timer] currentTime', currentTime, 'turnExpireTime', turnExpireTime)
-    if (currentTime < turnExpireTime) {
-      setCurrentTime(Date.now())
-    } else if (timeLeft <= 0) {
-      socket.emit('timeExpired')
+  useFrame(() => {
+    if (turnExpireTime) {
+      if (!paused) {
+        setRemainingTime(Math.max(turnExpireTime - Date.now(), 0))
+      }
     }
   })
 
-  return <group {...props}>
-    <mesh name='background-outer'>
+  const positionZMultiplier = boxArgs[2]/2
+
+  return turnExpireTime && <group>
+    {/* <mesh name='background-outer'>
       <boxGeometry args={[2, 0.01, 0.5]}/>
       <meshStandardMaterial color='yellow'/>
     </mesh>
     <mesh name='background-outer'>
       <boxGeometry args={[1.9, 0.02, 0.4]}/>
       <meshStandardMaterial color='black'/>
-    </mesh>
-    <mesh name='time-left' position={[-0.9 * (1 - (turnExpireTime - currentTime) / FULL_TIME_REMAINING), 0, 0]}>
-      <boxGeometry args={[1.8 * ((turnExpireTime - currentTime) / FULL_TIME_REMAINING), 0.03, 0.3]}/>
-      <meshStandardMaterial color={ timeLeft < 10 ? 'red' : 'yellow' }/>
+    </mesh> */}
+    <mesh name='time-left' scale={scale} position={[position[0], position[1], position[2] + heightMultiplier * positionZMultiplier * (1 - remainingTime / (turnExpireTime - turnStartTime))]}>
+      <boxGeometry args={[boxArgs[0], boxArgs[1], heightMultiplier * boxArgs[2] * remainingTime / (turnExpireTime - turnStartTime)]}/>
+      <meshStandardMaterial color={ remainingTime < (0.2 * (turnExpireTime - turnStartTime)) ? 'red' : 'yellow' }/>
     </mesh>
   </group>
 }

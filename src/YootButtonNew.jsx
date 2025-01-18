@@ -1,10 +1,9 @@
 import { Text3D, useGLTF } from '@react-three/drei';
-import { useFrame, useGraph } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { useAtom, useAtomValue } from 'jotai';
 import { useState, useEffect } from 'react';
-import React, { useMemo, useRef } from 'react';
-import { SkeletonUtils } from 'three-stdlib';
-import { animationPlayingAtom, clientAtom, hasTurnAtom, pauseGameAtom, pieceAnimationPlayingAtom, throwCountAtom, turnAtom } from './GlobalState';
+import React, { useRef } from 'react';
+import { animationPlayingAtom, clientAtom, hasTurnAtom, pauseGameAtom, pieceAnimationPlayingAtom, teamsAtom, throwCountAtom, turnAtom } from './GlobalState';
 import { socket } from './SocketManager';
 import { useParams } from "wouter";
 import layout from './layout';
@@ -21,10 +20,12 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
   const [enabledLocal, setEnabledLocal] = useState(false);
   const enabled = enabledLocal && !animationPlaying && !pieceAnimationPlaying && hasTurn && hasThrow
   const paused = useAtomValue(pauseGameAtom)
+  const throwCount = useAtomValue(throwCountAtom)
 
   // for the throw count
   const [client] = useAtom(clientAtom);
-  const [turn] = useAtom(turnAtom);
+  const turn = useAtomValue(turnAtom);
+  const teams = useAtomValue(teamsAtom)
 
   const scaleOuter = [1.4, -0.079, 1]
   const scaleInner = [scaleOuter[0] - 0.1, scaleOuter[1]+0.2, scaleOuter[2]-0.1]
@@ -37,9 +38,9 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
       // buttonRef.current.scale.y = Math.sin(state.clock.elapsedTime * 3) * 0.07 + scale
       // buttonRef.current.scale.z = Math.sin(state.clock.elapsedTime * 3) * 0.07 + scale
     } else {
-      buttonRef.current.scale.x = scale
-      buttonRef.current.scale.y = scale
-      buttonRef.current.scale.z = scale
+      // buttonRef.current.scale.x = scale
+      // buttonRef.current.scale.y = scale
+      // buttonRef.current.scale.z = scale
     }
   })
 
@@ -66,7 +67,8 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
   }
 
   function ThrowCount({position, orientation}) {
-    const [throwCount] = useAtom(throwCountAtom)
+    // const throwCount = teams[turn.team].throws;
+    console.log('[ThrowCount] throwCount', throwCount)
 
     function positionByOrientation(index, orientation) {
       if (orientation === 'downUp') {
@@ -81,7 +83,7 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
       {tempArray.map((_value, index) => {
         return <mesh key={index} position={positionByOrientation(index, orientation)}>
           <sphereGeometry args={[0.1, 32, 16]}/>
-          <meshStandardMaterial color='yellow'/>
+          <meshStandardMaterial color={ enabled ? 'yellow' : 'grey' }/>
         </mesh>
       })}
     </group>
@@ -90,6 +92,7 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
   return <group 
     position={position} 
     rotation={rotation} 
+    scale={scale}
     ref={buttonRef}
   >
     <group>
