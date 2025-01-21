@@ -52,9 +52,9 @@ import { TextureLoader } from 'three'
 import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
 import initialState from "../initialState.js";
 
-const ENDPOINT = 'localhost:5000';
+// const ENDPOINT = 'localhost:5000';
 
-// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
+const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -613,16 +613,6 @@ export const SocketManager = () => {
       setTurnExpireTime(turnExpireTime)
     })
 
-    function calculateNumPiecesScored(piecesPrev, piecesUpdate) {
-      let numPiecesScored = 0;
-      for (let i = 0; i < 4; i++) {
-        if (piecesUpdate[i].tile === 29 && piecesPrev[i].tile !== 29) {
-          numPiecesScored++;
-        }
-      }
-      return numPiecesScored;
-    }
-
     socket.on('score', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, from, throws, winner, gamePhase, newGameLogs, turnStartTime, turnExpireTime }) => {
       setTeams(teams => {
         // Update pieces
@@ -679,6 +669,14 @@ export const SocketManager = () => {
         alerts.push(`score${prevTeam}${numPiecesScored}`)
   
         if (newTeam !== prevTeam) {
+          setTurn(turn => {
+            let newTurn = {
+              team: newTeam,
+              players: [...turn.players]
+            }
+            newTurn.players[newTeam] = newPlayer
+            return newTurn
+          })
           alerts.push('turn')
         }
         
@@ -688,14 +686,12 @@ export const SocketManager = () => {
         setResults(results => [ ...results, winner ])
       }
 
-      // Turn could have changed
-      setHasTurn(clientHasTurn(socket.id, teamsUpdate, turnUpdate.team, turnUpdate.players[turnUpdate.team]))
       setLegalTiles({})
       setHelperTiles({})
       setSelection(null)
       setGameLogs(gameLogs => [ ...gameLogs, ...newGameLogs ])
       setGamePhase(gamePhase)
-      setWinner(results[results.length-1])
+      setWinner(winner)
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
     })
@@ -757,7 +753,7 @@ export const SocketManager = () => {
         }
     })
 
-    socket.on("reset", () => {
+    socket.on('reset', () => {
       setGamePhase('lobby');
       setTiles(initialState.initialTiles);
       setTurn(initialState.initialTurn);
@@ -984,13 +980,21 @@ export const SocketManager = () => {
   // yut button didn't activate on gameStart
   // start timer
   useEffect(() => {
-    console.log('[useEffect] turn', turn, 'client', client)
+    // console.log('[useEffect] turn', turn, 'client', client)
     if (turn && turn.team !== -1 && client) {
       if (teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId) {
         setHasTurn(true)
       }
     }
-  }, [turn, client])
+  }, [turn, teams, client])
+  // useEffect(() => {
+  //   console.log('[useEffect] turn', turn, 'client', client)
+  //   if (turn && turn.team !== -1 && client) {
+  //     if (teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId) {
+  //       setHasTurn(true)
+  //     }
+  //   }
+  // }, [turn, client])
 };
 
 /**
