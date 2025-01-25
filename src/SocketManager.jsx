@@ -126,7 +126,6 @@ export const SocketManager = () => {
     useLoader(TextureLoader, 'textures/particles/7.png'), // heart
   ] 
 
-  const [playMusic] = useMusicPlayer();
   const setConnectedToServer = useSetAtom(connectedToServerAtom)
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
   const setPauseGame = useSetAtom(pauseGameAtom);
@@ -380,6 +379,7 @@ export const SocketManager = () => {
         setAnimationPlaying(true);
       }
       setGamePhase(gamePhase)
+      setThrowCount(throwCount)
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
       setGameLogs(gameLogs => [...gameLogs, ...newGameLogs])

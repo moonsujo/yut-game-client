@@ -40,23 +40,26 @@ export default function Ufo({
   // 0.8 for landscape
   const selectedAdditionalScale = layout[device].game.ufo.selectedAdditionalScale
   const selectedAnimatedScaleRange = layout[device].game.ufo.selectedAnimatedScaleRange
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!animationPlaying) {
       if (selected) {
-        ufo.current.scale.x = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
-        ufo.current.scale.y = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
-        ufo.current.scale.z = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
         frontBackPanelCircleMat.current.color = new THREE.Color('turquoise')
         leftRightPanelCircleMat.current.color = new THREE.Color('turquoise')
         ballFrontRightMatRef.current.color = new THREE.Color('turquoise')
         ballFrontLeftMatRef.current.color = new THREE.Color('turquoise')
         ballBackRightMatRef.current.color = new THREE.Color('turquoise')
         ballBackLeftMatRef.current.color = new THREE.Color('turquoise')
+        ufo.current.scale.x = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
+        ufo.current.scale.y = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
+        ufo.current.scale.z = scale + Math.cos(state.clock.elapsedTime * 1.5) * selectedAnimatedScaleRange + selectedAdditionalScale
+        // ufo.current.scale.x = scale + selectedAnimatedScaleRange + selectedAdditionalScale
+        // ufo.current.scale.y = scale + selectedAnimatedScaleRange + selectedAdditionalScale
+        // ufo.current.scale.z = scale + selectedAnimatedScaleRange + selectedAdditionalScale
       } else if (selectable && !selection) {
-        ufo.current.scale.x = scale + Math.cos(state.clock.elapsedTime * 1.5) * 0.1
-        ufo.current.scale.y = scale + Math.cos(state.clock.elapsedTime * 1.5) * 0.1
-        ufo.current.scale.z = scale + Math.cos(state.clock.elapsedTime * 1.5) * 0.1
-        balls.current.rotation.y = state.clock.elapsedTime * 0.7;
+        ufo.current.scale.x = scale + Math.cos(state.clock.elapsedTime * 2.1) * 0.2 + 0.1
+        ufo.current.scale.y = scale + Math.cos(state.clock.elapsedTime * 2.1) * 0.2 + 0.1
+        ufo.current.scale.z = scale + Math.cos(state.clock.elapsedTime * 2.1) * 0.2 + 0.1
+        balls.current.rotation.y = state.clock.elapsedTime * 1.3;
         if (Math.floor(state.clock.elapsedTime) % 2 == 0) {
           frontBackPanelCircleMat.current.color = new THREE.Color('white')
           leftRightPanelCircleMat.current.color = new THREE.Color('purple')
@@ -65,6 +68,10 @@ export default function Ufo({
           ballBackRightMatRef.current.color = new THREE.Color('white')
           ballBackLeftMatRef.current.color = new THREE.Color('purple')
           glassMat.opacity = 0.6
+          // Turquoise
+          glassMat.color.r = 0
+          glassMat.color.g = 1
+          glassMat.color.b = 1
         } else {
           frontBackPanelCircleMat.current.color = new THREE.Color('purple')
           leftRightPanelCircleMat.current.color = new THREE.Color('white')
@@ -73,6 +80,10 @@ export default function Ufo({
           ballBackRightMatRef.current.color = new THREE.Color('purple')
           ballBackLeftMatRef.current.color = new THREE.Color('white')
           glassMat.opacity = 0.3
+          // Gray
+          glassMat.color.r = 0.213
+          glassMat.color.g = 0.213
+          glassMat.color.b = 0.213
         }
       } else {
         ufo.current.scale.x = scale
@@ -111,19 +122,19 @@ export default function Ufo({
         scale={0.5}
       >
         <group rotation={[-Math.PI/4,0,0]}>
-          <mesh
+          <mesh name='bottom-plate-cover'
             castShadow
             receiveShadow
             geometry={nodes.Circle024_1.geometry}
             material={materials.White}
           />
-          <mesh
+          <mesh name='middle-plate-cover'
             castShadow
             receiveShadow
             geometry={nodes.Circle024_2.geometry}
             material={materials.Blue}
           />
-          <mesh
+          <mesh name='top-plate-cover'
             castShadow
             receiveShadow
             geometry={nodes.Circle024_3.geometry}
