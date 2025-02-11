@@ -50,14 +50,22 @@ export default {
         scale: 2
       },
       howToPlay: {
-        position: [0, 0, 7.4],
+        position: [0, 0, 8.2],
         rotation: [0,0,0],
         scale: 2
       },
       joinGame: {
-        position: [0, 0, 8.8],
+        position: [0, 0, 9.6],
         rotation: [0,0,0],
         scale: 2
+      },
+      rocketHome: {
+        position: [-4.3,0,5.2],
+        scale: [1.2, 0.01, 1.2]
+      },
+      ufoHome: {
+        position: [4.5,0,5.2],
+        scale: [1.2, 0.01, 1.2]
       },
       joinGameModal: {
         position: [-3.8, 0, -2.1],
@@ -65,7 +73,7 @@ export default {
         scale: [1.7, 1.7, 1.7]
       },
       letsPlay: {
-        position: [0, 0, 10.2],
+        position: [0, 0, 11],
         rotation: [0,0,0],
         scale: 2
       },
@@ -73,19 +81,19 @@ export default {
         position: [0,0,0],
         scale: 0.5,
         rocketHome0: {
-          position: [4.6, 2, 5.5],
+          position: [-4.7,2,5.6],
           rotation: [-Math.PI/8, 0, 0],
-          scale: 1.2
+          scale: 1
         },
         rocketHome1: {
-          position: [5.2, 2, 6],
+          position: [-4.1,2,6.2],
           rotation: [-Math.PI/8, 0, 0],
-          scale: 1.2
+          scale: 1
         },
         ufoHome: {
-          position: [3.5, 0, 6.3],
+          position: [4.2, 0, 4.9],
           rotation: [-Math.PI/16,0,0],
-          scale: 1.2
+          scale: 1
         }
       },
       board: {
@@ -109,7 +117,7 @@ export default {
       }
     },
     howToPlay: {
-      position: [0,0,0],
+      position: [-2.5,0,-2.2],
       rotation: [0,0,0],
       scale: 0.9,
       pickingTheTeamsPage: {
@@ -266,14 +274,14 @@ export default {
       },
       throwingTheDicePage: {
         text: {
-          position: [-5, 0, -4],
+          position: [-3, 0, 6.5],
           rotation: [-Math.PI/2, 0, 0],
-          size: 0.5,
+          size: 0.43,
           height: 0.01
         },
         moveText: {
-          text: "MOVE:\n3-STEPS",
-          position: [2.3, 0.7, -0.9],
+          text: "JUMP\n3 STARS",
+          position: [0.3, 0.7, -3.3],
           size: 0.5
         },
         gulToken: {
@@ -281,96 +289,32 @@ export default {
           rotation: [0, Math.PI/2, 0],
           scale: 0.9
         },
-        yoot: {
-          yoot0Wrapper: {
-            restPos: {
-              x: -2,
-              y: 0,
-              z: 1
-            },
-            throwPos: {
-              x: -2.5,
-              y: 0,
-              z: 1
-            },
-            liePos: {
-              x: -2.7,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot1Wrapper: {
-            restPos: {
-              x: -1.5,
-              y: 0.5,
-              z: 1
-            },
-            throwPos: {
-              x: -1.5,
-              y: 0.5,
-              z: 1
-            },
-            liePos: {
-              x: -1.5,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot2Wrapper: {
-            restPos: {
-              x: -0.7,
-              y: 0,
-              z: 1
-            },
-            throwPos: {
-              x: -0.4,
-              y: 0,
-              z: 1
-            },
-            liePos: {
-              x: -0.3,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot3Wrapper: {
-            restPos: {
-              x: -0.1,
-              y: 0.7,
-              z: 1
-            },
-            throwPos: {
-              x: 0.5,
-              y: 0.7,
-              z: 1
-            },
-            liePos: {
-              x: 0.8,
-              y: 0,
-              z: 1,
-            }
-          },
+        yut: {
+          initialYutPosition: [-4.5,8,9],
+          initialYutRotation: [Math.PI/16,Math.PI/2+Math.PI/32,-Math.PI/2],
+          animationYutPosition: [-2,0,-3],
+          animationYutRotation: [0,0,0],
         },
         yootButtonModel: {
-          position: [3.5, 0, 2.5],
+          position: [7, 0, 3.5],
           rotation: [0, Math.PI/2, 0, "ZXY"]
         },
         cursor: {
-          position: [4.5, 0.3, 4.1],
+          position: [8, 0.3, 5.1],
           rotation: [0, 0, 0],
           scale: [3, 3, 0.1]
         },
       },
       readingTheDicePage: {
         text: {
-          position: [-5, 0, -4],
+          position: [-2.9, 0, 7],
           rotation: [-Math.PI/2, 0, 0],
-          size: 0.5,
+          size: 0.45,
           height: 0.01,
         },
         do: {
-          position: [-4.7, 0, -1.3],
-          scale: 0.6,
+          position: [-2.4, 0, -2.4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -391,8 +335,8 @@ export default {
           }
         },
         ge: {
-          position: [-0.6, 0, -1.3],
-          scale: 0.6,
+          position: [2, 0, -2.4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -413,8 +357,8 @@ export default {
           }
         },
         gul: {
-          position: [3.1, 0, -1.3],
-          scale: 0.6,
+          position: [6, 0, -2.4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -435,8 +379,8 @@ export default {
           }
         },
         yoot: {
-          position: [-4.7, 0, 3],
-          scale: 0.6,
+          position: [-2.4, 0, 3.8],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -463,8 +407,8 @@ export default {
           }
         },
         mo: {
-          position: [-0.6, 0, 3],
-          scale: 0.6,
+          position: [2, 0, 3.8],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -491,8 +435,8 @@ export default {
           }
         },
         backdo: {
-          position: [3.5, 0, 3],
-          scale: 0.6,
+          position: [6, 0, 3.8],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -519,55 +463,24 @@ export default {
           }
         },
       },
-      movingPiecesPage: {
-        text: {
-          position: [-3.5, 0, -4],
-          rotation: [-Math.PI/2, 0, 0],
-          size: 0.5
-        },
-        homePieces: {
-          position: [-2, 0, -1.5]
-        },
-        firstCornerTiles: {
-          position: [-2, 0, -2]
-        },
-        moveDisplay: {
-          position: [-3.3, 0, 1.2]
-        },
-        cursorPos0: [1, 0.3, 0],
-        cursorPos1: [-0.5, 0.3, -0.2],
-        cursorPos2: [2.3, 1.3, 2],
-        rocket3Pos0: [0.8,-0.5,0.7],
-        rocket3Pos1: [
-          -Math.cos(((0+5) * (Math.PI * 2)) / 20) * 5,
-          1.5,
-          Math.sin(((0+5) * (Math.PI * 2)) / 20) * 5 - 0.5,
-        ],
-        rocket3Pos2: [
-          -Math.cos(((1+5) * (Math.PI * 2)) / 20) * 5,
-          0.9,
-          Math.sin(((1+5) * (Math.PI * 2)) / 20) * 5 - 0.5,
-        ],
-        rocket3Pos3: [
-          -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5,
-          0.9,
-          Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5 - 0.5,
-        ],
-        rocket3Pos4: [
-          -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5,
-          0.9,
-          Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5 - 0.5,
-        ],
-      },
       scoringPage: {
-        scale: 0.8,
-        position: [0, 0, 0.5],
+        board: {
+          position: [6, 0, -4.4],
+          scale: 1.3,
+        },
+        rocketHome: {
+          position: [-0.5, 0, 3],
+          scale: 1.3
+        },
         text: {
-          position: [1,0,0.5],
+          position: [-3,0,6.5],
           rotation: [-Math.PI/2, 0, 0],
-          size: 0.5,
+          size: 0.45,
           lineHeight: 1,
           height: 0.01
+        },
+        fireworks: {
+          size: 0.1
         },
         tilesPos0: [0,0,-1.5],
         tilesPos1: [-1, 0.5, -5],
@@ -578,12 +491,6 @@ export default {
         rocket1Pos: [1.6, 0, 0],
         rocket2Pos: [0.8, 0, 1],
         checkPos: [1.5, 0, 1],
-        cursorPos: [
-          [1, 0, 4.5],
-          [0.3, 1.5, 5.7],
-          [1, 0.2, 3.2],
-          [1, 0.2, 4.2]
-        ],
         moveText: {
           rotation: [-Math.PI/2, 0, 0],
           position: [0.7,0,2],
@@ -618,26 +525,16 @@ export default {
       },
       catchingPiecesPage: {
         text: {
-          position: [-5,0,-4],
+          position: [-3,0,7],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.45,
           height: 0.01,
           lineHeight: 0.9
         },
-        firstCornerTilesPos: [
-          [-1.5,0,-1],
-          [-0.8, 0, -1]
-        ],
-        cursorPos: [
-          [1, 0.3, 0],
-          [-1,2,4.8],
-          [
-            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5-1,
-            1.5,
-            Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
-          ],
-          [5,2,2.5],
-        ],
+        firstCornerTiles: {
+          position: [0,0,-6.5],
+          scale: 1.3
+        },
         rocketPos: [
           [
             -Math.cos(((0+5) * (Math.PI * 2)) / 20) * 5,
@@ -666,16 +563,21 @@ export default {
             1.5,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
-          [7, -3, -5]
+          [-1.1, 0, 8.5]
         ],
         pointer: {
           position: [0.1,2.5,-1]
         },
-        bonusTurn: {
-          position: [-3.3, 0, 1]
+        ufoHome: {
+          position: [-0.7, 0, 3.5],
+          scale: 1.4
         },
         yootButtonModel: {
-          position: [0.2, 0, 1],
+          position: [2.9, 0, 3.5],
+          scale: 1.2
+        },
+        bonusAlert: {
+          position: [6.2, 0, 3.5],
         },
         moveText: {
           position: [-3,0,0.5]
@@ -687,21 +589,12 @@ export default {
       },
       combiningPiecesPage: {
         text: {
-          position: [-5,0,-4],
+          position: [-2.9,0,5.5],
           rotation: [-Math.PI/2, 0, 0],
-          size: 0.45,
+          size: 0.43,
           height: 0.01,
           lineHeight: 0.9
         },
-        cursorPos: [
-          [1, 0.3, 3],
-          [-0.8,2,5.5],
-          [3.3,2,5.2],
-          [6, 0.3, 1],
-          [2.8,2,5],
-          [4.5, 2, 3.2],
-          [6.5, 0.3, 1]
-        ],
         rocket0Pos: [
           [
             -Math.cos(((-1+5) * (Math.PI * 2)) / 20) * 5,
@@ -719,17 +612,17 @@ export default {
             Math.sin(((1+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5-0.3,
+            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5-0.4,
             1,
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5-0.3,
+            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5-0.4,
             1,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5-0.3,
+            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5-0.4,
             1.1,
             Math.sin(((4+5) * (Math.PI * 2)) / 20) * 5,
           ],
@@ -741,32 +634,26 @@ export default {
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5+0.3,
+            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5+0.4,
             1,
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5+0.3,
+            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5+0.5,
             1,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5+0.3,
+            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5+0.4,
             1.1,
             Math.sin(((4+5) * (Math.PI * 2)) / 20) * 5,
           ],
         ],
-        pointer0: {
-          position: [-0.3,2.5,0]
-        },
-        pointer1: {
-          position: [-0.15,1.9,0]
-        },
         firstCornerTiles: {
-          position: [-1, 0, -1.5]
+          position: [0.8, 0, -5.5]
         },
         moveText0: {
-          position: [-3, 0, 0.5],
+          position: [-2, 0, 3.5],
           rotation: [-Math.PI/2,0,0],
           size: 0.5,
           height: 0.01,
@@ -780,11 +667,11 @@ export default {
           lineHeight: 0.9
         },
         gulToken: {
-          position: [-0.2, 0, 0.2],
+          position: [0.9, 0, 3.2],
           rotation: [0, Math.PI/2, 0],
         },
         geToken0: {
-          position: [0.7, 0, 0.2],
+          position: [1.8, 0, 3.2],
           rotation: [0, Math.PI/2, 0]
         },
         geToken1: {
@@ -794,21 +681,17 @@ export default {
       },
       shortcutsPage: {
         text: {
-          position: [-5,0,-4.8],
+          position: [-2.1,0,6.5],
           rotation: [-Math.PI/2, 0, 0],
-          size: 0.45,
+          size: 0.4,
           height: 0.01,
           lineHeight: 0.9,
           scales: [1, 0] 
         },
-        tilesPos: [
-          [0,0,0.8],
-          [-3.5, 0, -1]
-        ],
-        tilesScale: [
-          0.6,
-          0.85
-        ],
+        board: {
+          position: [2.8, 0, -0.5],
+          scale: 0.83
+        },
         scoreText: {
           position: [0.7, 2, 3.5],
           rotation: [-Math.PI/2, 0, 0]
@@ -1024,7 +907,7 @@ export default {
         arrowHeight: 1,
         elementSpace: 1.5,
         startX: -6,
-        position: [-0.5, 0, 1],
+        position: [2.8, 0, 4.7],
         scale: 0.8
       },
       tileRadius: {
@@ -1079,6 +962,43 @@ export default {
       ageText: {
         position: [10,-1.5,0],
         size: 0.6
+      }
+    },
+    lobby: {
+      joinTeamModal: {
+        position: [-4.5, 0, -3],
+        rotation: [-Math.PI/2, 0, 0],
+        scale: 2
+      },
+      readyTextRocket: {
+        position: [1.7, 0, 0],
+        scale: 2,
+        background: {
+          opacity: 0.2
+        }
+      },
+      readyTextUfo: {
+        position: [1.5, 0, 0],
+        scale: 2,
+        background: {
+          opacity: 0.1
+        }
+      },
+      joinTeamButtonRocket: {
+        position: [1.7, 0, 0],
+        scale: 1.8
+      },
+      joinTeamButtonUfo: {
+        position: [1.5,0,0],
+        scale: 1.8
+      },
+      teamSwitchButtonRocket: {
+        position: [1.7,0,0],
+        scale: 2
+      },
+      teamSwitchButtonUfo: {
+        position: [1.5,0,0],
+        scale: 2
       }
     },
     game: {
@@ -1153,8 +1073,8 @@ export default {
         height: 0.01
       },
       team0: {
-        position: [-5.3, 0, -10],
-        scale: 1.2,
+        position: [-5,0,-7.2],
+        scale: 1.3,
         title: {
           position: [0,0,0],
           rotation: [-Math.PI / 2, 0, 0],
@@ -1193,8 +1113,8 @@ export default {
         }
       },
       team1: {
-        scale: 1.2,
-        position: [0.1, 0, -10],
+        position: [0.5,0,-7.2],
+        scale: 1.3,
         title: {
           position: [0,0,0],
           rotation: [-Math.PI / 2, 0, 0],
@@ -1636,6 +1556,14 @@ export default {
         rotation: [0,0,0],
         scale: 2
       },
+      rocketHome: {
+        position: [-4.3,0,5.2],
+        scale: [1.2, 0.01, 1.2]
+      },
+      ufoHome: {
+        position: [4.5,0,5.2],
+        scale: [1.2, 0.01, 1.2]
+      },
       joinGameModal: {
         position: [-6, 0, -0.8],
         rotation: [-Math.PI/2, 0, 0],
@@ -1650,19 +1578,19 @@ export default {
         position: [0,0,0],
         scale: 1,
         rocketHome0: {
-          position: [5.3,2,4],
+          position: [-4.7,2,5.6],
           rotation: [-Math.PI/8, 0, 0],
-          scale: 1.2
+          scale: 1
         },
         rocketHome1: {
-          position: [6.3,2,4],
+          position: [-4.1,2,6.2],
           rotation: [-Math.PI/8, 0, 0],
-          scale: 1.2
+          scale: 1
         },
         ufoHome: {
-          position: [4.8, 0, 4.9],
+          position: [4.2, 0, 4.9],
           rotation: [-Math.PI/16,0,0],
-          scale: 1.2
+          scale: 1
         }
       },
       yoots: {
@@ -1671,7 +1599,7 @@ export default {
         scale: 0.37
       },
       board: {
-        position: [0, 0, 0],
+        position: [0, 0, -0.6],
         scale: 1
       },
       milkyWay: {
@@ -1734,9 +1662,9 @@ export default {
       }
     },
     howToPlay: {
-      position: [-1,0,0],
+      position: [-1.9,0,-1],
       rotation: [0,Math.PI/32,Math.PI/64],
-      scale: 1,
+      scale: 0.8,
       pickingTheTeamsPage: {
         cursorPos: [
           [4,0,0],
@@ -1891,97 +1819,33 @@ export default {
       },
       throwingTheDicePage: {
         text: {
-          position: [-3, 0, -3.5],
+          position: [-2.5, 0, 5.5],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01
         },
         moveText: {
-          text: "MOVE:\n3-STEPS",
-          position: [2, 0.7, -0.9],
-          size: 0.4
+          text: "JUMP\n3-STARS",
+          position: [0, 0.7, -3.5],
+          size: 0.5
         },
         gulToken: {
-          position: [2.5, 0, 0.6],
+          position: [3.1, 0, 0.7],
           rotation: [0, Math.PI/2, 0],
-          scale: 0.8
+          scale: 1
         },
-        yoot: {
-          yoot0Wrapper: {
-            restPos: {
-              x: -2.2,
-              y: 0,
-              z: 1
-            },
-            throwPos: {
-              x: -2.5,
-              y: 0,
-              z: 1
-            },
-            liePos: {
-              x: -2.8,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot1Wrapper: {
-            restPos: {
-              x: -1.5,
-              y: 1.0,
-              z: 1
-            },
-            throwPos: {
-              x: -1.5,
-              y: 0.5,
-              z: 1
-            },
-            liePos: {
-              x: -1.5,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot2Wrapper: {
-            restPos: {
-              x: -0.7,
-              y: 0,
-              z: 1
-            },
-            throwPos: {
-              x: -0.4,
-              y: 0,
-              z: 1
-            },
-            liePos: {
-              x: -0.2,
-              y: 0,
-              z: 1,
-            }
-          },
-          yoot3Wrapper: {
-            restPos: {
-              x: 0.1,
-              y: 0.8,
-              z: 1
-            },
-            throwPos: {
-              x: 0.5,
-              y: 0.7,
-              z: 1
-            },
-            liePos: {
-              x: 1.1,
-              y: 0,
-              z: 1,
-            }
-          },
+        yut: {
+          initialYutPosition: [-5.5,8,9],
+          initialYutRotation: [Math.PI/16,Math.PI/2+Math.PI/32,-Math.PI/2],
+          animationYutPosition: [-2,0,-3],
+          animationYutRotation: [0,0,0],
         },
         yootButtonModel: {
-          position: [3, 0, 2],
+          position: [6.5, 0, 2],
           rotation: [0,Math.PI/2,0]
         },
         cursor: {
-          position: [3.3, 0.3, 3.5],
+          position: [7.3, 0.3, 3.5],
           rotation: [0, 0, 0],
           scale: [3, 3, 0.1]
         },
@@ -2027,14 +1891,23 @@ export default {
         ],
       },
       scoringPage: {
-        scale: 0.8,
-        position: [0, 0, 0.5],
+        board: {
+          position: [6, 0, -4],
+          scale: 1.2,
+        },
+        rocketHome: {
+          position: [-0.5, 0, 2.5],
+          scale: 1.2
+        },
         text: {
-          position: [1.5,0,1.5],
+          position: [-2.2,0,6],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           lineHeight: 1,
           height: 0.01
+        },
+        fireworks: {
+          size: 0.25
         },
         tilesPos0: [0,0,0],
         tilesPos1: [-0.5, 0.5, -3],
@@ -2085,16 +1958,20 @@ export default {
       },
       catchingPiecesPage: {
         text: {
-          position: [-3.5,0,-4],
+          position: [-2.5,0,6.3],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
           lineHeight: 0.9
         },
-        firstCornerTilesPos: [
-          [-1.5,0,-1],
-          [-1.5,0,-1]
-        ],
+        firstCornerTiles: {
+          position: [-0.2,0,-6.5],
+          scale: 1.3
+        },
+        ufoHome: {
+          position: [-0.5, 0, 3],
+          scale: 1.2
+        },
         cursorPos: [
           [0, 0.3, 1],
           [-1,2,5],
@@ -2133,16 +2010,17 @@ export default {
             1.5,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
-          [6, -3, -2]
+          [0.7, 1.5, 8]
         ],
         pointer: {
           position: [-0.5,2.5,0]
         },
-        bonusTurn: {
-          position: [-3, 0, 0.5]
-        },
         yootButtonModel: {
-          position: [0.5, 0, 0.5]
+          position: [2.8, 0, 3],
+          scale: 1.2
+        },
+        bonusAlert: {
+          position: [6.1, 0, 3],
         },
         moveText: {
           position: [-3, 0, 0]
@@ -2154,21 +2032,12 @@ export default {
       },
       combiningPiecesPage: {
         text: {
-          position: [-3.5,0,-4],
+          position: [-2.5,0,6],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
           lineHeight: 0.9
         },
-        cursorPos: [
-          [1.1, 0.3, 3.3],
-          [-1.0,2,5.7],
-          [3.5,2,5.1],
-          [6.5, 0.3, 1],
-          [3.5,2,5],
-          [5, 2, 3],
-          [6.3, 0.3, 1]
-        ],
         rocket0Pos: [
           [
             -Math.cos(((-1+5) * (Math.PI * 2)) / 20) * 5,
@@ -2186,17 +2055,17 @@ export default {
             Math.sin(((1+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5-0.35,
+            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5 - 0.45,
             1,
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5-0.35,
+            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5 - 0.45,
             1,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5-0.35,
+            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5 - 0.45,
             1,
             Math.sin(((4+5) * (Math.PI * 2)) / 20) * 5,
           ],
@@ -2208,65 +2077,63 @@ export default {
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5 +0.35,
+            -Math.cos(((2+5) * (Math.PI * 2)) / 20) * 5 + 0.45,
             1,
             Math.sin(((2+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5  +0.35,
+            -Math.cos(((3+5) * (Math.PI * 2)) / 20) * 5 + 0.45,
             1,
             Math.sin(((3+5) * (Math.PI * 2)) / 20) * 5,
           ],
           [
-            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5 +0.35,
-            1.1,
+            -Math.cos(((4+5) * (Math.PI * 2)) / 20) * 5 + 0.45,
+            1,
             Math.sin(((4+5) * (Math.PI * 2)) / 20) * 5,
           ],
         ],
-        pointer0: {
-          position: [-0.3,2.5,0]
-        },
-        pointer1: {
-          position: [-0.3,1.7,0]
-        },
         firstCornerTiles: {
-          position: [-1, 0, 0]
+          position: [1, 0, -5]
         },
         moveText0: {
-          position: [-3, 0, 0.5],
+          position: [-2.5, 0, 4],
           rotation: [-Math.PI/2,0,0],
           size: 0.5,
           height: 0.01,
           lineHeight: 0.9
         },
         moveText1: {
-          position: [-3, 0, 1],
+          position: [0, 0, 3],
           rotation: [-Math.PI/2,0,0],
           size: 0.5,
           height: 0.01,
           lineHeight: 0.9
         },
         gulToken: {
-          position: [-0.2, 0, 0.2],
+          position: [1.3, 0, 3.7],
           rotation: [0, Math.PI/2, 0],
         },
         geToken0: {
-          position: [0.7, 0, 0.2],
+          position: [0.4, 0, 3.7],
           rotation: [0, Math.PI/2, 0]
         },
         geToken1: {
-          position: [-0.2, 0, 0.7],
+          position: [3, 0, 3.7],
           rotation: [0, Math.PI/2, 0]
         }
       },
       shortcutsPage: {
         text: {
-          position: [-3.5,0,-4],
+          position: [-2.2,0,7],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
           lineHeight: 0.9,
           scales: [1, 0] 
+        },
+        board: {
+          position: [2.8, 0, -0.5],
+          scale: 0.9
         },
         tilesPos: [
           [0,0,1.7],
@@ -2487,14 +2354,14 @@ export default {
       },
       readingTheDicePage: {
         text: {
-          position: [-3.2,0,-4],
+          position: [-2.4,0,7.7],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
         },
         do: {
-          position: [-3.1, 0, -1.2],
-          scale: 0.6,
+          position: [-2.4, 0, -2.7],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -2515,8 +2382,8 @@ export default {
           }
         },
         ge: {
-          position: [-0.2, 0, -1.2],
-          scale: 0.6,
+          position: [1.7, 0, -2.7],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -2537,8 +2404,8 @@ export default {
           }
         },
         gul: {
-          position: [2.6, 0, -1.2],
-          scale: 0.6,
+          position: [5.8, 0,  -2.7],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-2.7],
@@ -2559,8 +2426,8 @@ export default {
           }
         },
         yoot: {
-          position: [-3.1, 0, 3.5],
-          scale: 0.6,
+          position: [-2.4, 0, 4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -2587,8 +2454,8 @@ export default {
           }
         },
         mo: {
-          position: [-0.1, 0, 3.5],
-          scale: 0.6,
+          position: [1.7, 0, 4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -2615,8 +2482,8 @@ export default {
           }
         },
         backdo: {
-          position: [2.8, 0, 3.5],
-          scale: 0.6,
+          position: [5.7, 0, 4],
+          scale: 0.8,
           text: {
             line0: {
               position: [-0.2,0,-3.5],
@@ -2658,9 +2525,46 @@ export default {
         ufoScale: 0.3,
       },
     },
+    lobby: {
+      joinTeamModal: {
+        position: [-2.9, 0, -1.7],
+        rotation: [-Math.PI/2, 0, 0],
+        scale: [1.3, 1.3, 1.3]
+      },
+      readyTextRocket: {
+        position: [1.7, 0, 0],
+        scale: 2,
+        background: {
+          opacity: 0.1
+        }
+      },
+      readyTextUfo: {
+        position: [1.7, 0, 0],
+        scale: 2,
+        background: {
+          opacity: 0.1
+        }
+      },
+      joinTeamButtonRocket: {
+        position: [1.7, 0, 0],
+        scale: 1.8
+      },
+      joinTeamButtonUfo: {
+        position: [1.7,0,0],
+        scale: 1.8
+      },
+      teamSwitchButtonRocket: {
+        position: [1.7,0,0],
+        scale: 2
+      },
+      teamSwitchButtonUfo: {
+        position: [1.7,0,0],
+        scale: 2
+      }
+    },
     game: {
       letsPlayButton: {
-        position: [8.65,0,4.5],
+        position: [-7.8,0,5.3],
         rotation: [-Math.PI / 2, 0, 0],
         disabledButton: {
           position: [0.3,0,0.2],
@@ -2730,7 +2634,7 @@ export default {
         height: 0.01
       },
       team0: {
-        position: [-11, 0, -5.2],
+        position: [-12,0,-4],
         scale: 1,
         title: {
           position: [0,0,0],
@@ -2771,7 +2675,7 @@ export default {
       },
       team1: {
         scale: 1,
-        position: [-11, 0, -1],
+        position: [-7.5,0,-4],
         title: {
           position: [0,0,0],
           rotation: [-Math.PI / 2, 0, 0],
@@ -2786,7 +2690,7 @@ export default {
           rotation: [0, 0, 0],
           scale: 1.2,
           space: 1.2,
-          sectionScale: 0.5
+          sectionScale: 0.45
         },
         names: {
           position: [0, 0, 1.3],
@@ -3088,7 +2992,7 @@ export default {
       finish: {
         position: [2.5, 0, 5.5],
         text: {
-          position: [-1.6,0,4],
+          position: [-1.5,0,4.1],
           rotation: [-Math.PI/2, 0, 0],
           fontSize: 15,
         },
