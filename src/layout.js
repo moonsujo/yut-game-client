@@ -1438,7 +1438,7 @@ export default {
       startEarth: {
         position: [2.5, 0, 5.5],
         text: {
-          position: [-0.9,0,0.4],
+          position: [-0.9,0,0.2],
           rotation: [-Math.PI/2, 0, 0],
           fontSize: 15,
         },
