@@ -1321,7 +1321,7 @@ export default {
         }
       },
       piecesSection: {
-        position: [-0.7, 0, 8.2],
+        position: [-0.7, 0, 8],
         emptyPieces: {
           positions: [
             [0, 0, -1],
@@ -1342,7 +1342,7 @@ export default {
         }
       },
       moveList: {
-        position: [-1.3, 0, 10.3],
+        position: [-1.3, 0, 10.1],
         rotation: [-Math.PI/2, 0, 0],
         tokenScale: 1,
         tokenPosition: [0.6, 0, 0.7],
