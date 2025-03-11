@@ -10,34 +10,6 @@ import { animated, useSpring } from "@react-spring/three";
 export default function Catch1RocketAlert({ position, rotation }) {
 
   const initialScale = 1
-  const springs = useSpring({
-      from: {
-        scale: 0
-      },
-      to: [
-        {
-          scale: initialScale,
-          // Specify config here for animation to not trigger again before delay ends
-          config: {
-            tension: 120,
-            friction: 26
-          },
-        },
-        {
-          scale: 0,
-          config: {
-            tension: 100,
-            friction: 26
-          },
-          delay: 3000
-        }
-      ],
-      loop: false,
-      reset: true, // turn it on to replay the animation
-      onStart: () => {},
-      onRest: () => {},
-      delay: 500
-  })
 
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();
@@ -76,7 +48,7 @@ export default function Catch1RocketAlert({ position, rotation }) {
   }
 
   function BamImage({position, rotation, scale, color}) {
-    const { nodes, materials } = useGLTF('models/bam-emoji.glb')
+    const { nodes, materials } = useGLTF('/models/bam-emoji.glb')
     return (
       <group position={position} rotation={rotation} scale={scale} dispose={null}>
         <mesh
@@ -98,7 +70,7 @@ export default function Catch1RocketAlert({ position, rotation }) {
     // clear alert
   }
 
-  return <animated.group position={position} rotation={rotation} scale={springs.scale} onPointerDown={(e) => handleAlertClick(e)}>
+  return <animated.group position={position} rotation={rotation} onPointerDown={(e) => handleAlertClick(e)}>
     <mesh
       castShadow
       receiveShadow
@@ -134,7 +106,7 @@ export default function Catch1RocketAlert({ position, rotation }) {
       </group>
     </group>
     <Text3D
-      font="fonts/Luckiest Guy_Regular.json"
+      font="/fonts/Luckiest Guy_Regular.json"
       rotation={[Math.PI/2, Math.PI, Math.PI/2]}
       position={[-0.5, 0, -1.5]}
       size={0.7}
@@ -144,7 +116,7 @@ export default function Catch1RocketAlert({ position, rotation }) {
       <meshStandardMaterial color='turquoise'/>
     </Text3D>
     <Text3D
-      font="fonts/Luckiest Guy_Regular.json"
+      font="/fonts/Luckiest Guy_Regular.json"
       rotation={[Math.PI/2, Math.PI, Math.PI/2]}
       position={[-1.2, 0, -1.6]}
       size={0.35}
@@ -176,5 +148,3 @@ export default function Catch1RocketAlert({ position, rotation }) {
     </group>
   </animated.group>
 }
-
-useGLTF.preload('models/bam-emoji.glb')

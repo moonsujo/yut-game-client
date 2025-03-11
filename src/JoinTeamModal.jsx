@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Html } from '@react-three/drei';
 import { socket } from './SocketManager';
-import { useAtom } from 'jotai';
-import { joinTeamAtom } from './GlobalState';
+import { useAtom, useAtomValue } from 'jotai';
+import { joinTeamAtom, teamsAtom } from './GlobalState';
 
-export default function JoinTeamModal({ position, rotation, scale, teams }) {
+export default function JoinTeamModal({ position, rotation, scale }) {
 
   const [name, setName] = useState('')
   const [alert, setAlert] = useState('')
   const [submitHover, setSubmitHover] = useState(false)
   const [cancelHover, setCancelHover] = useState(false)
   const [joinTeam, setJoinTeam] = useAtom(joinTeamAtom)
+  const teams = useAtomValue(teamsAtom)
   
   function isAlphaNumeric(str) {
     for (let i = 0; i < str.length; i++) {
@@ -28,7 +29,7 @@ export default function JoinTeamModal({ position, rotation, scale, teams }) {
   function isUniqueName(name, teams) {
     for (let j = 0; j < teams.length; j++) {
       for (let i = 0; i < teams[j].players.length; i++) {
-        if (teams[j].players[i].name === name) {
+        if (teams[j].players[i].name.toUpperCase() === name.toUpperCase()) {
           return false;
         }
       }
@@ -50,7 +51,11 @@ export default function JoinTeamModal({ position, rotation, scale, teams }) {
       setAlert("")
       socket.emit("joinTeam", { team: joinTeam, name: name.toUpperCase() }, ({ player }) => {
         if (player) { // refactor into mongodb stream
+          const audio = new Audio('sounds/effects/join.wav');
+          audio.volume = 0.5;
+          audio.play();
           setName('')
+          setSubmitHover(false)
           setJoinTeam(null);
         }
       });
@@ -58,6 +63,7 @@ export default function JoinTeamModal({ position, rotation, scale, teams }) {
   }
   
   function handleJoinCancel(e) { // submits name and emits 'joinTeam'
+    e.stopPropagation()
     e.preventDefault()
     setName('')
     setJoinTeam(null);
@@ -156,7 +162,7 @@ export default function JoinTeamModal({ position, rotation, scale, teams }) {
                   color: `${cancelHover ? 'white' : 'red'}`,}}
                 onMouseOver={handleCancelMouseEnter}
                 onMouseOut={handleCancelMouseLeave}
-                onMouseDown={e => handleJoinCancel(e)}
+                onClick={e => handleJoinCancel(e)}
                 // need this to stop form from submitting
                 type="button">
               NAH

@@ -114,7 +114,11 @@ export default {
         colorTint3: [
           0.0, 1.0, 1.0, 1.0
         ]
-      }
+      },
+      disconnectModal: {
+        position: [0, 7, 2.7],
+        rotation: [0,0,0],
+      },
     },
     howToPlay: {
       position: [-2.5,0,-2.2],
@@ -1054,26 +1058,26 @@ export default {
         }
       },
       spectating: {
-        position: [-5.4, 0, -5.5],
+        position: [-5.7, 0, -6.4],
         rotation: [-Math.PI/2, 0, 0],
         size: 0.37,
         height: 0.01
       },
       spectatingAndHosting: {
-        line0Pos: [-5.4, 0, -5.5],
-        line1Pos: [-5.4, 0, -4.8],
+        line0Pos: [-5.7, 0, -6.4],
+        line1Pos: [-5.7, 0, -4.7],
         rotation: [-Math.PI/2, 0, 0],
         size: 0.37,
         height: 0.01
       },
       hosting: {
-        position: [-5.3, 0, -5.5],
+        position: [-5.7, 0, -6.4],
         rotation: [-Math.PI/2, 0, 0],
         size: 0.37,
         height: 0.01
       },
       team0: {
-        position: [-5,0,-7.2],
+        position: [-5.7,0,-10.7],
         scale: 1.3,
         title: {
           position: [0,0,0],
@@ -1113,7 +1117,7 @@ export default {
         }
       },
       team1: {
-        position: [0.5,0,-7.2],
+        position: [0.2,0,-10.7],
         scale: 1.3,
         title: {
           position: [0,0,0],
@@ -1158,7 +1162,7 @@ export default {
         scale: [1.3, 1.3, 1.3]
       },
       chat: {
-        position: [-5.7,0,6.8],
+        position: [-5.4,0,6.8],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
@@ -1216,11 +1220,11 @@ export default {
         },
         pregame: {
           scale: 0.7,
-          position: [0, -13, -3.5]
+          position: [0, -13, -4]
         },
         game: {
           scale: 1,
-          position: [0, 0, 0]
+          position: [0, 0, -1]
         },
         finished: {
           scale: 0.2,
@@ -1229,13 +1233,13 @@ export default {
       },
       whoGoesFirst: {
         title: {
-          position: [-5.4, 0, -4.1],
+          position: [-5.7, 0, -4.1],
           rotation: [-Math.PI/2,0,0],
           size: 0.5,
           height: 0.01
         },
         description: {
-          position: [-5.4, 0, -3.5],
+          position: [-5.7, 0, -3.5],
           rotation: [-Math.PI/2,0,0],
           size: 0.3,
           height: 0.01,
@@ -1244,7 +1248,7 @@ export default {
       },
       settings: {
         mainButton: {
-          position: [4.6, 0, -5.5],
+          position: [4.6, 0, -6.5],
           scale: 1.1,
           text: {
             position: [-0.9, 0.025, 0.15],
@@ -1254,32 +1258,31 @@ export default {
           }
         },
         mainMenu: {
-          position: [-3.3, 3, -0.8],
-          rotation: [-Math.PI/2, 0, 0]
+          position: [0.5, 0, 1.7],
         },
         editGuests: {
-          position: [-5.5, 0, -1.0],
+          position: [0.5, 0, 0],
           rotation: [-Math.PI/2, 0, 0],
           containerWidth: '350px'
         },
-        editAGuest: {
-          position: [-5.5, 0, -1.0],
+        editOneGuest: {
+          position: [0.5, 0, 0.3],
           rotation: [-Math.PI/2, 0, 0]
         },
         resetGame: {
-          position: [-5.5, 0, -1.0],
+          position: [0.5, 0, -0.5],
           rotation: [-Math.PI/2, 0, 0]
         },
         setGameRules: {
-          position: [-5.8, 0, -1.0],
+          position: [0.5, 0, 2.5],
           rotation: [-Math.PI/2, 0, 0]
         },
         audio: {
-          position: [-4.0, 0, -1.5],
+          position: [0.5, 0, -1],
           rotation: [-Math.PI/2, 0, 0]
         },
         language: {
-          position: [-5.0, 0, -1.5],
+          position: [0.5, 0, 0.5],
           rotation: [-Math.PI/2, 0, 0]
         },
         inviteFriends: {
@@ -1288,19 +1291,29 @@ export default {
         }
       },
       rulebookButton: {
-        position: [4.95, 0, -4.7],
+        position: [4.95, 0, -5.7],
         scale: 1.1,
       },
       rulebook: {
-        position: [0, 9, 3],
-        scale: 0.8,
+        position: [-2, 3, -0.5],
+        scale: 0.75,
+        content: {
+          position: [0, 0, 0.2]
+        },
         blocker: {
-          args: [11, 0.1, 10],
-          position: [0,8,3]
+          innerScale: [13.5, 0.02, 18],
+          outerScale: [13.6, 0.01, 18.1],
+          position: [2.8, -1.5, 1.2]
         },
         closeButton: {
-          position: [5.7,0,-5],
+          position: [9,0,-6.8],
           scale: 1
+        },
+        title: {
+          position: [-3.6, 9.1, -2.6],
+          rotation: [-Math.PI/2, 0, 0],
+          size: 0.5,
+          height: 0.01
         }
       },
       piecesSection: {
@@ -1616,7 +1629,11 @@ export default {
         colorTint3: [
           0.0, 1.0, 1.0, 1.0
         ]
-      }
+      },
+      disconnectModal: {
+        position: [-4, 7, 2.7],
+        rotation: [0,0,0],
+      },
     },
     about: {
       position: [-3, 0, -4],
@@ -2527,9 +2544,9 @@ export default {
     },
     lobby: {
       joinTeamModal: {
-        position: [-2.9, 0, -1.7],
+        position: [-4, 0, -2.5],
         rotation: [-Math.PI/2, 0, 0],
-        scale: [1.3, 1.3, 1.3]
+        scale: [1.8, 1.8, 1.8]
       },
       readyTextRocket: {
         position: [1.7, 0, 0],
@@ -2634,7 +2651,7 @@ export default {
         height: 0.01
       },
       team0: {
-        position: [-12,0,-4],
+        position: [-11,0,-5.1],
         scale: 1,
         title: {
           position: [0,0,0],
@@ -2675,7 +2692,7 @@ export default {
       },
       team1: {
         scale: 1,
-        position: [-7.5,0,-4],
+        position: [-11,0,-1],
         title: {
           position: [0,0,0],
           rotation: [-Math.PI / 2, 0, 0],
@@ -2719,12 +2736,12 @@ export default {
         scale: [1.5, 1.5, 1.5]
       },
       chat: {
-        position: [-11.05,0,3.1],
+        position: [-11.05,0,3.3],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
           borderRadius: '5px',
-          height: '170px',
+          height: '230px',
           width: '420px',
           padding: '10px',
           fontSize: '24px',
@@ -2780,7 +2797,7 @@ export default {
         },
         game: {
           scale: 1,
-          position: [0, 0, 0]
+          position: [0, 0, -0.5]
         },
         finished: {
           scale: 0.2,
@@ -2814,32 +2831,31 @@ export default {
           }
         },
         mainMenu: {
-          position: [-4.5, 3, -1.3],
-          rotation: [-Math.PI/2, 0, 0]
+          position: [-0.5, 0, -0.075],
         },
         editGuests: {
-          position: [-7.5, 0, -2.5],
+          position: [-2.5, 0, -1.6],
           rotation: [-Math.PI/2, 0, 0],
           containerWidth: '350px'
         },
-        editAGuest: {
-          position: [-7.5, 0, -2.5],
+        editOneGuest: {
+          position: [-2, 0, -1.4],
           rotation: [-Math.PI/2, 0, 0]
         },
         resetGame: {
-          position: [-7.5, 0, -2.5],
+          position: [-2, 0, -2.3],
           rotation: [-Math.PI/2, 0, 0]
         },
         setGameRules: {
-          position: [-8.6, 0, -2.5],
+          position: [-1.25, 0, 0.8],
           rotation: [-Math.PI/2, 0, 0]
         },
         audio: {
-          position: [-5.5, 0, -2.5],
+          position: [-0.5, 0, -2.75],
           rotation: [-Math.PI/2, 0, 0]
         },
         language: {
-          position: [-7.5, 0, -2.5],
+          position: [-1.5, 0, -1.4],
           rotation: [-Math.PI/2, 0, 0]
         },
         inviteFriends: {
@@ -2852,19 +2868,29 @@ export default {
         scale: 1,
       },
       rulebook: {
-        position: [-1.5, 9, 3],
-        scale: 0.8,
+        position: [6.9, 3, -0.5],
+        scale: 0.6,
+        content: {
+          position: [0, 0, 0.2]
+        },
         blocker: {
-          args: [12, 0.1, 9],
-          position: [0.5,8,3]
+          innerScale: [13.5, 0.02, 20],
+          outerScale: [13.6, 0.01, 20.1],
+          position: [2.8, -1.5, 2.2]
         },
         closeButton: {
-          position: [9,0,5.3],
+          position: [9,0,-6.8],
           scale: 1
+        },
+        title: {
+          position: [-3.6, 9.1, -2.6],
+          rotation: [-Math.PI/2, 0, 0],
+          size: 0.5,
+          height: 0.01
         }
       },
       piecesSection: {
-        position: [7.8, 0, 0.5],
+        position: [7.8, 0, 0.7],
         emptyPieces: {
           positions: [
             [0.5, 0, -0.5],
@@ -2885,7 +2911,7 @@ export default {
         }
       },
       moveList: {
-        position: [7.8, 0, -2.2],
+        position: [7.8, 0, -1.6],
         rotation: [-Math.PI/2, 0, 0],
         tokenScale: 0.9,
         tokenPosition: [0.6, 0, 0.6],
@@ -2907,12 +2933,12 @@ export default {
         position: [9, 0, 3],
       },
       yootButton: {
-        position: [9, 0, 4.2],
+        position: [9, 0, 4.8],
         rotation: [0, Math.PI/2, 0],
         scale: 1.2
       },
       timer: {
-        position: [10.5,0,4.5],
+        position: [10.5,0,5.1],
         scaleX: 1,
         heightMultiplier: 0.7,
         boxArgs: [0.3, 0.03, 4],
@@ -2992,7 +3018,7 @@ export default {
       finish: {
         position: [2.5, 0, 5.5],
         text: {
-          position: [-1.5,0,4.1],
+          position: [-1.6,0,4.1],
           rotation: [-Math.PI/2, 0, 0],
           fontSize: 15,
         },

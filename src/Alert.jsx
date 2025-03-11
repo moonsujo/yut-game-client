@@ -1,13 +1,13 @@
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { useGLTF, Text3D } from "@react-three/drei";
+import { Text3D } from "@react-three/drei";
 import Rocket from "./meshes/Rocket";
 import Ufo from "./meshes/Ufo";
 import { animated, useSpring } from "@react-spring/three";
 import Star from "./meshes/Star";
 import { useAtom, useAtomValue } from "jotai";
 import * as THREE from 'three';
-import { alertsAtom, animationPlayingAtom, currentPlayerNameAtom, gamePhaseAtom, pieceAnimationPlayingAtom, turnAtom } from "./GlobalState";
+import { alertsAtom, currentPlayerNameAtom, gamePhaseAtom, turnAtom } from "./GlobalState";
 import { formatName } from "./helpers/helpers";
 import DoAlert from "./alerts/DoAlert";
 import GeAlert from "./alerts/GeAlert";
@@ -30,24 +30,17 @@ import { useFireworksShader } from "./shader/fireworks/FireworksShader";
 import { useSparkShader } from "./shader/spark/SparkShader";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import tilePositions from './tilePositions';
+import { useAnimationPlaying } from "./hooks/useAnimationPlaying";
 
 export default function Alert({ position, rotation }) {
     
     const alerts = useAtomValue(alertsAtom)
     const [gamePhase] = useAtom(gamePhaseAtom)
-    const [_animationPlaying, setAnimationPlaying] = useAtom(animationPlayingAtom)
-    const pieceAnimationPlaying = useAtomValue(pieceAnimationPlayingAtom)
+    const animationPlaying = useAnimationPlaying()
     const [CreateFirework] = useFireworksShader();
     const [CreateSpark] = useSparkShader();
 
-    // adding it in useEffect throws uncaught Promise
-    const fireworkTextures = [
-      useLoader(TextureLoader, 'textures/particles/3.png'),
-      useLoader(TextureLoader, 'textures/particles/5.png'),
-      useLoader(TextureLoader, 'textures/particles/6.png'),
-      useLoader(TextureLoader, 'textures/particles/8.png'),
-    ]
-    const sparkTexture = useLoader(TextureLoader, 'textures/particles/6.png')
+    const sparkTexture = useLoader(TextureLoader, '/textures/particles/6.png')
 
     const [springs, api] = useSpring(() => ({
       from: {
@@ -79,240 +72,269 @@ export default function Alert({ position, rotation }) {
             gameStartAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             gameStartAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'turn') {
           animations.push({
             turnAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             turnAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'yootOutcome1') {
           animations.push({
             yootOutcome1AlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome1AlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 500
           })
         } else if (alerts[i] === 'yootOutcome2') {
           animations.push({
             yootOutcome2AlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome2AlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 500
           })
         } else if (alerts[i] === 'yootOutcome3') {
           animations.push({
             yootOutcome3AlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome3AlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 500
           })
         } else if (alerts[i] === 'yootOutcome4Pregame') {
           animations.push({
             yootOutcome4PregameAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome4PregameAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 500
           })
         } else if (alerts[i] === 'yootOutcome5Pregame') {
           animations.push({
             yootOutcome5PregameAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome5PregameAlertScale: 0,
             config: {
-                tension: 170,
+                tension: 300,
                 friction: 26
             },
-            delay: 1000
+            delay: 500
           })
         } else if (alerts[i] === 'yootOutcome4') {
           animations.push({
             yootOutcome4AlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome4AlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1300
+            delay: 1000
           })
         } else if (alerts[i] === 'yootOutcome5') {
           animations.push({
             yootOutcome5AlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcome5AlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1300
+            delay: 1000
           })
         } else if (alerts[i] === 'yootOutcome0') {
           animations.push({
             yootOutcomeOutAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcomeOutAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'yootOutcome-1') {
           animations.push({
             yootOutcomeBackdoAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             yootOutcomeBackdoAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'pregameTie') {
           animations.push({
             pregameTieAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             pregameTieAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'pregameUfosWin') {
           animations.push({
             pregameUfosWinAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             pregameUfosWinAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'pregameRocketsWin') {
           animations.push({
             pregameRocketsWinAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             pregameRocketsWinAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i].includes('catch')) {
           const numCaught = parseInt(alerts[0][6]);
-          const delay = 1800 + (numCaught > 2 ? 500 : 0)
+          const delay = 1000 + (numCaught > 2 ? 500 : 0)
           animations.push({
             catchAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             catchAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
             delay: delay
           })
@@ -322,32 +344,36 @@ export default function Alert({ position, rotation }) {
             scoreAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             scoreAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1200 + 350 * numScored
+            delay: 800 + 350 * numScored
           })
         } else if (alerts[i].includes('join')) {
           animations.push({
             joinAlertScale: 1,
             config: {
                 tension: 170,
-                friction: 26
+                friction: 26,
+                clamp: true
             },
           })
           animations.push({
             joinAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         } else if (alerts[i] === 'timesUp') {
           animations.push({
@@ -360,10 +386,11 @@ export default function Alert({ position, rotation }) {
           animations.push({
             timesUpAlertScale: 0,
             config: {
-                tension: 170,
-                friction: 26
+                tension: 300,
+                friction: 26,
+                clamp: true
             },
-            delay: 1000
+            delay: 700
           })
         }
       }
@@ -385,12 +412,11 @@ export default function Alert({ position, rotation }) {
         )
 
         const size = 0.25 + Math.random() * 0.1
-        const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
         const radius = 1.0 + Math.random() * 0.2
         const color = new THREE.Color();
         color.setHSL(hue, 1, 0.6)
 
-        CreateFirework({ count, position, size, texture, radius, color });
+        CreateFirework({ count, position, size, radius, color });
 
         // firework 2 - right
         setTimeout(() => {
@@ -402,11 +428,10 @@ export default function Alert({ position, rotation }) {
               -0.9 + Math.random()*0.2, 
           )
           const size = 0.3 + Math.random() * 0.09
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.6)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 220)
 
         // firework 3 - middle
@@ -418,11 +443,10 @@ export default function Alert({ position, rotation }) {
               -1.9 + Math.random() * 0.1, 
           )
           const size = 0.25 + Math.random() * 0.08
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.2 + Math.random() * 0.4
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.6)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 500)
 
         // firework 4 - upper left
@@ -434,11 +458,10 @@ export default function Alert({ position, rotation }) {
               -1.9 + Math.random() * 0.1, 
           )
           const size = 0.3 + Math.random() * 0.1
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.3 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.55)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 900)
 
         // firework 5 - upper right
@@ -450,11 +473,10 @@ export default function Alert({ position, rotation }) {
               -2.7 + Math.random() * 0.1, 
           )
           const size = 0.2 + Math.random() * 0.08
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.53)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1000)
 
         // firework 6 - upper upper left
@@ -466,11 +488,10 @@ export default function Alert({ position, rotation }) {
               -1.0 + Math.random() * 0.3, 
           )
           const size = 0.15 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 0.4, 0.58)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1210)
 
         // firework 7 
@@ -482,11 +503,10 @@ export default function Alert({ position, rotation }) {
               -1.0 + Math.random() * 0.3, 
           )
           const size = 0.23 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 0.8 + Math.random() * 0.4
           const color = new THREE.Color();
           color.setHSL(hue, 0.8, 0.59)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1500)
 
         // firework 8
@@ -498,11 +518,10 @@ export default function Alert({ position, rotation }) {
               -1.0 + Math.random() * 0.3, 
           )
           const size = 0.27 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
           const radius = 1.1 + Math.random() * 0.4
           const color = new THREE.Color();
           color.setHSL(hue, 1.0, 0.56)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1650)
       } else if (numScored === 2) {
         // firework 1 - left
@@ -514,12 +533,12 @@ export default function Alert({ position, rotation }) {
         )
 
         const size = 0.24 + Math.random() * 0.04
-        const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+        
         const radius = 1.0 + Math.random() * 0.2
         const color = new THREE.Color();
         color.setHSL(hue, 1, 0.59)
 
-        CreateFirework({ count, position, size, texture, radius, color });
+        CreateFirework({ count, position, size, radius, color });
 
         // firework 2 - right
         setTimeout(() => {
@@ -531,11 +550,11 @@ export default function Alert({ position, rotation }) {
               -0.9 + Math.random()*0.2, 
           )
           const size = 0.29 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.57)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 200)
 
         // firework 3 - middle
@@ -547,11 +566,11 @@ export default function Alert({ position, rotation }) {
               -1.9 + Math.random() * 0.1, 
           )
           const size = 0.25 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.58)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 500)
 
         // firework 4 - upper left
@@ -563,11 +582,11 @@ export default function Alert({ position, rotation }) {
               -2.5 + Math.random() * 0.2, 
           )
           const size = 0.25 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.59)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 900)
         
         // firework 5 - upper right
@@ -579,11 +598,11 @@ export default function Alert({ position, rotation }) {
               2.5 + Math.random() * 0.2, 
           )
           const size = 0.25 + Math.random() * 0.04
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.53)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1100)
       } else if (numScored === 1) {
         // firework 1 - left
@@ -595,12 +614,12 @@ export default function Alert({ position, rotation }) {
         )
 
         const size = 0.27 + Math.random() * 0.07
-        const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+        
         const radius = 1.0 + Math.random() * 0.2
         const color = new THREE.Color();
         color.setHSL(hue, 1, 0.6)
 
-        CreateFirework({ count, position, size, texture, radius, color });
+        CreateFirework({ count, position, size, radius, color });
 
         // firework 2 - right
         setTimeout(() => {
@@ -612,11 +631,11 @@ export default function Alert({ position, rotation }) {
               -0.9 + Math.random()*0.2, 
           )
           const size = 0.3 + Math.random() * 0.07
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.2 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.6)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 500)
 
         // firework 3 - middle
@@ -628,11 +647,11 @@ export default function Alert({ position, rotation }) {
               -1.9 + Math.random() * 0.1, 
           )
           const size = 0.26 + Math.random() * 0.07
-          const texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+          
           const radius = 1.4 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.6)
-          CreateFirework({ count, position, size, texture, radius, color });
+          CreateFirework({ count, position, size, radius, color });
         }, 1000)
       }
     }
@@ -648,7 +667,7 @@ export default function Alert({ position, rotation }) {
 
     useEffect(() => {
       const toAnimations = transformAlertsToAnimations(alerts)
-      if (!pieceAnimationPlaying) {
+      if (!animationPlaying) {
         api.start({
           from: {
             turnAlertScale: 0,
@@ -671,7 +690,8 @@ export default function Alert({ position, rotation }) {
           },
           to: toAnimations,
           loop: false,
-          onRest: () => setAnimationPlaying(false),
+          onStart: () => { console.log('[Alert] start') },
+          onRest: () => { console.log('[Alert] rest') } // plays twice when browser is not in focus
         })
         
         // if I add it in 'onStart' it will trigger on every element of the 'to' array
@@ -682,7 +702,7 @@ export default function Alert({ position, rotation }) {
         } else if (alerts[0] && alerts[0].includes('join')) {
         }
       }
-    }, [alerts, pieceAnimationPlaying])
+    }, [alerts, animationPlaying])
 
     function TurnAlert() {
       const [currentPlayerName] = useAtom(currentPlayerNameAtom)
@@ -732,7 +752,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group ref={nameContainerRef}>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[0,0,0]}
             size={0.6}
@@ -744,7 +764,7 @@ export default function Alert({ position, rotation }) {
           </Text3D>
         </group>
         <Text3D
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           rotation={[Math.PI/2, Math.PI, Math.PI/2]}
           position={[-0.7, 0, -1.5]}
           size={0.4}
@@ -863,7 +883,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[0.2,0,-1.5]}
             size={0.7}
@@ -950,7 +970,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[-0.1,0,-1.35]}
             size={1.2}
@@ -961,7 +981,7 @@ export default function Alert({ position, rotation }) {
             <meshStandardMaterial color='limegreen'/>
           </Text3D>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[-1,0,-1.5]}
             size={0.5}
@@ -1048,7 +1068,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[0.1,0,-1.6]}
             size={0.55}
@@ -1142,7 +1162,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[0.2,0,-1.7]}
             size={0.6}
@@ -1293,7 +1313,7 @@ export default function Alert({ position, rotation }) {
               <meshStandardMaterial color='black' transparent opacity={0.9}/>
           </mesh>
           <Text3D
-              font="fonts/Luckiest Guy_Regular.json" 
+              font="/fonts/Luckiest Guy_Regular.json" 
               position={[-1.4, 0.1, -0.1]}
               rotation={[-Math.PI/2, 0, 0]}
               height={0.01}
@@ -1386,7 +1406,7 @@ export default function Alert({ position, rotation }) {
             <meshStandardMaterial color='black' transparent opacity={0.9}/>
           </mesh>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json" 
+            font="/fonts/Luckiest Guy_Regular.json" 
             position={[-1.27, 0.1, 0.2]}
             rotation={[-Math.PI/2, 0, 0]}
             height={0.01}
@@ -1432,7 +1452,7 @@ export default function Alert({ position, rotation }) {
         </mesh>
         <group>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
             position={[0,0,-1.4]}
             size={0.7}

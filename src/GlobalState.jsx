@@ -17,7 +17,7 @@ function atomWithCompare(initialValue, areEqual) {
 
 export const joinTeamAtom = atom(null)
 export const disconnectAtom = atom(false)
-export const gamePhaseAtom = atom('lobby'); // lobby, pregame, game, winner
+export const gamePhaseAtom = atom(''); // lobby, pregame, game, winner, '' (room state not loaded yet)
 export const readyToStartAtom = atom(false);
 export const currentPlayerAtom = atom(false)
 export const turnAtom = atom(JSON.parse(JSON.stringify(initialState.initialTurn)));
@@ -72,8 +72,8 @@ export const throwResultAtom = atom({
   num: -2,
   time: 0
 })
+export const yootAnimationPlayingAtom = atom(false)
 export const animationPlayingAtom = atom(false)
-export const pieceAnimationPlayingAtom = atom(false)
 export const legalTilesAtom = atom({})
 export const helperTilesAtom = atom({})
 export const winnerAtom = atom(-1)
@@ -92,8 +92,7 @@ export const timerAtom = atom(true)
 export const nakAtom = atom(true)
 export const yutMoCatchAtom = atom(true)
 
-export const settingsOpenAtom = atom(false)
-export const connectedToServerAtom = atom(false)
+export const connectedToServerAtom = atom(true)
 export const pauseGameAtom = atom(false)
 export const languageAtom = atom('english')
 export const timeLeftAtom = atom(60); // seconds
@@ -102,7 +101,31 @@ export const turnStartTimeAtom = atom(null);
 export const turnExpireTimeAtom = atom(null);
 export const remainingTimeAtom = atom(100000);
 export const resultsAtom = atom([])
+export const fireworkTexturesAtom = atom([])
+export const pieceTeam0Id0AnimationPlayingAtom = atom(false)
+export const pieceTeam0Id1AnimationPlayingAtom = atom(false)
+export const pieceTeam0Id2AnimationPlayingAtom = atom(false)
+export const pieceTeam0Id3AnimationPlayingAtom = atom(false)
+export const pieceTeam1Id0AnimationPlayingAtom = atom(false)
+export const pieceTeam1Id1AnimationPlayingAtom = atom(false)
+export const pieceTeam1Id2AnimationPlayingAtom = atom(false)
+export const pieceTeam1Id3AnimationPlayingAtom = atom(false)
+export const showFinishMovesAtom = atom(false)
 
+// Settings
+export const settingsOpenAtom = atom(false)
+export const mainMenuOpenAtom = atom(true)
+export const editGuestsOpenAtom = atom(false)
+export const guestBeingEdittedAtom = atom(null)
+export const editOneGuestOpenAtom = atom(false)
+export const resetGameOpenAtom = atom(false)
+export const setGameRulesOpenAtom = atom(false)
+export const viewGuestsOpenAtom = atom(false)
+export const viewGameRulesOpenAtom = atom(false)
+export const audioOpenAtom = atom(false)
+export const languageOpenAtom = atom(false)
+export const soundEffectsAtom = atom(true)
+export const musicAtom = atom(true)
 
 const deepPieceEquals = (prev, next) => {
   let result;

@@ -25,12 +25,11 @@ import {
   pieceTeam1Id3Atom, 
   readyToStartAtom, 
   roomAtom, 
-  selectionAtom, spectatorsAtom, teamsAtom, tilesAtom, turnAtom, winnerAtom, yootActiveAtom, yootThrowValuesAtom, yootThrownAtom, moveResultAtom, throwResultAtom, throwAlertAtom, turnAlertActiveAtom, animationPlayingAtom, throwCountAtom, gameLogsAtom, yootAnimationAtom, 
+  selectionAtom, spectatorsAtom, teamsAtom, tilesAtom, turnAtom, winnerAtom, yootActiveAtom, yootThrowValuesAtom, yootThrownAtom, moveResultAtom, throwResultAtom, throwAlertAtom, turnAlertActiveAtom, throwCountAtom, gameLogsAtom, yootAnimationAtom, 
   yootOutcomeAtom,
   currentPlayerNameAtom,
   alertsAtom,
   catchOutcomeAtom,
-  pieceAnimationPlayingAtom,
   catchPathAtom,
   connectedToServerAtom,
   settingsOpenAtom,
@@ -42,7 +41,17 @@ import {
   turnExpireTimeAtom,
   resultsAtom,
   turnStartTimeAtom,
-  remainingTimeAtom
+  remainingTimeAtom,
+  yootAnimationPlayingAtom,
+  pieceTeam0Id0AnimationPlayingAtom,
+  pieceTeam0Id1AnimationPlayingAtom,
+  pieceTeam0Id2AnimationPlayingAtom,
+  pieceTeam0Id3AnimationPlayingAtom,
+  pieceTeam1Id0AnimationPlayingAtom,
+  pieceTeam1Id1AnimationPlayingAtom,
+  pieceTeam1Id2AnimationPlayingAtom,
+  pieceTeam1Id3AnimationPlayingAtom,
+  showFinishMovesAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -51,9 +60,9 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 
-const ENDPOINT = 'localhost:5000';
+// const ENDPOINT = 'localhost:5000';
 
-// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
+const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -78,7 +87,6 @@ export const SocketManager = () => {
   const [_spectators, setSpectators] = useAtom(spectatorsAtom)
   const [_readyToStart, setReadyToStart] = useAtom(readyToStartAtom)
   const [_yootActive, setYootActive] = useAtom(yootActiveAtom)
-  const [_disconnect, setDisconnect] = useAtom(disconnectAtom)
   const [_yootThrowValues] = useAtom(yootThrowValuesAtom)
   const [_initialYootThrow] = useAtom(initialYootThrowAtom)
   const [_yootThrown] = useAtom(yootThrownAtom)
@@ -105,6 +113,15 @@ export const SocketManager = () => {
   const [_pieceTeam1Id1, setPieceTeam1Id1] = useAtom(pieceTeam1Id1Atom)
   const [_pieceTeam1Id2, setPieceTeam1Id2] = useAtom(pieceTeam1Id2Atom)
   const [_pieceTeam1Id3, setPieceTeam1Id3] = useAtom(pieceTeam1Id3Atom)
+  
+  const setPieceTeam0Id0AnimationPlaying = useSetAtom(pieceTeam0Id0AnimationPlayingAtom)
+  const setPieceTeam0Id1AnimationPlaying = useSetAtom(pieceTeam0Id1AnimationPlayingAtom)
+  const setPieceTeam0Id2AnimationPlaying = useSetAtom(pieceTeam0Id2AnimationPlayingAtom)
+  const setPieceTeam0Id3AnimationPlaying = useSetAtom(pieceTeam0Id3AnimationPlayingAtom)
+  const setPieceTeam1Id0AnimationPlaying = useSetAtom(pieceTeam1Id0AnimationPlayingAtom)
+  const setPieceTeam1Id1AnimationPlaying = useSetAtom(pieceTeam1Id1AnimationPlayingAtom)
+  const setPieceTeam1Id2AnimationPlaying = useSetAtom(pieceTeam1Id2AnimationPlayingAtom)
+  const setPieceTeam1Id3AnimationPlaying = useSetAtom(pieceTeam1Id3AnimationPlayingAtom)
   const [_throwCount, setThrowCount] = useAtom(throwCountAtom)
   const [_winner, setWinner] = useAtom(winnerAtom)
   // UI
@@ -116,13 +133,12 @@ export const SocketManager = () => {
   const [_currentPlayerName, setCurrentPlayerName] = useAtom(currentPlayerNameAtom)
   const [_alerts, setAlerts] = useAtom(alertsAtom)
   const [_catchOutcome] = useAtom(catchOutcomeAtom)
-  const [_animationPlaying, setAnimationPlaying] = useAtom(animationPlayingAtom)
-  const [_pieceAnimationPlaying, setPieceAnimationPlaying] = useAtom(pieceAnimationPlayingAtom)
+  const setYootAnimationPlaying = useSetAtom(yootAnimationPlayingAtom)
   const [_catchPath, setCatchPath] = useAtom(catchPathAtom);
   const [CreateMeteor] = useMeteorsShader();
   const meteorTextures = [
-    useLoader(TextureLoader, 'textures/particles/3.png'),
-    useLoader(TextureLoader, 'textures/particles/7.png'), // heart
+    useLoader(TextureLoader, '/textures/particles/3.png'),
+    useLoader(TextureLoader, '/textures/particles/7.png'), // heart
   ] 
 
   const setConnectedToServer = useSetAtom(connectedToServerAtom)
@@ -136,6 +152,7 @@ export const SocketManager = () => {
   const setTurnExpireTime = useSetAtom(turnExpireTimeAtom)
   const setRemainingTime = useSetAtom(remainingTimeAtom)
   const [results, setResults] = useAtom(resultsAtom)
+  const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
 
   useEffect(() => {
 
@@ -148,19 +165,35 @@ export const SocketManager = () => {
     })
     
     socket.on('connect_error', err => { 
-      setDisconnect(true) 
+      setConnectedToServer(false) 
     })
 
-    function findAndStoreClient(spectators, teams) {
-      // Find client from users
-      let users = teams[0].players.concat(teams[1].players.concat(spectators))
+    // Set client info in global store and local storage
+    function findAndStoreClient(spectators, playersTeam0, playersTeam1) {
 
-      // Set it in global store and local storage
-      for (const user of users) {
-        if (user.socketId === socket.id) {
-          setClient(user)
+      for (const spectator of spectators) {
+        if (spectator.socketId === socket.id) {
+          setClient(spectator)
           localStorage.setItem('yootGame', JSON.stringify({
-            ...user
+            ...spectator
+          }))
+        }
+      }
+
+      for (const player of playersTeam0) {
+        if (player.socketId === socket.id) {
+          setClient(player)
+          localStorage.setItem('yootGame', JSON.stringify({
+            ...player
+          }))
+        }
+      }
+
+      for (const player of playersTeam1) {
+        if (player.socketId === socket.id) {
+          setClient(player)
+          localStorage.setItem('yootGame', JSON.stringify({
+            ...player
           }))
         }
       }
@@ -185,7 +218,7 @@ export const SocketManager = () => {
         setHost(room.host)
       }
 
-      findAndStoreClient(room.spectators, room.teams);
+      findAndStoreClient(room.spectators, room.teams[0].players, room.teams[1].players);
 
       setGamePhase((lastPhase) => {
         return room.gamePhase
@@ -208,7 +241,7 @@ export const SocketManager = () => {
       if (room.gamePhase === 'lobby' && 
       room.teams[0].players.length > 0 && 
       room.teams[1].players.length > 0 &&
-      allPlayersConnected(room.teams)) {
+      allPlayersConnected(room.teams[0].players, room.teams[1].players)) {
         setReadyToStart(true)
       } else {
         setReadyToStart(false)
@@ -293,17 +326,19 @@ export const SocketManager = () => {
       // user can throw while timer is running
     })
 
-    socket.on('throwYut', ({ yootOutcome, yootAnimation, throwCount, turnExpireTime }) => {
+    socket.on('throwYut', ({ yootOutcome, yootAnimation, throwCount, turnExpireTime, paused }) => {
       setYootOutcome(yootOutcome)
       setYootAnimation(yootAnimation)
       setThrowCount(throwCount)
       setTurnExpireTime(turnExpireTime)
+      setPauseGame(paused)
       // const audio = new Audio('sounds/effects/throw.mp3');
       // audio.volume=0.3;
       // audio.play();
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog }) => {
+      console.log('[gameStart]')
       setGamePhase(gamePhase)
       setTurn(turn => {
         turn.team = newTeam;
@@ -318,14 +353,12 @@ export const SocketManager = () => {
       })
       setThrowCount(throwCount)
       setAlerts(['gameStart', 'turn'])
-      setAnimationPlaying(true);
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
       setRemainingTime(turnExpireTime - turnStartTime)
       setGameLogs(gameLogs => [...gameLogs, newGameLog])
     })
 
-    // if pregame, could end in a pass, tie or win
     socket.on('passTurn', ({ newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, content, newGameLogs, gamePhase, paused }) => {
       setTurn(turn => {
         turn.team = newTeam;
@@ -370,7 +403,6 @@ export const SocketManager = () => {
       if (!paused) {
         alerts.push('turn')
         setAlerts(alerts)
-        setAnimationPlaying(true);
       }
       setGamePhase(gamePhase)
       setThrowCount(throwCount)
@@ -383,7 +415,7 @@ export const SocketManager = () => {
       setPauseGame(paused)
     })
 
-    socket.on('recordThrow', ({ teams, gamePhaseUpdate, turnUpdate, pregameOutcome, yootOutcome, newGameLogs, turnStartTime, turnExpireTime }) => {    
+    socket.on('recordThrow', ({ teams, gamePhaseUpdate, turnUpdate, pregameOutcome, yootOutcome, newGameLogs, turnStartTime, turnExpireTime, paused }) => {    
       setTeams(teams) // only update the throw count of the current team
       // this invocation is within a useEffect
       // 'gamePhase' state is saved as the one loaded in component load because there's no dependency
@@ -398,8 +430,12 @@ export const SocketManager = () => {
         return turnUpdate
       })
 
-      const currentPlayerName = teams[turnUpdate.team].players[turnUpdate.players[turnUpdate.team]].name
-      setCurrentPlayerName(currentPlayerName)
+      if (teams[turnUpdate.team].players.length > 0) {
+        const currentPlayerName = teams[turnUpdate.team].players[turnUpdate.players[turnUpdate.team]].name
+        setCurrentPlayerName(currentPlayerName)
+      } else {
+        setCurrentPlayerName('')
+      }
 
       setYootOutcome(yootOutcome)
       
@@ -411,10 +447,14 @@ export const SocketManager = () => {
           yootOutcomeAlertName = `yootOutcome${yootOutcome}`
         }
         if (pregameOutcome === 'pass') {
-          setAlerts([yootOutcomeAlertName, 'turn'])
+          let alerts = [yootOutcomeAlertName]
+          teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
+          setAlerts(alerts)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === 'tie') {
-          setAlerts([yootOutcomeAlertName, 'pregameTie', 'turn'])
+          let alerts = [yootOutcomeAlertName, 'pregameTie']
+          teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
+          setAlerts(alerts)
           setThrowCount(teams[turnUpdate.team].throws)
         }
       } else if (gamePhasePrev === 'pregame' && gamePhaseUpdate === 'game') {
@@ -425,23 +465,24 @@ export const SocketManager = () => {
           yootOutcomeAlertName = `yootOutcome${yootOutcome}`
         }
         if (pregameOutcome === '0') { // changes from int to string
-          setAlerts([yootOutcomeAlertName, 'pregameRocketsWin', 'turn'])
+          let alerts = [yootOutcomeAlertName, 'pregameRocketsWin']
+          teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
+          setAlerts(alerts)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === '1') {
-          setAlerts([yootOutcomeAlertName, 'pregameUfosWin', 'turn'])
+          let alerts = [yootOutcomeAlertName, 'pregameUfosWin']
+          teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
+          setAlerts(alerts)
           setThrowCount(teams[turnUpdate.team].throws)
         }
       } else if (gamePhaseUpdate === 'game') {
         let yootOutcomeAlertName = `yootOutcome${yootOutcome}`
         if ((yootOutcome === 0 || yootOutcome === -1) && teams[turnPrev.team].throws === 0 && movesIsEmpty(teams[turnPrev.team].moves)) {
-          setAlerts([yootOutcomeAlertName, 'turn']) // add 'no available moves' alert
+          let alerts = [yootOutcomeAlertName] // add 'no available moves' alert
+          teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
+          setAlerts(alerts)
           // server determines if turn was skipped
         } else {
-          if (yootOutcome === 4) {
-            const audio = new Audio('sounds/effects/yut.wav');
-            audio.volume=0.3;
-            audio.play();
-          }
           setAlerts([yootOutcomeAlertName])
         }
         setThrowCount(teams[turnUpdate.team].throws)
@@ -471,14 +512,40 @@ export const SocketManager = () => {
             }, i * 300)
           }
         }
+
+        // sounds
+        if (yootOutcome === 0) {
+          const audio = new Audio('sounds/effects/yut-0.wav');
+          audio.volume=0.5;
+          audio.play();
+        } else if (yootOutcome === 1) {
+            
+        } else if (yootOutcome === 2) {
+
+        } else if (yootOutcome === 3) {
+
+        } else if (yootOutcome === 4) {
+          const audio = new Audio('sounds/effects/yut.wav');
+          audio.volume=0.5;
+          audio.play();
+        } else if (yootOutcome === 5) {
+          const audio = new Audio('sounds/effects/mo.wav');
+          audio.volume=0.5;
+          audio.play();
+        } else if (yootOutcome === -1) {
+          const audio = new Audio('sounds/effects/backdo.wav');
+          audio.volume=0.5;
+          audio.play();
+        }
       }
 
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
-      setAnimationPlaying(true)
+      setYootAnimationPlaying(false)
       setYootAnimation(null)
       setHasTurn(clientHasTurn(socket.id, teams, turnUpdate.team, turnUpdate.players[turnUpdate.team]))
       setGameLogs(gameLogs => [...gameLogs, ...newGameLogs])
+      setPauseGame(paused)
     })
 
     function calculateNumPiecesCaught(piecesPrev, piecesUpdate) {
@@ -491,10 +558,11 @@ export const SocketManager = () => {
       return numPiecesCaught;
     }
 
-    socket.on('move', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, updatedTiles, throws, newGameLogs, turnStartTime, turnExpireTime }) => {
+    socket.on('move', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, updatedTiles, throws, newGameLogs, turnStartTime, turnExpireTime, paused }) => {
       // instead of teamsUpdate and tiles, receive updatedPieces and updatedTiles
       // check if moves is empty. if it is, clear it
       // clear legalTiles and selection
+
       let alerts = []
 
       let piecesCurrentTeam = []
@@ -505,22 +573,38 @@ export const SocketManager = () => {
           teams[piece.team].pieces[piece.id] = piece
           teams[piece.team].pieces[piece.id].history = [...piece.history]
           teams[piece.team].pieces[piece.id].lastPath = [...piece.lastPath]
-          if (piece.team === 0 && piece.id === 0)
+          if (piece.team === 0 && piece.id === 0) {
             setPieceTeam0Id0(piece)
-          else if (piece.team === 0 && piece.id === 1)
+            setPieceTeam0Id0AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 1) {
             setPieceTeam0Id1(piece)
-          else if (piece.team === 0 && piece.id === 2)
+            setPieceTeam0Id1AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 2) {
             setPieceTeam0Id2(piece)
-          else if (piece.team === 0 && piece.id === 3)
+            setPieceTeam0Id2AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 3) {
             setPieceTeam0Id3(piece)
-          else if (piece.team === 1 && piece.id === 0)
+            setPieceTeam0Id3AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 0) {
             setPieceTeam1Id0(piece)
-          else if (piece.team === 1 && piece.id === 1)
+            setPieceTeam1Id0AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 1) {
             setPieceTeam1Id1(piece)
-          else if (piece.team === 1 && piece.id === 2)
+            setPieceTeam1Id1AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 2) {
             setPieceTeam1Id2(piece)
-          else if (piece.team === 1 && piece.id === 3)
+            setPieceTeam1Id2AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 3) {
             setPieceTeam1Id3(piece)
+            setPieceTeam1Id3AnimationPlaying(true)
+          }
 
           // for catch
           if (newTeam === prevTeam) {
@@ -543,8 +627,10 @@ export const SocketManager = () => {
         }
       
         // Update current player's name
-        const currentPlayerName = teams[newTeam].players[newPlayer].name
-        setCurrentPlayerName(currentPlayerName)
+        if (teams[newTeam].players[newPlayer].name) {
+          const currentPlayerName = teams[newTeam].players[newPlayer].name
+          setCurrentPlayerName(currentPlayerName)
+        }
 
         return [...teams]
       })
@@ -553,7 +639,6 @@ export const SocketManager = () => {
         // Join
         const movingTeam = prevTeam
         const to = updatedTiles.to.index
-        console.log('[move] to', to, 'movingTeam', movingTeam, 'tiles[to]', tiles[to])
         if (tiles[to].length > 0 && tiles[to][0].team === movingTeam) {
           alerts.push(`join${movingTeam}${to}`)
         }
@@ -594,9 +679,12 @@ export const SocketManager = () => {
         return newTurn
       })
 
+      // Sound for Start
+      // Sound for Move
+      // Sound for Catch
+      // Sound for Piggyback
+
       setAlerts(alerts)
-      setAnimationPlaying(true)
-      setPieceAnimationPlaying(true)
       // Turn could have changed
       setHasTurn(clientHasTurn(socket.id, teams, newTeam, newPlayer))
       setLegalTiles({})
@@ -605,33 +693,49 @@ export const SocketManager = () => {
       setGameLogs(gameLogs => [...gameLogs, ...newGameLogs])
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
+      setPauseGame(paused)
     })
 
-    socket.on('score', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, from, throws, winner, gamePhase, newGameLogs, turnStartTime, turnExpireTime }) => {
+    socket.on('score', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, from, throws, winner, gamePhase, newGameLogs, turnStartTime, turnExpireTime, paused }) => {
       setTeams(teams => {
         // Update pieces
         for (const piece of updatedPieces) {
           teams[piece.team].pieces[piece.id] = piece
           teams[piece.team].pieces[piece.id].history = [...piece.history]
           teams[piece.team].pieces[piece.id].lastPath = [...piece.lastPath]
-          if (piece.team === 0 && piece.id === 0)
+          if (piece.team === 0 && piece.id === 0) {
             setPieceTeam0Id0(piece)
-          else if (piece.team === 0 && piece.id === 1)
+            setPieceTeam0Id0AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 1) {
             setPieceTeam0Id1(piece)
-          else if (piece.team === 0 && piece.id === 2)
+            setPieceTeam0Id1AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 2) {
             setPieceTeam0Id2(piece)
-          else if (piece.team === 0 && piece.id === 3)
+            setPieceTeam0Id2AnimationPlaying(true)
+          }
+          else if (piece.team === 0 && piece.id === 3) {
             setPieceTeam0Id3(piece)
-          else if (piece.team === 1 && piece.id === 0)
+            setPieceTeam0Id3AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 0) {
             setPieceTeam1Id0(piece)
-          else if (piece.team === 1 && piece.id === 1)
+            setPieceTeam1Id0AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 1) {
             setPieceTeam1Id1(piece)
-          else if (piece.team === 1 && piece.id === 2)
+            setPieceTeam1Id1AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 2) {
             setPieceTeam1Id2(piece)
-          else if (piece.team === 1 && piece.id === 3)
+            setPieceTeam1Id2AnimationPlaying(true)
+          }
+          else if (piece.team === 1 && piece.id === 3) {
             setPieceTeam1Id3(piece)
+            setPieceTeam1Id3AnimationPlaying(true)
+          }
         }
-        setPieceAnimationPlaying(true)
 
         // Update throws
         teams[newTeam].throws = throws
@@ -675,7 +779,6 @@ export const SocketManager = () => {
         }
         
         setAlerts(alerts)
-        setAnimationPlaying(true)
       } else if (gamePhase === 'finished') {
         setResults(results => [ ...results, winner ])
       }
@@ -688,6 +791,8 @@ export const SocketManager = () => {
       setWinner(winner)
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
+      setPauseGame(paused)
+      setShowFinishMoves(false)
     })
 
     socket.on("select", ({ selection, legalTiles }) => { //receive
@@ -707,40 +812,71 @@ export const SocketManager = () => {
       }
 
       setHelperTiles(helperTiles)
+
+      if (selection === null) {
+        setShowFinishMoves(false)
+      }
     })
 
-    // emitted to other clients when a client joins
+    // Emitted to other clients when a client joins
+    // refactor: only players arrays from teams
     socket.on("joinRoom", ({ spectators, teams, host, gamePhase }) => {
       setSpectators(spectators);
       setTeams(teams);
       setHost(host);
 
-      findAndStoreClient(spectators, teams)
+      findAndStoreClient(spectators, teams[0].players, teams[1].players)
       
       if (gamePhase === 'lobby' && 
         teams[0].players.length > 0 && 
         teams[1].players.length > 0 &&
-        allPlayersConnected(teams)) {
+        allPlayersConnected(teams[0].players, teams[1].players)) {
           setReadyToStart(true)
         } else {
           setReadyToStart(false)
         }
     })
     
-    socket.on("joinTeam", ({ spectators, teams, gamePhase, host, turn }) => {
+    socket.on("joinTeam", ({ spectators, playersTeam0, playersTeam1, gamePhase, host, turn }) => {
       setSpectators(spectators)
-      setTeams(teams);
+      setTeams((teams) => {
+        let newTeams = [...teams]
+        newTeams[0].players = []
+        for (const player of playersTeam0) {
+          newTeams[0].players.push({
+            ...player
+          })
+        }
+        newTeams[1].players = []
+        for (const player of playersTeam1) {
+          newTeams[1].players.push({
+            ...player
+          })
+        }
+        return newTeams
+      });
       setHost(host);
       if (gamePhase === 'pregame' || gamePhase === 'game') {
         setThrowCount(teams[turn.team].throws)
       }
       
-      findAndStoreClient(spectators, teams)
+      findAndStoreClient(spectators, playersTeam0, playersTeam1)
+      
+      // Player could have joined an empty team
+      if (gamePhase === 'pregame' || gamePhase === 'game') {
+        let currentPlayerName
+        if (currentTeam === 0) {
+          currentPlayerName = playersTeam0[turn.players[currentTeam]].name
+        } else if (currentTeam === 1) {
+          currentPlayerName = playersTeam1[turn.players[currentTeam]].name
+        }
+        setCurrentPlayerName(currentPlayerName)
+      }
       
       if (gamePhase === 'lobby' && 
-        teams[0].players.length > 0 && 
-        teams[1].players.length > 0 &&
-        allPlayersConnected(teams)) {
+        playersTeam0.length > 0 && 
+        playersTeam1.length > 0 &&
+        allPlayersConnected(playersTeam0, playersTeam1)) {
           setReadyToStart(true)
         } else {
           setReadyToStart(false)
@@ -765,9 +901,10 @@ export const SocketManager = () => {
         newTeams[1].moves = JSON.parse(JSON.stringify(initialState.initialTeams[1].moves)),
         newTeams[1].pregameRoll = null
         
+        // use previous teams state because it's not updated
         if (teams[0].players.length > 0 && 
           teams[1].players.length > 0 &&
-          allPlayersConnected(teams)) {
+          allPlayersConnected(teams[0].players, teams[1].players)) {
             setReadyToStart(true)
           } else {
             setReadyToStart(false)
@@ -788,7 +925,7 @@ export const SocketManager = () => {
       setTurnExpireTime(null)
     })
 
-    socket.on("setAway", ({ player }) => {
+    socket.on("setAway", ({ player, paused }) => {
       setTeams((teams) => {
         const newTeams = [...teams] // make shallow copy
         const newPlayers = [...newTeams[player.team].players]; // make shallow copy of nested array
@@ -811,6 +948,8 @@ export const SocketManager = () => {
         }
         return client
       })
+
+      setPauseGame(paused)
     })
 
     socket.on("setTeam", ({ user, prevTeam }) => {
@@ -874,7 +1013,7 @@ export const SocketManager = () => {
       }
     })
 
-    socket.on("kick", ({ team, name }) => {
+    socket.on("kick", ({ team, name, turn, paused }) => {
       if (team === -1) {
         // use the setter to access the latest state.
         // if I use the one from the outside, players arrays are empty
@@ -899,6 +1038,8 @@ export const SocketManager = () => {
           return newTeams
         })
       }
+      setTurn(turn)
+      setPauseGame(paused)
     })
 
     socket.on("pause", ({ flag, turnStartTime, turnExpireTime }) => {
@@ -908,15 +1049,52 @@ export const SocketManager = () => {
       setRemainingTime(turnExpireTime - Date.now())
     })
 
-    socket.on("userDisconnect", ({ spectators, teams, gamePhase, host }) => {
-      setSpectators(spectators)
-      setTeams(teams);
-      setHost(host);
+    socket.on("spectatorDisconnect", ({ name }) => {
+      setSpectators((spectators) => {
+        let removeSpectatorIndex = spectators.find((spectator) => spectator.name === name)
+        spectators.splice(removeSpectatorIndex, 1)
+        return spectators
+      })
+    })
+
+    socket.on("playerDisconnect", ({ team, name }) => {
+      setTeams((teams) => {
+        let newTeams = [...teams]
+        let disconnectPlayerIndex = newTeams[team].players.find((player) => player.name === name)
+        newTeams[team].players[disconnectPlayerIndex].connectedToRoom = false
+        return newTeams
+      });
+    })
+
+    socket.on("playerRoomSwitch", ({ roomPlayerIndex, roomPlayerTeam }) => {
+      console.log('[playerRoomSwitch]')
+      setTeams((teams) => {
+        let newTeams = [...teams]
+        newTeams[roomPlayerTeam].players.splice(roomPlayerIndex, 1)
+        return newTeams
+      });
+    })
+
+    socket.on("playerDisconnectLobby", ({ playersTeam0, playersTeam1 }) => {
+      setTeams((teams) => {
+        let newTeams = [...teams]
+        newTeams[0].players = []
+        for (const player of playersTeam0) {
+          newTeams[0].players.push({
+            ...player
+          })
+        }
+        newTeams[1].players = []
+        for (const player of playersTeam1) {
+          newTeams[1].players.push({
+            ...player
+          })
+        }
+        return newTeams
+      });
       
-      if (gamePhase === 'lobby' && 
-        teams[0].players.length > 0 && 
-        teams[1].players.length > 0&&
-        allPlayersConnected(teams)) {
+      if (playersTeam0.length > 0 && playersTeam1.length > 0 &&
+        allPlayersConnected(playersTeam0, playersTeam1)) {
           setReadyToStart(true)
         } else {
           setReadyToStart(false)
@@ -925,8 +1103,8 @@ export const SocketManager = () => {
 
     socket.on('kicked', () => {
       setSettingsOpen(false)
-      setDisconnect(true);
-
+      setConnectedToServer(false)
+      socket.disconnect()
       localStorage.removeItem('yootGame')
     })
 
@@ -951,58 +1129,42 @@ export const SocketManager = () => {
     socket.on('disconnect', () => {
       console.log('[SocketManager][disconnect]') // runs on component unmount
       setSettingsOpen(false)
-      setDisconnect(true);
+      setConnectedToServer(false);
     })
 
     return () => {
       socket.disconnect()
-      console.log('[SocketManager][useEffect][disconnected]')
-
+      console.log('[SocketManager][useEffect] return')
+      setConnectedToServer(false)
       socket.off();
     }
   }, [])
 
   useEffect(() => {
-    if (turn.team !== -1) {
+    if (turn.team !== -1 && teams[0].players.length > 0 && teams[1].players.length > 0) {
       const currentPlayerName = teams[turn.team].players[turn.players[turn.team]].name
       setCurrentPlayerName(currentPlayerName)
-      setHasTurn(client.team === turn.team)
-    }
-  }, [turn])
-
-  // use this to watch for updates from no-dependency useEffect
-  // yut button didn't activate on gameStart
-  // start timer
-  useEffect(() => {
-    // console.log('[useEffect] turn', turn, 'client', client)
-    if (turn && turn.team !== -1 && client) {
-      if (teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId) {
-        setHasTurn(true)
-      }
+      setHasTurn(teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId)
     }
   }, [turn, teams, client])
-  // useEffect(() => {
-  //   console.log('[useEffect] turn', turn, 'client', client)
-  //   if (turn && turn.team !== -1 && client) {
-  //     if (teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId) {
-  //       setHasTurn(true)
-  //     }
-  //   }
-  // }, [turn, client])
 };
 
 /**
  * 
- * @param {object} teams 
+ * @param {array} players in team 0
+ * @param {array} players in team 1
  * @returns boolean indicating whether all players are connected to the room
  */
-function allPlayersConnected(teams) {
+function allPlayersConnected(playersTeam0, playersTeam1) {
   let flag = true;
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < teams[i].players.length; j++) {
-      if (!teams[i].players[j].connectedToRoom) {
-        flag = false
-      }
+  for (const player of playersTeam0) {
+    if (!player.connectedToRoom) {
+      flag = false
+    }
+  }
+  for (const player of playersTeam1) {
+    if (!player.connectedToRoom) {
+      flag = false
     }
   }
   return flag

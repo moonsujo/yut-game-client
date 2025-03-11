@@ -1,24 +1,24 @@
 import { Text3D, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useAtom, useAtomValue } from 'jotai';
-import { useState, useEffect } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useRef } from 'react';
-import { animationPlayingAtom, clientAtom, hasTurnAtom, pauseGameAtom, pieceAnimationPlayingAtom, teamsAtom, throwCountAtom, turnAtom } from './GlobalState';
+import { clientAtom, hasTurnAtom, pauseGameAtom, throwCountAtom, turnAtom, yootAnimationPlayingAtom } from './GlobalState';
 import { socket } from './SocketManager';
 import { useParams } from "wouter";
 import layout from './layout';
 import YootMesh from './meshes/YootMesh';
+import { useAnimationPlaying } from './hooks/useAnimationPlaying';
 
 export default function YootButtonNew({ position, rotation, scale, hasThrow, device }) {
   const { nodes } = useGLTF("/models/rounded-rectangle.glb");
   let buttonRef = useRef();
   const params = useParams();
 
-  const [animationPlaying, setAnimationPlaying] = useAtom(animationPlayingAtom)
-  const pieceAnimationPlaying = useAtomValue(pieceAnimationPlayingAtom)
+  const setYootAnimationPlaying = useSetAtom(yootAnimationPlayingAtom)
+  const animationPlaying = useAnimationPlaying()
+
   const [hasTurn] = useAtom(hasTurnAtom)
-  const [enabledLocal, setEnabledLocal] = useState(false);
-  const enabled = enabledLocal && !animationPlaying && !pieceAnimationPlaying && hasTurn && hasThrow
+  const enabled = !animationPlaying && hasTurn && hasThrow
   const paused = useAtomValue(pauseGameAtom)
   const throwCount = useAtomValue(throwCountAtom)
 
@@ -42,24 +42,19 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
     }
   })
 
-  useEffect(() => {
-    if (!animationPlaying && !pieceAnimationPlaying && hasTurn && hasThrow) {
-      setEnabledLocal(true);
-    }
-  }, [hasTurn, hasThrow, animationPlaying, pieceAnimationPlaying])
-
-  function handlePointerEnter() {
+  function handlePointerEnter(e) {
+    e.stopPropagation();
     document.body.style.cursor = "pointer";
   }
-  function handlePointerLeave() {
+  function handlePointerLeave(e) {
+    e.stopPropagation();
     document.body.style.cursor = "default";
   }
   function handleClick(e) {
     e.stopPropagation();
 
     if (enabled && !paused) {
-      setEnabledLocal(false)
-      setAnimationPlaying(true)
+      setYootAnimationPlaying(true)
       socket.emit('throwYut', { roomId: params.id.toUpperCase() })
     }
   }
@@ -148,11 +143,11 @@ export default function YootButtonNew({ position, rotation, scale, hasThrow, dev
       </Text3D>
       <mesh name='wrapper'
         position={[0, 0.1, 0]} 
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
-        onClick={handleClick}
+        onPointerEnter={e=>handlePointerEnter(e)}
+        onPointerLeave={e=>handlePointerLeave(e)}
+        onPointerUp={e=>handleClick(e)}
       >
-        <boxGeometry args={[3, 0.3, 2]}/>
+        <boxGeometry args={[3, 0.2, 2]}/>
         <meshStandardMaterial transparent opacity={0}/>
       </mesh> 
     </group>

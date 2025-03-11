@@ -7,35 +7,6 @@ import { animated, useSpring } from "@react-spring/three";
 
 export default function MoAlert({ position, rotation }) {
 
-  const initialScale = 1
-  const springs = useSpring({
-      from: {
-        scale: 0
-      },
-      to: [
-        {
-          scale: initialScale,
-          // Specify config here for animation to not trigger again before delay ends
-          config: {
-            tension: 120,
-            friction: 26
-          },
-        },
-        {
-          scale: 0,
-          config: {
-            tension: 100,
-            friction: 26
-          },
-          delay: 3000
-        }
-      ],
-      loop: false,
-      reset: true, // turn it on to replay the animation
-      onStart: () => {},
-      onRest: () => {}
-  })
-
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();
   const borderMesh2Ref = useRef();
@@ -76,7 +47,7 @@ export default function MoAlert({ position, rotation }) {
     e.stopPropagation();
   }
 
-  return <animated.group position={position} rotation={rotation} scale={springs.scale} onPointerDown={(e) => handleAlertClick(e)}>
+  return <animated.group position={position} rotation={rotation} onPointerDown={(e) => handleAlertClick(e)}>
     <mesh
       castShadow
       receiveShadow
@@ -87,7 +58,7 @@ export default function MoAlert({ position, rotation }) {
     </mesh>
     <group name="text" position={[0, -0.15, -0.36]} scale={1.2}>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         rotation={[Math.PI/2, Math.PI, Math.PI/2]}
         position={[-0.4, 0, -0.85]}
         size={0.95}
@@ -96,7 +67,7 @@ export default function MoAlert({ position, rotation }) {
         <meshStandardMaterial color="yellow"/>
       </Text3D>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         rotation={[Math.PI/2, Math.PI, Math.PI/2]}
         position={[-1.1, 0, -1.1]}
         size={0.3}

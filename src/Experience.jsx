@@ -1,30 +1,33 @@
-import React, { useMemo } from "react";
+import React, { useEffect } from "react";
 import { connectedToServerAtom, gamePhaseAtom } from "./GlobalState.jsx";
-import { useAtomValue } from "jotai";
-import GameExperience from "./GameExperience.jsx";
-import LobbyExperience from "./LobbyExperience.jsx";
+import { useAtom, useAtomValue } from "jotai";
 import { socket } from "./SocketManager.jsx";
 import { useParams } from "wouter";
+import Lobby from "./Lobby.jsx";
+import Game from "./Game.jsx";
+import RocketsWin from "./RocketsWin.jsx";
 
 export default function Experience() {
-
   const gamePhase = useAtomValue(gamePhaseAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
+  const [connectedToServer, setConnectedToServer] = useAtom(connectedToServerAtom)
   const params = useParams()
 
-  useMemo(() => {
+  useEffect(() => {
     if (connectedToServer) {
-      socket.emit('addUser', {}, () => {
-        socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+      socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
+        if (response === 'success') {
+          socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+        } else {
+          // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
+        }
       })
     }
   }, [connectedToServer])
 
   return <>
-    { gamePhase === 'lobby' && <LobbyExperience/> }
-    { (gamePhase === 'pregame' || gamePhase === 'game') && <GameExperience/> }
+    { gamePhase === 'lobby' && <Lobby/> }
+    { (gamePhase === 'pregame' || gamePhase === 'game') && <Game/> }
     {/* win screen experience */}
-    {/* { gamePhase === 'finished' && <GameExperience/> } */}
-    {/* <GameExperience/> */}
+    {/* { gamePhase === 'finished' && <RocketsWin/> } */}
   </>
 }

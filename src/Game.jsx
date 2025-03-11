@@ -1,6 +1,6 @@
 // js
 import React, { useEffect, useRef, useState } from "react";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from "./layout.js";
 import { useSpring, animated } from '@react-spring/three';
 
@@ -22,7 +22,6 @@ import {
   deviceAtom, 
   readyToStartAtom, 
   hostAtom, 
-  disconnectAtom, 
   gamePhaseAtom, 
   turnAtom,
   legalTilesAtom,
@@ -35,14 +34,17 @@ import {
   teamsAtom,
   hasTurnAtom,
   settingsOpenAtom,
+  mainMenuOpenAtom,
   connectedToServerAtom,
   pauseGameAtom,
   timerAtom,
-  animationPlayingAtom,
-  turnExpireTimeAtom,
   backdoLaunchAtom,
   nakAtom,
   yutMoCatchAtom,
+  editGuestsOpenAtom,
+  editOneGuestOpenAtom,
+  guestBeingEdittedAtom,
+  showFinishMovesAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -65,21 +67,19 @@ import SettingsHtml from "./SettingsHtml.jsx";
 import PauseGame from "./PauseGame.jsx";
 import Timer from "./Timer.jsx";
 import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
-import TeamLobby from "./TeamLobby.jsx";
 import MeshColors from "./MeshColors.jsx";
-import QRCodeStyling from "qr-code-styling";
 import QrCode3d from "./QRCode3D.jsx";
+import { useAnimationPlaying } from "./hooks/useAnimationPlaying.jsx";
+import Settings from "./Settings.jsx";
 
 // There should be no state
 export default function Game() {
   
   useResponsiveSetting();
   const [device] = useAtom(deviceAtom)
-  const [disconnect] = useAtom(disconnectAtom)
   // To adjust board size
   const [gamePhase] = useAtom(gamePhaseAtom)
   const [turn] = useAtom(turnAtom)
-  const [hasTurn] = useAtom(hasTurnAtom);
   // To pass to Board
   const [legalTiles] = useAtom(legalTilesAtom)
   const [helperTiles] = useAtom(helperTilesAtom)
@@ -89,31 +89,16 @@ export default function Game() {
   const [host] = useAtom(hostAtom)
   const [showRulebook, setShowRulebook] = useState(false);
   const [client] = useAtom(clientAtom)
-  const [teams] = useAtom(teamsAtom)
+  const teams = useAtomValue(teamsAtom)
   const [yootAnimation] = useAtom(yootAnimationAtom);
   const pauseGame = useAtomValue(pauseGameAtom)
   const timer = useAtomValue(timerAtom)
-  const animationPlaying = useAtomValue(animationPlayingAtom)
+  const showFinishMoves = useAtomValue(showFinishMovesAtom)
+  const animationPlaying = useAnimationPlaying()
   const [playMusic] = useMusicPlayer();
   
   const params = useParams();
   const connectedToServer = useAtomValue(connectedToServerAtom)
-
-  useEffect(() => {
-    // socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
-    return (() => {
-      // remove player from room (grey text)
-      socket.emit('disconnectFromRoom', { roomId: params.id.toUpperCase() });
-    })
-  }, [])
-
-  useEffect(() => {
-    if (connectedToServer) {
-      socket.emit('addUser', {}, () => {
-        socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
-      })
-    }
-  }, [connectedToServer])
 
   function StartGameButton({ position }) {
 
@@ -171,7 +156,7 @@ export default function Game() {
         <meshStandardMaterial transparent opacity={0}/>
       </mesh>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={[-1.02, 0.025, 0.12]}
         rotation={[-Math.PI/2, 0, 0]}
         size={0.25}
@@ -230,7 +215,7 @@ export default function Game() {
           </mesh>
         </group>
         <Text3D name='guide-text'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-2,0.03,-1.5]}
           rotation={[-Math.PI/2, 0, 0]}
           size={0.5}
@@ -258,7 +243,7 @@ export default function Game() {
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             position={[-1.4,0.03,-0.3]}
             rotation={[-Math.PI/2, 0, 0]}
             size={0.5}
@@ -287,7 +272,7 @@ export default function Game() {
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             position={[-1.4,0.03,-0.3]}
             rotation={[-Math.PI/2, 0, 0]}
             size={0.5}
@@ -302,12 +287,11 @@ export default function Game() {
   }
 
   // Animations
-  const { boardScale, boardPosition, gameScale, winScreenScale, lobbyScale } = useSpring({
+  const { boardScale, boardPosition, gameScale, winScreenScale } = useSpring({
     boardScale: layout[device].game.board[gamePhase].scale,
     boardPosition: layout[device].game.board[gamePhase].position,
     gameScale: (gamePhase === 'pregame' || gamePhase === 'game') ? 1 : 0,
     winScreenScale: gamePhase === 'finished' ? 1 : 0,
-    lobbyScale: gamePhase === 'lobby' ? 1 : 0,
     config: {
       tension: 170,
       friction: 26
@@ -350,7 +334,7 @@ export default function Game() {
         <meshStandardMaterial transparent opacity={0}/>
       </mesh>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={[-0.77, 0.025, 0.15]}
         rotation={[-Math.PI/2, 0, 0]}
         size={layout[device].game.discord.size}
@@ -364,6 +348,10 @@ export default function Game() {
 
   function SettingsButton({ position, scale }) {
     const [open, setOpen] = useAtom(settingsOpenAtom)
+    const setMainMenuOpen = useSetAtom(mainMenuOpenAtom)
+    const setEditGuestsOpen = useSetAtom(editGuestsOpenAtom)
+    const setEditOneGuestOpen = useSetAtom(editOneGuestOpenAtom)
+    const setGuestBeingEditted = useSetAtom(guestBeingEdittedAtom)
     const [hover, setHover] = useState(false)
     function handlePointerEnter(e) {
       e.stopPropagation();
@@ -393,6 +381,10 @@ export default function Game() {
         }
       } else {
         setOpen(true)
+        setMainMenuOpen(true)
+        setEditGuestsOpen(false)
+        setEditOneGuestOpen(false)
+        setGuestBeingEditted(null)
       }
     }
 
@@ -412,11 +404,11 @@ export default function Game() {
         onPointerDown={e => handlePointerDown(e)}
         onPointerMove={e => handlePointerMove(e)}
       >
-        <boxGeometry args={[1.2, 0.1, 0.6]}/>
+        <boxGeometry args={[2.1, 0.04, 0.55]}/>
         <meshStandardMaterial transparent opacity={0}/>
       </mesh>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={layout[device].game.settings.mainButton.text.position}
         rotation={layout[device].game.settings.mainButton.text.rotation}
         size={layout[device].game.settings.mainButton.text.size}
@@ -425,10 +417,13 @@ export default function Game() {
         <meshStandardMaterial color={hover? 'green' : 'yellow'}/>
         Settings
       </Text3D>
-      {/* display different panes based on user state (spectator/player) */}
-      { open && <SettingsHtml
+      {/* { open && <SettingsHtml
         position={[-3.5,3,3.5]}
         rotation={[0,0,0]}
+        scale={[1,1,1]}
+      /> } */}
+      { open && <Settings
+        position={[-4.7, 6, 6.3]}
         scale={[1,1,1]}
       /> }
     </group>
@@ -475,7 +470,7 @@ export default function Game() {
         <meshStandardMaterial transparent opacity={0}/>
       </mesh>
       <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={[-0.6,0.02,0.15]}
         rotation={[-Math.PI/2, 0, 0]}
         size={0.3}
@@ -492,7 +487,7 @@ export default function Game() {
     const Spectating = () => {
       return <Text3D 
         name='spectating-text'
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={layout[device].game.spectating.position}
         rotation={layout[device].game.spectating.rotation}
         size={layout[device].game.spectating.size}
@@ -508,7 +503,7 @@ export default function Game() {
       return <group>
         <Text3D 
           name='spectating-text'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].game.spectatingAndHosting.line0Pos}
           rotation={layout[device].game.spectatingAndHosting.rotation}
           size={layout[device].game.spectatingAndHosting.size}
@@ -519,7 +514,7 @@ export default function Game() {
         </Text3D>
         <Text3D 
           name='host-text'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].game.spectatingAndHosting.line1Pos}
           rotation={layout[device].game.spectatingAndHosting.rotation}
           size={layout[device].game.spectatingAndHosting.size}
@@ -535,7 +530,7 @@ export default function Game() {
     const Hosting = () => {
       return <Text3D 
         name='host-text'
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={layout[device].game.hosting.position}
         rotation={layout[device].game.hosting.rotation}
         size={layout[device].game.hosting.size}
@@ -597,7 +592,7 @@ export default function Game() {
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
         <Text3D
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           size={0.4}
           height={0.01}
           rotation={[-Math.PI/2, 0, 0]}
@@ -643,7 +638,7 @@ export default function Game() {
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
         <Text3D
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           size={0.4}
           height={0.01}
           rotation={[-Math.PI/2, 0, 0]}
@@ -734,7 +729,7 @@ export default function Game() {
             <meshStandardMaterial color='yellow' transparent opacity={0}/>
           </mesh>
           <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             size={0.4}
             height={0.01}
             rotation={[-Math.PI/2, 0, 0]}
@@ -745,7 +740,7 @@ export default function Game() {
           </Text3D>
           <Text3D 
             name='copied-tooltip'
-            font="fonts/Luckiest Guy_Regular.json"
+            font="/fonts/Luckiest Guy_Regular.json"
             position={[-1,0,-0.6]}
             rotation={[-Math.PI/2, 0, 0]}
             size={0.4}
@@ -768,7 +763,7 @@ export default function Game() {
       return <group>
         <QrCode3d text={window.location.href} position={[8.5,0,-2]} scale={0.8} rotation={[-Math.PI/2,0,0]}/>
         <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
+        font="/fonts/Luckiest Guy_Regular.json"
         position={[5,0,1.5]}
         rotation={[-Math.PI/2,0,0]}
         size={0.4}
@@ -840,14 +835,11 @@ export default function Game() {
         setSetting1Hover(false)
       }
       function handleSetting1PointerUp(e) {
-        console.log('[handleSetting1PointerUp]')
         e.stopPropagation()
         if (!timer) {
-          console.log('[handleSetting1PointerUp] enable timer')
           socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'timer', flag: true }))
         }
         else {
-          console.log('[handleSetting1PointerUp] disable timer')
           socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'timer', flag: false }))
         }
       }
@@ -889,7 +881,7 @@ export default function Game() {
           </group>
           <Text3D 
           name='setting-0-title'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-0.1,0.02,-0.8]}
           rotation={[-Math.PI/2,0,0]}
           size={0.4}
@@ -947,7 +939,7 @@ export default function Game() {
           </group> }
           <Text3D 
           name='setting-0-description'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-0.1,0.02,-0.2]}
           rotation={[-Math.PI/2,0,0]}
           size={0.3}
@@ -991,7 +983,7 @@ export default function Game() {
           </group>
           <Text3D
           name='setting-1-title'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-0.1,0.02,-0.8]}
           rotation={[-Math.PI/2,0,0]}
           size={0.4}
@@ -1051,7 +1043,7 @@ export default function Game() {
         <group>
           <Text3D
           name='setting-2-title'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-12,0,-5.3]}
           rotation={[-Math.PI/2,0,0]}
           size={0.6}
@@ -1062,7 +1054,7 @@ export default function Game() {
         <group>
           <Text3D
           name='setting-3-title'
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={[-12,0,-5.3]}
           rotation={[-Math.PI/2,0,0]}
           size={0.6}
@@ -1081,99 +1073,23 @@ export default function Game() {
     </group>
   }
   
+  function handleRulebookPointerEnter(e) {
+    e.stopPropagation()
+  }
+  function handleRulebookPointerLeave(e) {
+    e.stopPropagation()
+  }
+  function handleRulebookPointerDown(e) {
+    e.stopPropagation()
+  }
+  function handleRulebookPointerUp(e) {
+    e.stopPropagation()
+  }
 
   return (<>
       {/* <Perf/> */}
       {/* <Leva hidden /> */}
       <GameCamera position={layout[device].camera.position} lookAtOffset={[0,0,0]}/>
-      { gamePhase === 'lobby' && <animated.group scale={lobbyScale}>
-        <group name='title'>
-          <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
-            position={[-12,0,-5.3]}
-            rotation={[-Math.PI/2,0,0]}
-            size={0.6}
-            height={0.01}
-          >
-            YUT NORI!
-            <meshStandardMaterial color="yellow"/>
-          </Text3D>
-          <Text3D
-            font="fonts/Luckiest Guy_Regular.json"
-            position={[-7,0,-5.3]}
-            rotation={[-Math.PI/2,0,0]}
-            size={0.4}
-            height={0.01}
-          >
-            {`ID: ${params.id}`}
-            <meshStandardMaterial color="yellow"/>
-          </Text3D>
-        </group>
-        <group name='players'>
-          <TeamLobby
-            position={[-12,0,-4]}
-            scale={layout[device].game.team0.scale}
-            device={device}
-            team={0} 
-          />
-          <TeamLobby
-            position={[-7.5,0,-4]}
-            scale={layout[device].game.team0.scale}
-            device={device}
-            team={1} 
-          />
-          <JoinTeamModal 
-            position={[-11.5, 0, -3]}
-            rotation={layout[device].game.joinTeamModal.rotation}
-            scale={layout[device].game.joinTeamModal.scale}
-            teams={teams}
-          />
-          { client._id === host._id && <StartGameButton
-            position={layout[device].game.letsPlayButton.position}
-            rotation={layout[device].game.letsPlayButton.rotation}
-          /> }
-        </group>
-        <group name='rulebook'>
-          <group name='rulebook-label' position={[1, 0, -5.6]}>
-            <mesh name='background-outer' scale={[3.0, 0.01, 0.75]} position={[0,0,0]}>
-              <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color='yellow'/>
-            </mesh> 
-            <mesh name='background-inner' scale={[2.95, 0.02, 0.7]} position={[0,0,0]}>
-              <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color={MeshColors.spaceDark}/>
-            </mesh>
-            <Text3D
-              font="fonts/Luckiest Guy_Regular.json"
-              size={0.4}
-              height={0.01}
-              rotation={[-Math.PI/2, 0, 0]}
-              position={[-1.3, 0.02, 0.19]}
-            >
-              RULEBOOK
-              <meshStandardMaterial color='yellow'/>
-            </Text3D>
-          </group>
-          <HowToPlay 
-            device={device} 
-            position={[-1,0,-1]} 
-            scale={0.6}
-            closeButton={false}
-            setShowRulebook={setShowRulebook}
-          />
-          <Text3D 
-          name='goal'
-          font="fonts/Luckiest Guy_Regular.json"
-          position={[-2.5, 0, 4]}
-          rotation={layout[device].game.whoGoesFirst.title.rotation}
-          size={0.3}
-          height={layout[device].game.whoGoesFirst.title.height}>
-            {`GOAL: MOVE FOUR SHIPS AROUND\nTHE STARS FROM START TO FINISH!`}
-            <meshStandardMaterial color='yellow'/>
-          </Text3D>
-        </group>
-        <ThirdSection/>
-      </animated.group> }
       { (gamePhase === 'pregame' || gamePhase === 'game') && <animated.group scale={gameScale}>
         <Team 
           position={layout[device].game.team0.position}
@@ -1187,18 +1103,12 @@ export default function Game() {
           device={device}
           team={1} 
         />
-        {/* <JoinTeamModal 
-          position={layout[device].game.joinTeamModal.position}
-          rotation={layout[device].game.joinTeamModal.rotation}
-          scale={layout[device].game.joinTeamModal.scale}
-          teams={teams}
-        /> */}
-        { !disconnect && (gamePhase === 'pregame' || gamePhase === 'game') && <GameLog
+        { connectedToServer && (gamePhase === 'pregame' || gamePhase === 'game') && <GameLog
           position={layout[device].game.chat.position}
           rotation={layout[device].game.chat.rotation}
           scale={layout[device].game.chat.scale}
         /> }
-        { disconnect && <DisconnectModal
+        { !connectedToServer && <DisconnectModal
           position={layout[device].game.disconnectModal.position}
           rotation={layout[device].game.disconnectModal.rotation}
         /> }
@@ -1215,12 +1125,13 @@ export default function Game() {
           interactive={true}
           showStart={true}
           device={device}
+          showFinishMoves={showFinishMoves}
           />
         </animated.group>
         {/* Who Goes First components */}
         { gamePhase === "pregame" && <group>
           <Text3D
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].game.whoGoesFirst.title.position}
           rotation={layout[device].game.whoGoesFirst.title.rotation}
           size={layout[device].game.whoGoesFirst.title.size}
@@ -1230,7 +1141,7 @@ export default function Game() {
             <meshStandardMaterial color="limegreen"/>
           </Text3D>
           <Text3D
-          font="fonts/Luckiest Guy_Regular.json"
+          font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].game.whoGoesFirst.description.position}
           rotation={layout[device].game.whoGoesFirst.description.rotation}
           size={layout[device].game.whoGoesFirst.description.size}
@@ -1250,7 +1161,7 @@ export default function Game() {
           position={layout[device].game.yootButton.position}
           rotation={layout[device].game.yootButton.rotation}
           scale={layout[device].game.yootButton.scale}
-          hasThrow={teams[turn.team].throws > 0}
+          hasThrow={client.team === turn.team && teams[turn.team].throws > 0}
           device={device}
         /> }
         <SettingsButton 
@@ -1265,12 +1176,10 @@ export default function Game() {
         position={layout[device].game.piecesSection.position}
         device={device}
         /> }
-        { (29 in legalTiles) && <ScoreButtons
-          device={device}
-          legalTiles={legalTiles}
-          hasTurn={hasTurn}
-        /> }
-        <PiecesOnBoard/>
+        { gamePhase === 'game' && <PiecesOnBoard 
+        currentMovesRockets={teams[0].moves} 
+        currentMovesUfos={teams[1].moves} 
+        boardOffset={layout[device].game.board['game'].position[2]}/> }
         { (device === 'landscapeDesktop' || (device === 'portrait' && !(29 in legalTiles && legalTiles[29].length > 1))) && <MoveList
           position={layout[device].game.moveList.position}
           rotation={layout[device].game.moveList.rotation}
@@ -1282,17 +1191,49 @@ export default function Game() {
           gamePhase={gamePhase}
         /> }
         <DisplayHostAndSpectating/>
-        { showRulebook && <group>
-          <mesh name='blocker' position={layout[device].game.rulebook.blocker.position}>
-            <boxGeometry args={layout[device].game.rulebook.blocker.args}/>
-            <meshStandardMaterial color='black' transparent opacity={0.95}/>
-          </mesh>
+        { showRulebook && <group 
+        position={layout[device].game.rulebook.position}
+        scale={layout[device].game.rulebook.scale}>
+          <group 
+            position={layout[device].game.rulebook.blocker.position} 
+          >
+            <mesh name='blocker-inner' scale={layout[device].game.rulebook.blocker.innerScale}>
+              <boxGeometry args={[1,1,1]}/>
+              <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh name='blocker-outer' scale={layout[device].game.rulebook.blocker.outerScale}>
+              <boxGeometry args={[1,1,1]}/>
+              <meshStandardMaterial color='yellow'/>
+            </mesh>
+            <mesh name='blocker-wrap' 
+              scale={[
+                layout[device].game.rulebook.blocker.outerScale[0], 
+                layout[device].game.rulebook.blocker.innerScale[1], 
+                layout[device].game.rulebook.blocker.outerScale[2], 
+              ]}
+              onPointerEnter={e=>handleRulebookPointerEnter(e)}
+              onPointerLeave={e=>handleRulebookPointerLeave(e)}
+              onPointerDown={e=>handleRulebookPointerDown(e)}
+              onPointerUp={e=>handleRulebookPointerUp(e)}
+            >
+              <boxGeometry args={[1,1,1]}/>
+              <meshStandardMaterial color='yellow' transparent opacity={0}/>
+            </mesh>
+          </group>
+          <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={layout[device].game.rulebook.title.position}
+          rotation={layout[device].game.rulebook.title.rotation}
+          size={layout[device].game.rulebook.title.size}
+          height={layout[device].game.rulebook.title.height}>
+            RULEBOOK
+            <meshStandardMaterial color='yellow'/>
+          </Text3D>
           <HowToPlay 
-            device={device} 
-            position={layout[device].game.rulebook.position} 
-            scale={layout[device].game.rulebook.scale}
+            device={device}
             closeButton={true}
             setShowRulebook={setShowRulebook}
+            position={layout[device].game.rulebook.content.position}
           />
         </group> }
         { timer && !animationPlaying && <Timer 
