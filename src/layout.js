@@ -1237,13 +1237,13 @@ export default {
       },
       whoGoesFirst: {
         title: {
-          position: [-5.7, 0, -4.1],
+          position: [-5.7, 0, -4.6],
           rotation: [-Math.PI/2,0,0],
           size: 0.5,
           height: 0.01
         },
         description: {
-          position: [-5.7, 0, -3.5],
+          position: [-5.7, 0, -4],
           rotation: [-Math.PI/2,0,0],
           size: 0.3,
           height: 0.01,
