@@ -18,10 +18,11 @@ export default function YootRhino({
   return (
     <group position={position} rotation={rotation} scale={scale}>      
       <mesh        
-        castShadow
-        receiveShadow
-        geometry={nodes.yoot1.geometry}
-        material={materials['material-disabled']}
+          name="yoot0"
+          castShadow
+          receiveShadow
+          geometry={nodes.yoot0.geometry}
+          material={materials['Material.006']}
         position={[0,0,0]}
         rotation={[Math.PI, 0, -1.539]}
       />

@@ -29,10 +29,10 @@ export default function YootMesh({
   return (
     <group position={position} rotation={rotation} scale={scale}>
       { active ? <mesh        
-        castShadow
-        receiveShadow
-        geometry={nodes.yoot2.geometry}
-        material={materials['Material.002']}
+          castShadow
+          receiveShadow
+          geometry={nodes.yoot1.geometry}
+          material={materials['material-disabled']}
         position={[0,0,0]}
         rotation={[Math.PI, 0, -1.539]}
       /> :
