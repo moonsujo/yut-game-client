@@ -19,7 +19,7 @@ export default {
   portrait: {
     center: [0,0,0],
     camera: {
-      position: [0,17,7],
+      position: [0, 25, 10.3],
       zoomMin: 0,
       zoomMax: 55,
     },
@@ -296,7 +296,7 @@ export default {
         yut: {
           initialYutPosition: [-4.5,8,9],
           initialYutRotation: [Math.PI/16,Math.PI/2+Math.PI/32,-Math.PI/2],
-          animationYutPosition: [-2,0,-3],
+          animationYutPosition: [-2,-1.5,-3],
           animationYutRotation: [0,0,0],
         },
         yootButtonModel: {
@@ -1235,6 +1235,10 @@ export default {
           position: [5, 0, 1]
         },
       },
+      yutBonus: {
+        position: [1.3, 0, 1.4],
+        scale: 1
+      },
       whoGoesFirst: {
         title: {
           position: [-5.7, 0, -4.6],
@@ -1376,7 +1380,7 @@ export default {
         boxArgs: [0.25, 0.03, 4],
       },
       throwCount: {
-        position: [1.7, 0, -0.8],
+        position: [-1.2, 0, 1.25],
         // position: [1.7, 0, -0.8],
         orientation: 'downUp'
         // orientation: 'leftRight'
@@ -2804,13 +2808,17 @@ export default {
           position: [0, -13, -3.5]
         },
         game: {
-          scale: 1,
+          scale: 0.9,
           position: [0, 0, -0.5]
         },
         finished: {
           scale: 0.2,
           position: [5, 0, 1]
         }
+      },
+      yutBonus: {
+        position: [1.1, 0, 1.7],
+        scale: 0.9
       },
       whoGoesFirst: {
         title: {

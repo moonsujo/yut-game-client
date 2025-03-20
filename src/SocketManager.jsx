@@ -51,7 +51,10 @@ import {
   pieceTeam1Id1AnimationPlayingAtom,
   pieceTeam1Id2AnimationPlayingAtom,
   pieceTeam1Id3AnimationPlayingAtom,
-  showFinishMovesAtom
+  showFinishMovesAtom,
+  showBonusAtom,
+  bonusExistsAtom,
+  lastYutAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -90,7 +93,7 @@ export const SocketManager = () => {
   const [_yootThrowValues] = useAtom(yootThrowValuesAtom)
   const [_initialYootThrow] = useAtom(initialYootThrowAtom)
   const [_yootThrown] = useAtom(yootThrownAtom)
-  const [_hasTurn, setHasTurn] = useAtom(hasTurnAtom)
+  const [hasTurn, setHasTurn] = useAtom(hasTurnAtom)
   const [_turnAlertActive] = useAtom(turnAlertActiveAtom)
   const [_moveResult] = useAtom(moveResultAtom)
   const [_throwResult] = useAtom(throwResultAtom)
@@ -153,6 +156,9 @@ export const SocketManager = () => {
   const setRemainingTime = useSetAtom(remainingTimeAtom)
   const [results, setResults] = useAtom(resultsAtom)
   const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
+  const [bonusExists, setBonusExists] = useAtom(bonusExistsAtom)
+  const setShowBonus = useSetAtom(showBonusAtom)
+  const [lastYut, setLastYut] = useAtom(lastYutAtom)
 
   useEffect(() => {
 
@@ -331,7 +337,11 @@ export const SocketManager = () => {
       setYootAnimation(yootAnimation)
       setThrowCount(throwCount)
       setTurnExpireTime(turnExpireTime)
+      setYootAnimationPlaying(true)
       setPauseGame(paused)
+      if (throwCount < 1) {
+        setBonusExists(false)
+      }
       // const audio = new Audio('sounds/effects/throw.mp3');
       // audio.volume=0.3;
       // audio.play();
@@ -353,10 +363,12 @@ export const SocketManager = () => {
       })
       setThrowCount(throwCount)
       setAlerts(['gameStart', 'turn'])
+      setYootOutcome(null)
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
       setRemainingTime(turnExpireTime - turnStartTime)
       setGameLogs(gameLogs => [...gameLogs, newGameLog])
+      setBonusExists(false)
     })
 
     socket.on('passTurn', ({ newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, content, newGameLogs, gamePhase, paused }) => {
@@ -367,9 +379,9 @@ export const SocketManager = () => {
       })
       
       let alerts = []
-      if (!paused) {
-        alerts.push('timesUp')
-      }
+      // if (!paused) {
+      //   alerts.push('timesUp')
+      // }
 
       setTeams(teams => {
         const newTeamObj = { ...teams[newTeam] }
@@ -403,6 +415,7 @@ export const SocketManager = () => {
       if (!paused) {
         alerts.push('turn')
         setAlerts(alerts)
+        setYootOutcome(null)
       }
       setGamePhase(gamePhase)
       setThrowCount(throwCount)
@@ -437,8 +450,6 @@ export const SocketManager = () => {
         setCurrentPlayerName('')
       }
 
-      setYootOutcome(yootOutcome)
-      
       if (gamePhaseUpdate === 'pregame') {
         let yootOutcomeAlertName;
         if (yootOutcome === 4 || yootOutcome === 5) {
@@ -450,11 +461,13 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName]
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === 'tie') {
           let alerts = [yootOutcomeAlertName, 'pregameTie']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         }
       } else if (gamePhasePrev === 'pregame' && gamePhaseUpdate === 'game') {
@@ -468,11 +481,13 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName, 'pregameRocketsWin']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === '1') {
           let alerts = [yootOutcomeAlertName, 'pregameUfosWin']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         }
       } else if (gamePhaseUpdate === 'game') {
@@ -481,11 +496,17 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName] // add 'no available moves' alert
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          setYootOutcome(null)
           // server determines if turn was skipped
         } else {
           setAlerts([yootOutcomeAlertName])
         }
         setThrowCount(teams[turnUpdate.team].throws)
+        if (teams[turnUpdate.team].throws > 0) {
+          setBonusExists(true)
+        } else {
+          setBonusExists(false)
+        }
 
         // meteor effect (alert)
         if (yootOutcome === 4 || yootOutcome === 5) {
@@ -497,10 +518,10 @@ export const SocketManager = () => {
               1,
               0, 
             )
-            const size = 0.4 + Math.random() * 0.02
+            const size = 0.6 + Math.random() * 0.02
             const texture = meteorTextures[Math.floor(Math.random() * meteorTextures.length)]
             const color = new THREE.Color();
-            color.setHSL(0.06, 1.0, 0.5)
+            color.setHSL(0.1, 1.0, 0.4)
             setTimeout(() => {
               CreateMeteor({
                 count,
@@ -511,6 +532,7 @@ export const SocketManager = () => {
               })
             }, i * 300)
           }
+
         }
 
         // sounds
@@ -524,14 +546,25 @@ export const SocketManager = () => {
 
         } else if (yootOutcome === 3) {
 
-        } else if (yootOutcome === 4) {
-          const audio = new Audio('sounds/effects/yut.wav');
-          audio.volume=0.5;
-          audio.play();
-        } else if (yootOutcome === 5) {
-          const audio = new Audio('sounds/effects/mo.wav');
-          audio.volume=0.5;
-          audio.play();
+        } else if (yootOutcome === 4 || yootOutcome === 5) {
+          setYootOutcome((prevYootOutcome) => {
+            if (prevYootOutcome === 4 || prevYootOutcome === 5) {
+              const audio = new Audio('sounds/effects/yut-chain.mp3');
+              audio.volume=0.5;
+              audio.play();
+            } else {
+              if (yootOutcome === 4) {
+                const audio = new Audio('sounds/effects/yut-1.mp3');
+                audio.volume=0.5;
+                audio.play();
+              } else {
+                const audio = new Audio('sounds/effects/mo.mp3');
+                audio.volume=0.5;
+                audio.play();
+              }
+            }
+            return yootOutcome
+          })
         } else if (yootOutcome === -1) {
           const audio = new Audio('sounds/effects/backdo.wav');
           audio.volume=0.5;
@@ -547,16 +580,6 @@ export const SocketManager = () => {
       setGameLogs(gameLogs => [...gameLogs, ...newGameLogs])
       setPauseGame(paused)
     })
-
-    function calculateNumPiecesCaught(piecesPrev, piecesUpdate) {
-      let numPiecesCaught = 0;
-      for (let i = 0; i < 4; i++) {
-        if (piecesUpdate[i].tile === -1 && piecesPrev[i].tile !== -1) {
-          numPiecesCaught++;
-        }
-      }
-      return numPiecesCaught;
-    }
 
     socket.on('move', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, updatedTiles, throws, newGameLogs, turnStartTime, turnExpireTime, paused }) => {
       // instead of teamsUpdate and tiles, receive updatedPieces and updatedTiles
@@ -618,6 +641,11 @@ export const SocketManager = () => {
         // Update throws
         teams[newTeam].throws = throws
         setThrowCount(throws)
+        if (throws > 0 && newTeam === prevTeam) {
+          setBonusExists(true)
+        } else {
+          setBonusExists(false)
+        }
 
         // Update moves
         if (newTeam !== prevTeam) {
@@ -674,6 +702,7 @@ export const SocketManager = () => {
         }
         if (turn.team !== newTeam) {
           alerts.push('turn')
+          setYootOutcome(null)
         }
         newTurn.players[newTeam] = newPlayer
         return newTurn
@@ -740,6 +769,11 @@ export const SocketManager = () => {
         // Update throws
         teams[newTeam].throws = throws
         setThrowCount(throws)
+        if (throws > 0 && newTeam === prevTeam) {
+          setBonusExists(true)
+        } else {
+          setBonusExists(false)
+        }
 
         // Update moves
         if (newTeam !== prevTeam) {
@@ -776,6 +810,7 @@ export const SocketManager = () => {
             return newTurn
           })
           alerts.push('turn')
+          setYootOutcome(null)
         }
         
         setAlerts(alerts)
@@ -1142,11 +1177,24 @@ export const SocketManager = () => {
 
   useEffect(() => {
     if (turn.team !== -1 && teams[0].players.length > 0 && teams[1].players.length > 0) {
-      const currentPlayerName = teams[turn.team].players[turn.players[turn.team]].name
+      const currentTeam = turn.team
+      const currentPlayer = turn.players[currentTeam]
+      const currentPlayerName = teams[currentTeam].players[currentPlayer].name
       setCurrentPlayerName(currentPlayerName)
-      setHasTurn(teams[turn.team].players[turn.players[turn.team]].socketId === client.socketId)
+      setHasTurn(teams[currentTeam].players[currentPlayer].socketId === client.socketId)
     }
   }, [turn, teams, client])
+
+  useEffect(() => {
+    if (turn.team !== -1 && hasTurn && bonusExists) {
+    // if (turn.team !== -1 && teams[0].players.length > 0 && teams[1].players.length > 0 && hasTurn && bonusExists) {
+      setShowBonus(true)
+      console.log('[SocketManager] show bonus')
+    } else {
+      setShowBonus(false)
+      console.log('[SocketManager] do not show bonus')
+    }
+  }, [bonusExists, client, hasTurn])
 };
 
 /**

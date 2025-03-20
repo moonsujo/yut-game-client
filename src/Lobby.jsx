@@ -144,20 +144,20 @@ export default function Lobby() {
         >
           <mesh
             name='background-inner'
-            scale={[1.3, 1, 0.42]}
+            scale={[1.3, 1, 0.7]}
           >
             <cylinderGeometry args={[0.97, 0.95, 0.02, 32]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
-            position={[-0.95, 0.025, 0.12]}
+            position={[-0.95, 0.025, 0.03]}
             rotation={[-Math.PI/2, 0, 0]}
             size={0.25}
             height={0.01}
             lineHeight={0.7}
           >
-            {`TAKE A SEAT`}
+            {`CLICK A SEAT\n     TO JOIN`}
             <meshStandardMaterial color={ 'yellow' }/>
           </Text3D>
         </group>
@@ -241,13 +241,13 @@ export default function Lobby() {
         </group>
       }
       if (client.team === -1 && (teams[0].players.length < 4 || teams[1].players.length < 4)) {
-        return <TakeASeat position={[0,5,7.3]} scale={1.9}/>
+        return <TakeASeat position={[0, 5, 7.5]} scale={2}/>
       } else if (teams[0].players.length >= 4 && teams[1].players.length >= 4) {
-        return <FullCapacity position={[0,5,7.3]} scale={1.9}/>
+        return <FullCapacity position={[0,5,7.5]} scale={1.9}/>
       } else if (client.team === 0) {
-        return <RocketJoined position={[0,5,7.3]} scale={1.9}/>
+        return <RocketJoined position={[0,5,7.5]} scale={1.9}/>
       } else if (client.team === 1) {
-        return <UfoJoined position={[0,5,7.3]} scale={1.9}/>
+        return <UfoJoined position={[0,5,7.5]} scale={1.9}/>
       }
     }
     const setJoinTeam = useSetAtom(joinTeamAtom)
@@ -1763,7 +1763,7 @@ export default function Lobby() {
     const readyToStart = useAtomValue(readyToStartAtom)
     const host = useAtomValue(hostAtom)
     const client = useAtomValue(clientAtom)
-    const isHost = client.socketId === host.socketId
+    const isHost = host && client && client.socketId === host.socketId
 
     function ShareThisLobbyButton({ position }) {
       function handleSharePointerEnter(e) {
@@ -1778,8 +1778,8 @@ export default function Lobby() {
           try {
             await navigator.share({
               title: 'Yut Nori',
-              text: "Let's play Yut Nori!",
-              url: window.location.href
+              text: "Let's play a game!",
+              url: window.location.href,
             })
           } catch (err) {
             console.error('Error sharing:', err)

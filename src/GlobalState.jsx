@@ -81,6 +81,9 @@ export const throwCountAtom = atom(0)
 export const alertsAtom = atom([])
 export const currentPlayerNameAtom = atom('')
 export const catchPathAtom = atom(null)
+export const bonusExistsAtom = atom(false)
+export const showBonusAtom = atom(false)
+export const shakeToThrowEnabledAtom = atom(false)
 // using an object to group the rules together has an issue
 // editting a field doesn't trigger re-render of the toggle state
 // when I click on the box to enable the rule, the box stays lit
@@ -126,6 +129,7 @@ export const audioOpenAtom = atom(false)
 export const languageOpenAtom = atom(false)
 export const soundEffectsAtom = atom(true)
 export const musicAtom = atom(true)
+export const lastYutAtom = atom(null)
 
 const deepPieceEquals = (prev, next) => {
   let result;
