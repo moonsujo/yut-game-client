@@ -87,7 +87,11 @@ export default function YootButtonNew({ position, rotation, scale }) {
   function ShakeToThrowButton(props) {
     const [shakeToThrowEnabled, setShakeToThrowEnabled] = useAtom(shakeToThrowEnabledAtom)
     const addingDeviceMotion = useAtomValue(addingDeviceMotionAtom)
-    const [enableShakeToThrow, disableShakeToThrow] = useShakeDetector()
+    const [showShakeMesh, setShowShakeMesh] = useAtom(showShakeMeshAtom)
+    function handler() {
+      setShowShakeMesh(true)
+    }
+    const [enableShakeToThrow, disableShakeToThrow] = useShakeDetector(handler)
     const [pressed, setPressed] = useState(false)
     const { pressedScale } = useSpring({
       pressedScale: pressed ? 1.2 : 1 
@@ -103,14 +107,13 @@ export default function YootButtonNew({ position, rotation, scale }) {
       e.stopPropagation()
       setPressed(true)
     }
-    const [showShakeMesh, setShowShakeMesh] = useAtom(showShakeMeshAtom)
     function handlePointerUp(e) {
       e.stopPropagation()
       if (shakeToThrowEnabled) {
-        disableShakeToThrow(() => { setShowShakeMesh(true) })
+        disableShakeToThrow()
         setShakeToThrowEnabled(false)
       } else {
-        enableShakeToThrow(() => { setShowShakeMesh(false) })
+        enableShakeToThrow()
         setShakeToThrowEnabled(true)
       }
       setPressed(false)

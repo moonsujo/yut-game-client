@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { addingDeviceMotionAtom, removingDeviceMotionAtom } from "../GlobalState";
+import { addingDeviceMotionAtom, removingDeviceMotionAtom, showShakeMeshAtom } from "../GlobalState";
 
 export default function useShakeDetector() {
   let shakeThreshold = 15; // Set the shake threshold (you may need to tune this based on the device)
@@ -8,8 +8,9 @@ export default function useShakeDetector() {
   let lastAcceleration = { x: 0, y: 0, z: 0 };
 
   const setAddingDeviceMotion = useSetAtom(addingDeviceMotionAtom)
+  const setShowShakeMesh = useSetAtom(showShakeMeshAtom)
   
-  function detectShake(event, shakeHandler) {
+  function detectShake(event) {
     
     const currentAcceleration = event.accelerationIncludingGravity;
     const x = currentAcceleration.x;
@@ -30,7 +31,7 @@ export default function useShakeDetector() {
         // Ensure that multiple shakes are not detected in a short time
         if (currentTime - lastTime > shakeTimeout) {
             lastTime = currentTime;
-            shakeHandler();
+            setShowShakeMesh(true)
         }
     }
 
@@ -38,15 +39,15 @@ export default function useShakeDetector() {
     lastAcceleration = { x, y, z };
   }
 
-  function enableShakeToThrow(shakeHandler) {
+  function enableShakeToThrow() {
     setAddingDeviceMotion(true) //test
     // Listen for devicemotion event
-    window.addEventListener("devicemotion", (e) => detectShake(e, shakeHandler));  
+    window.addEventListener("devicemotion", e=>detectShake(e), false);  
   }
-  function disableShakeToThrow(shakeHandler) {
+  function disableShakeToThrow() {
     setAddingDeviceMotion(false) //test
     // Listen for devicemotion event
-    window.removeEventListener("devicemotion", (e) => detectShake(e, shakeHandler));  
+    window.removeEventListener("devicemotion", e=>detectShake(e), false);  
   }
 
   return [enableShakeToThrow, disableShakeToThrow]
