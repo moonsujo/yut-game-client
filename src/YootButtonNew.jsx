@@ -60,15 +60,18 @@ export default function YootButtonNew({ position, rotation, scale }) {
     if (enabled && !paused) {
       setYootAnimationPlaying(true)
       socket.emit('throwYut', { roomId: params.id.toUpperCase() })
+      const audio = new Audio('sounds/effects/throw-yut-2.mp3');
+      audio.volume=1
+      audio.play();
     }
   }
 
   function ThrowCount({position, orientation}) {
     function positionByOrientation(index, orientation) {
       if (orientation === 'downUp') {
-        return [0, 0, index*0.4]
+        return [index*0.4, 0, 0]
       } else if (orientation === 'leftRight') {
-        return [index*0.5, 0, 0]
+        return [0, 0, index*0.5]
       }
     }
 
@@ -254,6 +257,6 @@ export default function YootButtonNew({ position, rotation, scale }) {
       position={layout[device].game.throwCount.position}
       orientation={layout[device].game.throwCount.orientation}
     /> }
-    { device === 'portrait' && <ShakeToThrowButton position={[2, 0, 0]}/> }
+    {/* { device === 'portrait' && <ShakeToThrowButton position={[2, 0, 0]}/> } */}
   </group>
 }

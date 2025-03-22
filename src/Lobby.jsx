@@ -1190,6 +1190,10 @@ export default function Lobby() {
         setHover(false)
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
+          
+          const audio = new Audio('sounds/effects/boot-up.mp3');
+          audio.volume = 1;
+          audio.play();
         }
       }
       return <group name='start-game-button' position={position}>
@@ -1606,7 +1610,6 @@ export default function Lobby() {
         height={0.01}
         lineHeight={0.7}
         ref={roomIdRef}>
-          {/* {`moonsu is the host`} */}
           {`ROOM ID: ${params.id}${isHost ? ' (HOST)' : ''}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
@@ -1859,6 +1862,10 @@ export default function Lobby() {
         e.stopPropagation()
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
+          
+          const audio = new Audio('sounds/effects/boot-up.mp3');
+          audio.volume = 1;
+          audio.play();
         }
       }
       return <group name='start-game-button' position={position}>

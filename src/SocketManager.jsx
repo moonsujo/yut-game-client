@@ -63,9 +63,9 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
-const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
+// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -342,13 +342,9 @@ export const SocketManager = () => {
       if (throwCount < 1) {
         setBonusExists(false)
       }
-      // const audio = new Audio('sounds/effects/throw.mp3');
-      // audio.volume=0.3;
-      // audio.play();
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog }) => {
-      console.log('[gameStart]')
       setGamePhase(gamePhase)
       setTurn(turn => {
         turn.team = newTeam;
@@ -415,6 +411,7 @@ export const SocketManager = () => {
       if (!paused) {
         alerts.push('turn')
         setAlerts(alerts)
+
         setYootOutcome(null)
       }
       setGamePhase(gamePhase)
@@ -461,12 +458,14 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName]
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+          
           setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === 'tie') {
           let alerts = [yootOutcomeAlertName, 'pregameTie']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+
           setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         }
@@ -481,12 +480,14 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName, 'pregameRocketsWin']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+
           setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         } else if (pregameOutcome === '1') {
           let alerts = [yootOutcomeAlertName, 'pregameUfosWin']
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+
           setYootOutcome(null)
           setThrowCount(teams[turnUpdate.team].throws)
         }
@@ -496,6 +497,7 @@ export const SocketManager = () => {
           let alerts = [yootOutcomeAlertName] // add 'no available moves' alert
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')
           setAlerts(alerts)
+
           setYootOutcome(null)
           // server determines if turn was skipped
         } else {
@@ -537,15 +539,23 @@ export const SocketManager = () => {
 
         // sounds
         if (yootOutcome === 0) {
-          const audio = new Audio('sounds/effects/yut-0.wav');
+          const audio = new Audio('sounds/effects/yut-0.mp3');
           audio.volume=0.5;
           audio.play();
         } else if (yootOutcome === 1) {
-            
+          const audio = new Audio('sounds/effects/throw-reveal.mp3');
+          audio.volume=0.5
+          audio.play();
         } else if (yootOutcome === 2) {
 
+          const audio = new Audio('sounds/effects/throw-reveal.mp3');
+          audio.volume=0.5
+          audio.play();
         } else if (yootOutcome === 3) {
 
+          const audio = new Audio('sounds/effects/throw-reveal.mp3');
+          audio.volume=0.5
+          audio.play();
         } else if (yootOutcome === 4 || yootOutcome === 5) {
           setYootOutcome((prevYootOutcome) => {
             if (prevYootOutcome === 4 || prevYootOutcome === 5) {
@@ -566,7 +576,7 @@ export const SocketManager = () => {
             return yootOutcome
           })
         } else if (yootOutcome === -1) {
-          const audio = new Audio('sounds/effects/backdo.wav');
+          const audio = new Audio('sounds/effects/backdo.mp3');
           audio.volume=0.5;
           audio.play();
         }
@@ -702,6 +712,7 @@ export const SocketManager = () => {
         }
         if (turn.team !== newTeam) {
           alerts.push('turn')
+
           setYootOutcome(null)
         }
         newTurn.players[newTeam] = newPlayer

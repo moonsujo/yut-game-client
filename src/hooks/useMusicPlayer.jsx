@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import { musicAtom, musicPlayingAtom, musicVolumeAtom } from "../GlobalState";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function useMusicPlayer() {
+  const [music, setMusic] = useAtom(musicAtom)
+  const [musicPlaying, setMusicPlaying] = useAtom(musicPlayingAtom)
+  const musicVolume = useAtomValue(musicVolumeAtom)
   // playlist
 
   const [songTimeout, setSongTimeout] = useState(null);
@@ -15,20 +20,13 @@ export default function useMusicPlayer() {
       'path': 'sounds/music/magnetic-lofi.mp3',
       'length': 94
     },
-    {
-      'title': 'Touch (Lofi)',
-      'artist': 'Katseye, kisa',
-      'source': 'kisa youtube',
-      'path': 'sounds/music/touch-lofi.mp3',
-      'length': 99
-    },
-    {
-      'title': 'Hype Boy (Lofi)',
-      'artist': 'New Jeans, DANI.HZ',
-      'source': '다니헤르츠 DANI.HZ youtube',
-      'path': 'sounds/music/hype-boy-lofi.mp3',
-      'length': 214
-    },
+    // {
+    //   'title': 'Hype Boy (Lofi)',
+    //   'artist': 'New Jeans, DANI.HZ',
+    //   'source': '다니헤르츠 DANI.HZ youtube',
+    //   'path': 'sounds/music/hype-boy-lofi.mp3',
+    //   'length': 214
+    // },
     {
       'title': 'ASAP (Lofi)',
       'artist': 'New Jeans, DANI.HZ',
@@ -36,18 +34,17 @@ export default function useMusicPlayer() {
       'path': 'sounds/music/asap-lofi.mp3',
       'length': 175
     },
-    {
-      'title': 'Merry Go Round',
-      'artist': 'Korean Folk Song / Beat Rhino',
-      'source': 'Beat Rhino',
-      'path': 'sounds/music/mingle-song-music-box.mp3',
-      'length': 67
-    }
+    // {
+    //   'title': 'Merry Go Round',
+    //   'artist': 'Korean Folk Song / Beat Rhino',
+    //   'source': 'Beat Rhino',
+    //   'path': 'sounds/music/mingle-song-music-box.mp3',
+    //   'length': 67
+    // }
   ]
 
   function playMusic() {
 
-    console.log('[playMusic]')
     // every client has a different song playing
     function playRandomSong() {
       const randomSong = songs[Math.floor(Math.random() * songs.length)]
@@ -88,10 +85,23 @@ export default function useMusicPlayer() {
   }, [])
 
   function playAudio(path) {
-    const audio = new Audio(path);
-    audio.volume=0.3;
-    audio.play();
+    setMusic((music) => {
+      if (music) {
+        music.pause()
+      }
+      
+      const newMusic = new Audio(path);
+      newMusic.volume = 1;
+      newMusic.play();
+
+      return newMusic
+    })
   }
 
-  return [playMusic]
+  function stopMusic() {
+    music.pause();
+    setMusic(null)
+  }
+
+  return [playMusic, stopMusic]
 }
