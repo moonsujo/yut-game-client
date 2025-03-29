@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import layout from './layout';
 import { useAtom, useAtomValue } from 'jotai';
 import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom, deviceAtom } from './GlobalState';
@@ -231,6 +231,7 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
         playerIdsRef.current[i].forEach(function (_value1, j) {
           // You Icon
           const isYou = teams[i].players[j].name === client.name
+          const isAI = teams[i].players[j].type === 'ai'
           if (isYou && playerIdsRef.current[i][j].geometry.boundingSphere) {            
             youIndicatorRef.current.scale.x = 1
             youIndicatorRef.current.scale.y = 1
@@ -243,7 +244,7 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
             youIndicatorRef.current.scale.z = 0
           }
           // Yut Icon
-          if (turn.team === i && turn.players[turn.team] === j && playerIdsRef.current[i][j].geometry.boundingSphere) {
+          if (!isAI && turn.team === i && turn.players[turn.team] === j && playerIdsRef.current[i][j].geometry.boundingSphere) {
             yootIconRef.current.scale.x = 1
             yootIconRef.current.scale.y = 1
             yootIconRef.current.scale.z = 1
@@ -261,6 +262,37 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
       })
     })
 
+    function AIPlayingText() {
+      const [text, setText] = useState('AI playing . . .')
+      const [count, setCount] = useState(1)
+
+      useEffect(() => {
+
+        const interval = setInterval(() => {
+          setText(text => {
+            let newText = 'AI playing'
+            for (let i = 0; i < count; i++) {
+              newText += ' .'
+            }
+            setCount(count => {
+              let newCount = count+1
+              if (count === 3) {
+                newCount = 1
+              }
+              return newCount
+            })
+            return newText
+          })
+        }, 800)
+
+        return () => {
+          clearInterval(interval)
+        }
+      })
+      
+      return text
+    }
+
     return <group
       position={layout[device].game[`team${team}`].names.position}
       rotation={layout[device].game[`team${team}`].names.rotation}
@@ -274,9 +306,9 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
             position={[0, -index * 0.5, 0]}
             ref={(ref => playerIdsRef.current[team][index] = ref)}
           >
-            {formatName(value.name, layout[device].game[`team${team}`].names.maxLength)
+            { value.type === 'human' ? formatName(value.name, layout[device].game[`team${team}`].names.maxLength)
             + (host && value.socketId === host.socketId ? ' (h) ' : '')
-            + (value.status === 'away' ? ' (away)' : '')}
+            + (value.status === 'away' ? ' (away)' : '') : teams[turn.team].players[turn.players[turn.team]].name === value.name ? AIPlayingText() : formatName(value.name, layout[device].game[`team${team}`].names.maxLength) }
             <meshStandardMaterial color={ value.roomId === params.id.toUpperCase() && value.connectedToRoom ? team === 0 ? 'red' : 'turquoise' : 'gray' }/>
           </Text3D>
           <group name='you-indicator' ref={youIndicatorRef}>

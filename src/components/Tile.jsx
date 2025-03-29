@@ -104,6 +104,7 @@ export default function Tile({
     wrapperScale: ((selection != null && legalTileInfo) || hasMovablePiece) ? 1 : 0, // want the animation to start again when status changes
   })
 
+  const baseWrapperScale = 1.3
   useFrame((state) => {
     const time = state.clock.elapsedTime;
     if (hasMovablePiece) {
@@ -118,9 +119,9 @@ export default function Tile({
         wrapperMat.current.opacity = 0.3
         wrapperMat.current.color = new THREE.Color('grey')
       }
-      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + 1.1;
-      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + 1.1;
-      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + 1.1;
+      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + baseWrapperScale;
     } else if (selection != null && legalTileInfo) {
       if (turn.team === 0) {
         wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.02 + 0.03, 0.8, 0.5);
@@ -128,15 +129,34 @@ export default function Tile({
         wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.06 + 0.55, 1, 0.3);
       }
       wrapperMat.current.opacity = 0.3;
-      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + 1.1;
-      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + 1.1;
-      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + 1.1;
+      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + baseWrapperScale;
     } else {
       wrapperMat.current.opacity = 0;
     }
   })
 
   function PathNumHelper({pathNum}) {
+    function shiftPosition({ tile }) {
+      const positionTopRight = [1, 2.3, 0]
+      const positionTopLeft = [-1, 2.3, 0]
+      const positionBottomRight = [1, 2.3, 2]
+      const positionBottomLeft = [-1, 2.3, 2]
+      if (tile === 0 || tile === 1 || tile === 2 || tile === 3 || tile === 4) {
+        return positionBottomRight
+      } else if (tile === 5 || tile === 6 || tile === 7 || tile === 8 || tile === 9) {
+        return positionTopRight
+      } else if (tile === 10 || tile === 11 || tile === 12 || tile === 13 || tile === 14) {
+        return positionTopRight
+      } else if (tile === 15 || tile === 16 || tile === 17 || tile === 18 || tile === 19) {
+        return positionTopRight
+      } else if (tile === 20 || tile === 21 || tile === 22 || tile === 23 || tile === 24) {
+        return positionTopRight
+      } else if (tile === 25 || tile === 26 || tile === 27 || tile === 28) {
+        return positionTopRight
+      }
+    }
     const Move = ({ position }) => {
       return <>
         { pathNum === -1 && <BackdoToken position={position} scale={0.8} rotation={[0, Math.PI/2, 0]}/>}
@@ -149,7 +169,7 @@ export default function Tile({
     }
 
     return <>
-      <Move position={[1,2.3,0]}/>
+      <Move position={shiftPosition({tile})}/>
     </>
   }
 
