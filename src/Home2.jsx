@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Float, Html, Text3D, useGLTF } from "@react-three/drei";
+import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import layout from './layout';
 import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
-import YootMesh from './meshes/YootMesh';
-import { useLocation, useParams } from 'wouter';
+import { useLocation } from 'wouter';
 import HowToPlay from './HowToPlay';
 import Title from './Title';
 import About from './About';
@@ -22,6 +21,7 @@ import MeteorsRealShader from './shader/meteorsReal/MeteorsRealShader';
 import YootDisplay from './YootDisplay';
 import DisconnectModal from './DisconnectModal';
 import useMusicPlayer from './hooks/useMusicPlayer';
+import axios from 'axios';
 
 export default function Home2() {
 
@@ -31,6 +31,18 @@ export default function Home2() {
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const [playMusic] = useMusicPlayer();
+  const [_location, setLocation] = useLocation();
+  useEffect(async () => {
+    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      eventName: 'pageView',
+      timestamp: new Date(),
+      payload: {
+        'page': 'home'
+      }
+    })
+    console.log('[Home2] post log response', response)
+  }, [])
+  
 
   function Pieces() {
     return <group>
@@ -93,8 +105,6 @@ export default function Home2() {
       </Float>
     </group>
   }
-
-  const [_location, setLocation] = useLocation();
 
   function AboutButton({ position, rotation, scale }) {
     const [hover, setHover] = useState(false)
@@ -212,8 +222,6 @@ export default function Home2() {
       e.stopPropagation();
       if (isThrottled) return
       
-      console.log('[LetsPlayButton] pointer up')
-
       setIsThrottled(true)
 
       setTimeout(() => {
