@@ -76,7 +76,8 @@ export default function RocketsWin() {
     document.body.style.cursor = "default";
   }
 
-  async function handlePointerDown() {
+  async function handlePointerUp(e) {
+    e.stopPropagation()
     socket.emit('reset', { roomId: params.id.toUpperCase() })
 
     const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
@@ -140,7 +141,7 @@ export default function RocketsWin() {
         position={[3.7, 0.5, 0]}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-        onPointerDown={handlePointerDown}
+        onPointerUp={async (e)=>{ await handlePointerUp(e) }}
       >
         <boxGeometry args={[8.1, 1.6, 0.5]}/>
         <meshStandardMaterial color="grey" transparent opacity={0}/>

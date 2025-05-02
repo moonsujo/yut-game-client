@@ -1280,7 +1280,7 @@ export default function Lobby() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerUp={async (e)=>{ await handlePointerUp(e) }}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1344,7 +1344,7 @@ export default function Lobby() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerUp={async (e)=>{ await handlePointerUp(e) }}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1511,7 +1511,7 @@ export default function Lobby() {
         scale={[4.5, 0.02, 0.9]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerUp={async (e)=>{ await handlePointerUp(e) }}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
