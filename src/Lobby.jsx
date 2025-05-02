@@ -69,6 +69,17 @@ export default function Lobby() {
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const params = useParams();
 
+  useEffect(async () => {
+    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      eventName: 'pageView',
+      timestamp: new Date(),
+      payload: {
+        'page': 'lobby'
+      }
+    })
+    console.log('[Lobby] post log response', response)
+  }, [])
+
   function PlayersParty({ position=[0,0,0], scale=0.7 }) {
     const host = useAtomValue(hostAtom)
     const client = useAtomValue(clientAtom)  
@@ -1237,12 +1248,21 @@ export default function Lobby() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        async function handlePointerUp(e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'random' })
+        
+          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+            eventName: 'buttonClick',
+            timestamp: new Date(),
+            payload: {
+              'button': 'addAIEZ'
+            }
+          })
+          console.log('[AddAIEZButton] post log response', response)
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1291,12 +1311,21 @@ export default function Lobby() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        async function handlePointerUp(e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'smart' })
+        
+          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+            eventName: 'buttonClick',
+            timestamp: new Date(),
+            payload: {
+              'button': 'addAISmart'
+            }
+          })
+          console.log('[AddAISmartButton] post log response', response)
         }
 
     
@@ -1448,7 +1477,7 @@ export default function Lobby() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      function handlePointerUp(e) {
+      async function handlePointerUp(e) {
         e.stopPropagation()
         setHover(false)
         if (isHost && readyToStart) {
@@ -1457,6 +1486,15 @@ export default function Lobby() {
           const audio = new Audio('sounds/effects/boot-up.mp3');
           audio.volume = 1;
           audio.play();
+
+          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+            eventName: 'buttonClick',
+            timestamp: new Date(),
+            payload: {
+              'button': 'startGame'
+            }
+          })
+          console.log('[StartGameButton] post log response', response)
         }
       }
       return <group name='start-game-button' position={position}>

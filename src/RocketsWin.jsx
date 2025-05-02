@@ -76,8 +76,17 @@ export default function RocketsWin() {
     document.body.style.cursor = "default";
   }
 
-  function handlePointerDown() {
+  async function handlePointerDown() {
     socket.emit('reset', { roomId: params.id.toUpperCase() })
+
+    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      eventName: 'buttonClick',
+      timestamp: new Date(),
+      payload: {
+        'button': 'restartGame'
+      }
+    })
+    console.log('[RestartGame][RocketsWin] post log response', response)
   }
 
   return <group>
