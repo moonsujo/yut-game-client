@@ -171,9 +171,18 @@ export default function Home2() {
       setHover(false)
     }
 
-    function handlePointerDown(e) {
+    async function handlePointerUp(e) {
       e.stopPropagation();
       setDisplay('howToPlay')
+
+      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+        eventName: 'buttonClick',
+        timestamp: new Date(),
+        payload: {
+          'button': 'howToPlayHome',
+        }
+      })
+      console.log('[HowToPlayButton] post log response', response)
     }
 
     return <group position={position} rotation={rotation} scale={scale}>
@@ -189,7 +198,7 @@ export default function Home2() {
         name='wrapper' 
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerDown={e => handlePointerDown(e)}
+        onPointerUp={e => handlePointerUp(e)}
       >
         <boxGeometry args={[2.8, 0.1, 0.55]}/>
         <meshStandardMaterial transparent opacity={0}/>

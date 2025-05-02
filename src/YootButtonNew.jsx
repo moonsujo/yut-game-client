@@ -54,7 +54,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
     e.stopPropagation();
     document.body.style.cursor = "default";
   }
-  function handleClick(e) {
+  async function handleClick(e) {
     e.stopPropagation();
 
     if (enabled && !paused) {
@@ -64,6 +64,15 @@ export default function YootButtonNew({ position, rotation, scale }) {
       audio.volume=1
       audio.play();
     }
+          
+    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      eventName: 'buttonClick',
+      timestamp: new Date(),
+      payload: {
+        'button': 'throwYut',
+      }
+    })
+    console.log('[YootButton] post log response', response)
   }
 
   function ThrowCount({position, orientation}) {
