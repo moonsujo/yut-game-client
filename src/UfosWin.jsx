@@ -125,9 +125,9 @@ export default function UfosWin({}) {
     document.body.style.cursor = "default";
   }
 
-  async function handlePointerUp(e) {
+  const handlePointerUp = async (e) => {
     e.stopPropagation()
-    
+
     socket.emit('reset', { roomId: params.id.toUpperCase() })
     const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
       eventName: 'buttonClick',
@@ -213,7 +213,7 @@ export default function UfosWin({}) {
         position={[3.7, 0.5, 0]}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-        onPointerUp={async (e)=>{ await handlePointerUp(e) }}
+        onPointerUp={(e)=>handlePointerUp(e)}
       >
         <boxGeometry args={[8.1, 1.6, 0.5]}/>
         <meshStandardMaterial color="grey" transparent opacity={0}/>
