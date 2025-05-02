@@ -1477,7 +1477,7 @@ export default function Lobby() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      async function handlePointerUp () {
+      async function handlePointerUp (e) {
         setHover(false)
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
@@ -1510,7 +1510,7 @@ export default function Lobby() {
         scale={[4.5, 0.02, 0.9]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={handlePointerUp}>
+        onPointerUp={e => handlePointerUp(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
