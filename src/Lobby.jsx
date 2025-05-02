@@ -1249,7 +1249,7 @@ export default function Lobby() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        const handlePointerUp = async (e) => {
+        async function handlePointerUp (e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
@@ -1281,7 +1281,7 @@ export default function Lobby() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={(e)=>handlePointerUp(e)}>
+            onPointerUp={async (e) => { await handlePointerUp(e) }}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1312,7 +1312,7 @@ export default function Lobby() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        const handlePointerUp = async (e) => {
+        async function handlePointerUp (e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
@@ -1345,7 +1345,7 @@ export default function Lobby() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={(e)=>handlePointerUp(e)}>
+            onPointerUp={async (e) => { await handlePointerUp(e) }}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1478,7 +1478,7 @@ export default function Lobby() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      const handlePointerUp = async (e) => {
+      async function handlePointerUp (e) {
         e.stopPropagation()
         setHover(false)
         if (isHost && readyToStart) {
@@ -1512,7 +1512,7 @@ export default function Lobby() {
         scale={[4.5, 0.02, 0.9]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={(e) => handlePointerUp(e)}>
+        onPointerUp={async (e) => { await handlePointerUp(e) }}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -2108,7 +2108,7 @@ export default function Lobby() {
         scale={[11.4, 0.02, 1.8]}
         onPointerEnter={e => handleSharePointerEnter(e)}
         onPointerLeave={e => handleSharePointerLeave(e)}
-        onPointerUp={e => handleSharePointerUp(e)}
+        onPointerUp={async (e) => { await handleSharePointerUp(e) }}
         >
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -2168,6 +2168,15 @@ export default function Lobby() {
           const audio = new Audio('sounds/effects/boot-up.mp3');
           audio.volume = 1;
           audio.play();
+
+          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+            eventName: 'buttonClick',
+            timestamp: new Date(),
+            payload: {
+              'button': 'startGame'
+            }
+          })
+          console.log('[StartGameButton][portrait] post log response', response)
         }
       }
       return <group name='start-game-button' position={position}>
@@ -2182,7 +2191,7 @@ export default function Lobby() {
         <mesh 
         name='wrapper' 
         scale={[11.4, 0.02, 1.8]}
-        onPointerUp={e => handleStartPointerUp(e)}>
+        onPointerUp={async (e) => { await handleStartPointerUp(e) }}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='black' transparent opacity={0}/>
         </mesh>

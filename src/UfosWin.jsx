@@ -126,7 +126,7 @@ export default function UfosWin({}) {
     document.body.style.cursor = "default";
   }
 
-  const handlePointerUp = async (e) => {
+  async function handlePointerUp (e) {
     e.stopPropagation()
 
     socket.emit('reset', { roomId: params.id.toUpperCase() })
@@ -214,7 +214,7 @@ export default function UfosWin({}) {
         position={[3.7, 0.5, 0]}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-        onPointerUp={(e)=>handlePointerUp(e)}
+        onPointerUp={async (e) => { await handlePointerUp(e) }}
       >
         <boxGeometry args={[8.1, 1.6, 0.5]}/>
         <meshStandardMaterial color="grey" transparent opacity={0}/>
