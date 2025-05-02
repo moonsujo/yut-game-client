@@ -20,6 +20,7 @@ import { useBeamDustShader } from './shader/beamDust/BeamDustShader';
 import { generateRandomNumberInRange } from './helpers/helpers';
 import layout from './layout';
 import GameCamera from './GameCamera';
+import axios from 'axios';
 
 export default function UfosWin({}) {
 

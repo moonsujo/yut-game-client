@@ -61,6 +61,7 @@ import Rocket from "./meshes/Rocket.jsx";
 import Ufo from "./meshes/Ufo.jsx";
 import { formatName } from "./helpers/helpers.js";
 import GameRules from "./GameRules.jsx";
+import axios from "axios";
 
 export default function Lobby() {
 
