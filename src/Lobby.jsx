@@ -1312,8 +1312,7 @@ export default function Lobby() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        async function handlePointerUp (e) {
-          e.stopPropagation()
+        async function handlePointerUp () {
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
@@ -1345,7 +1344,7 @@ export default function Lobby() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={async (e) => { await handlePointerUp(e) }}>
+            onPointerUp={handlePointerUp}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1478,8 +1477,7 @@ export default function Lobby() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      async function handlePointerUp (e) {
-        e.stopPropagation()
+      async function handlePointerUp () {
         setHover(false)
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
@@ -1495,7 +1493,7 @@ export default function Lobby() {
               'button': 'startGame'
             }
           })
-          console.log('[StartGameButton] post log response', response)
+          console.log('[StartGameButton][desktop] post log response', response)
         }
       }
       return <group name='start-game-button' position={position}>
@@ -1512,7 +1510,7 @@ export default function Lobby() {
         scale={[4.5, 0.02, 0.9]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={async (e) => { await handlePointerUp(e) }}>
+        onPointerUp={handlePointerUp}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
