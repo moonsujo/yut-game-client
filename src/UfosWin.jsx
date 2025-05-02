@@ -214,7 +214,7 @@ export default function UfosWin({}) {
         position={[3.7, 0.5, 0]}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-        onPointerUp={async (e) => { await handlePointerUp(e) }}
+        onPointerUp={(e) => handlePointerUp(e)}
       >
         <boxGeometry args={[8.1, 1.6, 0.5]}/>
         <meshStandardMaterial color="grey" transparent opacity={0}/>

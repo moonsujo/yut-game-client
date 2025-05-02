@@ -32,15 +32,18 @@ export default function Home2() {
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const [playMusic] = useMusicPlayer();
   const [_location, setLocation] = useLocation();
-  useEffect(async () => {
-    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'pageView',
-      timestamp: new Date(),
-      payload: {
-        'page': 'home'
-      }
-    })
-    console.log('[Home2] post log response', response)
+  useEffect(() => {
+    async function log() {
+      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+        eventName: 'pageView',
+        timestamp: new Date(),
+        payload: {
+          'page': 'home'
+        }
+      })
+      console.log('[Home2] post log response', response)
+    }
+    log()
   }, [])
   
 
@@ -218,7 +221,7 @@ export default function Home2() {
     }
 
     const [isThrottled, setIsThrottled] = useState(false)
-    function handlePointerUp(e) {
+    async function handlePointerUp(e) {
       e.stopPropagation();
       if (isThrottled) return
       
@@ -237,6 +240,15 @@ export default function Home2() {
       audio.play();
       
       playMusic();
+
+      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+        eventName: 'buttonClick',
+        timestamp: new Date(),
+        payload: {
+          'button': 'createGame'
+        }
+      })
+      console.log('[CreateGameButton] post log response', response)
     }
 
     return <group position={position} rotation={rotation} scale={scale}>
