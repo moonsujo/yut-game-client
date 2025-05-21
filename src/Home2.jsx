@@ -22,6 +22,7 @@ import YootDisplay from './YootDisplay';
 import DisconnectModal from './DisconnectModal';
 import useMusicPlayer from './hooks/useMusicPlayer';
 import axios from 'axios';
+import useQueryLogs from './hooks/useQueryLogs';
 
 export default function Home2() {
 
@@ -46,6 +47,53 @@ export default function Home2() {
     log()
   }, [])
   
+  // games played, page visits, yut thrown
+  // stats page button
+  function PageVisits({ position, rotation }) {
+    const [numVisitsResult, loading] = useQueryLogs({ 
+      eventName: 'pageView', 
+      payload: {
+        'page': 'home'
+      }
+    })
+    const numVisits = numVisitsResult?.[0]?.[0]?.value
+
+    return <group>
+      <Text3D
+        font="fonts/Luckiest Guy_Regular.json"
+        position={position}
+        rotation={rotation}
+        size={0.3}
+        height={0.01}
+        color='limegreen'
+      >
+        {`Visits: ${ numVisits ? numVisits : '' }`}
+      </Text3D>
+    </group>
+  }
+
+  function GamesPlayed({ position, rotation }) {
+    const [numGamesPlayedResult] = useQueryLogs({ 
+      eventName: 'buttonClick', 
+      payload: {
+        'button': 'startGame'
+      }
+    })
+    const numGamesPlayed = numGamesPlayedResult?.[0]?.[0]?.value
+
+    return <group>
+      <Text3D
+        font="fonts/Luckiest Guy_Regular.json"
+        position={position}
+        rotation={rotation}
+        size={0.3}
+        height={0.01}
+        color='limegreen'
+      >
+        {`Games Played: ${ numGamesPlayed ? numGamesPlayed : '' }`}
+      </Text3D>
+    </group>
+  }
 
   function Pieces() {
     return <group>
@@ -514,7 +562,7 @@ export default function Home2() {
       position={layout[device].title.camera.position}
       lookAt={layout[device].title.camera.lookAt}
     />
-    <group>
+    <group name='navigation'>
       { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
         <Title 
           position={layout[device].title.text.position}
@@ -562,7 +610,17 @@ export default function Home2() {
         scale={layout[device].title.letsPlay.scale}
       />
     </group>
-    <group>
+    <group name='stats'>
+      <PageVisits 
+        position={layout[device].title.pageVisits.position} 
+        rotation={layout[device].title.pageVisits.rotation}
+      />
+      <GamesPlayed 
+        position={layout[device].title.gamesPlayed.position} 
+        rotation={layout[device].title.gamesPlayed.rotation}
+      />
+    </group>
+    <group name='display'>
       { display === 'board' && <group position={layout[device].title.board.position} 
         scale={layout[device].title.board.scale}>
         <animated.group scale={titleBoardScale}>
@@ -578,17 +636,15 @@ export default function Home2() {
         rotation={layout[device].about.rotation}
         scale={layout[device].about.scale}
       />}
-      <Physics>
-        { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
-          <HowToPlay 
-            device={device}
-            position={layout[device].howToPlay.position}
-            rotation={[0,0,0]}
-            scale={layout[device].howToPlay.scale}
-            tabOrientation='right'
-          />
-        </animated.group> }
-      </Physics>
+      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
+        <HowToPlay 
+          device={device}
+          position={layout[device].howToPlay.position}
+          rotation={[0,0,0]}
+          scale={layout[device].howToPlay.scale}
+          tabOrientation='right'
+        />
+      </animated.group> }
     </group>
     { !connectedToServer && <DisconnectModal
       position={layout[device].title.disconnectModal.position}
