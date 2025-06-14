@@ -10,6 +10,7 @@ import Team from "./Team.jsx";
 import GameCamera from "./GameCamera.jsx";
 import DisconnectModal from "./DisconnectModal.jsx";
 import JoinTeamModal from "./JoinTeamModal.jsx";
+import * as THREE from 'three';
 
 // three js
 // import { Leva, useControls } from "leva"
@@ -28,6 +29,10 @@ import {
   connectedToServerAtom,
   guestBeingEdittedAtom,
   seatChosenAtom,
+  showGalaxyBackgroundAtom,
+  showBlackholeAtom,
+  showRedGalaxyAtom,
+  showBlackhole2Atom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -69,6 +74,17 @@ export default function Lobby() {
   const device = useAtomValue(deviceAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const params = useParams();
+  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
+  const setShowBlackhole = useSetAtom(showBlackholeAtom)
+  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
+  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
+
+  useEffect(() => {
+    setShowGalaxy(true)
+    setShowBlackhole(false)
+    setShowRedGalaxy(false)
+    setShowBlackhole2(false)
+  }, [])
 
   useEffect(() => {
     async function log() {
@@ -1781,7 +1797,6 @@ export default function Lobby() {
         }))
         function handlePointerUp(e) {
           e.stopPropagation()
-          console.log('[CopyLinkButton] click')
           copyURLToClipboard()
           api.start({
             from: {
@@ -2227,6 +2242,8 @@ export default function Lobby() {
     </group>
   }
   
+  const meteorShaderColor = new THREE.Color();
+  meteorShaderColor.setHSL(0.05, 0.7, 0.4)
   return <animated.group>
     <GameCamera position={layout[device].camera.position} lookAtOffset={[0,0,0]}/>
     { device === 'landscapeDesktop' && <group>
@@ -2243,6 +2260,6 @@ export default function Lobby() {
       position={layout[device].lobby.disconnectModal.position}
       rotation={layout[device].lobby.disconnectModal.rotation}
     /> }
-    <MeteorsRealShader/>
+    <MeteorsRealShader color={meteorShaderColor}/>
   </animated.group>
 }

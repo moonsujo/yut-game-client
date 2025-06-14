@@ -2,6 +2,8 @@ import React, {useRef, useMemo} from 'react'
 import {useFrame, useThree} from '@react-three/fiber'
 import * as THREE from 'three'
 import { OrbitControls } from '@react-three/drei'
+import { showGalaxyBackgroundAtom } from '../GlobalState'
+import { useAtomValue } from 'jotai'
 
 const vertexShader = `
   varying vec3 Normal;
@@ -82,6 +84,8 @@ function MilkyWay(props) {
     const meshRef = useRef();
     const secondMeshRef = useRef();
     const thirdMeshRef = useRef();
+
+    const showGalaxy = useAtomValue(showGalaxyBackgroundAtom)
     
     const loader = new THREE.TextureLoader();
     const sky = loader.load('/textures/star.jpg');
@@ -155,13 +159,14 @@ function MilkyWay(props) {
 
 
     useFrame((state) => {
-        meshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
-        secondMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
-        thirdMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+        if (showGalaxy) {
+            meshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+            secondMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+            thirdMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+        }
     });
    
-    return(
-      <>
+    return showGalaxy && <>
         <mesh 
             {...props}
             ref={meshRef}
@@ -185,8 +190,7 @@ function MilkyWay(props) {
                     <shaderMaterial attach="material"{...MaterialMilkyWayThirdLayer} depthWrite={false}/>
                 </mesh>
         </mesh>
-      </>
-    )
+    </>
 }
 
 export default MilkyWay;

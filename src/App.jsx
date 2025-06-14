@@ -12,6 +12,9 @@ import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import * as THREE from 'three';
 import Alert from './Alert';
 import AssetLoader from './AssetLoader';
+import Blackhole from './Blackhole';
+import RedGalaxy from './RedGalaxy';
+import Blackhole2 from './Blackhole2';
 
 export default function App () {
 
@@ -27,9 +30,9 @@ export default function App () {
     >
       <Suspense fallback={null}>
         {/* <Perf/> */}
-        <directionalLight castShadow position={ [ 1, 2, 3 ] } intensity={ 4.5 } />
+        <directionalLight castShadow position={ [ 1, 6, 3 ] } intensity={ 4 } />
         <ambientLight intensity={ 1.5 } />
-        <ParticleSystem/>
+        {/* <ParticleSystem/> */}
         <SocketManager/>
         <AssetLoader/>
         <Route path="/">
@@ -48,6 +51,9 @@ export default function App () {
             colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
             colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
           />
+          <Blackhole scale={1.5} position={[0, 0, -1.1]}/>
+          <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
+          <RedGalaxy/>
           <Alert position={[0,2,0.5]} rotation={[0,0,0]}/>
         </Route>
       </Suspense>
