@@ -1,47 +1,52 @@
-import { Html, Scroll } from "@react-three/drei";
+import { Html, Scroll, ScrollControls } from "@react-three/drei";
 import { socket } from "./SocketManager";
-import { useAtom } from "jotai";
-import React, { useState, useRef, useEffect } from "react";
-import ScrollToBottom from 'react-scroll-to-bottom';
+import { useAtomValue } from "jotai";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useParams } from "wouter";
 import layout from "./layout";
-import { messagesAtom } from "./GlobalState"
+import { logDisplayAtom, messagesAtom } from "./GlobalState"
+import useAutoScroll from "./hooks/useAutoScroll";
+import DOMPurify from 'dompurify';
 
-export default function Chatbox({ position=[0,0,0], rotation=[0,0,0], scale=1, device }) {
-  const [messages] = useAtom(messagesAtom);
+export default function Chatbox({ 
+  position=[0,0,0], 
+  rotation=[0,0,0], 
+  scale=1, 
+  device='landscapeDesktop',
+  boxHeight,
+  boxWidth,
+  padding,
+  fontSize,
+  borderRadius,
+}) {
+
+  const messages = useAtomValue(messagesAtom)
+  const logDisplay = useAtomValue(logDisplayAtom)
   const [message, setMessage] = useState('');
   const params = useParams();
 
-  function onMessageSubmit (e) {
-    e.preventDefault();
-    socket.emit("sendMessage", { message, roomId: params.id.toUpperCase() }, ({ joinRoomId, error }) => {
-      if (error) {
-        console.log('[sendMessage] error sending message to room', joinRoomId)
-      } else {
-        setMessage('')
-      }
-    })
-  }
+  const messagesEndRef = useRef(null);
+
+  const container = useRef()
+
+  useAutoScroll(container, [messages, logDisplay]);
   
-  // const messagesEndRef = useRef(null);
-  // const scrollToBottom = () => {
-  //   messagesEndRef.current?.scrollIntoView({
-  //     behavior: "smooth",
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   // scrollToBottom();
-  // }, [messages]);
-
-  // useEffect(() => {
-  //   // scrollToBottom();
-  // }, []); // must be a child component to scroll on load
-  // must be disabled, or it will disappear when a new blender-created
-  // mesh is loaded
+  function onMessageSubmit(e) {
+    e.preventDefault();
+    const sanitizedMessage = DOMPurify.sanitize(message).trimStart().trimEnd();
+    if (sanitizedMessage) {
+      socket.emit("sendMessage", { message: sanitizedMessage, roomId: params.id.toUpperCase() }, ({ joinRoomId, error }) => {
+        if (error) {
+          console.log('[sendMessage] error sending message to room', joinRoomId)
+        } else {
+          setMessage('')
+        }
+      })
+    }
+  }
 
   function getColorByTeam(team) {
-    if (team == undefined) {
+    if (team === undefined) {
       return 'grey'
     } else if (team == 0) {
       return 'red'
@@ -50,36 +55,39 @@ export default function Chatbox({ position=[0,0,0], rotation=[0,0,0], scale=1, d
     }
   }
 
-  return <Html 
-    position={position}
-    rotation={rotation}
-    scale={scale}
-    transform
-  >
+  return <Html   
+  position={position} 
+  rotation={rotation}
+  scale={scale}
+  transform>
     <div style={{
       position: 'absolute'
     }}>
-      <div style={{
-        borderRadius: layout[device].game.chat.box.borderRadius,
-        height: layout[device].game.chat.box.height,
-        width: layout[device].game.chat.box.width,
-        padding: layout[device].game.chat.box.padding,
-        fontSize: layout[device].game.chat.box.fontSize,
-        'background': 'rgba(128, 128, 128, 0.3)',
-        'overflowY': 'auto',
-        'wordWrap': 'break-word',
-      }}>
-        <ScrollToBottom className="messages">
-        {messages.map((value, index) => 
-          <p style={{color: 'white', margin: 0}} key={index}>
-            <span style={{color: getColorByTeam(value.team)}}>{value.name}: </span> 
-            {value.text}
-          </p>
-        )}
-        {/* <div ref={messagesEndRef} /> */}
-        </ScrollToBottom>
-      </div>
       <form onSubmit={(e) => onMessageSubmit(e)}>
+      <div ref={container} style={{
+        borderRadius: borderRadius,
+        height: boxHeight,
+        width: boxWidth,
+        padding: padding,
+        fontSize: fontSize,
+        'background': 'rgba(128, 128, 128, 0.3)',
+        'overflowY': 'scroll',
+        'wordWrap': 'break-word',
+        'letterSpacing': '1.5px'
+      }}>
+        {messages.map((value, index) => <p style={{
+          color: 'white', 
+          fontFamily: 'Luckiest Guy',
+          margin: '5px'
+          }} 
+          key={index}
+          >
+          <span style={{color: getColorByTeam(value.team)}}>{value.name}: </span> 
+          {value.text}
+        </p>
+        )}
+        <div ref={messagesEndRef}/>
+        </div>
         <input 
           id='input-message'
           style={{ 
@@ -87,10 +95,11 @@ export default function Chatbox({ position=[0,0,0], rotation=[0,0,0], scale=1, d
             borderRadius: layout[device].game.chat.input.borderRadius,
             padding: layout[device].game.chat.input.padding,
             border: layout[device].game.chat.input.border,
-            width: layout[device].game.chat.box.width,
-            fontSize: layout[device].game.chat.input.fontSize
+            width: boxWidth,
+            fontSize: layout[device].game.chat.input.fontSize,
+            fontFamily: 'Luckiest Guy'
           }} 
-          onChange={e => setMessage(e.target.value)} 
+          onChange={e => { console.log('change'); setMessage(e.target.value)} }
           value={message}
           placeholder="say something..."
         />

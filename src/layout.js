@@ -1166,12 +1166,12 @@ export default {
         scale: [1.3, 1.3, 1.3]
       },
       chat: {
-        position: [-5.4,0,6.7],
+        position: [-5.4,0,7],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
           borderRadius: '5px',
-          height: '330px',
+          height: '260px',
           width: '270px',
           padding: '10px',
           fontSize: '30px',
@@ -2775,7 +2775,26 @@ export default {
       teamSwitchButtonUfo: {
         position: [1.7,0,0],
         scale: 2
-      }
+      },
+      chat: {
+        position: [5.6,0,1.8],
+        rotation: [-Math.PI/2, 0, 0],
+        scale: 0.5,
+        box: {
+          borderRadius: '5px',
+          height: '270px',
+          width: '450px',
+          padding: '10px',
+          fontSize: '24px',
+        },
+        input: {
+          height: '15px',
+          fontSize: '20px',
+          borderRadius: '5px',
+          padding: '10px',
+          border: 0,
+        }
+      },
     },
     game: {
       letsPlayButton: {
@@ -2934,12 +2953,12 @@ export default {
         scale: [1.5, 1.5, 1.5]
       },
       chat: {
-        position: [-11.05,0,3.3],
+        position: [-11, 0, 2.9],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
           borderRadius: '5px',
-          height: '230px',
+          height: '240px',
           width: '420px',
           padding: '10px',
           fontSize: '24px',
@@ -2950,7 +2969,50 @@ export default {
           borderRadius: '5px',
           padding: '10px',
           border: 0,
+        },
+        button: {
+          position: [-8.8,0,2.9],
+          rotation: [0, 0, 0],
+          outerBox: {
+            args: [1.4, 0.03, 0.55]
+          },
+          innerBox: {
+            args: [1.35, 0.04, 0.5]
+          },
+          text: {
+            position: [-0.5, 0.025, 0.15],
+            rotation: [-Math.PI/2, 0, 0],
+            size: 0.3,
+            height: 0.01,
+          },
+          scale: 1
         }
+      },
+      logs: {
+        box: {
+          borderRadius: '5px',
+          height: '215px',
+          width: '420px',
+          padding: '10px',
+          fontSize: '24px',
+        },
+        button: {
+          position: [-10.3,0,2.9],
+          rotation: [0, 0, 0],
+          outerBox: {
+            args: [1.4, 0.03, 0.55]
+          },
+          innerBox: {
+            args: [1.35, 0.04, 0.5]
+          },
+          text: {
+            position: [-0.5, 0.025, 0.15],
+            rotation: [-Math.PI/2, 0, 0],
+            size: 0.3,
+            height: 0.01,
+          },
+          scale: 1,
+        },
       },
       invite: {
         position: [-10.7, 0, 3.8],

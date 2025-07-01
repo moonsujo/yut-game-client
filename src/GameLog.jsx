@@ -4,11 +4,20 @@ import { deviceAtom, gameLogsAtom } from './GlobalState';
 import layout from './layout';
 import { useAtom } from 'jotai';
 import ScrollToBottom from 'react-scroll-to-bottom';
+import useAutoScroll from './hooks/useAutoScroll';
 
-export default function GameLog({ position, rotation, scale }) {
+export default function GameLog({ 
+  boxHeight,
+  boxWidth,
+  padding,
+  fontSize,
+  borderRadius,
+  scale,
+  position,
+  rotation
+}) {
 
   // instead of putting 'device' in 'Game', put it here
-  const [device] = useAtom(deviceAtom)
   const [logs] = useAtom(gameLogsAtom)
 
   function formatMessage(log, index) {
@@ -224,15 +233,10 @@ export default function GameLog({ position, rotation, scale }) {
   }
 
   const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [logs]);
+  const container = useRef()
+
+  useAutoScroll(container, [logs]);
 
   // background
   // text
@@ -246,22 +250,19 @@ export default function GameLog({ position, rotation, scale }) {
     <div style={{
       position: 'absolute'
     }}>
-      <div style={{
-        borderRadius: layout[device].game.chat.box.borderRadius,
-        height: layout[device].game.chat.box.height,
-        width: layout[device].game.chat.box.width,
-        padding: layout[device].game.chat.box.padding,
-        fontSize: layout[device].game.chat.box.fontSize,
+      <div ref={container} style={{
+        borderRadius: borderRadius,
+        height: boxHeight,
+        width: boxWidth,
+        padding: padding,
+        fontSize: fontSize,
         'background': 'rgba(128, 128, 128, 0.3)',
         'overflowY': 'auto',
         'wordWrap': 'break-word',
         'letterSpacing': '1.5px'
       }}>
-        
-        <ScrollToBottom className="game-logs">
-          {logs.map((log, index) => formatMessage(log, index))}
-          <div ref={messagesEndRef} />
-        </ScrollToBottom>
+        {logs.map((log, index) => formatMessage(log, index))}
+        <div ref={messagesEndRef}/>
       </div>
     </div>
   </Html>
