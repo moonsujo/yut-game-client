@@ -5,18 +5,16 @@
 // on finish, play the throw alert
 // what about the move list?
 
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { LoopOnce } from 'three'
 import { useAnimations, useGLTF } from '@react-three/drei';
-import { yootAnimationAtom } from './GlobalState';
-import { useAtomValue } from 'jotai';
-import { useSpring, animated } from '@react-spring/three';
+import { animated } from '@react-spring/three';
 
 export default function YootNew({ animation, scale, position, rotation=[0,0,0] }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/models/yoot-animation-2-korean.glb')
+  const { nodes, materials, animations } = useGLTF('/models/yoot-animation-2-korean-darker-more.glb')
   // const { nodes, materials, animations } = useGLTF('/models/yoot-animation-3.glb')
-  const { actions, mixer } = useAnimations(animations, group)
+  const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
     if (animation) {
@@ -27,11 +25,7 @@ export default function YootNew({ animation, scale, position, rotation=[0,0,0] }
     }
   }, [animation])
 
-  const { yutScale } = useSpring({
-    yutScale: animation ? 1 : 0
-  })
-
-  return <animated.group scale={yutScale}>
+  return <animated.group>
     <group ref={group} scale={scale} position={position} rotation={rotation} dispose={null}>
       <group name="Scene">
         <mesh

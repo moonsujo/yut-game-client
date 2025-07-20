@@ -12,7 +12,6 @@ import { animated, useSpring } from '@react-spring/three';
 import Check from './meshes/Check';
 import useShakeDetector from './hooks/useShakeDetector';
 import axios from 'axios';
-import YutBonus from './YutBonus';
 
 export default function YootButtonNew({ position, rotation, scale }) {
   const { nodes } = useGLTF("/models/rounded-rectangle.glb");
@@ -61,16 +60,15 @@ export default function YootButtonNew({ position, rotation, scale }) {
 
   const DEBOUNCE_DELAY = 300
   async function handleClick(e) {
-
     e.stopPropagation();
 
-    // Prevent multiple clicks
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
     timeoutRef.current = setTimeout(async () => {
       if (enabled && !paused) {
         setYootAnimationPlaying(true)
         socket.emit('throwYut', { roomId: params.id.toUpperCase() })
+        console.log('click event emitted')
         const audio = new Audio('sounds/effects/throw-yut-2.mp3');
         audio.volume=1
         audio.play();
@@ -210,7 +208,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
     scale={scale}
     ref={buttonRef}
   >
-    { !enabled && <group scale={0.9}>
+    <group>
       <mesh
         castShadow
         receiveShadow
@@ -274,12 +272,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
         <boxGeometry args={[3, 0.2, 2]}/>
         <meshStandardMaterial transparent opacity={0}/>
       </mesh> 
-    </group> }
-    { enabled && <YutBonus 
-      alwaysShow={true} 
-      position={[0, 0, -0.4]} 
-      rotation={[0, -Math.PI/2, 0]}
-    />}
+    </group>
     { client.team === turn.team && <ThrowCount 
       position={layout[device].game.throwCount.position}
       orientation={layout[device].game.throwCount.orientation}
