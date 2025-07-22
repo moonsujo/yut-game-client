@@ -1,5 +1,5 @@
 // js
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from "./layout.js";
 import { useSpring, animated } from '@react-spring/three';
@@ -34,6 +34,7 @@ import {
   showRedGalaxyAtom,
   showBlackhole2Atom,
   settingsOpenAtom,
+  portraitLobbySelectionAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -2067,12 +2068,16 @@ export default function LobbyNew() {
     
     const roomIdRef = useRef(null)
     const roomIdContainerRef = useRef(null)
+    const roomIdCurrPos = useMemo(() => {
+      roomIdRef.current && -roomIdRef.current.geometry.boundingSphere.center.x
+    }, [roomIdRef])
 
     useFrame(() => {
-      if (roomIdRef.current && roomIdRef.current.geometry.boundingSphere) {
-        const centerX = roomIdRef.current.geometry.boundingSphere.center.x
-        roomIdContainerRef.current.position.x = -centerX
-      }
+      roomIdContainerRef.current.position.x = roomIdCurrPos
+      // if (roomIdRef.current && roomIdRef.current.geometry.boundingSphere) {
+      //   const centerX = roomIdRef.current.geometry.boundingSphere.center.x
+      //   roomIdContainerRef.current.position.x = -centerX
+      // }
     })
     return <group position={position}>
       <Text3D
@@ -2102,7 +2107,7 @@ export default function LobbyNew() {
   }
 
   function BodySection({ position, scale }) {
-    const [selection, setSelection] = useState('players')
+    const [selection, setSelection] = useAtom(portraitLobbySelectionAtom)
     function SettingsButton({ position, scale }) {
       const [hover, setHover] = useState(false)
       function handlePointerEnter(e) {

@@ -21,7 +21,6 @@ export default function MeteorsRealShader({
         useLoader(TextureLoader, '/textures/particles/7.png'), // heart
     ]
 }) {
-    console.log('meteor shader')
     const { scene } = useThree();
 
     const sizes = {

@@ -141,6 +141,7 @@ export const showGalaxyBackgroundAtom = atom(true)
 export const showBlackholeAtom = atom(false)
 export const showRedGalaxyAtom = atom(false)
 export const showBlackhole2Atom = atom(false)
+export const portraitLobbySelectionAtom = atom('players')
 
 const deepPieceEquals = (prev, next) => {
   let result;
