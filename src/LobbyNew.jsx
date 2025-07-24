@@ -41,7 +41,7 @@ import PiecesOnBoard from "./PiecesOnBoard.jsx";
 import ScoreButtons from "./ScoreButtons.jsx";
 import RocketsWin from "./RocketsWin.jsx";
 import UfosWin from "./UfosWin.jsx";
-import { Float, Text3D, useGLTF } from "@react-three/drei";
+import { Center, Float, Text3D, useGLTF } from "@react-three/drei";
 import { Color, MeshStandardMaterial } from "three";
 import { useFrame } from "@react-three/fiber";
 import GameLog from "./GameLog.jsx";
@@ -1586,9 +1586,6 @@ export default function LobbyNew() {
         </Text3D>
       </group>
     }
-    // PLACE 'start game' BUTTON AT THE BOTTOM OF THE MOON
-    // SHOW IT FOR ALL PLAYERS
-    // IF YOU'RE NOT HOST, DON'T ENABLE IT
     return <group position={position}>
       <group name='title' position={[-3.3,0,-5.3]}>
         <Text3D
@@ -1607,7 +1604,7 @@ export default function LobbyNew() {
           size={0.4}
           height={0.01}
         >
-          {`ID: ${params.id}${isHost ? '  (HOST)' : ''}`}
+          {`ROOM ID: ${params.id}${isHost ? '  (HOST)' : ''}`}
           <meshStandardMaterial color="yellow"/>
         </Text3D>
       </group>
@@ -2065,44 +2062,33 @@ export default function LobbyNew() {
     const host = useAtomValue(hostAtom)
     const client = useAtomValue(clientAtom)
     const isHost = client.socketId === host.socketId
-    
-    const roomIdRef = useRef(null)
-    const roomIdContainerRef = useRef(null)
-    const roomIdCurrPos = useMemo(() => {
-      roomIdRef.current && -roomIdRef.current.geometry.boundingSphere.center.x
-    }, [roomIdRef])
 
-    useFrame(() => {
-      roomIdContainerRef.current.position.x = roomIdCurrPos
-      // if (roomIdRef.current && roomIdRef.current.geometry.boundingSphere) {
-      //   const centerX = roomIdRef.current.geometry.boundingSphere.center.x
-      //   roomIdContainerRef.current.position.x = -centerX
-      // }
-    })
     return <group position={position}>
-      <Text3D
-      font="/fonts/Luckiest Guy_Regular.json"
-      position={[0,0,0]}
-      rotation={[-Math.PI/2, 0, 0]}
-      size={0.8}
-      height={0.01}
-      lineHeight={0.7}>
-        YUT NORI
-        <meshStandardMaterial color='yellow'/>
-      </Text3D>
-      <group ref={roomIdContainerRef}>
+      <Center position={[0,0,0]}>
         <Text3D
         font="/fonts/Luckiest Guy_Regular.json"
-        position={[2.4,0,1.4]}
+        position={[0,0,0]}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={0.8}
+        height={0.01}
+        lineHeight={0.7}>
+          YUT NORI
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>
+      </Center>
+      <Center position={[0,0,1.4]}>
+        <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-0.3,0,1.4]}
         rotation={[-Math.PI/2, 0, 0]}
         size={0.6}
         height={0.01}
         lineHeight={0.7}
-        ref={roomIdRef}>
+        >
           {`ROOM ID: ${params.id}${isHost ? ' (HOST)' : ''}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </Center>
     </group>
   }
 
@@ -2422,7 +2408,7 @@ export default function LobbyNew() {
       <ThirdSection position={[0, 0, 0]}/>
     </group> }
     { device === 'portrait' && <group>
-      <TopSection position={[-2.3, 0, -9.7]}/>
+      <TopSection position={[0, 0, -10]}/>
       <BodySection position={[0, 0, 0]}/>
       <ActionSection position={[0, 0, 7]}/>
     </group>}
