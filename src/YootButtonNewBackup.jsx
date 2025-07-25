@@ -68,7 +68,6 @@ export default function YootButtonNew({ position, rotation, scale }) {
       if (enabled && !paused) {
         setYootAnimationPlaying(true)
         socket.emit('throwYut', { roomId: params.id.toUpperCase() })
-        console.log('click event emitted')
         const audio = new Audio('sounds/effects/throw-yut-2.mp3');
         audio.volume=1
         audio.play();

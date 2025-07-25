@@ -95,7 +95,6 @@ export function useShootingStarShader() {
         const points = new THREE.Points(geometry, material)
         points.position.copy(new THREE.Vector3(0,0,0))
         const destroy = () => { // may need to run on component unmount as well
-            console.log('destroy')
             scene.remove(points)
             geometry.dispose()
             material.dispose()

@@ -43,7 +43,6 @@ export default function Home2() {
           'page': 'home'
         }
       })
-      console.log('[Home2] post log response', response)
     }
     log()
   }, [])
@@ -231,7 +230,6 @@ export default function Home2() {
           'button': 'howToPlayHome',
         }
       })
-      console.log('[HowToPlayButton] post log response', response)
     }
 
     return <group position={position} rotation={rotation} scale={scale}>
@@ -306,7 +304,6 @@ export default function Home2() {
           'button': 'createGame'
         }
       })
-      console.log('[CreateGameButton] post log response', response)
     }
 
     return <group position={position} rotation={rotation} scale={scale}>

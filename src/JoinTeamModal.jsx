@@ -69,7 +69,6 @@ export default function JoinTeamModal({ position, rotation, scale }) {
           'team': joinTeam
         }
       })
-      console.log('[JoinTeamModal] post log response', response)
     }
   }
   

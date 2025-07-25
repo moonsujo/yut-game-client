@@ -349,7 +349,6 @@ export default function Game() {
               'action': 'close'
             }
           })
-          console.log('[HowToPlayButton] post log response', response)
         } else {
           setShowRulebook(true)
           
@@ -361,7 +360,6 @@ export default function Game() {
               'action': 'open'
             }
           })
-          console.log('[HowToPlayButton] post log response', response)
         }
       }
 

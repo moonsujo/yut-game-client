@@ -1,6 +1,6 @@
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import { Text3D } from "@react-three/drei";
+import { Center, Text3D } from "@react-three/drei";
 import Rocket from "./meshes/Rocket";
 import Ufo from "./meshes/Ufo";
 import { animated, useSpring } from "@react-spring/three";
@@ -690,8 +690,8 @@ export default function Alert({ position, rotation }) {
           },
           to: toAnimations,
           loop: false,
-          onStart: () => { console.log('[Alert] start') },
-          onRest: () => { console.log('[Alert] rest') } // plays twice when browser is not in focus
+          onStart: () => {},
+          onRest: () => {} // plays twice when browser is not in focus
         })
         
         // if I add it in 'onStart' it will trigger on every element of the 'to' array
@@ -705,8 +705,8 @@ export default function Alert({ position, rotation }) {
     }, [alerts, animationPlaying])
 
     function TurnAlert() {
-      const [currentPlayerName] = useAtom(currentPlayerNameAtom)
-      const [turn] = useAtom(turnAtom)
+      const currentPlayerName = useAtomValue(currentPlayerNameAtom)
+      const turn = useAtomValue(turnAtom)
       const borderMesh0Ref = useRef();
       const borderMesh1Ref = useRef();
       const borderMesh2Ref = useRef();
@@ -723,9 +723,6 @@ export default function Alert({ position, rotation }) {
         borderMesh5Ref,
         borderMesh6Ref
       ]
-      const nameRef = useRef();
-      const nameContainerRef = useRef();
-      const [centered, setCentered] = useState(false)
   
       useFrame((state, delta) => {
         for (let i = 0; i < borderMeshRefs.length; i++) {      
@@ -734,12 +731,6 @@ export default function Alert({ position, rotation }) {
             borderMeshRefs[i].current.position.y = 0.3
             borderMeshRefs[i].current.position.z = Math.sin(state.clock.elapsedTime / 2 + 2 * Math.PI/borderMeshRefs.length * i) * 2.7
           }
-        }
-        
-        if (nameRef.current && nameRef.current.geometry.boundingSphere) {
-          const centerX = nameRef.current.geometry.boundingSphere.center.x
-          nameContainerRef.current.position.z = -centerX
-          setCentered(true)
         }
       })
 
@@ -752,19 +743,17 @@ export default function Alert({ position, rotation }) {
           <cylinderGeometry args={[1, 1, 1, 64]}/>
           <meshStandardMaterial color='black' opacity={0.8} transparent/>
         </mesh>
-        <group ref={nameContainerRef}>
+        <Center position={[0.4,0,0]}>
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             rotation={[Math.PI/2, Math.PI, Math.PI/2]}
-            position={[0,0,0]}
             size={0.6}
             height={0.1}
-            ref={nameRef}
           >
-            {centered ? formatName(currentPlayerName, 9) : ''}
+            {formatName(currentPlayerName, 9)}
             <meshStandardMaterial color={ turn.team === 0 ? 'red': 'turquoise' }/>
           </Text3D>
-        </group>
+        </Center>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[Math.PI/2, Math.PI, Math.PI/2]}

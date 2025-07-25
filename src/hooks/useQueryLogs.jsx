@@ -20,7 +20,6 @@ export default function useQueryLogs({ eventName, payload }) {
         setLogs(response.data.results);
         setLoading(false);
       }).catch((err) => {
-        console.log('[useQueryLogs] error getting log for', eventName, 'payload', payload)
         console.log('[useQueryLogs] error', err)
       })
     }

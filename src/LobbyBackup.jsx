@@ -95,7 +95,6 @@ export default function Lobby() {
           'page': 'lobby'
         }
       })
-      console.log('[Lobby] post log response', response)
     }
     log()
   }, [])
@@ -1282,7 +1281,6 @@ export default function Lobby() {
               'button': 'addAIEZ'
             }
           })
-          console.log('[AddAIEZButton] post log response', response)
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1344,7 +1342,6 @@ export default function Lobby() {
               'button': 'addAISmart'
             }
           })
-          console.log('[AddAISmartButton] post log response', response)
         }
 
     
@@ -1513,7 +1510,6 @@ export default function Lobby() {
               'button': 'startGame'
             }
           })
-          console.log('[StartGameButton][desktop] post log response', response)
         }
       }
       return <group name='start-game-button' position={position}>

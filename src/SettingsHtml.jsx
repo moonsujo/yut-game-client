@@ -1292,8 +1292,6 @@ export default function SettingsHtml(props) {
     }
     function handleMusicSliderPointerMove(e) {
       if (!musicSliderDragging) return;
-
-      console.log('slider move', e.clientX, musicSliderOffset.x)
       setMusicSliderPosition({
         x: Math.max(0, e.clientX - musicSliderOffset.x)
       })

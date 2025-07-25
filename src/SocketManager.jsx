@@ -63,9 +63,9 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
-const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
+// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -947,7 +947,6 @@ export const SocketManager = () => {
     })
 
     socket.on('reset', () => {
-      console.log('reset')
       setGamePhase('lobby');
       setTiles(initialState.initialTiles);
       setTurn(initialState.initialTurn);
@@ -1124,14 +1123,15 @@ export const SocketManager = () => {
     socket.on("playerDisconnect", ({ team, name }) => {
       setTeams((teams) => {
         let newTeams = [...teams]
-        let disconnectPlayerIndex = newTeams[team].players.find((player) => player.name === name)
-        newTeams[team].players[disconnectPlayerIndex].connectedToRoom = false
+        let disconnectPlayerIndex = newTeams[team].players.findIndex((player) => player.name === name)
+        if (disconnectPlayerIndex !== -1) {
+          newTeams[team].players[disconnectPlayerIndex].connectedToRoom = false
+        }
         return newTeams
       });
     })
 
     socket.on("playerRoomSwitch", ({ roomPlayerIndex, roomPlayerTeam }) => {
-      console.log('[playerRoomSwitch]')
       setTeams((teams) => {
         let newTeams = [...teams]
         newTeams[roomPlayerTeam].players.splice(roomPlayerIndex, 1)
@@ -1205,7 +1205,6 @@ export const SocketManager = () => {
 
     return () => {
       socket.disconnect()
-      console.log('[SocketManager][useEffect] return')
       setConnectedToServer(false)
       socket.off();
     }
@@ -1225,10 +1224,8 @@ export const SocketManager = () => {
     if (turn.team !== -1 && hasTurn && bonusExists) {
     // if (turn.team !== -1 && teams[0].players.length > 0 && teams[1].players.length > 0 && hasTurn && bonusExists) {
       setShowBonus(true)
-      console.log('[SocketManager] show bonus')
     } else {
       setShowBonus(false)
-      console.log('[SocketManager] do not show bonus')
     }
   }, [bonusExists, client, hasTurn])
 };

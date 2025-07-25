@@ -912,7 +912,6 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
         })
       }
     }
-    console.log('[guestList] guests', guests)
     return guests
   }
   function mapTeamToBackgroundColor(team) {
