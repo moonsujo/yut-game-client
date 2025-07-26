@@ -35,6 +35,7 @@ import {
   showBlackhole2Atom,
   settingsOpenAtom,
   portraitLobbySelectionAtom,
+  landscapeLobbyThirdSectionSelectionAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
@@ -1654,8 +1655,7 @@ export default function LobbyNew() {
   // Invite friends and rule setting
   function ThirdSection({ position }) {
 
-    const [inviteFriendsVisible, setInviteFriendsVisible] = useState(true)
-    const [settingsVisible, setSettingsVisible] = useState(false)
+    const [display, setDisplay] = useAtom(landscapeLobbyThirdSectionSelectionAtom)
     function InviteFriendsButton() {
       const [hover, setHover] = useState(false)
       function handlePointerEnter(e) {
@@ -1670,13 +1670,12 @@ export default function LobbyNew() {
       }
       function handlePointerUp(e) {
         e.stopPropagation()
-        setInviteFriendsVisible(true)
-        setSettingsVisible(false)
+        setDisplay('invite')
       }
       return <group name='invite-friends-button' position={[7.5, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[4.2, 0.01, 0.75]}>
           <boxGeometry args={[1, 1, 1]}/>
-          <meshStandardMaterial color={ (hover || inviteFriendsVisible) ? 'green' : 'yellow' }/>
+          <meshStandardMaterial color={ (hover || display === 'invite') ? 'green' : 'yellow' }/>
         </mesh> 
         <mesh name='background-inner' scale={[4.15, 0.02, 0.7]}>
           <boxGeometry args={[1, 1, 1]}/>
@@ -1699,7 +1698,7 @@ export default function LobbyNew() {
           position={[-1.9, 0.02, 0.19]}
         >
           INVITE FRIENDS
-          <meshStandardMaterial color={ (hover || inviteFriendsVisible) ? 'green' : 'yellow' }/>
+          <meshStandardMaterial color={ (hover || display === 'invite') ? 'green' : 'yellow' }/>
         </Text3D>
       </group>
     }
@@ -1717,14 +1716,12 @@ export default function LobbyNew() {
       }
       function handlePointerUp(e) {
         e.stopPropagation()
-        console.log('[SettingsButton] click')
-        setSettingsVisible(true)
-        setInviteFriendsVisible(false)
+        setDisplay('settings')
       }
       return <group name='settings-button' position={[10.8, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[2.8, 0.01, 0.75]}>
           <boxGeometry args={[1, 1, 1]}/>
-          <meshStandardMaterial color={ (hover || settingsVisible) ? 'green' : 'yellow' }/>
+          <meshStandardMaterial color={ (hover || display === 'settings') ? 'green' : 'yellow' }/>
         </mesh> 
         <mesh name='background-inner' scale={[2.75, 0.02, 0.7]}>
           <boxGeometry args={[1, 1, 1]}/>
@@ -1747,7 +1744,7 @@ export default function LobbyNew() {
           position={[-1.2, 0.02, 0.19]}
         >
           SETTINGS
-          <meshStandardMaterial color={ (hover || settingsVisible) ? 'green' : 'yellow' }/>
+          <meshStandardMaterial color={ (hover || display === 'settings') ? 'green' : 'yellow' }/>
         </Text3D>
       </group>
     }
@@ -1885,9 +1882,9 @@ export default function LobbyNew() {
         <meshStandardMaterial color='black' transparent opacity={0.5}/>
       </mesh> */}
       <InviteFriendsButton/>
-      { inviteFriendsVisible && <InviteFriends/> }
+      { display === 'invite' && <InviteFriends/> }
       <SettingsButtonLobby/>
-      { settingsVisible && <GameRules position={[0.3,0,0]}/> }
+      { display === 'settings' && <GameRules position={[0.3,0,0]}/> }
     </group>
   }
 

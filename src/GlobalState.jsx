@@ -143,6 +143,7 @@ export const showBlackholeAtom = atom(false)
 export const showRedGalaxyAtom = atom(false)
 export const showBlackhole2Atom = atom(false)
 export const portraitLobbySelectionAtom = atom('players')
+export const landscapeLobbyThirdSectionSelectionAtom = atom('invite')
 
 const deepPieceEquals = (prev, next) => {
   let result;
