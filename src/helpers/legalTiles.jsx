@@ -114,7 +114,7 @@ function getNextTiles(tile, forward, shortcutOptions) {
       return [25]
     } else if (tile === 22) {
       return [27]
-    } else {
+    } else if (edge[start] === tile) {
       nextTiles.push(edge[end]);
     }
   }

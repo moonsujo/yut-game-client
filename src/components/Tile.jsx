@@ -3,7 +3,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { socket } from "../SocketManager";
 import React from "react";
 import { useFrame, useGraph } from "@react-three/fiber";
-import { backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, legalTilesAtom, pauseGameAtom, selectionAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
+import { backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
 import { useParams } from "wouter";
 import { getLegalTiles } from "../helpers/legalTiles";
 import * as THREE from 'three';
@@ -39,6 +39,7 @@ export default function Tile({
   const gamePhase = useAtomValue(gamePhaseAtom)
   const paused = useAtomValue(pauseGameAtom)
   const backdoLaunch = useAtomValue(backdoLaunchAtom)
+  const shortcutOptions = useAtomValue(shortcutOptionsAtom)
   const animationPlaying = useAnimationPlaying()
   const params = useParams()
 
