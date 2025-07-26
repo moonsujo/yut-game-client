@@ -1282,7 +1282,7 @@ export default {
           rotation: [-Math.PI/2, 0, 0]
         },
         setGameRules: {
-          position: [0.5, 0, 2.5],
+          position: [0.5, 0, 2.9],
           rotation: [-Math.PI/2, 0, 0]
         },
         audio: {

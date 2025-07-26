@@ -2232,7 +2232,7 @@ export default function LobbyNew() {
       <RulebookButton position={[3.9,0,-7]} scale={1.3}/>
       {/* { selection === 'players' && <Players/> } */}
       { selection === 'players' && <PlayersParty position={[0, 0, 0.5]}/> }
-      { selection === 'settings' && <GameRules position={[-11,0,1]} scale={1.3}/> }
+      { selection === 'settings' && <Center position={[0,0,0]}><GameRules  scale={1.2}/></Center> }
       { selection === 'rulebook' && <HowToPlay device={device} scale={0.75} position={[-2.3, 0, -1.6]}/> }
     </group>
   }

@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 import { getLegalTiles } from "../helpers/legalTiles";
 import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
-import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom } from "../GlobalState.jsx";
+import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom } from "../GlobalState.jsx";
 import { useParams } from "wouter";
 import { tileType } from "../helpers/helpers.js";
 import { animated } from "@react-spring/three";
@@ -33,6 +33,7 @@ export default function Piece ({
   const params = useParams()
   const paused = useAtomValue(pauseGameAtom)
   const backdoLaunch = useAtomValue(backdoLaunchAtom)
+  const shortcutOptions = useAtomValue(shortcutOptionsAtom)
 
   const group = useRef();
   const wrapperMat = useRef();
@@ -65,7 +66,7 @@ export default function Piece ({
           history = tiles[tile][0].history // go back the way you came from of the first token
           pieces = tiles[tile];
         }
-        let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch)
+        let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch, shortcutOptions)
         if (!(Object.keys(legalTiles).length === 0)) {
           const audio = new Audio('sounds/effects/select.mp3');
           audio.volume = 0.5;

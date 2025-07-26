@@ -66,7 +66,7 @@ export default function Tile({
       if (selection === null) {
         if (pieces.length > 0 && pieces[0].team === team) {
           let history = tiles[tile][0].history
-          let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch)
+          let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch, shortcutOptions)
           if (!(Object.keys(legalTiles).length === 0)) {
             // update client
             setSelection({ tile, pieces })

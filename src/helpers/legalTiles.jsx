@@ -9,7 +9,7 @@ import { tileType } from "./helpers.js";
 //     { destination: 29, "move": 2, "path": [28, 29]}
 //   ]
 // }
-export function getLegalTiles(tile, moves, pieces, history, backdoLaunch) {
+export function getLegalTiles(tile, moves, pieces, history, backdoLaunch, shortcutOptions) {
   let legalTiles = {}
 
   for (let move in moves) {
@@ -25,7 +25,7 @@ export function getLegalTiles(tile, moves, pieces, history, backdoLaunch) {
       } else {
 
         let forward = parseInt(move) > 0 ? true: false
-        let forks = getNextTiles(tile, forward)
+        let forks = getNextTiles(tile, forward, shortcutOptions)
         if (forward) {
           // If you're on Earth, there's a path to score and path to tile 1. Eliminate the path to tile 1
           forks = checkFinishRule(forks) 
@@ -97,7 +97,7 @@ function checkBackdoFork(forks, history) {
 }
 
 // if first step, keep forks; else, go straight
-function getNextTiles(tile, forward) {
+function getNextTiles(tile, forward, shortcutOptions) {
   let nextTiles = [];
   if (tile == -1 && (forward)) {
     return [1]
@@ -106,7 +106,15 @@ function getNextTiles(tile, forward) {
   // on board
   let [start, end] = getStartAndEndVertices(forward);
   for (const edge of edgeList) {
-    if (edge[start] == tile) {
+    if (shortcutOptions && edge[start] === tile) {
+      nextTiles.push(edge[end]);
+    } else if (tile === 5) { // you can only go on the short path.
+      return [20]
+    } else if (tile === 10) {
+      return [25]
+    } else if (tile === 22) {
+      return [27]
+    } else {
       nextTiles.push(edge[end]);
     }
   }

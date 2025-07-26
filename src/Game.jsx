@@ -341,7 +341,7 @@ export default function Game() {
         if (showRulebook) {
           setShowRulebook(false)
           
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {
@@ -352,7 +352,7 @@ export default function Game() {
         } else {
           setShowRulebook(true)
           
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {

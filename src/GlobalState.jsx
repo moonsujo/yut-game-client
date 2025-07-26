@@ -93,10 +93,11 @@ export const removingDeviceMotionAtom = atom(false)
 // instead of highlighting in the hover state
 
 // Rules
-export const backdoLaunchAtom = atom(true)
+export const backdoLaunchAtom = atom(false)
 export const timerAtom = atom(true)
 export const nakAtom = atom(true)
-export const yutMoCatchAtom = atom(true)
+export const yutMoCatchAtom = atom(false)
+export const shortcutOptionsAtom = atom(false)
 
 export const connectedToServerAtom = atom(true)
 export const pauseGameAtom = atom(false)

@@ -3,14 +3,12 @@ import Star from "./meshes/Star"
 import FinishMarkerSelectable from "./FinishMarkerSelectable"
 import { useFrame } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { clientAtom, gamePhaseAtom, hasTurnAtom, pauseGameAtom, selectionAtom, showFinishMovesAtom, turnAtom } from "./GlobalState";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying";
-import { getLegalTiles } from "./helpers/legalTiles";
 import { socket } from "./SocketManager";
 import { useParams } from "wouter";
-import { MeshStandardMaterial } from "three";
 
 export default function FinishTile({ legalTileInfo }) {
   const tile = 29

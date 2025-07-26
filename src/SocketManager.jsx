@@ -54,7 +54,8 @@ import {
   showFinishMovesAtom,
   showBonusAtom,
   bonusExistsAtom,
-  lastYutAtom
+  lastYutAtom,
+  shortcutOptionsAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -147,10 +148,12 @@ export const SocketManager = () => {
   const setConnectedToServer = useSetAtom(connectedToServerAtom)
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
   const setPauseGame = useSetAtom(pauseGameAtom);
+  // Game rules
   const setBackdoLaunch = useSetAtom(backdoLaunchAtom);
   const setTimer = useSetAtom(timerAtom)
   const setNak = useSetAtom(nakAtom)
-  const [yutMoCatch, setYutMoCatch] = useAtom(yutMoCatchAtom)
+  const setShortcutOptions = useSetAtom(shortcutOptionsAtom)
+  const setYutMoCatch = useSetAtom(yutMoCatchAtom)
   const setTurnStartTime = useSetAtom(turnStartTimeAtom)
   const setTurnExpireTime = useSetAtom(turnExpireTimeAtom)
   const setRemainingTime = useSetAtom(remainingTimeAtom)
@@ -322,6 +325,7 @@ export const SocketManager = () => {
       setTimer(room.rules.timer)
       setNak(room.rules.nak)
       setYutMoCatch(room.rules.yutMoCatch)
+      setShortcutOptions(room.rules.shortcutOptions)
       setTurnStartTime(room.turnStartTime)
       setTurnExpireTime(room.turnExpireTime)
       setAlerts([])
@@ -1187,6 +1191,8 @@ export const SocketManager = () => {
         setNak(flag)
       } else if (rule === 'yutMoCatch') {
         setYutMoCatch(flag)
+      } else if (rule === 'shortcutOptions') {
+        setShortcutOptions(flag)
       }
     })
 

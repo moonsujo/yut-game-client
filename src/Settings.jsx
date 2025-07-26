@@ -1747,17 +1747,17 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
     return <group position={position}>
       {/* background */}
       <group name='background'>
-        <mesh name='background-outer' scale={[7.5, 0.01, 9.8]}>
+        <mesh name='background-outer' scale={[7.5, 0.01, 11.4]}>
           <boxGeometry args={[1,1,1]}/>
           <meshStandardMaterial color='yellow'/>
         </mesh>
-        <mesh name='background-inner' scale={[7.4, 0.02, 9.7]}>
+        <mesh name='background-inner' scale={[7.4, 0.02, 11.3]}>
           <boxGeometry args={[1,1,1]}/>
           <meshStandardMaterial color='black'/>
         </mesh>
       </group>
       {/* title */}
-      <group name='title' position={[0.34, 0.02, -1.4]}>
+      <group name='title' position={[0.34, 0.02, -2.15]}>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={[-3.9,0,-2.8]}
@@ -1770,10 +1770,10 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
         </Text3D>
       </group>
       {/* navigation */}
-      <BackButton position={[1.15, 0.02, -4.425]}/>
-      <CloseButton position={[2.75, 0.02, -4.425]}/>
+      <BackButton position={[1.15, 0.02, -5.175]}/>
+      <CloseButton position={[2.75, 0.02, -5.175]}/>
       {/* buttons */}
-      <GameRules position={[-8.45, 0, 0.65]}/>
+      <GameRules position={[-8.45, 0, -0.3]}/>
     </group>
   }
 
