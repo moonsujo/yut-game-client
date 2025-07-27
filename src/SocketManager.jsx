@@ -55,7 +55,8 @@ import {
   showBonusAtom,
   bonusExistsAtom,
   lastYutAtom,
-  shortcutOptionsAtom
+  shortcutOptionsAtom,
+  hasAIAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -165,6 +166,7 @@ export const SocketManager = () => {
   const [bonusExists, setBonusExists] = useAtom(bonusExistsAtom)
   const setShowBonus = useSetAtom(showBonusAtom)
   const [lastYut, setLastYut] = useAtom(lastYutAtom)
+  const [_hasAI, setHasAI] = useAtom(hasAIAtom)
 
   useEffect(() => {
 
@@ -354,7 +356,7 @@ export const SocketManager = () => {
       }
     })
 
-    socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer }) => {
+    socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer, hasAI }) => {
       setGamePhase(gamePhase)
       setTurn(turn => {
         turn.team = newTeam;
@@ -376,6 +378,7 @@ export const SocketManager = () => {
       setGameLogs(gameLogs => [...gameLogs, newGameLog])
       setBonusExists(false)
       setTimer(timer)
+      setHasAI(hasAI)
       // test
       // setClient({ team: 0 })
       // setGamePhase('finished')
@@ -1083,7 +1086,7 @@ export const SocketManager = () => {
       }
     })
 
-    socket.on("kick", ({ team, name, turn, paused }) => {
+    socket.on("kick", ({ team, name, turn, paused, gamePhase, hasAI }) => {
       if (team === -1) {
         // use the setter to access the latest state.
         // if I use the one from the outside, players arrays are empty
@@ -1110,6 +1113,9 @@ export const SocketManager = () => {
       }
       setTurn(turn)
       setPauseGame(paused)
+      if (gamePhase === 'pregame' || gamePhase === 'game') {
+        setHasAI(hasAI)
+      }
     })
 
     socket.on("pause", ({ flag, turnStartTime, turnExpireTime }) => {

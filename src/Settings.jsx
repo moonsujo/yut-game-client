@@ -7,6 +7,7 @@ import {
   editOneGuestOpenAtom, 
   gamePhaseAtom, 
   guestBeingEdittedAtom, 
+  hasAIAtom, 
   hostAtom, 
   languageAtom, 
   languageOpenAtom, 
@@ -28,7 +29,7 @@ import { useEffect, useState } from "react"
 import { Image, Text3D } from "@react-three/drei"
 import { socket } from "./SocketManager"
 import layout from "./layout"
-import { formatName } from "./helpers/helpers"
+import { formatName, roomHasAI } from "./helpers/helpers"
 import GameRules from "./GameRules"
 import MeshColors from "./MeshColors"
 import useMusicPlayer from "./hooks/useMusicPlayer"
@@ -39,6 +40,7 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
   const client = useAtomValue(clientAtom)
   const host = useAtomValue(hostAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
+  const hasAI = useAtomValue(hasAIAtom)
   const params = useParams()
 
   const [mainMenuOpen, setMainMenuOpen] = useAtom(mainMenuOpenAtom)
@@ -752,16 +754,29 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
       <AudioButton/>,
       <LanguageButton/>
     ]
-    const hostPlayerButtons = [
-      <EditGuestsButton/>,
-      // <SetAwayButton/>,
-      <ResetGameButton/>,
-      <PauseGameButton/>,
-      // <SetGameRulesButton/>,
-      <ViewGameRulesButton/>,
-      <AudioButton/>,
-      <LanguageButton/>
-    ]
+    let hostPlayerButtons
+    if (hasAI) {
+      hostPlayerButtons = [
+        <EditGuestsButton/>,
+        // <SetAwayButton/>,
+        <ResetGameButton/>,
+        // <SetGameRulesButton/>,
+        <ViewGameRulesButton/>,
+        <AudioButton/>,
+        <LanguageButton/>
+      ]
+    } else {
+      hostPlayerButtons = [
+        <EditGuestsButton/>,
+        // <SetAwayButton/>,
+        <ResetGameButton/>,
+        <PauseGameButton/>,
+        // <SetGameRulesButton/>,
+        <ViewGameRulesButton/>,
+        <AudioButton/>,
+        <LanguageButton/>
+      ]
+    }
     // No 'Set Away' button
     const guestSpectatorButtons = [
       <ViewGuestsButton/>,

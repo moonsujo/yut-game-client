@@ -206,3 +206,14 @@ export function copyURLToClipboard() {
     document.body.removeChild(tempInput);
   }
 }
+
+export function roomHasAI(room) {
+  for (let i = 0; i < room.teams.length; i++) {
+    for (const player of room.teams[i].players) {
+      if (player.type === 'ai') {
+        return true
+      }
+    }
+  }
+  return false
+}
