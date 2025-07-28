@@ -44,5 +44,7 @@ export default function Experience() {
     { gamePhase === 'finished' && client.team === 0 && winner === 1 && <RocketsLose/> }
     { gamePhase === 'finished' && client.team === 1 && winner === 1 && <UfosWin2New/> }
     { gamePhase === 'finished' && client.team === 1 && winner === 0 && <UfosLose/> }
+    { gamePhase === 'finished' && client.team === -1 && winner === 0 && <RocketsWin2/> }
+    { gamePhase === 'finished' && client.team === -1 && winner === 1 && <UfosWin2New/> }
   </>
 }
