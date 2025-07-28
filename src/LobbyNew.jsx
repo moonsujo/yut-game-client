@@ -1323,7 +1323,8 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        async function handlePointerUp () {
+        async function handlePointerUp (e) {
+          e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
