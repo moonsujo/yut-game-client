@@ -99,7 +99,7 @@ function checkBackdoFork(forks, history) {
 // if first step, keep forks; else, go straight
 function getForks(tile, forward, shortcutOptions) {
   let nextTiles = [];
-  if (tile == -1 && (forward)) {
+  if (tile == -1 && forward) {
     return [1]
   }
 
@@ -109,11 +109,23 @@ function getForks(tile, forward, shortcutOptions) {
     if (shortcutOptions && edge[start] === tile) {
       nextTiles.push(edge[end]);
     } else if (tile === 5) { // you can only go on the short path.
-      return [20]
+      if (forward) {
+        return [20]
+      } else {
+        return [4]
+      }
     } else if (tile === 10) {
-      return [25]
+      if (forward) {
+        return [25]
+      } else {
+        return [9]
+      }
     } else if (tile === 22) {
-      return [27]
+      if (forward) {
+        return [27]
+      } else {
+        return [21, 26]
+      }
     } else if (edge[start] === tile) {
       nextTiles.push(edge[end]);
     }
