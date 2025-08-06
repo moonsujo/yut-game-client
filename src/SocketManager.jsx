@@ -65,12 +65,12 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
 // prod endpoint
 // const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 // dev endpoint
-const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+// const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -556,48 +556,48 @@ export const SocketManager = () => {
         }
 
         // sounds
-        if (yootOutcome === 0) {
-          const audio = new Audio('sounds/effects/yut-0.mp3');
-          audio.volume=0.5;
-          audio.play();
-        } else if (yootOutcome === 1) {
-          const audio = new Audio('sounds/effects/throw-reveal.mp3');
-          audio.volume=0.5
-          audio.play();
-        } else if (yootOutcome === 2) {
+        // if (yootOutcome === 0) {
+        //   const audio = new Audio('sounds/effects/yut-0.mp3');
+        //   audio.volume=0.5;
+        //   audio.play();
+        // } else if (yootOutcome === 1) {
+        //   const audio = new Audio('sounds/effects/throw-reveal.mp3');
+        //   audio.volume=0.5
+        //   audio.play();
+        // } else if (yootOutcome === 2) {
 
-          const audio = new Audio('sounds/effects/throw-reveal.mp3');
-          audio.volume=0.5
-          audio.play();
-        } else if (yootOutcome === 3) {
+        //   const audio = new Audio('sounds/effects/throw-reveal.mp3');
+        //   audio.volume=0.5
+        //   audio.play();
+        // } else if (yootOutcome === 3) {
 
-          const audio = new Audio('sounds/effects/throw-reveal.mp3');
-          audio.volume=0.5
-          audio.play();
-        } else if (yootOutcome === 4 || yootOutcome === 5) {
-          setYootOutcome((prevYootOutcome) => {
-            if (prevYootOutcome === 4 || prevYootOutcome === 5) {
-              const audio = new Audio('sounds/effects/yut-chain.mp3');
-              audio.volume=0.5;
-              audio.play();
-            } else {
-              if (yootOutcome === 4) {
-                const audio = new Audio('sounds/effects/yut-1.mp3');
-                audio.volume=0.5;
-                audio.play();
-              } else {
-                const audio = new Audio('sounds/effects/mo.mp3');
-                audio.volume=0.5;
-                audio.play();
-              }
-            }
-            return yootOutcome
-          })
-        } else if (yootOutcome === -1) {
-          const audio = new Audio('sounds/effects/backdo.mp3');
-          audio.volume=0.5;
-          audio.play();
-        }
+        //   const audio = new Audio('sounds/effects/throw-reveal.mp3');
+        //   audio.volume=0.5
+        //   audio.play();
+        // } else if (yootOutcome === 4 || yootOutcome === 5) {
+        //   setYootOutcome((prevYootOutcome) => {
+        //     if (prevYootOutcome === 4 || prevYootOutcome === 5) {
+        //       const audio = new Audio('sounds/effects/yut-chain.mp3');
+        //       audio.volume=0.5;
+        //       audio.play();
+        //     } else {
+        //       if (yootOutcome === 4) {
+        //         const audio = new Audio('sounds/effects/yut-1.mp3');
+        //         audio.volume=0.5;
+        //         audio.play();
+        //       } else {
+        //         const audio = new Audio('sounds/effects/mo.mp3');
+        //         audio.volume=0.5;
+        //         audio.play();
+        //       }
+        //     }
+        //     return yootOutcome
+        //   })
+        // } else if (yootOutcome === -1) {
+        //   const audio = new Audio('sounds/effects/backdo.mp3');
+        //   audio.volume=0.5;
+        //   audio.play();
+        // }
       }
 
 

@@ -82,9 +82,9 @@ export default function Tile({
         // When they're called separately, the order of operation is not kept
         socket.emit("move", { roomId: params.id.toUpperCase(), tile, playerName: client.name });
         
-        const audio = new Audio('sounds/effects/star-move.mp3');
-        audio.volume = 1;
-        audio.play();
+        // const audio = new Audio('sounds/effects/star-move.mp3');
+        // audio.volume = 1;
+        // audio.play();
       } else {
         // update client
         setSelection(null)

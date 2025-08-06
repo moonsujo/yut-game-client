@@ -87,9 +87,9 @@ export default function YutBonus({ position, scale, rotation=[0,0,0], alwaysShow
           setShowBonus(false)
         }
 
-        const audio = new Audio('sounds/effects/yut-bonus.mp3');
-        audio.volume = 1;
-        audio.play();
+        // const audio = new Audio('sounds/effects/yut-bonus.mp3');
+        // audio.volume = 1;
+        // audio.play();
       }
     }
 

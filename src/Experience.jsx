@@ -3,7 +3,6 @@ import { clientAtom, connectedToServerAtom, gamePhaseAtom, winnerAtom } from "./
 import { useAtom, useAtomValue } from "jotai";
 import { socket } from "./SocketManager.jsx";
 import { useParams } from "wouter";
-import Lobby from "./LobbyBackup.jsx";
 import Game from "./Game.jsx";
 import RocketsWin from "./RocketsWin.jsx";
 import UfosWin from "./UfosWin.jsx";

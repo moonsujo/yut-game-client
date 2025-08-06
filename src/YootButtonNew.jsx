@@ -71,9 +71,9 @@ export default function YootButtonNew({ position, rotation, scale }) {
       if (enabled && !paused) {
         setYootAnimationPlaying(true)
         socket.emit('throwYut', { roomId: params.id.toUpperCase() })
-        const audio = new Audio('sounds/effects/throw-yut-2.mp3');
-        audio.volume=1
-        audio.play();
+        // const audio = new Audio('sounds/effects/throw-yut-2.mp3');
+        // audio.volume=1
+        // audio.play();
       }
             
       const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {

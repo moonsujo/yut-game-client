@@ -68,12 +68,12 @@ export default function Piece ({
         }
         let legalTiles = getLegalTiles(tile, teams[team].moves, teams[team].pieces, history, backdoLaunch, shortcutOptions)
         if (!(Object.keys(legalTiles).length === 0)) {
-          const audio = new Audio('sounds/effects/select.mp3');
-          audio.volume = 0.5;
-          audio.play();
-          const audio2 = new Audio('sounds/effects/legalTile.mp3');
-          audio2.volume = 0.5;
-          audio2.play();
+          // const audio = new Audio('sounds/effects/select.mp3');
+          // audio.volume = 0.5;
+          // audio.play();
+          // const audio2 = new Audio('sounds/effects/legalTile.mp3');
+          // audio2.volume = 0.5;
+          // audio2.play();
 
           // update client
           setSelection({ tile, pieces })
@@ -93,9 +93,9 @@ export default function Piece ({
           
           // update other clients
           socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
-          const audio = new Audio('sounds/effects/deselect.mp3');
-          audio.volume = 0.5;
-          audio.play();
+          // const audio = new Audio('sounds/effects/deselect.mp3');
+          // audio.volume = 0.5;
+          // audio.play();
         }
       }
     }

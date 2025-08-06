@@ -34,13 +34,6 @@ export default function useMusicPlayer() {
       'path': 'sounds/music/asap-lofi.mp3',
       'length': 175
     },
-    // {
-    //   'title': 'Merry Go Round',
-    //   'artist': 'Korean Folk Song / Beat Rhino',
-    //   'source': 'Beat Rhino',
-    //   'path': 'sounds/music/mingle-song-music-box.mp3',
-    //   'length': 67
-    // }
   ]
 
   function playMusic() {

@@ -57,7 +57,6 @@ import MeteorsRealShader from "./shader/meteorsReal/MeteorsRealShader.jsx";
 import SettingsHtml from "./SettingsHtml.jsx";
 import PauseGame from "./PauseGame.jsx";
 import Timer from "./Timer.jsx";
-import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
 import TeamLobby from "./TeamLobby.jsx";
 import MeshColors from "./MeshColors.jsx";
 import QrCode3d from "./QRCode3D.jsx";
@@ -1500,9 +1499,9 @@ export default function LobbyNew() {
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
           
-          const audio = new Audio('sounds/effects/boot-up.mp3');
-          audio.volume = 1;
-          audio.play();
+          // const audio = new Audio('sounds/effects/boot-up.mp3');
+          // audio.volume = 1;
+          // audio.play();
 
           const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
@@ -2346,9 +2345,9 @@ export default function LobbyNew() {
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
           
-          const audio = new Audio('sounds/effects/boot-up.mp3');
-          audio.volume = 1;
-          audio.play();
+          // const audio = new Audio('sounds/effects/boot-up.mp3');
+          // audio.volume = 1;
+          // audio.play();
 
           const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
