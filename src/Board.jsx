@@ -55,10 +55,10 @@ export default function Board({
     } else if (tile == 22) {
       return <Moon scale={!highlightShortcuts ? 0.35 : 0.42} shiny/>
     } else if (tile == 1) {
-      return <Star scale={0.4} color={starColor}/>
+      return <Star scale={0.3} color={starColor}/>
       // return <Star scale={0.4} color='limegreen'/>
     } else {
-      return <Star scale={0.4} color={starColor}/>
+      return <Star scale={0.3} color={starColor}/>
     }
   }
 

@@ -292,6 +292,7 @@ export default function Game() {
         showFinishMoves={showFinishMoves}
         showBonus={showBonus}
         animationPlaying={animationPlaying}
+        starColor={'#dcd813'}
       />
     </animated.group>
   }
