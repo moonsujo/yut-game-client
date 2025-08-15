@@ -133,9 +133,6 @@ export const viewGameRulesOpenAtom = atom(false)
 export const audioOpenAtom = atom(false)
 export const languageOpenAtom = atom(false)
 export const soundEffectsAtom = atom(true)
-export const musicAtom = atom(null)
-export const musicPlayingAtom = atom(false)
-export const musicVolumeAtom = atom(0)
 export const lastYutAtom = atom(null)
 export const seatChosenAtom = atom(null) // [team, seatIndex]
 export const showGalaxyBackgroundAtom = atom(true)
@@ -145,6 +142,14 @@ export const showBlackhole2Atom = atom(false)
 export const portraitLobbySelectionAtom = atom('players')
 export const landscapeLobbyThirdSectionSelectionAtom = atom('invite')
 export const hasAIAtom = atom(false)
+
+// sounds
+export const musicAtom = atom(null)
+export const musicPlayingAtom = atom(false)
+export const musicVolumeAtom = atom(0)
+export const listenerAtom = atom(null)
+export const audioLoaderAtom = atom(null)
+export const soundAtom = atom(null)
 
 const deepPieceEquals = (prev, next) => {
   let result;

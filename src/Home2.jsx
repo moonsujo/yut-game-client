@@ -24,6 +24,7 @@ import useMusicPlayer from './hooks/useMusicPlayer';
 import axios from 'axios';
 import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
+import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function Home2() {
 
@@ -32,11 +33,11 @@ export default function Home2() {
   const [display, setDisplay] = useState('board')
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
-  const [playMusic] = useMusicPlayer();
+  const { playSoundEffect } = useSoundEffectsPlayer()
   const [_location, setLocation] = useLocation();
   useEffect(() => {
     async function log() {
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'pageView',
         timestamp: new Date(),
         payload: {
@@ -294,10 +295,10 @@ export default function Home2() {
       // const audio = new Audio('sounds/effects/create-game.mp3');
       // audio.volume = 1;
       // audio.play();
-      
-      playMusic();
 
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      playSoundEffect('/sounds/effects/create-game.mp3')
+
+      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',
         timestamp: new Date(),
         payload: {

@@ -15,6 +15,7 @@ import AssetLoader from './AssetLoader';
 import Blackhole from './Blackhole';
 import RedGalaxy from './RedGalaxy';
 import Blackhole2 from './Blackhole2';
+import AudioController from './soundPlayers/AudioController';
 
 export default function App () {
 
@@ -57,6 +58,7 @@ export default function App () {
           <Alert position={[0,2,0.5]} rotation={[0,0,0]}/>
         </Route>
       </Suspense>
+      <AudioController/>
     </Canvas>
     <Loader/>
   </>)
