@@ -147,9 +147,11 @@ export const hasAIAtom = atom(false)
 export const musicAtom = atom(null)
 export const musicPlayingAtom = atom(false)
 export const musicVolumeAtom = atom(0)
+// sounds new
 export const listenerAtom = atom(null)
 export const audioLoaderAtom = atom(null)
-export const soundAtom = atom(null)
+export const musicListenerAtom = atom(null)
+export const musicLoaderAtom = atom(null)
 
 const deepPieceEquals = (prev, next) => {
   let result;

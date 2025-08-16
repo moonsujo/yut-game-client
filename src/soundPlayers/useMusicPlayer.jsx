@@ -1,15 +1,15 @@
 import { useAtomValue } from "jotai";
-import { audioLoaderAtom, listenerAtom } from "../GlobalState";
+import { musicListenerAtom, musicLoaderAtom } from "../GlobalState";
 import { Audio } from "three";
 
-export default function useSoundEffectsPlayer() {
-  const audioLoader = useAtomValue(audioLoaderAtom)
-  const listener = useAtomValue(listenerAtom)
+export default function useMusicPlayer() {
+  const musicLoader = useAtomValue(musicLoaderAtom)
+  const musicListener = useAtomValue(musicListenerAtom)
 
   function playSoundEffect(filePath) {
     try {
-      const soundEffect = new Audio(listener)
-      audioLoader.load(filePath, (buffer) => {
+      const soundEffect = new Audio(musicListener)
+      musicLoader.load(filePath, (buffer) => {
         soundEffect.setBuffer(buffer);
         soundEffect.setLoop(false);
         soundEffect.setVolume(0.5);
@@ -20,5 +20,5 @@ export default function useSoundEffectsPlayer() {
     }
   }
 
-  return { playSoundEffect }
+  return { playMusic }
 }

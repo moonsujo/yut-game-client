@@ -1,20 +1,20 @@
-import { Float, Text3D } from '@react-three/drei';
-import React, { useMemo, useState } from 'react';
-import Star from './meshes/Star';
-import { useSpring, animated } from '@react-spring/three';
-import TitleStarsShader from './shader/titleStars/TitleStarsShader';
+import { Text3D } from '@react-three/drei';
+import { useState } from 'react';
+import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function Title({ position, rotation, scale, setDisplay }) {
 
   const [hover, setHover] = useState(false);
+  const { playSoundEffect } = useSoundEffectsPlayer()
   function handlePointerEnter() {
       setHover(true)
   }
   function handlePointerLeave() {
       setHover(false)
   }
-  function handlePointerUp() {
+  function handlePointerDown() {
       setDisplay('board')
+      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
   }
 
   return <group scale={scale} position={position} rotation={rotation}>
@@ -45,7 +45,7 @@ export default function Title({ position, rotation, scale, setDisplay }) {
       position={[0.7, -0.5, 0]} 
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      onPointerUp={handlePointerUp}
+      onPointerDown={handlePointerDown}
     >
       <boxGeometry args={[1.5, 1, 0.1]}/>
       <meshStandardMaterial color="grey" transparent opacity={0}/>

@@ -220,11 +220,13 @@ export default function Home2() {
       setHover(false)
     }
 
-    async function handlePointerUp(e) {
+    async function handlePointerDown(e) {
       e.stopPropagation();
       setDisplay('howToPlay')
 
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
+
+      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',
         timestamp: new Date(),
         payload: {
@@ -246,7 +248,7 @@ export default function Home2() {
         name='wrapper' 
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}
+        onPointerDown={e => handlePointerDown(e)}
       >
         <boxGeometry args={[2.8, 0.1, 0.55]}/>
         <meshStandardMaterial transparent opacity={0}/>
@@ -292,9 +294,9 @@ export default function Home2() {
         setLocation(`/${shortId}`)
       })
 
-      // const audio = new Audio('sounds/effects/create-game.mp3');
-      // audio.volume = 1;
-      // audio.play();
+      const audio = new Audio('sounds/effects/create-game.mp3');
+      audio.volume = 1;
+      audio.play();
 
       playSoundEffect('/sounds/effects/create-game.mp3')
 
@@ -354,12 +356,11 @@ export default function Home2() {
 
     function handlePointerDown(e) {
       e.stopPropagation();
-      // socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
-        // setLocation(`/${shortId}`)
-      // })
-      // const audio = new Audio('sounds/effects/boot-up.mp3');
+      // const audio = new Audio('sounds/effects/button-click.mp3');
       // audio.volume=0.3;
       // audio.play();
+
+      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
       
       setJoinGameModalDisplay(true)
     }
