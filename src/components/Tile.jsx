@@ -111,6 +111,7 @@ export default function Tile({
           
         // update other clients
         socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
+        playSoundEffect('/sounds/effects/deselect.mp3')
       }
     }
   }

@@ -119,9 +119,7 @@ export default function Piece ({
           
           // update other clients
           socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
-          // const audio = new Audio('sounds/effects/deselect.mp3');
-          // audio.volume = 0.5;
-          // audio.play();
+          playSoundEffect('/sounds/effects/deselect.mp3')
         }
       }
     }

@@ -358,7 +358,12 @@ export const SocketManager = () => {
       if (throwCount < 1) {
         setBonusExists(false)
       }
-      playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+      let soundPicker = Math.random()
+      if (soundPicker < 0.5) {
+        playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+      } else {
+        playSoundEffect('/sounds/effects/throw-heavenly-yut-2.mp3')
+      }
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer, hasAI }) => {
@@ -622,7 +627,6 @@ export const SocketManager = () => {
         playSoundEffect('/sounds/effects/gul.mp3')
       } else if (yootOutcome === 4) {
         playSoundEffect('/sounds/effects/yut.mp3')
-        playSoundEffect('/sounds/effects/yut-bonus.mp3')
       } else if (yootOutcome === 5) {
         playSoundEffect('/sounds/effects/mo.mp3')
       } else if (yootOutcome === -1) {
@@ -910,9 +914,9 @@ export const SocketManager = () => {
       if (selection === null) {
         setShowFinishMoves(false)
       } else {
-        if (selection.pieces[0].team === 0) {
-          playSoundEffect('/sounds/effects/rocket-select.mp3')
-        } 
+        // if (selection.pieces[0].team === 0) {
+        //   playSoundEffect('/sounds/effects/rocket-select.mp3')
+        // } 
       }
 
     })
@@ -981,11 +985,11 @@ export const SocketManager = () => {
           setReadyToStart(false)
         }
 
-      if (playerType === 'human') {
-        playSoundEffect('/sounds/effects/door-chime.mp3')
-      } else if (playerType === 'ai') {
-        playSoundEffect('/sounds/effects/add-ai-player.mp3')
-      }
+      // if (playerType === 'human') {
+      //   playSoundEffect('/sounds/effects/door-chime.mp3')
+      // } else if (playerType === 'ai') {
+      //   playSoundEffect('/sounds/effects/add-ai-player.mp3')
+      // }
     })
 
     socket.on('reset', () => {
