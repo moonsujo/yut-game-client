@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Html } from '@react-three/drei';
 import { socket } from './SocketManager';
 import { useAtom, useAtomValue } from 'jotai';
-import { joinTeamAtom, teamsAtom } from './GlobalState';
+import { clientAtom, joinTeamAtom, teamsAtom } from './GlobalState';
 import axios from 'axios';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
@@ -13,6 +13,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
   const [submitHover, setSubmitHover] = useState(false)
   const [cancelHover, setCancelHover] = useState(false)
   const [joinTeam, setJoinTeam] = useAtom(joinTeamAtom)
+  const client = useAtomValue(clientAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
   const teams = useAtomValue(teamsAtom)
   
@@ -44,7 +45,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
     e.preventDefault();
     if (name.length == 0) {
       setAlert('Enter something')
-    } else if (!isUniqueName(name, teams)) {
+    } else if (!isUniqueName(name, teams) && (joinTeam === client.team)) {
       setAlert('Another player has the same name.')
     } else if (name.length > 15) {
       setAlert('Must be shorter than 16 characters.')
