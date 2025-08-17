@@ -1,12 +1,9 @@
 // js
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from "./layout.js";
 import { useSpring, animated } from '@react-spring/three';
 
-import Board from "./Board.jsx";
-import PiecesSection from "./PiecesSection.jsx";
-import Team from "./Team.jsx";
 import GameCamera from "./GameCamera.jsx";
 import DisconnectModal from "./DisconnectModal.jsx";
 import JoinTeamModal from "./JoinTeamModal.jsx";
@@ -37,30 +34,16 @@ import {
   portraitLobbySelectionAtom,
   landscapeLobbyThirdSectionSelectionAtom,
 } from "./GlobalState.jsx";
-import MoveList from "./MoveList.jsx";
-import PiecesOnBoard from "./PiecesOnBoard.jsx";
-import ScoreButtons from "./ScoreButtons.jsx";
-import RocketsWin from "./RocketsWin.jsx";
-import UfosWin from "./UfosWin.jsx";
-import { Center, Float, Text3D, useGLTF } from "@react-three/drei";
-import { Color, MeshStandardMaterial } from "three";
+import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import GameLog from "./GameLog.jsx";
 import HowToPlay from "./HowToPlay.jsx";
 
 // react spring
 import { MeshDistortMaterial } from '@react-three/drei'
-import YootNew from "./YootNew.jsx";
-import YootButtonNew from "./YootButtonNew.jsx";
 import useResponsiveSetting from "./hooks/useResponsiveSetting.jsx";
 import MeteorsRealShader from "./shader/meteorsReal/MeteorsRealShader.jsx";
-import SettingsHtml from "./SettingsHtml.jsx";
-import PauseGame from "./PauseGame.jsx";
-import Timer from "./Timer.jsx";
-import TeamLobby from "./TeamLobby.jsx";
 import MeshColors from "./MeshColors.jsx";
 import QrCode3d from "./QRCode3D.jsx";
-import Moon from "./meshes/Moon.jsx";
 import BlueMoon from "./meshes/BlueMoon.jsx";
 import YootDisplay from "./YootDisplay.jsx";
 import Star from "./meshes/Star.jsx";
@@ -71,6 +54,7 @@ import GameRules from "./GameRules.jsx";
 import axios from "axios";
 import Chatbox from "./Chatbox.jsx";
 import Settings from "./Settings.jsx";
+import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 
 export default function LobbyNew() {
 
@@ -82,6 +66,7 @@ export default function LobbyNew() {
   const setShowBlackhole = useSetAtom(showBlackholeAtom)
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
   const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
+  const { playSoundEffect } = useSoundEffectsPlayer()
 
   useEffect(() => {
     setShowGalaxy(true)
@@ -382,8 +367,9 @@ export default function LobbyNew() {
       }
       // #endregion
 
-      function handleSeatPointerUp(e, team, seatIndex) {
+      function handleSeatPointerDown(e, team, seatIndex) {
         e.stopPropagation()
+
         if (client.socketId === host.socketId) {
           if (client.team !== team && !teams[team].players[seatIndex]) {
             setSeatChosen([team, seatIndex])
@@ -403,6 +389,8 @@ export default function LobbyNew() {
         } else if (client.team !== team) {
           setJoinTeam(team)
         }
+        
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
 
       function YouStars({ position, rotation, scale, team }) {
@@ -459,7 +447,7 @@ export default function LobbyNew() {
               scale={[7.8, 0.02, 1.3]}
               onPointerEnter={e => handleSeat1Team0PointerEnter(e)}
               onPointerLeave={e => handleSeat1Team0PointerLeave(e)}
-              onPointerUp={e => handleSeatPointerUp(e, 0, 0)}
+              onPointerDown={e => handleSeatPointerDown(e, 0, 0)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -510,7 +498,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.3]}
             onPointerEnter={e => handleSeat2Team0PointerEnter(e)}
             onPointerLeave={e => handleSeat2Team0PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 0, 1)}
+            onPointerDown={e => handleSeatPointerDown(e, 0, 1)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -561,7 +549,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat3Team0PointerEnter(e)}
             onPointerLeave={e => handleSeat3Team0PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 0, 2)}
+            onPointerDown={e => handleSeatPointerDown(e, 0, 2)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -612,7 +600,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat4Team0PointerEnter(e)}
             onPointerLeave={e => handleSeat4Team0PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 0, 3)}
+            onPointerDown={e => handleSeatPointerDown(e, 0, 3)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -663,7 +651,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat1Team1PointerEnter(e)}
             onPointerLeave={e => handleSeat1Team1PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 1, 0)}
+            onPointerDown={e => handleSeatPointerDown(e, 1, 0)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -714,7 +702,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat2Team1PointerEnter(e)}
             onPointerLeave={e => handleSeat2Team1PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 1, 1)}
+            onPointerDown={e => handleSeatPointerDown(e, 1, 1)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -765,7 +753,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat3Team1PointerEnter(e)}
             onPointerLeave={e => handleSeat3Team1PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 1, 2)}
+            onPointerDown={e => handleSeatPointerDown(e, 1, 2)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -816,7 +804,7 @@ export default function LobbyNew() {
             scale={[7.8, 0.02, 1.5]}
             onPointerEnter={e => handleSeat4Team1PointerEnter(e)}
             onPointerLeave={e => handleSeat4Team1PointerLeave(e)}
-            onPointerUp={e => handleSeatPointerUp(e, 1, 3)}
+            onPointerDown={e => handleSeatPointerDown(e, 1, 3)}
             >
               <boxGeometry args={[1, 1, 1]}/>
               <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -850,9 +838,10 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           setGuestBeingEditted(null)
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -870,7 +859,7 @@ export default function LobbyNew() {
             scale={[1.55, 0.02, 0.55]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerDown={e=>handlePointerDown(e)}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -900,7 +889,7 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           socket.emit('assignHost', { 
             roomId: params.id.toUpperCase(),
@@ -913,6 +902,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
         return <group name='assign-host-button' position={position}>
           {/* background */}
@@ -928,7 +918,7 @@ export default function LobbyNew() {
             <mesh name='wrapper'
               onPointerEnter={e => handlePointerEnter(e)}
               onPointerLeave={e => handlePointerLeave(e)}
-              onPointerUp={e => handlePointerUp(e)}
+              onPointerDown={e => handlePointerDown(e)}
               scale={[8.5, 0.02, 1]}
             >
               <boxGeometry args={[1,1,1]}/>
@@ -960,7 +950,7 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           socket.emit('kick', { 
             roomId: params.id.toUpperCase(),
@@ -972,6 +962,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
         return <group name='kick-button' position={position}>
           {/* background */}
@@ -987,7 +978,7 @@ export default function LobbyNew() {
             <mesh name='wrapper'
               onPointerEnter={e => handlePointerEnter(e)}
               onPointerLeave={e => handlePointerLeave(e)}
-              onPointerUp={e => handlePointerUp(e)}
+              onPointerDown={e => handlePointerDown(e)}
               scale={[8.5, 0.02, 1]}
             >
               <boxGeometry args={[1,1,1]}/>
@@ -1019,7 +1010,7 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           // set player to spectator
           socket.emit('setTeam', {
@@ -1034,6 +1025,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
         return <group name='set-spectator-button' position={position}>
           {/* background */}
@@ -1049,7 +1041,7 @@ export default function LobbyNew() {
             <mesh name='wrapper'
               onPointerEnter={e => handlePointerEnter(e)}
               onPointerLeave={e => handlePointerLeave(e)}
-              onPointerUp={e => handlePointerUp(e)}
+              onPointerDown={e => handlePointerDown(e)}
               scale={[8.5, 0.02, 1]}
             >
               <boxGeometry args={[1,1,1]}/>
@@ -1156,9 +1148,10 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           setSeatChosen(null)
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1176,7 +1169,7 @@ export default function LobbyNew() {
             scale={[1.55, 0.02, 0.55]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerDown={e=>handlePointerDown(e)}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1207,10 +1200,11 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           setJoinTeam(seatChosen[0])
           setSeatChosen(null)
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1228,7 +1222,7 @@ export default function LobbyNew() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerDown={e=>handlePointerDown(e)}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1259,21 +1253,22 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        async function handlePointerUp (e) {
+        async function handlePointerDown (e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'random' })
         
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {
               'button': 'addAIEZ'
             }
           })
-          console.log('[AddAIEZButton] post log response', response)
+
+
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1291,7 +1286,7 @@ export default function LobbyNew() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerDown={e=>handlePointerDown(e)}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1322,21 +1317,20 @@ export default function LobbyNew() {
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        async function handlePointerUp (e) {
+        async function handlePointerDown (e) {
           e.stopPropagation()
           setSeatChosen(null)
           // send 'add AI' event to server
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'smart' })
         
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {
               'button': 'addAISmart'
             }
           })
-          console.log('[AddAISmartButton] post log response', response)
         }
 
     
@@ -1355,7 +1349,7 @@ export default function LobbyNew() {
             scale={[6.8, 0.02, 0.9]}
             onPointerEnter={e=>handlePointerEnter(e)}
             onPointerLeave={e=>handlePointerLeave(e)}
-            onPointerUp={e=>handlePointerUp(e)}>
+            onPointerDown={e=>handlePointerDown(e)}>
               <boxGeometry args={[1,1,1]}/>
               <meshStandardMaterial transparent opacity={0}/>
             </mesh>
@@ -1493,7 +1487,7 @@ export default function LobbyNew() {
           setHover(false)
         }
       }
-      async function handlePointerUp (e) {
+      async function handlePointerDown (e) {
         e.stopPropagation()
         setHover(false)
         if (isHost && readyToStart) {
@@ -1527,7 +1521,7 @@ export default function LobbyNew() {
         scale={[4.5, 0.02, 0.9]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -1668,9 +1662,10 @@ export default function LobbyNew() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      function handlePointerUp(e) {
+      function handlePointerDown(e) {
         e.stopPropagation()
         setDisplay('invite')
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
       return <group name='invite-friends-button' position={[7.5, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[4.2, 0.01, 0.75]}>
@@ -1686,7 +1681,7 @@ export default function LobbyNew() {
         scale={[4.2, 0.02, 0.75]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -1714,9 +1709,10 @@ export default function LobbyNew() {
         document.body.style.cursor = 'default'
         setHover(false)
       }
-      function handlePointerUp(e) {
+      function handlePointerDown(e) {
         e.stopPropagation()
         setDisplay('settings')
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
       return <group name='settings-button' position={[10.8, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[2.8, 0.01, 0.75]}>
@@ -1732,7 +1728,7 @@ export default function LobbyNew() {
         scale={[2.8, 0.02, 0.75]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -1788,7 +1784,7 @@ export default function LobbyNew() {
             opacity: 0, 
           }
         }))
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           copyURLToClipboard()
           api.start({
@@ -1809,6 +1805,7 @@ export default function LobbyNew() {
               }
             ]
           })
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
         return <group name='copy-link-button' position={position}>
           <mesh name='background-outer' scale={[3, 0.01, 0.75]}>
@@ -1824,7 +1821,7 @@ export default function LobbyNew() {
           scale={[3, 0.02, 0.75]}
           onPointerEnter={e => handlePointerEnter(e)}
           onPointerLeave={e => handlePointerLeave(e)}
-          onPointerUp={e => handlePointerUp(e)}>
+          onPointerDown={e => handlePointerDown(e)}>
             <boxGeometry args={[1, 1, 1]}/>
             <meshStandardMaterial color='yellow' transparent opacity={0}/>
           </mesh>
@@ -1932,7 +1929,7 @@ export default function LobbyNew() {
             opacity: 0, 
           }
         }))
-        function handlePointerUp(e) {
+        function handlePointerDown(e) {
           e.stopPropagation()
           copyURLToClipboard()
           api.start({
@@ -1953,6 +1950,7 @@ export default function LobbyNew() {
               }
             ]
           })
+          playSoundEffect('/sounds/effects/button-click.mp3')
         }
         return <group name='copy-link-button' position={position} scale={scale}>
           <mesh name='background-outer' scale={[5.7, 0.01, 0.75]}>
@@ -1968,7 +1966,7 @@ export default function LobbyNew() {
           scale={[3, 0.02, 0.75]}
           onPointerEnter={e => handlePointerEnter(e)}
           onPointerLeave={e => handlePointerLeave(e)}
-          onPointerUp={e => handlePointerUp(e)}>
+          onPointerDown={e => handlePointerDown(e)}>
             <boxGeometry args={[1, 1, 1]}/>
             <meshStandardMaterial color='yellow' transparent opacity={0}/>
           </mesh>
@@ -2101,9 +2099,10 @@ export default function LobbyNew() {
         e.stopPropagation()
         setHover(false)
       }
-      function handlePointerUp(e) {
+      function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('settings')
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.8, 0.01, 0.75]}>
@@ -2119,7 +2118,7 @@ export default function LobbyNew() {
         scale={[2.8, 0.02, 0.75]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -2145,9 +2144,10 @@ export default function LobbyNew() {
         e.stopPropagation()
         setHover(false)
       }
-      function handlePointerUp(e) {
+      function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('players')
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.55, 0.01, 0.75]}>
@@ -2163,7 +2163,7 @@ export default function LobbyNew() {
         scale={[2.55, 0.02, 0.75]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -2189,9 +2189,10 @@ export default function LobbyNew() {
         e.stopPropagation()
         setHover(false)
       }
-      function handlePointerUp(e) {
+      function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('rulebook')
+        playSoundEffect('/sounds/effects/button-click.mp3')
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.95, 0.01, 0.75]}>
@@ -2207,7 +2208,7 @@ export default function LobbyNew() {
         scale={[2.85, 0.02, 0.75]}
         onPointerEnter={e => handlePointerEnter(e)}
         onPointerLeave={e => handlePointerLeave(e)}
-        onPointerUp={e => handlePointerUp(e)}>
+        onPointerDown={e => handlePointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='yellow' transparent opacity={0}/>
         </mesh>
@@ -2247,8 +2248,7 @@ export default function LobbyNew() {
       function handleSharePointerLeave(e) {
         e.stopPropagation()
       }
-      async function handleSharePointerUp(e) {
-
+      async function handleSharePointerDown(e) {
         e.stopPropagation()
         if (navigator.share) {
           try {
@@ -2258,14 +2258,13 @@ export default function LobbyNew() {
               url: window.location.href,
             })
 
-            const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+            await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
               eventName: 'buttonClick',
               timestamp: new Date(),
               payload: {
                 'button': 'shareLobby'
               }
             })
-            console.log('[ShareThisLobby] post log response', response)
           } catch (err) {
             console.error('Error sharing:', err)
           }
@@ -2288,7 +2287,7 @@ export default function LobbyNew() {
         scale={[11.4, 0.02, 1.8]}
         onPointerEnter={e => handleSharePointerEnter(e)}
         onPointerLeave={e => handleSharePointerLeave(e)}
-        onPointerUp={e => handleSharePointerUp(e) }
+        onPointerDown={e => handleSharePointerDown(e) }
         >
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='black' transparent opacity={0}/>
@@ -2321,7 +2320,7 @@ export default function LobbyNew() {
         <mesh 
         name='wrapper' 
         scale={[11.4, 0.02, 1.8]}
-        onPointerUp={e => handleStartPointerUp(e)}>
+        onPointerDown={e => handleStartPointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='grey' transparent opacity={0}/>
         </mesh>
@@ -2340,7 +2339,7 @@ export default function LobbyNew() {
 
     {/* For host: 'waiting for crew', 'start game!' */}
     function StartGameButton({ position }) {
-      async function handleStartPointerUp(e) {
+      async function handleStartPointerDown(e) {
         e.stopPropagation()
         if (isHost && readyToStart) {
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
@@ -2371,7 +2370,7 @@ export default function LobbyNew() {
         <mesh 
         name='wrapper' 
         scale={[11.4, 0.02, 1.8]}
-        onPointerUp={e => handleStartPointerUp(e) }>
+        onPointerDown={e => handleStartPointerDown(e) }>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial color='black' transparent opacity={0}/>
         </mesh>

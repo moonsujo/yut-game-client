@@ -14,7 +14,7 @@ export default function Title({ position, rotation, scale, setDisplay }) {
   }
   function handlePointerDown() {
       setDisplay('board')
-      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
+      playSoundEffect('/sounds/effects/button-click.mp3')
   }
 
   return <group scale={scale} position={position} rotation={rotation}>

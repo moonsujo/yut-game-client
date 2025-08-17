@@ -64,6 +64,7 @@ import * as THREE from 'three';
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
+import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 
 const ENDPOINT = 'localhost:5000';
 
@@ -167,6 +168,9 @@ export const SocketManager = () => {
   const setShowBonus = useSetAtom(showBonusAtom)
   const [lastYut, setLastYut] = useAtom(lastYutAtom)
   const [_hasAI, setHasAI] = useAtom(hasAIAtom)
+
+  // sounds
+  const { playSoundEffect } = useSoundEffectsPlayer()
 
   useEffect(() => {
 
@@ -910,7 +914,7 @@ export const SocketManager = () => {
         }
     })
     
-    socket.on("joinTeam", ({ spectators, playersTeam0, playersTeam1, gamePhase, host, turn }) => {
+    socket.on("joinTeam", ({ spectators, playersTeam0, playersTeam1, gamePhase, host, turn, playerType }) => {
       setSpectators(spectators)
       setTeams((teams) => {
         let newTeams = [...teams]
@@ -954,6 +958,12 @@ export const SocketManager = () => {
         } else {
           setReadyToStart(false)
         }
+
+      if (playerType === 'human') {
+        playSoundEffect('/sounds/effects/door-chime.mp3')
+      } else if (playerType === 'ai') {
+        playSoundEffect('/sounds/effects/add-ai-player.mp3')
+      }
     })
 
     socket.on('reset', () => {

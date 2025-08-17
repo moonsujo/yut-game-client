@@ -224,7 +224,7 @@ export default function Home2() {
       e.stopPropagation();
       setDisplay('howToPlay')
 
-      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
+      playSoundEffect('/sounds/effects/button-click.mp3')
 
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',
@@ -356,11 +356,8 @@ export default function Home2() {
 
     function handlePointerDown(e) {
       e.stopPropagation();
-      // const audio = new Audio('sounds/effects/button-click.mp3');
-      // audio.volume=0.3;
-      // audio.play();
 
-      playSoundEffect('/sounds/effects/how-to-play-button.mp3')
+      playSoundEffect('/sounds/effects/button-click.mp3')
       
       setJoinGameModalDisplay(true)
     }

@@ -6,6 +6,7 @@ import { useSpring } from '@react-spring/three';
 import Piece from './components/Piece';
 import { roundNum, pieceSelected } from './helpers/helpers';
 import layout from './layout';
+import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function PiecesOnBoard({ boardOffset }) {
     const teams = useAtomValue(teamsAtom)
@@ -19,6 +20,7 @@ export default function PiecesOnBoard({ boardOffset }) {
     const [pieceTeam1Id1] = useAtom(pieceTeam1Id1Atom)
     const [pieceTeam1Id2] = useAtom(pieceTeam1Id2Atom)
     const [pieceTeam1Id3] = useAtom(pieceTeam1Id3Atom)
+    const { playSoundEffect } = useSoundEffectsPlayer()
     const catchPath = useAtomValue(catchPathAtom)
     
     const setPieceTeam0Id0AnimationPlaying = useSetAtom(pieceTeam0Id0AnimationPlayingAtom)
@@ -208,6 +210,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam0Id0AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -351,6 +354,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam0Id1AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -493,6 +497,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam0Id2AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -635,6 +640,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam0Id3AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -777,6 +783,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam1Id0AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -920,6 +927,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam1Id1AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -1063,6 +1071,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam1Id2AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -1205,6 +1214,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
+                        playSoundEffect('/sounds/effects/capture.mp3')
                         setPieceTeam1Id3AnimationPlaying(true)
                     },
                     onRest: () => {

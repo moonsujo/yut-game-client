@@ -4,6 +4,7 @@ import { socket } from './SocketManager';
 import { useAtom, useAtomValue } from 'jotai';
 import { joinTeamAtom, teamsAtom } from './GlobalState';
 import axios from 'axios';
+import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function JoinTeamModal({ position, rotation, scale }) {
 
@@ -12,6 +13,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
   const [submitHover, setSubmitHover] = useState(false)
   const [cancelHover, setCancelHover] = useState(false)
   const [joinTeam, setJoinTeam] = useAtom(joinTeamAtom)
+  const { playSoundEffect } = useSoundEffectsPlayer()
   const teams = useAtomValue(teamsAtom)
   
   function isAlphaNumeric(str) {
@@ -60,8 +62,10 @@ export default function JoinTeamModal({ position, rotation, scale }) {
           setJoinTeam(null);
         }
       });
+        
+      playSoundEffect('/sounds/effects/door-chime.mp3')
 
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',
         timestamp: new Date(),
         payload: {
