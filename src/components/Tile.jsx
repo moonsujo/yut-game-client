@@ -3,7 +3,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { socket } from "../SocketManager";
 import React from "react";
 import { useFrame, useGraph } from "@react-three/fiber";
-import { backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
+import { backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
 import { useParams } from "wouter";
 import { getLegalTiles } from "../helpers/legalTiles";
 import * as THREE from 'three';
@@ -17,6 +17,7 @@ import { animated, useSpring } from "@react-spring/three";
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying";
 import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
+import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer";
 
 export default function Tile({ 
   position=[0,0,0], 
@@ -42,6 +43,9 @@ export default function Tile({
   const shortcutOptions = useAtomValue(shortcutOptionsAtom)
   const animationPlaying = useAnimationPlaying()
   const params = useParams()
+  const { playSoundEffect } = useSoundEffectsPlayer()
+  const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
+  const setHelperTiles = useSetAtom(helperTilesAtom)
 
   const group = useRef()
   const wrapperMat = useRef();
@@ -73,6 +77,21 @@ export default function Tile({
             setSelection({ tile, pieces })
             setLegalTiles(legalTiles)
 
+            let helperTiles = {}
+
+            for (const legalTile of Object.keys(legalTiles)) {
+              if (legalTile !== '29') {
+                let moveInfo = legalTiles[legalTile]
+                helperTiles[legalTile] = parseInt(moveInfo.move)
+              }
+            }
+
+            setHelperTiles(helperTiles)
+            
+            if (team === 0) {
+              playSoundEffect('/sounds/effects/rocket-select.mp3')
+            }
+
             // update other clients
             socket.emit("select", { roomId: params.id.toUpperCase(), selection: { tile, pieces }, legalTiles })
           }
@@ -82,13 +101,13 @@ export default function Tile({
         // When they're called separately, the order of operation is not kept
         socket.emit("move", { roomId: params.id.toUpperCase(), tile, playerName: client.name });
         
-        // const audio = new Audio('sounds/effects/star-move.mp3');
-        // audio.volume = 1;
-        // audio.play();
+        playSoundEffect('/sounds/effects/star-move.mp3')
       } else {
         // update client
         setSelection(null)
         setLegalTiles({})
+        setHelperTiles({})
+        setShowFinishMoves(false)
           
         // update other clients
         socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
@@ -200,6 +219,8 @@ export default function Tile({
       </mesh>
     </group>
   }
+
+
 
   return <group position={position} rotation={rotation} scale={scale}>
     <group ref={group}>

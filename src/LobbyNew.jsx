@@ -33,6 +33,7 @@ import {
   settingsOpenAtom,
   portraitLobbySelectionAtom,
   landscapeLobbyThirdSectionSelectionAtom,
+  blueMoonBrightnessAtom,
 } from "./GlobalState.jsx";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -67,6 +68,7 @@ export default function LobbyNew() {
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
   const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
   const { playSoundEffect } = useSoundEffectsPlayer()
+  const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
 
   useEffect(() => {
     setShowGalaxy(true)
@@ -1331,6 +1333,8 @@ export default function LobbyNew() {
               'button': 'addAISmart'
             }
           })
+          
+          playSoundEffect('/sounds/effects/add-ai-player.mp3')
         }
 
     
@@ -1473,6 +1477,8 @@ export default function LobbyNew() {
 
     function StartGameButton({ position, scale }) {
       const [hover, setHover] = useState(false)
+      const [pressed, setPressed] = useState(false)
+
       function handlePointerEnter(e) {
         e.stopPropagation()
         if (readyToStart) {
@@ -1490,27 +1496,41 @@ export default function LobbyNew() {
       async function handlePointerDown (e) {
         e.stopPropagation()
         setHover(false)
-        if (isHost && readyToStart) {
-          socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
-          
-          // const audio = new Audio('sounds/effects/boot-up.mp3');
-          // audio.volume = 1;
-          // audio.play();
+        if (isHost && readyToStart && !pressed) {
+          setPressed(true)
+          playSoundEffect('/sounds/effects/set-dul-hana.mp3')
 
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {
               'button': 'startGame'
             }
           })
-          console.log('[StartGameButton][desktop] post log response', response)
+
+          // Set value so the moon can respond
+          // 3
+          setBlueMoonBrightness(1.2)
+
+          // 2
+          setTimeout(() => {
+            setBlueMoonBrightness(1.2)
+          }, 1100)
+
+          // 1
+          setTimeout(() => {
+            setBlueMoonBrightness(1.2)
+          }, 2200)
+
+          setTimeout(async () => {
+            socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
+          }, 3300)
         }
       }
       return <group name='start-game-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[4.5, 0.01, 0.9]}>
           <boxGeometry args={[1, 1, 1]}/>
-          <meshStandardMaterial color={ (readyToStart && isHost) ? (hover ? 'green' : 'yellow') : 'grey' }/>
+          <meshStandardMaterial color={ (readyToStart && isHost && !pressed) ? (hover ? 'green' : 'yellow') : 'grey' }/>
         </mesh> 
         <mesh name='background-inner' scale={[4.45, 0.02, 0.85]}>
           <boxGeometry args={[1, 1, 1]}/>
@@ -1533,7 +1553,7 @@ export default function LobbyNew() {
           position={[-1.6, 0.02, 0.19]}
         >
           START GAME!
-          <meshStandardMaterial color={ (readyToStart && isHost) ? (hover ? 'green' : 'yellow') : 'grey' }/>
+          <meshStandardMaterial color={ (readyToStart && isHost && !pressed) ? (hover ? 'green' : 'yellow') : 'grey' }/>
         </Text3D>
       </group>
     }
@@ -2339,29 +2359,30 @@ export default function LobbyNew() {
 
     {/* For host: 'waiting for crew', 'start game!' */}
     function StartGameButton({ position }) {
+      const [pressed, setPressed] = useState(false) // for set-dul-hana countdown
       async function handleStartPointerDown(e) {
         e.stopPropagation()
-        if (isHost && readyToStart) {
+        if (isHost && readyToStart && !pressed) {
+          setPressed(true)
           socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
           
           // const audio = new Audio('sounds/effects/boot-up.mp3');
           // audio.volume = 1;
           // audio.play();
 
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
             timestamp: new Date(),
             payload: {
               'button': 'startGame'
             }
           })
-          console.log('[StartGameButton][portrait] post log response', response)
         }
       }
       return <group name='start-game-button' position={position}>
         <mesh scale={[11.4, 0.01, 1.8]}>
           <boxGeometry args={[1, 1, 1]}/>
-          <meshStandardMaterial color={ readyToStart ? 'yellow' : 'grey' }/>
+          <meshStandardMaterial color={ (isHost && readyToStart && !pressed)  ? 'yellow' : 'grey' }/>
         </mesh>
         <mesh scale={[11.3, 0.02, 1.7]}>
           <boxGeometry args={[1, 1, 1]}/>
@@ -2382,7 +2403,7 @@ export default function LobbyNew() {
           height={0.01}
           lineHeight={0.7}>
           { readyToStart ? `START GAME!` : `WAITING FOR CREW` }
-          <meshStandardMaterial color={ readyToStart ? 'yellow' : 'grey' }/>
+          <meshStandardMaterial color={ (isHost && readyToStart && !pressed) ? 'yellow' : 'grey' }/>
         </Text3D>
       </group>
     }

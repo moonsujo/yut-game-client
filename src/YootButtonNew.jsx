@@ -13,6 +13,7 @@ import Check from './meshes/Check';
 import useShakeDetector from './hooks/useShakeDetector';
 import axios from 'axios';
 import YutBonus from './YutBonus';
+import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function YootButtonNew({ position, rotation, scale }) {
   const { nodes } = useGLTF("/models/rounded-rectangle.glb");
@@ -27,6 +28,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
   const turn = useAtomValue(turnAtom);
   const throwCount = useAtomValue(throwCountAtom)
   const hasThrow = client.team === turn.team && throwCount > 0
+  const { playSoundEffect } = useSoundEffectsPlayer()
 
   const animationPlaying = useAnimationPlaying()
   const enabled = !animationPlaying && hasTurn && hasThrow
@@ -71,9 +73,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
       if (enabled && !paused) {
         setYootAnimationPlaying(true)
         socket.emit('throwYut', { roomId: params.id.toUpperCase() })
-        // const audio = new Audio('sounds/effects/throw-yut-2.mp3');
-        // audio.volume=1
-        // audio.play();
+        playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
       }
             
       const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {

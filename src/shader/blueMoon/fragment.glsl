@@ -2,6 +2,7 @@ uniform sampler2D uMoonTexture;
 uniform vec3 uSunDirection;
 uniform vec3 uAtmosphereDayColor;
 uniform vec3 uAtmosphereTwilightColor;
+uniform float uAtmosphereColorFactor;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -27,7 +28,7 @@ void main()
     // Atmosphere
     float atmosphereDayMix = smoothstep(- 0.5, 0.5, sunOrientation);
     vec3 atmosphereColor = mix(uAtmosphereTwilightColor, uAtmosphereDayColor, atmosphereDayMix);
-    atmosphereColor *= 0.1;
+    atmosphereColor *= uAtmosphereColorFactor;
     color = mix(color, atmosphereColor, fresnel * atmosphereDayMix);
 
     // Final color

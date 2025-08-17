@@ -6,6 +6,7 @@ import { useParams } from "wouter"
 import { useSpring, animated } from "@react-spring/three"
 import { MeshDistortMaterial, Text3D } from '@react-three/drei'
 import MeshColors from "./MeshColors"
+import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer"
 
 export default function GameRules({ position=[0,0,0], scale=1 }) {
   const host = useAtomValue(hostAtom)
@@ -13,6 +14,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
   const gamePhase = useAtomValue(gamePhaseAtom)
   const isHost = client.socketId === host.socketId
   const params = useParams()
+  const { playSoundEffect } = useSoundEffectsPlayer()
 
   // hover states
   const [setting0Hover, setSetting0Hover] = useState(false)
@@ -71,7 +73,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
       setSetting0Hover(false)
     }
   }
-  function handleSetting0PointerUp(e) {
+  function handleSetting0PointerDown(e) {
     e.stopPropagation()
     if (isHost && gamePhase === 'lobby') {
       if (!backdoLaunch) {
@@ -80,6 +82,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'backdoLaunch', flag: false }))
       }
     }
+    playSoundEffect('/sounds/effects/button-click.mp3')
   }
   function handleSetting1PointerEnter(e) {
     e.stopPropagation()
@@ -95,7 +98,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
       setSetting1Hover(false)
     }
   }
-  function handleSetting1PointerUp(e) {
+  function handleSetting1PointerDown(e) {
     e.stopPropagation()
     if (isHost && gamePhase === 'lobby') {
       if (!timer) {
@@ -104,6 +107,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'timer', flag: false }))
       }
     }
+    playSoundEffect('/sounds/effects/button-click.mp3')
   }
   function handleSetting2PointerEnter(e) {
     e.stopPropagation()
@@ -119,7 +123,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
       setSetting2Hover(false)
     }
   }
-  function handleSetting2PointerUp(e) {
+  function handleSetting2PointerDown(e) {
     e.stopPropagation()
     if (isHost && gamePhase === 'lobby') {
       if (!nak) {
@@ -128,6 +132,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'nak', flag: false }))
       }
     }
+    playSoundEffect('/sounds/effects/button-click.mp3')
   }
   function handleSetting3PointerEnter(e) {
     e.stopPropagation()
@@ -143,7 +148,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
       setSetting3Hover(false)
     }
   }
-  function handleSetting3PointerUp(e) {
+  function handleSetting3PointerDown(e) {
     e.stopPropagation()
     if (isHost && gamePhase === 'lobby') {
       if (!yutMoCatch) {
@@ -152,6 +157,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'yutMoCatch', flag: false }))
       }
     }
+    playSoundEffect('/sounds/effects/button-click.mp3')
   }
   function handleSetting4PointerEnter(e) {
     e.stopPropagation()
@@ -167,7 +173,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
       setSetting4Hover(false)
     }
   }
-  function handleSetting4PointerUp(e) {
+  function handleSetting4PointerDown(e) {
     e.stopPropagation()
     if (isHost && gamePhase === 'lobby') {
       if (!shortcutOptions) {
@@ -176,6 +182,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         socket.emit('setGameRule', ({ roomId: params.id.toUpperCase(), clientId: client._id, rule: 'shortcutOptions', flag: false }))
       }
     }
+    playSoundEffect('/sounds/effects/button-click.mp3')
   }
   // #endregion
   
@@ -207,7 +214,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         scale={[7.1, 0.1, 1.5]}
         onPointerEnter={e=>handleSetting1PointerEnter(e)}
         onPointerLeave={e=>handleSetting1PointerLeave(e)}
-        onPointerUp={e=>handleSetting1PointerUp(e)}>
+        onPointerDown={e=>handleSetting1PointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial 
           transparent 
@@ -309,7 +316,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         scale={[7.1, 0.05, 2]}
         onPointerEnter={e=>handleSetting2PointerEnter(e)}
         onPointerLeave={e=>handleSetting2PointerLeave(e)}
-        onPointerUp={e=>handleSetting2PointerUp(e)}>
+        onPointerDown={e=>handleSetting2PointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial 
           transparent 
@@ -411,7 +418,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         scale={[7.1, 0.05, 2.4]}
         onPointerEnter={e=>handleSetting0PointerEnter(e)}
         onPointerLeave={e=>handleSetting0PointerLeave(e)}
-        onPointerUp={e=>handleSetting0PointerUp(e)}>
+        onPointerDown={e=>handleSetting0PointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial 
           transparent 
@@ -513,7 +520,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         scale={[7.1, 0.1, 2]}
         onPointerEnter={e=>handleSetting3PointerEnter(e)}
         onPointerLeave={e=>handleSetting3PointerLeave(e)}
-        onPointerUp={e=>handleSetting3PointerUp(e)}>
+        onPointerDown={e=>handleSetting3PointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial 
           transparent 
@@ -615,7 +622,7 @@ export default function GameRules({ position=[0,0,0], scale=1 }) {
         scale={[7.1, 0.1, 2]}
         onPointerEnter={e=>handleSetting4PointerEnter(e)}
         onPointerLeave={e=>handleSetting4PointerLeave(e)}
-        onPointerUp={e=>handleSetting4PointerUp(e)}>
+        onPointerDown={e=>handleSetting4PointerDown(e)}>
           <boxGeometry args={[1, 1, 1]}/>
           <meshStandardMaterial 
           transparent 

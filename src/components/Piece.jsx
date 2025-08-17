@@ -1,15 +1,16 @@
 
 import { socket } from "../SocketManager";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { useRef } from "react";
 import { getLegalTiles } from "../helpers/legalTiles";
 import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
-import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom } from "../GlobalState.jsx";
+import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom, showFinishMovesAtom, helperTilesAtom } from "../GlobalState.jsx";
 import { useParams } from "wouter";
 import { tileType } from "../helpers/helpers.js";
 import { animated } from "@react-spring/three";
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying.jsx";
+import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer.jsx";
 
 export default function Piece ({
   position=[0,0,0],
@@ -34,6 +35,9 @@ export default function Piece ({
   const paused = useAtomValue(pauseGameAtom)
   const backdoLaunch = useAtomValue(backdoLaunchAtom)
   const shortcutOptions = useAtomValue(shortcutOptionsAtom)
+  const { playSoundEffect } = useSoundEffectsPlayer()
+  const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
+  const setHelperTiles = useSetAtom(helperTilesAtom)
 
   const group = useRef();
   const wrapperMat = useRef();
@@ -78,6 +82,25 @@ export default function Piece ({
           // update client
           setSelection({ tile, pieces })
           setLegalTiles(legalTiles)
+          
+          let helperTiles = {}
+
+          for (const legalTile of Object.keys(legalTiles)) {
+            if (legalTile !== '29') {
+              let moveInfo = legalTiles[legalTile]
+              helperTiles[legalTile] = parseInt(moveInfo.move)
+            }
+          }
+
+          setHelperTiles(helperTiles)
+
+          if (!legalTiles[29]) {
+            if (team === 0) playSoundEffect('/sounds/effects/rocket-select.mp3')
+            // else if (team === 1) playSoundEffect('/sounds/effects/rocket-select.mp3') // play ufo effect
+          } else {
+            if (team === 0) playSoundEffect('/sounds/effects/rocket-select-finishable.mp3')
+            // else if (team === 1) playSoundEffect('/sounds/effects/rocket-select.mp3') // play ufo effect
+          }
 
           // update other clients
           socket.emit("select", { roomId: params.id.toUpperCase(), selection: { tile, pieces }, legalTiles })
@@ -85,11 +108,14 @@ export default function Piece ({
       } else {
         if (selection.tile != tile && tile in legalTiles) {
           socket.emit("move", { roomId: params.id.toUpperCase(), tile, playerName: client.name });
+          playSoundEffect('/sounds/effects/star-move.mp3')
         } else { // deselect
           
           // update client
           setSelection(null)
           setLegalTiles({})
+          setHelperTiles({})
+          setShowFinishMoves(false)
           
           // update other clients
           socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });

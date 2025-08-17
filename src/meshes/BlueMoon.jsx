@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
-import { useTexture } from "@react-three/drei";
+import { useMemo, useRef, useState } from "react";
 import { animated } from "@react-spring/three";
 import * as THREE from 'three';
 import FragmentShader from '../shader/blueMoon/fragment.glsl'
 import VertexShader from '../shader/blueMoon/vertex.glsl'
 import { useFrame } from "@react-three/fiber";
+import { useAtom, useSetAtom } from "jotai";
+import { blueMoonBrightnessAtom } from "../GlobalState";
+import { lerp } from "three/src/math/MathUtils.js";
 
 export default function BlueMoon({ position=[0,0,0], rotation=[0,0,0], scale=1, rotationSpeed=0.1 }) {
   const textureLoader = new THREE.TextureLoader()
@@ -12,8 +14,29 @@ export default function BlueMoon({ position=[0,0,0], rotation=[0,0,0], scale=1, 
   moonTexture.colorSpace = THREE.SRGBColorSpace
 
   const moon = useRef();
-  useFrame((state) => {
+  const shaderRef = useRef()
+  
+
+  // useFrame
+  // lerp
+  // uniform
+  const [brightness, setBrightness] = useAtom(blueMoonBrightnessAtom)
+  const uniforms = useMemo(() => ({
+    uSunDirection: { value: new THREE.Vector3(0,0,0) },
+    uMoonTexture: { value: moonTexture },
+    uAtmosphereDayColor: { value: new THREE.Color('#23A9F1') },
+    uAtmosphereTwilightColor: { value: new THREE.Color('#000000') },
+    uAtmosphereColorFactor: { value: 0.1 }
+  }), []);
+  useFrame((state, delta) => {
     moon.current.rotation.y = -state.clock.elapsedTime * rotationSpeed;
+    if (brightness) {
+      const newBrightness = brightness - delta/1.4
+      shaderRef.current.uniforms.uAtmosphereColorFactor.value = newBrightness
+      setBrightness(newBrightness)
+    } else {
+      shaderRef.current.uniforms.uAtmosphereColorFactor.value = 0.1
+    }
   });
 
   return (
@@ -31,12 +54,8 @@ export default function BlueMoon({ position=[0,0,0], rotation=[0,0,0], scale=1, 
           <shaderMaterial
             vertexShader={VertexShader}
             fragmentShader={FragmentShader}
-            uniforms={{
-              uSunDirection: new THREE.Uniform(new THREE.Vector3(0,0,0)),
-              uMoonTexture: new THREE.Uniform(moonTexture),
-              uAtmosphereDayColor: new THREE.Uniform(new THREE.Color('#23A9F1')),
-              uAtmosphereTwilightColor: new THREE.Uniform(new THREE.Color('#000000'))
-            }}
+            uniforms={uniforms}
+            ref={shaderRef}
           />
         </mesh>
       </group>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import layout from './layout';
 import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
@@ -10,7 +10,7 @@ import HowToPlay from './HowToPlay';
 import Title from './Title';
 import About from './About';
 import { socket } from './SocketManager';
-import { clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
+import { blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
 import Board from './Board';
 import { Physics } from '@react-three/rapier';
 import GameCamera from './GameCamera';
@@ -20,7 +20,6 @@ import useResponsiveSetting from './hooks/useResponsiveSetting';
 import MeteorsRealShader from './shader/meteorsReal/MeteorsRealShader';
 import YootDisplay from './YootDisplay';
 import DisconnectModal from './DisconnectModal';
-import useMusicPlayer from './hooks/useMusicPlayer';
 import axios from 'axios';
 import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
@@ -34,6 +33,7 @@ export default function Home2() {
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
+  const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const [_location, setLocation] = useLocation();
   useEffect(() => {
     async function log() {
@@ -299,6 +299,8 @@ export default function Home2() {
       audio.play();
 
       playSoundEffect('/sounds/effects/create-game.mp3')
+
+      setBlueMoonBrightness(null)
 
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',

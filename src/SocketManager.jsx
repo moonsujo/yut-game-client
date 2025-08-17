@@ -358,6 +358,7 @@ export const SocketManager = () => {
       if (throwCount < 1) {
         setBonusExists(false)
       }
+      playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer, hasAI }) => {
@@ -604,7 +605,6 @@ export const SocketManager = () => {
         // }
       }
 
-
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
       setYootAnimationPlaying(false)
@@ -612,6 +612,24 @@ export const SocketManager = () => {
       setHasTurn(clientHasTurn(socket.id, teams, turnUpdate.team, turnUpdate.players[turnUpdate.team]))
       setGameLogs(gameLogs => [...gameLogs, ...newGameLogs])
       setPauseGame(paused)
+
+      // Sounds
+      if (yootOutcome === 1) {
+        playSoundEffect('/sounds/effects/do.mp3')
+      } else if (yootOutcome === 2) {
+        playSoundEffect('/sounds/effects/ge.mp3')
+      } else if (yootOutcome === 3) {
+        playSoundEffect('/sounds/effects/gul.mp3')
+      } else if (yootOutcome === 4) {
+        playSoundEffect('/sounds/effects/yut.mp3')
+        playSoundEffect('/sounds/effects/yut-bonus.mp3')
+      } else if (yootOutcome === 5) {
+        playSoundEffect('/sounds/effects/mo.mp3')
+      } else if (yootOutcome === -1) {
+        playSoundEffect('/sounds/effects/backdo.mp3')
+      } else if (yootOutcome === 0) {
+        playSoundEffect('/sounds/effects/nak.mp3')
+      }
     })
 
     socket.on('move', ({ newTeam, prevTeam, newPlayer, moveUsed, updatedPieces, updatedTiles, throws, newGameLogs, turnStartTime, turnExpireTime, paused }) => {
@@ -880,7 +898,6 @@ export const SocketManager = () => {
       
       let helperTiles = {}
 
-      // helper tiles
       for (const legalTile of Object.keys(legalTiles)) {
         if (legalTile !== '29') {
           let moveInfo = legalTiles[legalTile]
@@ -892,7 +909,12 @@ export const SocketManager = () => {
 
       if (selection === null) {
         setShowFinishMoves(false)
+      } else {
+        if (selection.pieces[0].team === 0) {
+          playSoundEffect('/sounds/effects/rocket-select.mp3')
+        } 
       }
+
     })
 
     // Emitted to other clients when a client joins
