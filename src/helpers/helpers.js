@@ -217,3 +217,11 @@ export function roomHasAI(room) {
   }
   return false
 }
+
+// precondition: argument is an array
+export function pickRandomElement(array) {
+  const length = array.length
+  const randomNum = Math.random()
+  const randomIndex = Math.floor(length * randomNum)
+  return array[randomIndex]
+}

@@ -58,7 +58,7 @@ import {
   shortcutOptionsAtom,
   hasAIAtom
 } from "./GlobalState.jsx";
-import { clientHasTurn, movesIsEmpty } from "./helpers/helpers.js";
+import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
 import * as THREE from 'three';
 import { useLoader } from "@react-three/fiber";
@@ -66,12 +66,12 @@ import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 
-const ENDPOINT = 'localhost:5000';
+// const ENDPOINT = 'localhost:5000';
 
 // prod endpoint
 // const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 // dev endpoint
-// const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -620,19 +620,54 @@ export const SocketManager = () => {
 
       // Sounds
       if (yootOutcome === 1) {
-        playSoundEffect('/sounds/effects/do.mp3')
+        const doSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/do-strong.mp3',
+          '/sounds/effects/yutThrows/produced/do!.mp3',
+          '/sounds/effects/yutThrows/produced/do.mp3'
+        ]
+        playSoundEffect(pickRandomElement(doSoundFilePaths))
       } else if (yootOutcome === 2) {
-        playSoundEffect('/sounds/effects/ge.mp3')
+        const geSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/ge-strong.mp3',
+          '/sounds/effects/yutThrows/produced/ge.mp3',
+          '/sounds/effects/yutThrows/produced/개다.mp3',
+          '/sounds/effects/yutThrows/produced/개애애애애.mp3',
+        ]
+        playSoundEffect(pickRandomElement(geSoundFilePaths))
       } else if (yootOutcome === 3) {
-        playSoundEffect('/sounds/effects/gul.mp3')
+        const gulSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/gul-gul.mp3',
+          '/sounds/effects/yutThrows/produced/gul-strong.mp3',
+          '/sounds/effects/yutThrows/produced/gul.mp3',
+          '/sounds/effects/yutThrows/produced/걸이다.mp3',
+          '/sounds/effects/yutThrows/produced/걸이로구나.mp3',
+        ]
+        playSoundEffect(pickRandomElement(gulSoundFilePaths))
       } else if (yootOutcome === 4) {
-        playSoundEffect('/sounds/effects/yut.mp3')
+        const yutSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/yut!.mp3',
+          '/sounds/effects/yutThrows/produced/yuuuuuuuut.mp3',
+        ]
+        playSoundEffect(pickRandomElement(yutSoundFilePaths))
       } else if (yootOutcome === 5) {
-        playSoundEffect('/sounds/effects/mo.mp3')
+        const moSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/mo!.mp3',
+          '/sounds/effects/yutThrows/produced/mooooooo.mp3',
+        ]
+        playSoundEffect(pickRandomElement(moSoundFilePaths))
       } else if (yootOutcome === -1) {
-        playSoundEffect('/sounds/effects/backdo.mp3')
+        const backdoSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/ditto-confused.mp3',
+          '/sounds/effects/yutThrows/produced/ditto-deep.mp3',
+          '/sounds/effects/yutThrows/produced/ditto-short.mp3',
+          '/sounds/effects/yutThrows/produced/ditto~.mp3',
+        ]
+        playSoundEffect(pickRandomElement(backdoSoundFilePaths))
       } else if (yootOutcome === 0) {
-        playSoundEffect('/sounds/effects/nak.mp3')
+        const nakSoundFilePaths = [
+          '/sounds/effects/yutThrows/produced/backdo.mp3',
+        ]
+        playSoundEffect(pickRandomElement(nakSoundFilePaths))
       }
     })
 
@@ -914,9 +949,11 @@ export const SocketManager = () => {
       if (selection === null) {
         setShowFinishMoves(false)
       } else {
-        // if (selection.pieces[0].team === 0) {
-        //   playSoundEffect('/sounds/effects/rocket-select.mp3')
-        // } 
+        if (selection.pieces[0].team === 0) {
+          playSoundEffect('/sounds/effects/rocket-select.mp3')
+        } else if (selection.pieces[0].team === 1) {
+          playSoundEffect('/sounds/effects/star-highlight.mp3')
+        }
       }
 
     })
