@@ -31,6 +31,7 @@ import { useSparkShader } from "./shader/spark/SparkShader";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import tilePositions from './tilePositions';
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying";
+import CatchRocketMemeAlert from "./alerts/CatchRocketMemeAlert";
 
 export default function Alert({ position, rotation }) {
     
@@ -1259,7 +1260,8 @@ export default function Alert({ position, rotation }) {
       const teamCaught = alerts[0] && parseInt(alerts[0][5]);
       const numCaught = alerts[0] && parseInt(alerts[0][6]);
       return <animated.group scale={springs.catchAlertScale} rotation={[0, Math.PI/2, 0]}>
-        { numCaught === 1 && teamCaught === 0 && <Catch1RocketAlert/> }
+        { numCaught === 1 && teamCaught === 0 && <CatchRocketMemeAlert/> }
+        {/* { numCaught === 1 && teamCaught === 0 && <Catch1RocketAlert/> } */}
         { numCaught === 2 && teamCaught === 0 && <Catch2RocketAlert/> }
         { numCaught === 3 && teamCaught === 0 && <Catch3RocketAlert/> }
         { numCaught === 4 && teamCaught === 0 && <Catch4RocketAlert/> }

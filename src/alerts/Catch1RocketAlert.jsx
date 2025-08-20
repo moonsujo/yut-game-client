@@ -9,8 +9,6 @@ import { animated, useSpring } from "@react-spring/three";
 
 export default function Catch1RocketAlert({ position, rotation }) {
 
-  const initialScale = 1
-
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();
   const borderMesh2Ref = useRef();
@@ -48,7 +46,7 @@ export default function Catch1RocketAlert({ position, rotation }) {
   }
 
   function BamImage({position, rotation, scale, color}) {
-    const { nodes, materials } = useGLTF('/models/bam-emoji.glb')
+    const { nodes } = useGLTF('/models/bam-emoji.glb')
     return (
       <group position={position} rotation={rotation} scale={scale} dispose={null}>
         <mesh
