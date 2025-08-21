@@ -24,6 +24,7 @@ import axios from 'axios';
 import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
+import useMusicPlayer from './soundPlayers/useMusicPlayer';
 
 export default function Home2() {
 
@@ -35,6 +36,7 @@ export default function Home2() {
   const { playSoundEffect } = useSoundEffectsPlayer()
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const [_location, setLocation] = useLocation();
+  const { loopMusic } = useMusicPlayer()
   useEffect(() => {
     async function log() {
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
@@ -293,8 +295,9 @@ export default function Home2() {
       socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
         setLocation(`/${shortId}`)
       })
-      
+
       playSoundEffect('/sounds/effects/create-game.mp3')
+      loopMusic()
 
       setBlueMoonBrightness(null)
 

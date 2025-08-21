@@ -16,7 +16,7 @@ export default function useSoundEffectsPlayer() {
         soundEffect.play()
       });
     } catch (err) {
-      console.log('error playing sound', err)
+      console.log('error playing sound effect', err)
     }
   }
 

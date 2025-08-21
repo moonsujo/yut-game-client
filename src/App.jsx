@@ -16,6 +16,7 @@ import Blackhole from './Blackhole';
 import RedGalaxy from './RedGalaxy';
 import Blackhole2 from './Blackhole2';
 import AudioController from './soundPlayers/AudioController';
+import MusicController from './soundPlayers/MusicController';
 
 export default function App () {
 
@@ -59,6 +60,7 @@ export default function App () {
         </Route>
       </Suspense>
       <AudioController/>
+      <MusicController/>
     </Canvas>
     <Loader/>
   </>)
