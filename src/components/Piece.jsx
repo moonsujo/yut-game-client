@@ -96,10 +96,10 @@ export default function Piece ({
 
           if (!legalTiles[29]) {
             if (team === 0) playSoundEffect('/sounds/effects/rocket-select.mp3')
-            else if (team === 1) playSoundEffect('/sounds/effects/star-move.mp3')
+            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3')
           } else {
             if (team === 0) playSoundEffect('/sounds/effects/rocket-select-finishable.mp3')
-            else if (team === 1) playSoundEffect('/sounds/effects/star-move.mp3')
+            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3')
           }
 
           // update other clients

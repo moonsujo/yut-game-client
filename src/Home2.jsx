@@ -293,11 +293,7 @@ export default function Home2() {
       socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
         setLocation(`/${shortId}`)
       })
-
-      const audio = new Audio('sounds/effects/create-game.mp3');
-      audio.volume = 1;
-      audio.play();
-
+      
       playSoundEffect('/sounds/effects/create-game.mp3')
 
       setBlueMoonBrightness(null)

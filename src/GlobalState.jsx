@@ -153,6 +153,7 @@ export const audioLoaderAtom = atom(null)
 export const musicListenerAtom = atom(null)
 export const musicLoaderAtom = atom(null)
 export const blueMoonBrightnessAtom = atom(null)
+export const audioContextAtom = atom(null)
 
 const deepPieceEquals = (prev, next) => {
   let result;
