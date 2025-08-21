@@ -903,6 +903,7 @@ export const SocketManager = () => {
 
       if (selection === null) {
         setShowFinishMoves(false)
+        playSoundEffect('/sounds/effects/deselect.mp3')
       } else {
         if (selection.pieces[0].team === 0) {
           playSoundEffect('/sounds/effects/rocket-select.mp3')
@@ -910,7 +911,6 @@ export const SocketManager = () => {
           playSoundEffect('/sounds/effects/star-highlight.mp3')
         }
       }
-
     })
 
     // Emitted to other clients when a client joins
