@@ -1523,6 +1523,7 @@ export default function LobbyNew() {
           }, 2200)
 
           setTimeout(async () => {
+            setBlueMoonBrightness(null)
             socket.emit('gameStart', { roomId: params.id.toUpperCase(), clientId: client._id })
           }, 3300)
         }

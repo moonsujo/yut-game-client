@@ -56,7 +56,8 @@ import {
   bonusExistsAtom,
   lastYutAtom,
   shortcutOptionsAtom,
-  hasAIAtom
+  hasAIAtom,
+  blueMoonBrightnessAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -168,6 +169,7 @@ export const SocketManager = () => {
   const setShowBonus = useSetAtom(showBonusAtom)
   const [lastYut, setLastYut] = useAtom(lastYutAtom)
   const [_hasAI, setHasAI] = useAtom(hasAIAtom)
+  const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
 
   // sounds
   const { playSoundEffect } = useSoundEffectsPlayer()
@@ -382,6 +384,8 @@ export const SocketManager = () => {
       setThrowCount(throwCount)
       setAlerts(['gameStart', 'turn'])
       setYootOutcome(null)
+      setYootAnimation(null)
+      setYootAnimationPlaying(false)
       setTurnStartTime(turnStartTime)
       setTurnExpireTime(turnExpireTime)
       setRemainingTime(turnExpireTime - turnStartTime)
@@ -1024,6 +1028,9 @@ export const SocketManager = () => {
       setPieceTeam1Id3(JSON.parse(JSON.stringify(initialState.initialTeams[1].pieces[3])))
 
       setTurnExpireTime(null)
+      setBlueMoonBrightness(null)
+      setYootAnimation(null)
+      setYootAnimationPlaying(false)
     })
 
     socket.on("setAway", ({ player, paused }) => {

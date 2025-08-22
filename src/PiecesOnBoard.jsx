@@ -4,9 +4,10 @@ import { catchPathAtom, deviceAtom, gamePhaseAtom, hasTurnAtom, pieceTeam0Id0Ani
 import tilePositions from './tilePositions';
 import { useSpring } from '@react-spring/three';
 import Piece from './components/Piece';
-import { roundNum, pieceSelected } from './helpers/helpers';
+import { roundNum, pieceSelected, caughtCheck, startCheck, calculateCatchDelay } from './helpers/helpers';
 import layout from './layout';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
+import useCatchPosition from './hooks/useCatchPosition';
 
 export default function PiecesOnBoard({ boardOffset }) {
     const teams = useAtomValue(teamsAtom)
@@ -22,6 +23,7 @@ export default function PiecesOnBoard({ boardOffset }) {
     const [pieceTeam1Id3] = useAtom(pieceTeam1Id3Atom)
     const { playSoundEffect } = useSoundEffectsPlayer()
     const catchPath = useAtomValue(catchPathAtom)
+    const { getCatchPosition } = useCatchPosition()
     
     const setPieceTeam0Id0AnimationPlaying = useSetAtom(pieceTeam0Id0AnimationPlayingAtom)
     const setPieceTeam0Id1AnimationPlaying = useSetAtom(pieceTeam0Id1AnimationPlayingAtom)
@@ -75,17 +77,6 @@ export default function PiecesOnBoard({ boardOffset }) {
         }
     }
 
-    const STAR_JUMP_TIME = 820
-    function calculateCatchDelay(catchPath) {
-        if (catchPath[0] === 1 && catchPath[1] === 0) {
-            return (catchPath.length-1) * STAR_JUMP_TIME
-        } if (catchPath[0] === 0 && (catchPath[1] !== 19 && catchPath[1] !== 28)) {
-            return (catchPath.length-1) * STAR_JUMP_TIME
-        } else {
-            return (catchPath.length-2) * STAR_JUMP_TIME
-        }
-    }
-
     const [springs0_0, api0_0] = useSpring(() => ({
         from: {
             position: getPositionByTile(pieceTeam0Id0.tile, 0), 
@@ -134,16 +125,6 @@ export default function PiecesOnBoard({ boardOffset }) {
             scale: getScaleByTile(pieceTeam1Id3.tile),
         }
     }))
-
-    function startCheck(tile, lastPath) {
-        const condition0 = (tile === 0 && lastPath[0] === 1)
-        const condition1 = (tile <= 5 && lastPath[0] === 0)
-        return (condition0 || condition1)
-    }
-
-    function caughtCheck(gamePhase, tile) {
-        return gamePhase === 'game' && tile === -1
-    }
 
     useEffect(() => {
         const path = pieceTeam0Id0.lastPath
@@ -201,6 +182,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(0),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -345,6 +327,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(0),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -488,6 +471,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(0),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -631,6 +615,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(0),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -774,6 +759,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(1),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -918,6 +904,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(1),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -1062,6 +1049,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(1),
                             config: {
                                 tension: 170,
                                 friction: 26
@@ -1205,6 +1193,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                     to: [
                         {
                             scale: 0,
+                            position: getCatchPosition(1),
                             config: {
                                 tension: 170,
                                 friction: 26

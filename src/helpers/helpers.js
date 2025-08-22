@@ -225,3 +225,24 @@ export function pickRandomElement(array) {
   const randomIndex = Math.floor(length * randomNum)
   return array[randomIndex]
 }
+
+export function caughtCheck(gamePhase, tile) {
+    return gamePhase === 'game' && tile === -1
+}
+
+export function startCheck(tile, lastPath) {
+    const condition0 = (tile === 0 && lastPath[0] === 1)
+    const condition1 = (tile <= 5 && lastPath[0] === 0)
+    return (condition0 || condition1)
+}
+
+const STAR_JUMP_TIME = 820
+export function calculateCatchDelay(catchPath) {
+    if (catchPath[0] === 1 && catchPath[1] === 0) {
+        return (catchPath.length-1) * STAR_JUMP_TIME
+    } if (catchPath[0] === 0 && (catchPath[1] !== 19 && catchPath[1] !== 28)) {
+        return (catchPath.length-1) * STAR_JUMP_TIME
+    } else {
+        return (catchPath.length-2) * STAR_JUMP_TIME
+    }
+}
