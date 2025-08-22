@@ -40,6 +40,7 @@ export default function Alert({ position, rotation }) {
     const animationPlaying = useAnimationPlaying()
     const [CreateFirework] = useFireworksShader();
     const [CreateSpark] = useSparkShader();
+    const [scoringTeam, setScoringTeam] = useState(-1)
 
     const sparkTexture = useLoader(TextureLoader, '/textures/particles/6.png')
 
@@ -341,6 +342,7 @@ export default function Alert({ position, rotation }) {
           })
         } else if (alerts[i].includes('score')) {
           const numScored = parseInt(alerts[0][6]);
+          setScoringTeam(parseInt(alerts[0][5]))
           animations.push({
             scoreAlertScale: 1,
             config: {
@@ -1322,17 +1324,19 @@ export default function Alert({ position, rotation }) {
             <cylinderGeometry args={[1, 1, 0.01, 32]}/>
             <meshStandardMaterial color='black' transparent opacity={0.9}/>
           </mesh>
-          <Text3D
-              font="/fonts/Luckiest Guy_Regular.json" 
-              position={[-1.4, 0.1, -0.1]}
-              rotation={[-Math.PI/2, 0, 0]}
-              height={0.01}
-              lineHeight={0.9} 
-              size={0.46}
-          >
-              {`Welcome\n     Back!`}
-              <meshStandardMaterial color='yellow'/>
-          </Text3D>
+          <Center position={[0, 0.1, 0]}>
+            <Text3D
+                font="/fonts/Luckiest Guy_Regular.json" 
+                position={[-1.4, 0.1, -0.1]}
+                rotation={[-Math.PI/2, 0, 0]}
+                height={0.01}
+                lineHeight={0.9} 
+                size={0.46}
+            >
+                { scoringTeam === 0 ? `Welcome\n     Back!` : `     ALIEN\nINVASION!`}
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+          </Center>
           <group ref={borderMesh0Ref}>
               <Star scale={0.15} color='yellow' />
           </group>
