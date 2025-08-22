@@ -407,7 +407,7 @@ export default function Alert({ position, rotation }) {
         // firework 1 - left
         const count = Math.round(700 + Math.random() * 400);
         const position = new THREE.Vector3(
-            -1.8 + Math.random()*0.1, 
+            -4 + Math.random()*0.1, 
             0,
             -0.9 + Math.random()*0.2, 
         )
@@ -424,7 +424,7 @@ export default function Alert({ position, rotation }) {
           // setting 2
           const count = Math.round(700 + Math.random() * 300);
           const position = new THREE.Vector3(
-              1.8 + Math.random()*0.1, 
+              4 + Math.random()*0.1, 
               0,
               -0.9 + Math.random()*0.2, 
           )
@@ -456,7 +456,7 @@ export default function Alert({ position, rotation }) {
           const position = new THREE.Vector3(
               -1.3 + Math.random() * 0.1, 
               0,
-              -1.9 + Math.random() * 0.1, 
+              -4 + Math.random() * 0.1, 
           )
           const size = 0.3 + Math.random() * 0.1
           const radius = 1.3 + Math.random() * 0.2
@@ -469,7 +469,7 @@ export default function Alert({ position, rotation }) {
         setTimeout(() => {
           const count = Math.round(600 + Math.random() * 400);
           const position = new THREE.Vector3(
-              1.7 + Math.random() * 0.1, 
+              3 + Math.random() * 0.1, 
               0,
               -2.7 + Math.random() * 0.1, 
           )
@@ -484,9 +484,9 @@ export default function Alert({ position, rotation }) {
         setTimeout(() => {
           const count = Math.round(600 + Math.random() * 400);
           const position = new THREE.Vector3(
-              -1.4 + Math.random() * 0.3, 
+              -5 + Math.random() * 0.3, 
               0,
-              -1.0 + Math.random() * 0.3, 
+              -5 + Math.random() * 0.3, 
           )
           const size = 0.15 + Math.random() * 0.04
           const radius = 1.0 + Math.random() * 0.2
@@ -499,12 +499,12 @@ export default function Alert({ position, rotation }) {
         setTimeout(() => {
           const count = Math.round(800 + Math.random() * 500);
           const position = new THREE.Vector3(
-              -2.4 + Math.random() * 0.3, 
+              1 + Math.random() * 0.3, 
               0,
-              -1.0 + Math.random() * 0.3, 
+              0.5 + Math.random() * 0.3, 
           )
-          const size = 0.23 + Math.random() * 0.04
-          const radius = 0.8 + Math.random() * 0.4
+          const size = 0.4 + Math.random() * 0.04
+          const radius = 1 + Math.random() * 0.4
           const color = new THREE.Color();
           color.setHSL(hue, 0.8, 0.59)
           CreateFirework({ count, position, size, radius, color });
@@ -516,7 +516,7 @@ export default function Alert({ position, rotation }) {
           const position = new THREE.Vector3(
               -2.4 + Math.random() * 0.3, 
               0,
-              -1.0 + Math.random() * 0.3, 
+              0.5 + Math.random() * 0.3, 
           )
           const size = 0.27 + Math.random() * 0.04
           const radius = 1.1 + Math.random() * 0.4
@@ -528,12 +528,12 @@ export default function Alert({ position, rotation }) {
         // firework 1 - left
         const count = Math.round(700 + Math.random() * 400);
         const position = new THREE.Vector3(
-            -1.8 + Math.random()*0.1, 
+            -4 + Math.random()*0.1, 
             0,
             -0.9 + Math.random()*0.2, 
         )
 
-        const size = 0.24 + Math.random() * 0.04
+        const size = 0.5 + Math.random() * 0.04
         
         const radius = 1.0 + Math.random() * 0.2
         const color = new THREE.Color();
@@ -546,11 +546,11 @@ export default function Alert({ position, rotation }) {
           // setting 2
           const count = Math.round(700 + Math.random() * 300);
           const position = new THREE.Vector3(
-              1.8 + Math.random()*0.1, 
+              3 + Math.random()*0.1, 
               0,
               -0.9 + Math.random()*0.2, 
           )
-          const size = 0.29 + Math.random() * 0.04
+          const size = 0.5 + Math.random() * 0.04
           
           const radius = 1.0 + Math.random() * 0.2
           const color = new THREE.Color();
@@ -562,13 +562,13 @@ export default function Alert({ position, rotation }) {
         setTimeout(() => {
           const count = Math.round(600 + Math.random() * 400);
           const position = new THREE.Vector3(
-              0, 
+              -1, 
               0,
-              -1.9 + Math.random() * 0.1, 
+              -3 + Math.random() * 0.1, 
           )
-          const size = 0.25 + Math.random() * 0.04
+          const size = 0.5 + Math.random() * 0.04
           
-          const radius = 1.0 + Math.random() * 0.2
+          const radius = 1.5 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.58)
           CreateFirework({ count, position, size, radius, color });
@@ -578,13 +578,13 @@ export default function Alert({ position, rotation }) {
         setTimeout(() => {
           const count = Math.round(600 + Math.random() * 400);
           const position = new THREE.Vector3(
-              -1.5 + Math.random() * 0.2, 
+              1.7 + Math.random() * 0.2, 
               0,
-              -2.5 + Math.random() * 0.2, 
+              -4 + Math.random() * 0.2, 
           )
-          const size = 0.25 + Math.random() * 0.04
+          const size = 0.4 + Math.random() * 0.04
           
-          const radius = 1.0 + Math.random() * 0.2
+          const radius = 1.1 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.59)
           CreateFirework({ count, position, size, radius, color });
@@ -596,11 +596,11 @@ export default function Alert({ position, rotation }) {
           const position = new THREE.Vector3(
               1.5 + Math.random() * 0.2, 
               0,
-              2.5 + Math.random() * 0.2, 
+              1.5 + Math.random() * 0.2, 
           )
-          const size = 0.25 + Math.random() * 0.04
+          const size = 0.4 + Math.random() * 0.04
           
-          const radius = 1.0 + Math.random() * 0.2
+          const radius = 1.4 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.53)
           CreateFirework({ count, position, size, radius, color });
@@ -609,14 +609,14 @@ export default function Alert({ position, rotation }) {
         // firework 1 - left
         const count = Math.round(700 + Math.random() * 400);
         const position = new THREE.Vector3(
-            -2.0 + Math.random()*0.1, 
+            -4.0 + Math.random()*0.1, 
             0,
             -1.2 + Math.random()*0.2, 
         )
 
-        const size = 0.27 + Math.random() * 0.07
+        const size = 0.4 + Math.random() * 0.07
         
-        const radius = 1.0 + Math.random() * 0.2
+        const radius = 1.2 + Math.random() * 0.2
         const color = new THREE.Color();
         color.setHSL(hue, 1, 0.6)
 
@@ -627,11 +627,11 @@ export default function Alert({ position, rotation }) {
           // setting 2
           const count = Math.round(700 + Math.random() * 300);
           const position = new THREE.Vector3(
-              1.8 + Math.random()*0.1, 
+              4 + Math.random()*0.1, 
               0,
               -0.9 + Math.random()*0.2, 
           )
-          const size = 0.3 + Math.random() * 0.07
+          const size = 0.5 + Math.random() * 0.07
           
           const radius = 1.2 + Math.random() * 0.2
           const color = new THREE.Color();
@@ -645,15 +645,32 @@ export default function Alert({ position, rotation }) {
           const position = new THREE.Vector3(
               0, 
               0,
-              -1.9 + Math.random() * 0.1, 
+              -3 + Math.random() * 0.1, 
           )
-          const size = 0.26 + Math.random() * 0.07
+          const size = 0.5 + Math.random() * 0.07
           
           const radius = 1.4 + Math.random() * 0.2
           const color = new THREE.Color();
           color.setHSL(hue, 1, 0.6)
           CreateFirework({ count, position, size, radius, color });
         }, 1000)
+
+        
+        // firework 4 - middle
+        setTimeout(() => {
+          const count = Math.round(800 + Math.random() * 400);
+          const position = new THREE.Vector3(
+              2, 
+              0,
+              -2.5 + Math.random() * 0.1, 
+          )
+          const size = 0.5 + Math.random() * 0.07
+          
+          const radius = 1.4 + Math.random() * 0.2
+          const color = new THREE.Color();
+          color.setHSL(hue, 1, 0.6)
+          CreateFirework({ count, position, size, radius, color });
+        }, 1200)
       }
     }
     
@@ -1262,9 +1279,9 @@ export default function Alert({ position, rotation }) {
       return <animated.group scale={springs.catchAlertScale} rotation={[0, Math.PI/2, 0]}>
         { numCaught === 1 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         {/* { numCaught === 1 && teamCaught === 0 && <Catch1RocketAlert/> } */}
-        { numCaught === 2 && teamCaught === 0 && <Catch2RocketAlert/> }
-        { numCaught === 3 && teamCaught === 0 && <Catch3RocketAlert/> }
-        { numCaught === 4 && teamCaught === 0 && <Catch4RocketAlert/> }
+        { numCaught === 2 && teamCaught === 0 && <CatchRocketMemeAlert/> }
+        { numCaught === 3 && teamCaught === 0 && <CatchRocketMemeAlert/> }
+        { numCaught === 4 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 1 && teamCaught === 1 && <Catch1UfoAlert/> }
         { numCaught === 2 && teamCaught === 1 && <Catch2UfoAlert/> }
         { numCaught === 3 && teamCaught === 1 && <Catch3UfoAlert/> }
@@ -1302,8 +1319,8 @@ export default function Alert({ position, rotation }) {
 
       return <animated.group scale={springs.scoreAlertScale}>
           <mesh scale={[width, 1,height]}>
-              <cylinderGeometry args={[1, 1, 0.01, 32]}/>
-              <meshStandardMaterial color='black' transparent opacity={0.9}/>
+            <cylinderGeometry args={[1, 1, 0.01, 32]}/>
+            <meshStandardMaterial color='black' transparent opacity={0.9}/>
           </mesh>
           <Text3D
               font="/fonts/Luckiest Guy_Regular.json" 
@@ -1465,7 +1482,60 @@ export default function Alert({ position, rotation }) {
       </animated.group>
     }
 
-    return (gamePhase === 'pregame' || gamePhase === 'game') && <group position={position} rotation={rotation}>
+    function handleAlertPointerDown(e) {
+      e.stopPropagation()
+        api.start({
+          from: {
+            turnAlertScale: 0,
+            gameStartAlertScale: 0,
+            yootOutcome1AlertScale: 0,
+            yootOutcome2AlertScale: 0,
+            yootOutcome3AlertScale: 0,
+            yootOutcome4PregameAlertScale: 0,
+            yootOutcome5PregameAlertScale: 0,
+            yootOutcome4AlertScale: 0,
+            yootOutcome5AlertScale: 0,
+            yootOutcomeOutAlertScale: 0,
+            yootOutcomeBackdoAlertScale: 0,
+            pregameTieAlertScale: 0,
+            pregameUfosWinAlertScale: 0,
+            catchAlertScale: 0,
+            scoreAlertScale: 0,
+            joinAlertScale: 0,
+            timesUpAlertScale: 0
+          },
+          to: [
+            {
+              turnAlertScale: 0,
+              gameStartAlertScale: 0,
+              yootOutcome1AlertScale: 0,
+              yootOutcome2AlertScale: 0,
+              yootOutcome3AlertScale: 0,
+              yootOutcome4PregameAlertScale: 0,
+              yootOutcome5PregameAlertScale: 0,
+              yootOutcome4AlertScale: 0,
+              yootOutcome5AlertScale: 0,
+              yootOutcomeOutAlertScale: 0,
+              yootOutcomeBackdoAlertScale: 0,
+              pregameTieAlertScale: 0,
+              pregameUfosWinAlertScale: 0,
+              catchAlertScale: 0,
+              scoreAlertScale: 0,
+              joinAlertScale: 0,
+              timesUpAlertScale: 0
+            },
+          ],
+          loop: false,
+          onStart: () => {},
+          onRest: () => {} // plays twice when browser is not in focus
+        })
+    }
+
+    return (gamePhase === 'pregame' || gamePhase === 'game') && <group 
+      position={position} 
+      rotation={rotation}
+      onPointerDown={e=>handleAlertPointerDown(e)}
+    >
       <TurnAlert/>
       <GameStartAlert/>
       <PregameTieAlert/>

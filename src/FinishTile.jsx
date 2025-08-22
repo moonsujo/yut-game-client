@@ -32,9 +32,10 @@ export default function FinishTile({ legalTileInfo }) {
 
   let time = 0
   const finishMovesPointerPositionX = 0.2
+  const baseWrapperScale = 0.8
+  const wrapperIncreaseScaleFactor = 0.05
   useFrame((state, delta) => {
-    // const time = state.clock.elapsedTime
-    time += delta
+    const time = state.clock.elapsedTime
     if (wrapperMat.current && wrapper.current && starMatRef.current && borderMatRef.current) {
       if (selection != null && legalTileInfo) {
         // if (turn.team === 0) {
@@ -43,15 +44,15 @@ export default function FinishTile({ legalTileInfo }) {
         //   wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.06 + 0.55, 1, 0.3);
         // }
         wrapperMat.current.opacity = 0.2;
-        wrapper.current.scale.x = Math.sin(time * 3) * 0.05 + 1.1;
-        wrapper.current.scale.y = Math.sin(time * 3) * 0.05 + 1.1;
-        wrapper.current.scale.z = Math.sin(time * 3) * 0.05 + 1.1;
+        wrapper.current.scale.x = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+        wrapper.current.scale.y = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+        wrapper.current.scale.z = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
   
         // Star shine
         starMatRef.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
         borderMatRef.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
-        wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.15 + 0.5, Math.cos(time * 5) * 0.3 + 1, Math.cos(time * 6) * 0.1 + 0.4);
-
+        // wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.15 + 0.5, Math.cos(time * 5) * 0.3 + 1, Math.cos(time * 6) * 0.1 + 0.4);
+        wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
       } else {
         wrapperMat.current.opacity = 0;
         starMatRef.current.color.r = 0.031

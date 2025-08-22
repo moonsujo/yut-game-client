@@ -12,7 +12,7 @@ export default function useSoundEffectsPlayer() {
       audioLoader.load(filePath, (buffer) => {
         soundEffect.setBuffer(buffer);
         soundEffect.setLoop(false);
-        soundEffect.setVolume(0.5);
+        soundEffect.setVolume(0.2);
         soundEffect.play()
       });
     } catch (err) {

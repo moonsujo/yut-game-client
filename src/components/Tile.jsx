@@ -136,7 +136,8 @@ export default function Tile({
     wrapperScale: ((selection != null && legalTileInfo) || hasMovablePiece) ? 1 : 0, // want the animation to start again when status changes
   })
 
-  const baseWrapperScale = 1.3
+  const baseWrapperScale = 0.9
+  const wrapperIncreaseScaleFactor = 0.02
   useFrame((state) => {
     const time = state.clock.elapsedTime;
     if (hasMovablePiece) {
@@ -151,9 +152,9 @@ export default function Tile({
         wrapperMat.current.opacity = 0.3
         wrapperMat.current.color = new THREE.Color('grey')
       }
-      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + baseWrapperScale;
-      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + baseWrapperScale;
-      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.x = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+      wrapper.current.scale.y = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+      wrapper.current.scale.z = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
     } else if (selection != null && legalTileInfo) {
       if (turn.team === 0) {
         wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.02 + 0.03, 0.8, 0.5);
@@ -161,9 +162,9 @@ export default function Tile({
         wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.06 + 0.55, 1, 0.3);
       }
       wrapperMat.current.opacity = 0.3;
-      wrapper.current.scale.x = Math.cos(time * 3) * 0.1 + baseWrapperScale;
-      wrapper.current.scale.y = Math.cos(time * 3) * 0.1 + baseWrapperScale;
-      wrapper.current.scale.z = Math.cos(time * 3) * 0.1 + baseWrapperScale;
+      wrapper.current.scale.x = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+      wrapper.current.scale.y = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
+      wrapper.current.scale.z = Math.cos(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
     } else {
       wrapperMat.current.opacity = 0;
     }
@@ -175,9 +176,9 @@ export default function Tile({
       const positionTopLeft = [-1, 2.3, 0]
       const positionBottomRight = [1, 2.3, 2]
       const positionBottomLeft = [-1, 2.3, 2]
-      if (tile === 0 || tile === 1 || tile === 2 || tile === 3 || tile === 4) {
+      if (tile === 1 || tile === 2 || tile === 3 || tile === 4) {
         return positionBottomRight
-      } else if (tile === 5 || tile === 6 || tile === 7 || tile === 8 || tile === 9) {
+      } else if (tile === 0 || tile === 5 || tile === 6 || tile === 7 || tile === 8 || tile === 9) {
         return positionTopRight
       } else if (tile === 10 || tile === 11 || tile === 12 || tile === 13 || tile === 14) {
         return positionTopRight

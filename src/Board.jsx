@@ -45,7 +45,7 @@ export default function Board({
 
   function getMeshByTile(tile) {
     if (tile == 0) {
-      return <Earth scale={0.45} showParticles={false}/>
+      return <Earth scale={0.4} showParticles={false}/>
     } else if (tile == 5) {
       return <Mars scale={!highlightShortcuts ? 0.4 : 0.55}/>
     } else if (tile == 10) {
@@ -53,7 +53,7 @@ export default function Board({
     } else if (tile == 15) {
       return <Neptune scale={0.4}/>
     } else if (tile == 22) {
-      return <Moon scale={!highlightShortcuts ? 0.35 : 0.42} shiny/>
+      return <Moon scale={!highlightShortcuts ? 0.33 : 0.42} shiny/>
     } else if (tile == 1) {
       return <Star scale={0.3} color={starColor}/>
       // return <Star scale={0.4} color='limegreen'/>

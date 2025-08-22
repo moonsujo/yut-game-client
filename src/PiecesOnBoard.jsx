@@ -55,11 +55,13 @@ export default function PiecesOnBoard({ boardOffset }) {
             ]
         }
     }
+    const SCORE_POS_SCALE = 1.4
+    const SCORE_SCALE = 2.0
     function getScorePosition0(pieceId) {
         return [
-            roundNum(0 + idOffsets[pieceId][0]*2, 1) * responsiveScale,
-            roundNum(0 + heightOffset + idOffsets[pieceId][1]*2, 1) * responsiveScale,
-            roundNum(4.5 + idOffsets[pieceId][2]*2, 1) * responsiveScale,
+            roundNum(0 + idOffsets[pieceId][0]*2, 1) * responsiveScale * SCORE_POS_SCALE,
+            roundNum(7 + heightOffset + idOffsets[pieceId][1]*2, 1) * responsiveScale * SCORE_POS_SCALE,
+            roundNum(4.5 + idOffsets[pieceId][2]*2, 1) * responsiveScale * SCORE_POS_SCALE,
         ]
     }
     function getScorePosition1(pieceId) {
@@ -143,7 +145,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(0),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -288,7 +290,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(1),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -432,7 +434,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(2),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -576,7 +578,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(3),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -720,7 +722,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(0),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -865,7 +867,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(1),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -1010,7 +1012,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(2),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26
@@ -1154,7 +1156,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const scoreAnimation = [
                     {
                         position: getScorePosition0(3),
-                        scale: 1.5,
+                        scale: SCORE_SCALE,
                         config: {
                             tension: 170,
                             friction: 26

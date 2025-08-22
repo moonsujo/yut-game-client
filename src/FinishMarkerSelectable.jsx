@@ -229,11 +229,12 @@ export default function FinishMarkerSelectable({ legalTileInfo, selection }) {
   const finishTextRef = useRef()
   let time = 0
   useFrame((state, delta) => {
-    time += delta
+    const time = state.clock.elapsedTime
     if (legalTileInfo.length > 0 && !showFinishMoves) {
       finishTextRef.current.scale.x = 1 + Math.sin(time*3) * 0.05
       finishTextRef.current.scale.y = 1 + Math.sin(time*3) * 0.05
       finishTextRef.current.scale.z = 1 + Math.sin(time*3) * 0.05
+      finishTextRef.current.material.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
     }
   })
 
