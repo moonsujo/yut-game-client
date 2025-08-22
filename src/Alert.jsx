@@ -1284,8 +1284,9 @@ export default function Alert({ position, rotation }) {
         { numCaught === 2 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 3 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 4 && teamCaught === 0 && <CatchRocketMemeAlert/> }
-        { numCaught === 1 && teamCaught === 1 && <Catch1UfoAlert/> }
-        { numCaught === 2 && teamCaught === 1 && <Catch2UfoAlert/> }
+        { numCaught === 1 && teamCaught === 1 && <Catch3UfoAlert/> }
+        {/* { numCaught === 1 && teamCaught === 1 && <Catch1UfoAlert/> } */}
+        { numCaught === 2 && teamCaught === 1 && <Catch3UfoAlert/> }
         { numCaught === 3 && teamCaught === 1 && <Catch3UfoAlert/> }
         { numCaught === 4 && teamCaught === 1 && <Catch4UfoAlert/> }
       </animated.group>
