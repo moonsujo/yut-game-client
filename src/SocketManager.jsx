@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 import { io } from "socket.io-client";
 
 import { 
   pregameAlertAtom, 
   clientAtom, 
-  disconnectAtom, 
   gamePhaseAtom, 
   hasTurnAtom, 
   helperTilesAtom, 

@@ -56,6 +56,7 @@ import axios from "axios";
 import Chatbox from "./Chatbox.jsx";
 import Settings from "./Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
+import { SoundIcon } from "./meshes/SoundIcon.jsx";
 
 export default function LobbyNew() {
 
@@ -1558,6 +1559,51 @@ export default function LobbyNew() {
         </Text3D>
       </group>
     }
+    function MenuButtons({ position, scale }) {
+      function AudioButton({ position, scale }) {
+        const [hover, setHover] = useState(false)
+        function handlePointerEnterSettings(e) {
+          e.stopPropagation()
+          setHover(true)
+          document.body.style.cursor = 'pointer'
+        }
+        function handlePointerLeaveSettings(e) {
+          e.stopPropagation()
+          setHover(false)
+          document.body.style.cursor = 'default'
+        }
+        function handlePointerDownSettings(e) {
+          e.stopPropagation()
+          // set sound effects and music volume to 0
+        }
+        return <group name='menu-buttons' position={position} scale={scale}>
+          <group name='settings-button' position={[0, 0, 0]}>
+            <mesh name='background-outer' scale={[3.5, 0.01, 0.9]}>
+              <boxGeometry args={[1, 1, 1]}/>
+              <meshStandardMaterial color={ hover ? 'green' : 'yellow' }/>
+            </mesh>
+            <mesh name='background-inner' scale={[3.45, 0.02, 0.85]}>
+              <boxGeometry args={[1, 1, 1]}/>
+              <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+            name='wrapper'
+            scale={[3.5, 0.02, 0.9]}
+            onPointerEnter={e => handlePointerEnterSettings(e)}
+            onPointerLeave={e => handlePointerLeaveSettings(e)}
+            onPointerDown={e => handlePointerDownSettings(e)}>
+              <boxGeometry args={[1, 1, 1]}/>
+              <meshStandardMaterial color='yellow' transparent opacity={0}/>
+            </mesh>
+            {/* add icon */}
+            <SoundIcon position={[-1.2, 0.02, 0]} scale={0.4}/>
+          </group>
+        </group>
+      }
+      return <group name='menu-buttons' position={position} scale={scale}>
+        <AudioButton position={[0, 0, 0]}/>
+      </group>
+    }
     function WaitingForCrewSign({ position, scale }) {
       return <group name='waiting-for-crew-sign' position={position} scale={scale}>
         <mesh name='background-outer' scale={[5.5, 0.01, 0.9]}>
@@ -1625,7 +1671,8 @@ export default function LobbyNew() {
         </Text3D>
       </group>
       <PlayersParty position={[1, 0, -0.2]} scale={0.55}/>
-      <StartGameButton position={[0.9, 4, 6]} scale={0.9}/>
+      <MenuButtons position={[0.9, 4, 6]} scale={0.9}/>
+      <StartGameButton position={[0.9, 4, 7]} scale={0.9}/>
       {/* { isHost && !readyToStart && <WaitingForCrewSign position={[0.9,0,5]} scale={0.8}/> }
       { !isHost && <HostWillStartSign position={[0.9,0,5]} scale={0.8}/> } */}
     </group>
