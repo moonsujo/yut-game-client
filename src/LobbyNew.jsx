@@ -57,6 +57,7 @@ import Chatbox from "./Chatbox.jsx";
 import Settings from "./Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import { SoundIcon } from "./meshes/SoundIcon.jsx";
+import SeatStar from "./stars/SeatStar.jsx";
 
 export default function LobbyNew() {
 
@@ -288,6 +289,9 @@ export default function LobbyNew() {
       const [seat2Team1Hover, setSeat2Team1Hover] = useState(false)
       const [seat3Team1Hover, setSeat3Team1Hover] = useState(false)
       const [seat4Team1Hover, setSeat4Team1Hover] = useState(false)
+
+      const rocketSeat0StarRef = useRef()
+      const rocketSeat1StarRef = useRef()
       function handleSeat1Team0PointerEnter(e) {
         e.stopPropagation()
         document.body.style.cursor = 'pointer'
@@ -407,7 +411,7 @@ export default function LobbyNew() {
       // Players are in seat by their index in the teams[team].players array
       return <group position={position} scale={scale}>
         <animated.group 
-        name='rocket-seat-1'
+        name='rocket-seat-0'
         scale={0.6} 
         position={[
           -Math.cos(Math.PI * 2 / 8 + Math.PI/8) * radius, 
@@ -416,6 +420,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[0] && host.socketId === teams[0].players[0].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[0] && client.socketId === teams[0].players[0].socketId && <YouStars team={0}/> }
+          { !teams[0].players[0] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -458,7 +463,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='rocket-seat-2'
+        name='rocket-seat-1'
         scale={0.6} 
         position={[
           -Math.cos(Math.PI * 2 / 8 - Math.PI/8) * radius, 
@@ -467,6 +472,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[1] && host.socketId === teams[0].players[1].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[1] && client.socketId === teams[0].players[1].socketId && <YouStars team={0}/> }
+          { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -509,7 +515,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='rocket-seat-3'
+        name='rocket-seat-2'
         scale={0.6} 
         position={[
           -Math.cos(0 - Math.PI/8) * radius, 
@@ -518,6 +524,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[2] && host.socketId === teams[0].players[2].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[2] && client.socketId === teams[0].players[2].socketId && <YouStars team={0}/> }
+          { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -560,7 +567,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='rocket-seat-4'
+        name='rocket-seat-3'
         scale={0.6} 
         position={[
           -Math.cos(-Math.PI * 2 / 8 - Math.PI/8) * radius - 0.2, 
@@ -569,6 +576,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[3] && host.socketId === teams[0].players[3].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[3] && client.socketId === teams[0].players[3].socketId && <YouStars team={0}/> }
+          { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.8}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -611,7 +619,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='ufo-seat-1'
+        name='ufo-seat-0'
         scale={0.6} 
         position={[
           Math.cos(Math.PI * 2 / 8 + Math.PI/8) * radius, 
@@ -620,6 +628,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[0] && host.socketId === teams[1].players[0].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[0] && client.socketId === teams[1].players[0].socketId && <YouStars position={[6.4, 0, 0]} team={1}/> }
+          { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -662,7 +671,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='ufo-seat-2'
+        name='ufo-seat-1'
         scale={0.6} 
         position={[
           Math.cos(Math.PI * 2 / 8 - Math.PI/8) * radius, 
@@ -671,6 +680,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[1] && host.socketId === teams[1].players[1].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[1] && client.socketId === teams[1].players[1].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -713,7 +723,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='ufo-seat-3'
+        name='ufo-seat-2'
         scale={0.6} 
         position={[
           Math.cos(0 - Math.PI/8) * radius, 
@@ -722,6 +732,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[2] && host.socketId === teams[1].players[2].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[2] && client.socketId === teams[1].players[2].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -764,7 +775,7 @@ export default function LobbyNew() {
           </group>
         </animated.group>
         <animated.group 
-        name='ufo-seat-4'
+        name='ufo-seat-3'
         scale={0.6} 
         position={[
           Math.cos(-Math.PI * 2 / 8 - Math.PI/8) * radius + 0.2, 
@@ -773,6 +784,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[3] && host.socketId === teams[1].players[3].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[3] && client.socketId === teams[1].players[3].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -1432,6 +1444,7 @@ export default function LobbyNew() {
           {`TEAM\nROCKET`}
           <meshStandardMaterial color={ 'red' }/>
         </Text3D>
+        <Rocket position={[-0.9,5,-3.5]}/>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={[0.6,5,-3]}
@@ -1443,7 +1456,7 @@ export default function LobbyNew() {
           {`TEAM\nUFO`}
           <meshStandardMaterial color={ 'turquoise' }/>
         </Text3D>
-        
+        <Ufo position={[2.3,5,-2.3]}/>
         <YootDisplay scale={0.2} position={[-0.15, 5, 1.1]} rotation={[0, Math.PI/2, 0]}/>
         {/* <YootDisplay scale={spring.boomScaleYut} position={[-0.15, 5, 0]} rotation={[0, Math.PI/2, 0]}/> */}
         <Seats position={[0, 0, 1]} scale={1}/>
@@ -1603,7 +1616,8 @@ export default function LobbyNew() {
         return <group name='menu-buttons' position={position} scale={scale}>
           <group 
           name='sound-button' 
-          position={[0, 0.02, -0.3]}>
+          position={[0, 0.02, -0.3]}
+          scale={0.9}>
             <SoundIcon 
               rotation={[-Math.PI/2, -Math.PI/2, 0]} 
               scale={0.2}
