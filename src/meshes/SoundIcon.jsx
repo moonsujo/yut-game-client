@@ -37,6 +37,7 @@ export function SoundIcon(props) {
       const time = state.clock.getElapsedTime(); 
       // tilt icon up and down
       icon.current.rotation.x = Math.sin(time * 3) * 0.1 + 0.2
+      icon.current.rotation.y = Math.sin(time * 3) * 0.05
 
       // make the rings pulse
       audioRings.current.scale.x = 1 + Math.sin(time * 3) * 0.05
@@ -51,10 +52,28 @@ export function SoundIcon(props) {
       audioRing1Ball0Mat.current.opacity = Math.sin((time - Math.PI/4) * 2) * 0.5 + 0.5
       audioRing1Ball1Mat.current.opacity = Math.sin((time - Math.PI/4) * 2) * 0.5 + 0.5
       
-      audioRing2CylinderMat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2)  * 0.5 + 0.5
+      audioRing2CylinderMat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
       audioRing2Ball0Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
       audioRing2Ball1Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
 
+    } else {
+      icon.current.rotation.x = Math.PI/32
+      icon.current.rotation.y = -Math.PI/16
+      audioRings.current.scale.x = 1
+      audioRings.current.scale.y = 1
+      audioRings.current.scale.z = 1
+      
+      audioRing0CylinderMat.current.opacity = 0
+      audioRing0Ball0Mat.current.opacity = 0
+      audioRing0Ball1Mat.current.opacity = 0
+
+      audioRing1CylinderMat.current.opacity = 0
+      audioRing1Ball0Mat.current.opacity = 0
+      audioRing1Ball1Mat.current.opacity = 0
+      
+      audioRing2CylinderMat.current.opacity = 0
+      audioRing2Ball0Mat.current.opacity = 0
+      audioRing2Ball1Mat.current.opacity = 0
     }
   })
 

@@ -1562,41 +1562,75 @@ export default function LobbyNew() {
     function MenuButtons({ position, scale }) {
       function AudioButton({ position, scale }) {
         const [hover, setHover] = useState(false)
-        function handlePointerEnterSettings(e) {
+        const [soundOn, setSoundOn] = useState(false) // default sound off
+
+        function getSoundIconColors() {
+          if (hover) {
+            if (soundOn) {
+              return { colorMegaphone: '#dddddd', colorRings: '#dddddd' }
+            } else {
+              return { colorMegaphone: '#ffff00', colorRings: '#dddddd' }
+            }
+          } else {
+            if (soundOn) {
+              return { colorMegaphone: '#ffff00', colorRings: '#ffff00' }
+            } else {
+              return { colorMegaphone: '#dddddd', colorRings: '#ffff00' }
+            }
+          }
+        }
+        function handleSoundPointerEnter(e) {
           e.stopPropagation()
           setHover(true)
           document.body.style.cursor = 'pointer'
         }
-        function handlePointerLeaveSettings(e) {
+        function handleSoundPointerLeave(e) {
           e.stopPropagation()
           setHover(false)
           document.body.style.cursor = 'default'
         }
-        function handlePointerDownSettings(e) {
+        function handleSoundPointerDown(e) {
           e.stopPropagation()
+          // if on, turn off
+          if (soundOn) {
+            setSoundOn(false)
+          } else {
+            setSoundOn(true)
+          }
           // set sound effects and music volume to 0
+          // else, turn on
         }
         return <group name='menu-buttons' position={position} scale={scale}>
-          <group name='settings-button' position={[0, 0, 0]}>
-            <mesh name='background-outer' scale={[3.5, 0.01, 0.9]}>
+          <group 
+          name='sound-button' 
+          position={[0, 0.02, -0.3]}>
+            <SoundIcon 
+              rotation={[-Math.PI/2, -Math.PI/2, 0]} 
+              scale={0.2}
+              colorMegaphone={getSoundIconColors().colorMegaphone}
+              colorRings={getSoundIconColors().colorRings}
+              animated={soundOn}
+            />
+            { !soundOn && <group name='background'>
+              <mesh name='background-outer' position={[0.05, -0.5, -0.2]} scale={[1.3, 0.01, 1.3]}>
+                <boxGeometry args={[1, 1, 1]}/>
+                <meshStandardMaterial color='grey'/>
+              </mesh> 
+              <mesh name='background-inner' position={[0.05, -0.5, -0.2]} scale={[1.25, 0.02, 1.25]}>
+                <boxGeometry args={[1, 1, 1]}/>
+                <meshStandardMaterial color='black'/>
+              </mesh>
+            </group> }
+            <mesh name='wrapper'
+              position={[0, -0.5, -0.2]}
+              scale={[1.3, 0.01, 1.3]}
+              onPointerEnter={e => handleSoundPointerEnter(e)}
+              onPointerLeave={e => handleSoundPointerLeave(e)}
+              onPointerDown={e => handleSoundPointerDown(e)}
+            >
               <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color={ hover ? 'green' : 'yellow' }/>
+              <meshStandardMaterial color='black' transparent opacity={0}/>
             </mesh>
-            <mesh name='background-inner' scale={[3.45, 0.02, 0.85]}>
-              <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-            name='wrapper'
-            scale={[3.5, 0.02, 0.9]}
-            onPointerEnter={e => handlePointerEnterSettings(e)}
-            onPointerLeave={e => handlePointerLeaveSettings(e)}
-            onPointerDown={e => handlePointerDownSettings(e)}>
-              <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color='yellow' transparent opacity={0}/>
-            </mesh>
-            {/* add icon */}
-            <SoundIcon position={[-1.2, 0.02, 0]} scale={0.4}/>
           </group>
         </group>
       }
