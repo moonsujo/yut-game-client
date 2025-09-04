@@ -75,7 +75,6 @@ import Timer from "./Timer.jsx";
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying.jsx";
 import Settings from "./Settings.jsx";
 import YutBonus from "./YutBonus.jsx";
-import useMusicPlayer from "./hooks/useMusicPlayer.jsx";
 import Chatbox from "./Chatbox.jsx";
 import ChatboxScroll from "./Chatbox.jsx";
 
@@ -409,75 +408,12 @@ export default function Game() {
       e.stopPropagation()
     }
 
-    function MusicButton({ position, scale }) {
-      const [playMusic, stopMusic] = useMusicPlayer()
-      const [music, setMusic] = useAtom(musicAtom)
-      const [hover, setHover] = useState(false)
-
-      // handler
-      function handlePointerEnter(e) {
-        e.stopPropagation()
-        setHover(true)
-        document.body.style.cursor = "pointer";
-      }
-      function handlePointerLeave(e) {
-        e.stopPropagation()
-        setHover(false)
-        document.body.style.cursor = "default";
-      }
-      function handlePointerUp(e) {
-        e.stopPropagation()
-        if (!music) {
-          playMusic()
-        } else {
-          stopMusic()
-        }
-      }
-      return <group position={position} scale={scale}>
-        {/* background */}
-        <group name='background'>
-          <mesh name='background-outer' scale={[0.7, 0.01, 0.7]}>
-            <boxGeometry args={[1,1,1]}/>
-            <meshStandardMaterial color={ music ? 'yellow' : '#555500' }/>
-          </mesh>
-          <mesh name='background-inner' scale={[0.6, 0.02, 0.6]}>
-            <boxGeometry args={[1,1,1]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          {/* wrapper */}
-          <mesh name='wrapper' scale={[0.7, 0.02, 0.7]} 
-          onPointerEnter={e=>handlePointerEnter(e)}
-          onPointerLeave={e=>handlePointerLeave(e)}
-          onPointerUp={e=>handlePointerUp(e)}
-          >
-            <boxGeometry args={[1,1,1]}/>
-            <meshStandardMaterial color='black' transparent opacity={0}/>
-          </mesh>
-        </group>
-        {/* letter */}
-        <Text3D
-          font="/fonts/Luckiest Guy_Regular.json"
-          position={[-0.15, 0.02, 0.13]}
-          rotation={[-Math.PI/2,0,0]}
-          size={0.3}
-          height={0.01}
-        >
-          M
-          <meshStandardMaterial color={ music ? 'yellow' : '#555500' }/>
-        </Text3D>
-      </group>
-    }
-
     const meteorShaderColor = new THREE.Color();
     meteorShaderColor.setHSL(0.05, 0.7, 0.4)
     return <group>
       <RulebookButton 
         position={layout[device].game.rulebookButton.position}
         scale={layout[device].game.rulebookButton.scale}
-      />
-      <MusicButton 
-        position={layout[device].game.musicButton.position}
-        scale={layout[device].game.musicButton.scale}
       />
       { showRulebook && <group 
         position={layout[device].game.rulebook.position}

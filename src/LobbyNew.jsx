@@ -34,6 +34,8 @@ import {
   portraitLobbySelectionAtom,
   landscapeLobbyThirdSectionSelectionAtom,
   blueMoonBrightnessAtom,
+  audioVolumeAtom,
+  musicAtom,
 } from "./GlobalState.jsx";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -1575,17 +1577,18 @@ export default function LobbyNew() {
     function MenuButtons({ position, scale }) {
       function AudioButton({ position, scale }) {
         const [hover, setHover] = useState(false)
-        const [soundOn, setSoundOn] = useState(false) // default sound off
+        const [audioVolume, setAudioVolume] = useAtom(audioVolumeAtom) // default sound off
+        const music = useAtomValue(musicAtom)
 
         function getSoundIconColors() {
           if (hover) {
-            if (soundOn) {
+            if (audioVolume) {
               return { colorMegaphone: '#dddddd', colorRings: '#dddddd' }
             } else {
               return { colorMegaphone: '#ffff00', colorRings: '#dddddd' }
             }
           } else {
-            if (soundOn) {
+            if (audioVolume) {
               return { colorMegaphone: '#ffff00', colorRings: '#ffff00' }
             } else {
               return { colorMegaphone: '#dddddd', colorRings: '#ffff00' }
@@ -1604,14 +1607,13 @@ export default function LobbyNew() {
         }
         function handleSoundPointerDown(e) {
           e.stopPropagation()
-          // if on, turn off
-          if (soundOn) {
-            setSoundOn(false)
+          if (audioVolume) {
+            setAudioVolume(0) // use this in the next music play
+            music.setVolume(0)
           } else {
-            setSoundOn(true)
+            setAudioVolume(1)
+            music.setVolume(1)
           }
-          // set sound effects and music volume to 0
-          // else, turn on
         }
         return <group name='menu-buttons' position={position} scale={scale}>
           <group 
@@ -1623,9 +1625,9 @@ export default function LobbyNew() {
               scale={0.2}
               colorMegaphone={getSoundIconColors().colorMegaphone}
               colorRings={getSoundIconColors().colorRings}
-              animated={soundOn}
+              animated={audioVolume}
             />
-            { !soundOn && <group name='background'>
+            { !audioVolume && <group name='background'>
               <mesh name='background-outer' position={[0.05, -0.5, -0.2]} scale={[1.3, 0.01, 1.3]}>
                 <boxGeometry args={[1, 1, 1]}/>
                 <meshStandardMaterial color='grey'/>

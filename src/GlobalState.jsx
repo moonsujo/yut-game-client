@@ -130,9 +130,7 @@ export const resetGameOpenAtom = atom(false)
 export const setGameRulesOpenAtom = atom(false)
 export const viewGuestsOpenAtom = atom(false)
 export const viewGameRulesOpenAtom = atom(false)
-export const audioOpenAtom = atom(false)
 export const languageOpenAtom = atom(false)
-export const soundEffectsAtom = atom(true)
 export const lastYutAtom = atom(null)
 export const seatChosenAtom = atom(null) // [team, seatIndex]
 export const showGalaxyBackgroundAtom = atom(true)
@@ -144,16 +142,15 @@ export const landscapeLobbyThirdSectionSelectionAtom = atom('invite')
 export const hasAIAtom = atom(false)
 
 // sounds
-export const musicAtom = atom(null)
-export const musicPlayingAtom = atom(false)
-export const musicVolumeAtom = atom(0)
-// sounds new
 export const listenerAtom = atom(null)
 export const audioLoaderAtom = atom(null)
 export const musicListenerAtom = atom(null)
 export const musicLoaderAtom = atom(null)
+export const musicAtom = atom(null)
+export const soundEffectAtom = atom(null)
 export const blueMoonBrightnessAtom = atom(null)
 export const audioContextAtom = atom(null)
+export const audioVolumeAtom = atom(0) // 1 when you create room.
 
 const deepPieceEquals = (prev, next) => {
   let result;

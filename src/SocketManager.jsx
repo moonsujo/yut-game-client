@@ -366,6 +366,13 @@ export const SocketManager = () => {
       //   playSoundEffect('/sounds/effects/throw-heavenly-yut-2.mp3')
       // }
       // playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+
+      // set timeout
+      // depending on game phase
+        // pregame: pass turn
+        // game: pass turn, set num throws, set moves
+        // play alerts
+        // make AI play // add handler
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer, hasAI }) => {

@@ -1,29 +1,34 @@
-import { useAtomValue } from "jotai";
-import { musicListenerAtom, musicLoaderAtom } from "../GlobalState";
+import { useAtom, useAtomValue } from "jotai";
+import { audioVolumeAtom, musicAtom, musicListenerAtom, musicLoaderAtom } from "../GlobalState";
 import { Audio } from "three";
+import { useState } from "react";
 
 export default function useMusicPlayer() {
   const musicLoader = useAtomValue(musicLoaderAtom)
   const musicListener = useAtomValue(musicListenerAtom)
+  const [music, setMusic] = useAtom(musicAtom)
+  const [musicTimer, setMusicTimer] = useState(null)
+  const audioVolume = useAtomValue(audioVolumeAtom)
 
   function playMusic(filePath) {
     try {
-      const music = new Audio(musicListener)
+      const newMusic = new Audio(musicListener)
+      setMusic(newMusic)
       musicLoader.load(filePath, (buffer) => {
-        music.setBuffer(buffer);
-        music.setLoop(false);
-        music.setVolume(0.5);
-        music.play()
+        newMusic.setBuffer(buffer);
+        newMusic.setLoop(false);
+        newMusic.setVolume(audioVolume);
+        newMusic.play()
       });
     } catch (err) {
       console.log('error playing music', err)
     }
   }
   
-  // allow volume control
-
   function loopMusic() {
     // play songs randomly one after the other
+    clearTimeout(musicTimer)
+    if (music) music.stop()
 
     // length: seconds
     const songs = [
@@ -88,10 +93,17 @@ export default function useMusicPlayer() {
     // every client has a different song playing
     const randomSong = songs[Math.floor(Math.random() * songs.length)]
     playMusic(randomSong.path)
-    setTimeout(() => {
+    const newMusicTimer = setTimeout(() => {
       loopMusic()
     }, randomSong.length * 1000)
+    setMusicTimer(newMusicTimer)
   }
+
+  // set global volume
+  // for music, on next play, set volume to 0
+  // for effects, on next play, do the same
+  // set current music and effects to 0
+  // set global state for effect
 
   return { loopMusic }
 }

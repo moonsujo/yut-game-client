@@ -10,9 +10,8 @@ import HowToPlay from './HowToPlay';
 import Title from './Title';
 import About from './About';
 import { socket } from './SocketManager';
-import { blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
+import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
 import Board from './Board';
-import { Physics } from '@react-three/rapier';
 import GameCamera from './GameCamera';
 import Rocket from './meshes/Rocket';
 import Ufo from './meshes/Ufo';
@@ -37,6 +36,7 @@ export default function Home2() {
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const [_location, setLocation] = useLocation();
   const { loopMusic } = useMusicPlayer()
+  const setAudioVolume = useSetAtom(audioVolumeAtom)
   useEffect(() => {
     async function log() {
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
@@ -296,8 +296,11 @@ export default function Home2() {
         setLocation(`/${shortId}`)
       })
 
+      // this doesn't play
+      // music doesn't play either
       playSoundEffect('/sounds/effects/create-game.mp3')
       loopMusic()
+      setAudioVolume(1)
 
       setBlueMoonBrightness(null)
 
