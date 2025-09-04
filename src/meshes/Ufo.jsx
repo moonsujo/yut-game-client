@@ -219,7 +219,7 @@ export default function Ufo({
             position={[0.001, 0.182, 0.375]}
             scale={0.37}
           />
-          <group ref={balls}>
+          <group ref={balls} position={[0, 0.1, 0]}>
             {/* ball front right */}
             <mesh
               castShadow

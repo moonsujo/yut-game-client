@@ -57,47 +57,9 @@ export default function CatchRocketMemeAlert({ position, rotation }) {
 
   function handleAlertClick(e) {
     e.stopPropagation();
-    // clear alert
   }
 
-    // Alien capturing Rocket Picture Animation
-    // 1. scale out
-    // 2. scale in, move up
     const alienRef = useRef()
-
-    // const [springs, api] = useSpring(() => ({
-    //   from: {
-    //     sceneScale: 0,
-    //     scenePosition: [0,0,0]
-    //   },
-    // }))
-
-    // useEffect(() => {
-    //     api.start({
-    //         from: {
-    //             sceneScale: 0,
-    //             scenePosition: [0,0,0],
-    //         },
-    //         to: [
-    //             {
-    //                 sceneScale: 1,
-    //                 config: {
-    //                     tension: 50
-    //                 }
-    //             },
-    //             {
-    //                 sceneScale: 0,
-    //                 scenePosition: [0,5,0],
-    //                 config: {
-    //                     tension: 50
-    //                 }
-    //             },
-    //         ],
-    //         loop: false,
-    //         onStart: () => {},
-    //         onRest: () => {} // plays twice when browser is not in focus
-    //     })
-    // }, [])
 
     // alien position in circle; X and Z
     const alienPosRadius = 2

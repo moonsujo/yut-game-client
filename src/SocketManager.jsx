@@ -359,12 +359,13 @@ export const SocketManager = () => {
       if (throwCount < 1) {
         setBonusExists(false)
       }
-      let soundPicker = Math.random()
-      if (soundPicker < 0.5) {
-        playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
-      } else {
-        playSoundEffect('/sounds/effects/throw-heavenly-yut-2.mp3')
-      }
+      // let soundPicker = Math.random()
+      // if (soundPicker < 0.5) {
+      //   playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+      // } else {
+      //   playSoundEffect('/sounds/effects/throw-heavenly-yut-2.mp3')
+      // }
+      // playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
     })
 
     socket.on('gameStart', ({ gamePhase, newTeam, newPlayer, throwCount, turnStartTime, turnExpireTime, newGameLog, timer, hasAI }) => {
@@ -615,12 +616,13 @@ export const SocketManager = () => {
         playSoundEffect(pickRandomElement(moSoundFilePaths))
       } else if (yootOutcome === -1) {
         const backdoSoundFilePaths = [
-          '/sounds/effects/yutThrows/produced/ditto-confused.mp3',
-          '/sounds/effects/yutThrows/produced/ditto-deep.mp3',
-          '/sounds/effects/yutThrows/produced/ditto-short.mp3',
-          '/sounds/effects/yutThrows/produced/ditto~.mp3',
+          '/sounds/effects/yutThrows/produced/nak-chimes.mp3',
+          // '/sounds/effects/yutThrows/produced/ditto-confused.mp3',
+          // '/sounds/effects/yutThrows/produced/ditto-deep.mp3',
+          // '/sounds/effects/yutThrows/produced/ditto-short.mp3',
+          // '/sounds/effects/yutThrows/produced/ditto~.mp3',
         ]
-        // playSoundEffect(pickRandomElement(backdoSoundFilePaths))
+        playSoundEffect(pickRandomElement(backdoSoundFilePaths))
       } else if (yootOutcome === 0) {
         const nakSoundFilePaths = [
           '/sounds/effects/yutThrows/produced/backdo.mp3',

@@ -32,6 +32,7 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import tilePositions from './tilePositions';
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying";
 import CatchRocketMemeAlert from "./alerts/CatchRocketMemeAlert";
+import CatchUfoEnergyAlert from "./alerts/CatchUfoEnergyAlert";
 
 export default function Alert({ position, rotation }) {
     
@@ -1284,11 +1285,12 @@ export default function Alert({ position, rotation }) {
         { numCaught === 2 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 3 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 4 && teamCaught === 0 && <CatchRocketMemeAlert/> }
-        { numCaught === 1 && teamCaught === 1 && <Catch3UfoAlert/> }
+        { numCaught === 1 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
+        {/* { numCaught === 1 && teamCaught === 1 && <Catch3UfoAlert/> } */}
         {/* { numCaught === 1 && teamCaught === 1 && <Catch1UfoAlert/> } */}
-        { numCaught === 2 && teamCaught === 1 && <Catch3UfoAlert/> }
-        { numCaught === 3 && teamCaught === 1 && <Catch3UfoAlert/> }
-        { numCaught === 4 && teamCaught === 1 && <Catch4UfoAlert/> }
+        { numCaught === 2 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
+        { numCaught === 3 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
+        { numCaught === 4 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
       </animated.group>
     }
 
