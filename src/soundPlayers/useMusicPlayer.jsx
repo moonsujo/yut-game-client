@@ -25,6 +25,11 @@ export default function useMusicPlayer() {
     }
   }
   
+  // add 'start' flag
+  // if start, set volume to 1
+  // else, set volume to the one in global state
+  // create room effect should always play at volume 1
+  // pass a volume argument to 'play sound effect'
   function loopMusic() {
     // play songs randomly one after the other
     clearTimeout(musicTimer)
