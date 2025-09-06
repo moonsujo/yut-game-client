@@ -32,9 +32,9 @@ export default function Home2() {
   const [display, setDisplay] = useState('board')
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
-  const { playSoundEffect } = useSoundEffectsPlayer()
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const [_location, setLocation] = useLocation();
+  const { playSoundEffect } = useSoundEffectsPlayer()
   const { loopMusic } = useMusicPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
   useEffect(() => {
@@ -298,10 +298,10 @@ export default function Home2() {
 
       // this doesn't play
       // music doesn't play either
-      playSoundEffect('/sounds/effects/create-game.mp3')
-      loopMusic()
-      setAudioVolume(1)
-
+      playSoundEffect('/sounds/effects/create-game.mp3', 1)
+      loopMusic(1, true)
+      setAudioVolume(1) // use this in the next music play
+      
       setBlueMoonBrightness(null)
 
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {

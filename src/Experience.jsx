@@ -13,6 +13,8 @@ import UfosLose from "./endScenes/UfosLose.jsx";
 import LobbyNew from "./LobbyNew.jsx";
 
 export default function Experience() {
+
+  console.log('[Experience]')
   const gamePhase = useAtomValue(gamePhaseAtom)
   const winner = useAtomValue(winnerAtom)
   const client = useAtomValue(clientAtom)

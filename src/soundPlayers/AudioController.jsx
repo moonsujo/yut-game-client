@@ -11,7 +11,7 @@ export default function AudioController() {
   // keep these across renders
   const [listener, setListener] = useAtom(listenerAtom);
   const setAudioLoader = useSetAtom(audioLoaderAtom);
-    const [audioContext, setAudioContext] = useAtom(audioContextAtom)
+  const [audioContext, setAudioContext] = useAtom(audioContextAtom)
 
   useEffect(() => {
     const newListener = new AudioListener()
@@ -25,7 +25,6 @@ export default function AudioController() {
       camera.remove(listener)
     };
   }, [camera]);
-
   
   useEffect(() => {
     const resume = () => {

@@ -19,7 +19,7 @@ export default function SeatStar({ scale = 1, position = [0,0,0], rotation = [0,
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime
     if (star.current) {
-        star.current.rotation.y += delta
+        star.current.rotation.y = time
         star.current.scale.x = (Math.sin(time * 2) * 0.2 + 0.8) * scale
     }
     if (material.current) {

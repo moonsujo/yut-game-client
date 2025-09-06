@@ -25,6 +25,8 @@ export default function App () {
       gl.setClearColor('#090f16', 1)
   }
 
+  console.log('[App]')
+
   return (<>
     <Canvas
       className='r3f'

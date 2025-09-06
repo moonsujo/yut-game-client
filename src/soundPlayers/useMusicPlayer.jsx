@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { audioVolumeAtom, musicAtom, musicListenerAtom, musicLoaderAtom } from "../GlobalState";
 import { Audio } from "three";
 import { useState } from "react";
@@ -6,18 +6,18 @@ import { useState } from "react";
 export default function useMusicPlayer() {
   const musicLoader = useAtomValue(musicLoaderAtom)
   const musicListener = useAtomValue(musicListenerAtom)
-  const [music, setMusic] = useAtom(musicAtom)
+  const setMusic = useSetAtom(musicAtom)
   const [musicTimer, setMusicTimer] = useState(null)
-  const audioVolume = useAtomValue(audioVolumeAtom)
+  const setAudioVolume = useSetAtom(audioVolumeAtom)
 
-  function playMusic(filePath) {
+  function playMusic(filePath, volume) {
     try {
       const newMusic = new Audio(musicListener)
       setMusic(newMusic)
       musicLoader.load(filePath, (buffer) => {
         newMusic.setBuffer(buffer);
         newMusic.setLoop(false);
-        newMusic.setVolume(audioVolume);
+        newMusic.setVolume(volume);
         newMusic.play()
       });
     } catch (err) {
@@ -25,15 +25,15 @@ export default function useMusicPlayer() {
     }
   }
   
-  // add 'start' flag
-  // if start, set volume to 1
-  // else, set volume to the one in global state
-  // create room effect should always play at volume 1
-  // pass a volume argument to 'play sound effect'
-  function loopMusic() {
+  function loopMusic(volume, start=false) {
     // play songs randomly one after the other
     clearTimeout(musicTimer)
-    if (music) music.stop()
+    setMusic((prevMusic) => {
+      if (prevMusic) {
+        prevMusic.stop()
+        return prevMusic
+      }
+    })
 
     // length: seconds
     const songs = [
@@ -97,18 +97,19 @@ export default function useMusicPlayer() {
 
     // every client has a different song playing
     const randomSong = songs[Math.floor(Math.random() * songs.length)]
-    playMusic(randomSong.path)
+    setAudioVolume((prevVolume) => {
+      if (start) {
+        playMusic(randomSong.path, volume)
+      } else {
+        playMusic(randomSong.path, prevVolume)
+      }
+      return prevVolume
+    })
     const newMusicTimer = setTimeout(() => {
-      loopMusic()
+      loopMusic(volume, false)
     }, randomSong.length * 1000)
     setMusicTimer(newMusicTimer)
   }
-
-  // set global volume
-  // for music, on next play, set volume to 0
-  // for effects, on next play, do the same
-  // set current music and effects to 0
-  // set global state for effect
 
   return { loopMusic }
 }

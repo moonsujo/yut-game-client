@@ -36,6 +36,7 @@ import {
   blueMoonBrightnessAtom,
   audioVolumeAtom,
   musicAtom,
+  listenerAtom,
 } from "./GlobalState.jsx";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -60,6 +61,8 @@ import Settings from "./Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import { SoundIcon } from "./meshes/SoundIcon.jsx";
 import SeatStar from "./stars/SeatStar.jsx";
+import useMusicPlayer from "./soundPlayers/useMusicPlayer.jsx";
+import AudioButton from "./soundPlayers/AudioButton.jsx";
 
 export default function LobbyNew() {
 
@@ -71,8 +74,9 @@ export default function LobbyNew() {
   const setShowBlackhole = useSetAtom(showBlackholeAtom)
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
   const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
-  const { playSoundEffect } = useSoundEffectsPlayer()
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
+  // const [audioVolume, setAudioVolume] = useAtom(audioVolumeAtom)
+  const { playSoundEffect } = useSoundEffectsPlayer()
 
   useEffect(() => {
     setShowGalaxy(true)
@@ -94,6 +98,8 @@ export default function LobbyNew() {
     }
     log()
   }, [])
+
+  console.log('[LobbyNew]')
 
   function PlayersParty({ position=[0,0,0], scale=0.7 }) {
     const host = useAtomValue(hostAtom)
@@ -157,127 +163,6 @@ export default function LobbyNew() {
     })
     // #endregion
 
-    {/* landing page: Take a seat */}
-    {/* no more seats: Full capacity (grey button) */}
-    {/* joined UFO: 'Prepare for contact' */}
-    {/* joined Rocket: 'Ready to launch', 'Clear for takeoff' */}
-    function SeatStatus({ position, scale }) {
-      const teams = useAtomValue(teamsAtom)
-      const client = useAtomValue(clientAtom)
-      function TakeASeat({ position, scale }) {
-        return <group
-          name='take-a-seat-message'
-          position={position}
-          scale={scale}
-        >
-          <mesh
-            name='background-inner'
-            scale={[1.3, 1, 0.7]}
-          >
-            <cylinderGeometry args={[0.97, 0.95, 0.02, 32]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            position={[-0.95, 0.025, 0.03]}
-            rotation={[-Math.PI/2, 0, 0]}
-            size={0.25}
-            height={0.01}
-            lineHeight={0.7}
-          >
-            {`CLICK A SEAT\n     TO JOIN`}
-            <meshStandardMaterial color={ 'yellow' }/>
-          </Text3D>
-        </group>
-      }
-      function FullCapacity({ position, scale }) {
-        return <group
-          name='full-capacity-message'
-          position={position}
-          scale={scale}
-        >
-          <mesh
-            name='background-inner'
-            scale={[1.6, 1, 0.42]}
-          >
-            <cylinderGeometry args={[0.97, 0.95, 0.02, 32]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            position={[-1.1, 0.025, 0.12]}
-            rotation={[-Math.PI/2, 0, 0]}
-            size={0.25}
-            height={0.01}
-            lineHeight={0.7}
-          >
-            {`FULL CAPACITY`}
-            <meshStandardMaterial color={ 'yellow' }/>
-          </Text3D>
-        </group>
-      }
-      function RocketJoined({ position, scale }) {
-        return <group
-          name='rocket-joined-message'
-          position={position}
-          scale={scale}
-        >
-          <mesh
-            name='background-inner'
-            scale={[1.3, 1, 0.6]}
-          >
-            <cylinderGeometry args={[0.97, 0.95, 0.02, 32]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            position={[-0.8, 0.025, -0.03]}
-            rotation={[-Math.PI/2, 0, 0]}
-            size={0.25}
-            height={0.01}
-            lineHeight={0.7}
-          >
-            {`CLEAR FOR\n  TAKEOFF`}
-            <meshStandardMaterial color={ 'red' }/>
-          </Text3D>
-        </group>
-      }
-      function UfoJoined({ position, scale }) {
-        return <group
-          name='ufo-joined-message'
-          position={position}
-          scale={scale}
-        >
-          <mesh
-            name='background-inner'
-            scale={[1.5, 1, 0.6]}
-          >
-            <cylinderGeometry args={[0.97, 0.95, 0.02, 32]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            position={[-1, 0.025, -0.03]}
-            rotation={[-Math.PI/2, 0, 0]}
-            size={0.25}
-            height={0.01}
-            lineHeight={0.7}
-          >
-            {`PREPARE FOR\n    CONTACT`}
-            <meshStandardMaterial color={ 'turquoise' }/>
-          </Text3D>
-        </group>
-      }
-      if (client.team === -1 && (teams[0].players.length < 4 || teams[1].players.length < 4)) {
-        return <TakeASeat position={[0, 5, 7.5]} scale={2}/>
-      } else if (teams[0].players.length >= 4 && teams[1].players.length >= 4) {
-        return <FullCapacity position={[0,5,7.5]} scale={1.9}/>
-      } else if (client.team === 0) {
-        return <RocketJoined position={[0,5,7.5]} scale={1.9}/>
-      } else if (client.team === 1) {
-        return <UfoJoined position={[0,5,7.5]} scale={1.9}/>
-      }
-    }
     const setJoinTeam = useSetAtom(joinTeamAtom)
 
     function Seats({ position, scale }) {
@@ -291,9 +176,8 @@ export default function LobbyNew() {
       const [seat2Team1Hover, setSeat2Team1Hover] = useState(false)
       const [seat3Team1Hover, setSeat3Team1Hover] = useState(false)
       const [seat4Team1Hover, setSeat4Team1Hover] = useState(false)
+      const [audioVolume, setAudioVolume] = useAtom(audioVolumeAtom)
 
-      const rocketSeat0StarRef = useRef()
-      const rocketSeat1StarRef = useRef()
       function handleSeat1Team0PointerEnter(e) {
         e.stopPropagation()
         document.body.style.cursor = 'pointer'
@@ -399,7 +283,7 @@ export default function LobbyNew() {
           setJoinTeam(team)
         }
         
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
 
       function YouStars({ position, rotation, scale, team }) {
@@ -840,10 +724,12 @@ export default function LobbyNew() {
         return 'turquoise'
       }
     }
+
     // -1 team: spectator
     function EditOneGuest({ position=[0,0,0], scale=1 }) {  
       function CloseButton({ position, rotation, scale }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
     
         function handlePointerEnter(e) {
           e.stopPropagation()
@@ -858,7 +744,7 @@ export default function LobbyNew() {
         function handlePointerDown(e) {
           e.stopPropagation()
           setGuestBeingEditted(null)
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -896,6 +782,7 @@ export default function LobbyNew() {
       }
       function AssignHostButton({ position=[0,0,0] }) {
         const [hover, setHover] = useState(false);
+        const audioVolume = useAtomValue(audioVolumeAtom)
         function handlePointerEnter(e) {
           e.stopPropagation()
           setHover(true)
@@ -919,7 +806,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
         return <group name='assign-host-button' position={position}>
           {/* background */}
@@ -957,6 +844,7 @@ export default function LobbyNew() {
       }
       function KickButton({ position=[0,0,0] }) {
         const [hover, setHover] = useState(false);
+        const audioVolume = useAtomValue(audioVolumeAtom)
         function handlePointerEnter(e) {
           e.stopPropagation()
           setHover(true)
@@ -979,7 +867,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
         return <group name='kick-button' position={position}>
           {/* background */}
@@ -1017,6 +905,7 @@ export default function LobbyNew() {
       }
       function SetSpectatorButton({ position=[0,0,0] }) {
         const [hover, setHover] = useState(false);
+        const audioVolume = useAtomValue(audioVolumeAtom)
         function handlePointerEnter(e) {
           e.stopPropagation()
           setHover(true)
@@ -1042,7 +931,7 @@ export default function LobbyNew() {
               setGuestBeingEditted(null)
             }
           })
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
         return <group name='set-spectator-button' position={position}>
           {/* background */}
@@ -1154,6 +1043,7 @@ export default function LobbyNew() {
     function SeatModal({ position, rotation, scale }) {
       function CloseButton({ position, rotation, scale }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
     
         function handlePointerEnter(e) {
           e.stopPropagation()
@@ -1168,7 +1058,7 @@ export default function LobbyNew() {
         function handlePointerDown(e) {
           e.stopPropagation()
           setSeatChosen(null)
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1206,6 +1096,7 @@ export default function LobbyNew() {
       }
       function TakeSeatButton({ position, rotation, scale }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
     
         function handlePointerEnter(e) {
           e.stopPropagation()
@@ -1221,7 +1112,7 @@ export default function LobbyNew() {
           e.stopPropagation()
           setJoinTeam(seatChosen[0])
           setSeatChosen(null)
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1323,6 +1214,7 @@ export default function LobbyNew() {
       }
       function AddAISmartButton({ position, rotation, scale }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
     
         function handlePointerEnter(e) {
           e.stopPropagation()
@@ -1349,7 +1241,7 @@ export default function LobbyNew() {
             }
           })
           
-          playSoundEffect('/sounds/effects/add-ai-player.mp3')
+          playSoundEffect('/sounds/effects/add-ai-player.mp3', audioVolume)
         }
 
     
@@ -1490,6 +1382,7 @@ export default function LobbyNew() {
     const host = useAtomValue(hostAtom)
     const client = useAtomValue(clientAtom)
     const isHost = client.socketId === host.socketId
+    const audioVolume = useAtomValue(audioVolumeAtom)
 
     function StartGameButton({ position, scale }) {
       const [hover, setHover] = useState(false)
@@ -1514,7 +1407,7 @@ export default function LobbyNew() {
         setHover(false)
         if (isHost && readyToStart && !pressed) {
           setPressed(true)
-          playSoundEffect('/sounds/effects/set-dul-hana.mp3')
+          playSoundEffect('/sounds/effects/set-dul-hana.mp3', audioVolume)
 
           await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
             eventName: 'buttonClick',
@@ -1575,81 +1468,6 @@ export default function LobbyNew() {
       </group>
     }
     function MenuButtons({ position, scale }) {
-      function AudioButton({ position, scale }) {
-        const [hover, setHover] = useState(false)
-        const [audioVolume, setAudioVolume] = useAtom(audioVolumeAtom) // default sound off
-        const music = useAtomValue(musicAtom)
-
-        function getSoundIconColors() {
-          if (hover) {
-            if (audioVolume) {
-              return { colorMegaphone: '#dddddd', colorRings: '#dddddd' }
-            } else {
-              return { colorMegaphone: '#ffff00', colorRings: '#dddddd' }
-            }
-          } else {
-            if (audioVolume) {
-              return { colorMegaphone: '#ffff00', colorRings: '#ffff00' }
-            } else {
-              return { colorMegaphone: '#dddddd', colorRings: '#ffff00' }
-            }
-          }
-        }
-        function handleSoundPointerEnter(e) {
-          e.stopPropagation()
-          setHover(true)
-          document.body.style.cursor = 'pointer'
-        }
-        function handleSoundPointerLeave(e) {
-          e.stopPropagation()
-          setHover(false)
-          document.body.style.cursor = 'default'
-        }
-        function handleSoundPointerDown(e) {
-          e.stopPropagation()
-          if (audioVolume) {
-            setAudioVolume(0) // use this in the next music play
-            music.setVolume(0)
-          } else {
-            setAudioVolume(1)
-            music.setVolume(1)
-          }
-        }
-        return <group name='menu-buttons' position={position} scale={scale}>
-          <group 
-          name='sound-button' 
-          position={[0, 0.02, -0.3]}
-          scale={0.9}>
-            <SoundIcon 
-              rotation={[-Math.PI/2, -Math.PI/2, 0]} 
-              scale={0.2}
-              colorMegaphone={getSoundIconColors().colorMegaphone}
-              colorRings={getSoundIconColors().colorRings}
-              animated={audioVolume}
-            />
-            { !audioVolume && <group name='background'>
-              <mesh name='background-outer' position={[0.05, -0.5, -0.2]} scale={[1.3, 0.01, 1.3]}>
-                <boxGeometry args={[1, 1, 1]}/>
-                <meshStandardMaterial color='grey'/>
-              </mesh> 
-              <mesh name='background-inner' position={[0.05, -0.5, -0.2]} scale={[1.25, 0.02, 1.25]}>
-                <boxGeometry args={[1, 1, 1]}/>
-                <meshStandardMaterial color='black'/>
-              </mesh>
-            </group> }
-            <mesh name='wrapper'
-              position={[0, -0.5, -0.2]}
-              scale={[1.3, 0.01, 1.3]}
-              onPointerEnter={e => handleSoundPointerEnter(e)}
-              onPointerLeave={e => handleSoundPointerLeave(e)}
-              onPointerDown={e => handleSoundPointerDown(e)}
-            >
-              <boxGeometry args={[1, 1, 1]}/>
-              <meshStandardMaterial color='black' transparent opacity={0}/>
-            </mesh>
-          </group>
-        </group>
-      }
       return <group name='menu-buttons' position={position} scale={scale}>
         <AudioButton position={[0, 0, 0]}/>
       </group>
@@ -1766,10 +1584,10 @@ export default function LobbyNew() {
 
   // Invite friends and rule setting
   function ThirdSection({ position }) {
-
     const [display, setDisplay] = useAtom(landscapeLobbyThirdSectionSelectionAtom)
     function InviteFriendsButton() {
       const [hover, setHover] = useState(false)
+      const audioVolume = useAtomValue(audioVolumeAtom)
       function handlePointerEnter(e) {
         e.stopPropagation()
         document.body.style.cursor = 'pointer'
@@ -1783,7 +1601,7 @@ export default function LobbyNew() {
       function handlePointerDown(e) {
         e.stopPropagation()
         setDisplay('invite')
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
       return <group name='invite-friends-button' position={[7.5, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[4.2, 0.01, 0.75]}>
@@ -1817,6 +1635,7 @@ export default function LobbyNew() {
     }
     function SettingsButtonLobby() {
       const [hover, setHover] = useState(false)
+      const audioVolume = useAtomValue(audioVolumeAtom)
       function handlePointerEnter(e) {
         e.stopPropagation()
         document.body.style.cursor = 'pointer'
@@ -1830,7 +1649,7 @@ export default function LobbyNew() {
       function handlePointerDown(e) {
         e.stopPropagation()
         setDisplay('settings')
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
       return <group name='settings-button' position={[10.8, 0, -5.6]} scale={0.9}>
         <mesh name='background-outer' scale={[2.8, 0.01, 0.75]}>
@@ -1865,6 +1684,7 @@ export default function LobbyNew() {
     function InviteFriends() {
       function CopyLinkButton({ position }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
         function handlePointerEnter(e) {
           e.stopPropagation()
           document.body.style.cursor = 'pointer'
@@ -1923,7 +1743,7 @@ export default function LobbyNew() {
               }
             ]
           })
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
         return <group name='copy-link-button' position={position}>
           <mesh name='background-outer' scale={[3, 0.01, 0.75]}>
@@ -2010,6 +1830,7 @@ export default function LobbyNew() {
     function InviteFriends() {
       function CopyLinkButton({ position, scale=1 }) {
         const [hover, setHover] = useState(false)
+        const audioVolume = useAtomValue(audioVolumeAtom)
         function handlePointerEnter(e) {
           e.stopPropagation()
           document.body.style.cursor = 'pointer'
@@ -2068,7 +1889,7 @@ export default function LobbyNew() {
               }
             ]
           })
-          playSoundEffect('/sounds/effects/button-click.mp3')
+          playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
         }
         return <group name='copy-link-button' position={position} scale={scale}>
           <mesh name='background-outer' scale={[5.7, 0.01, 0.75]}>
@@ -2209,6 +2030,7 @@ export default function LobbyNew() {
     const [selection, setSelection] = useAtom(portraitLobbySelectionAtom)
     function SettingsButton({ position, scale }) {
       const [hover, setHover] = useState(false)
+      const audioVolume = useAtomValue(audioVolumeAtom)
       function handlePointerEnter(e) {
         e.stopPropagation()
         setHover(true)
@@ -2220,7 +2042,7 @@ export default function LobbyNew() {
       function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('settings')
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.8, 0.01, 0.75]}>
@@ -2254,6 +2076,7 @@ export default function LobbyNew() {
     }
     function PlayersButton({ position, scale }) {
       const [hover, setHover] = useState(false)
+      const audioVolume = useAtomValue(audioVolumeAtom)
       function handlePointerEnter(e) {
         e.stopPropagation()
         setHover(true)
@@ -2265,7 +2088,7 @@ export default function LobbyNew() {
       function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('players')
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.55, 0.01, 0.75]}>
@@ -2299,6 +2122,7 @@ export default function LobbyNew() {
     }
     function RulebookButton({ position, scale }) {
       const [hover, setHover] = useState(false)
+      const audioVolume = useAtomValue(audioVolumeAtom)
       function handlePointerEnter(e) {
         e.stopPropagation()
         setHover(true)
@@ -2310,7 +2134,7 @@ export default function LobbyNew() {
       function handlePointerDown(e) {
         e.stopPropagation()
         setSelection('rulebook')
-        playSoundEffect('/sounds/effects/button-click.mp3')
+        playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
       return <group name='settings-button' position={position} scale={scale}>
         <mesh name='background-outer' scale={[2.95, 0.01, 0.75]}>
