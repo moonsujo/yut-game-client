@@ -24,37 +24,42 @@ export function SoundIcon(props) {
   const audioRing1CylinderMat = useRef()
   const audioRing1Ball0Mat = useRef()
   const audioRing1Ball1Mat = useRef()
-  const audioRing2Cylinder = useRef()
-  const audioRing2Ball0 = useRef()
-  const audioRing2Ball1 = useRef()
-  const audioRing2 = useRef()
-  const audioRing2CylinderMat = useRef()
-  const audioRing2Ball0Mat = useRef()
-  const audioRing2Ball1Mat = useRef()
+  // const audioRing2Cylinder = useRef()
+  // const audioRing2Ball0 = useRef()
+  // const audioRing2Ball1 = useRef()
+  // const audioRing2 = useRef()
+  // const audioRing2CylinderMat = useRef()
+  // const audioRing2Ball0Mat = useRef()
+  // const audioRing2Ball1Mat = useRef()
 
+  const audioRingFlashSpeed = 1
+  const iconBobbingSpeed = 1.8
+  const audioRingPulseSpeed = 2
+  const iconBobbingAngleFactor = 0.05
+  const audioRingFlashOpacityFactor = 0.3
   useFrame((state, delta) => {
     if(props.animated) {
       const time = state.clock.getElapsedTime(); 
       // tilt icon up and down
-      icon.current.rotation.x = Math.sin(time * 3) * 0.1 + 0.2
-      icon.current.rotation.y = Math.sin(time * 3) * 0.05
+      icon.current.rotation.x = Math.sin(time * iconBobbingSpeed) * iconBobbingAngleFactor + iconBobbingAngleFactor*2
+      icon.current.rotation.y = Math.sin(time * iconBobbingSpeed) * 0.05
 
       // make the rings pulse
-      audioRings.current.scale.x = 1 + Math.sin(time * 3) * 0.05
-      audioRings.current.scale.y = 1 + Math.sin(time * 3) * 0.05
-      audioRings.current.scale.z = 1 + Math.sin(time * 3) * 0.05
+      audioRings.current.scale.x = 1 + Math.sin(time * audioRingPulseSpeed) * 0.05
+      audioRings.current.scale.y = 1 + Math.sin(time * audioRingPulseSpeed) * 0.05
+      audioRings.current.scale.z = 1 + Math.sin(time * audioRingPulseSpeed) * 0.05
 
-      audioRing0CylinderMat.current.opacity = Math.sin(time * 2) * 0.5 + 0.5
-      audioRing0Ball0Mat.current.opacity = Math.sin(time * 2) * 0.5 + 0.5
-      audioRing0Ball1Mat.current.opacity = Math.sin(time * 2) * 0.5 + 0.5
+      audioRing0CylinderMat.current.opacity = Math.sin(time * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      audioRing0Ball0Mat.current.opacity = Math.sin(time * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      audioRing0Ball1Mat.current.opacity = Math.sin(time * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
 
-      audioRing1CylinderMat.current.opacity = Math.sin((time - Math.PI/4) * 2) * 0.5 + 0.5
-      audioRing1Ball0Mat.current.opacity = Math.sin((time - Math.PI/4) * 2) * 0.5 + 0.5
-      audioRing1Ball1Mat.current.opacity = Math.sin((time - Math.PI/4) * 2) * 0.5 + 0.5
+      audioRing1CylinderMat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      audioRing1Ball0Mat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      audioRing1Ball1Mat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
       
-      audioRing2CylinderMat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
-      audioRing2Ball0Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
-      audioRing2Ball1Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * 2) * 0.5 + 0.5
+      // audioRing2CylinderMat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      // audioRing2Ball0Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
+      // audioRing2Ball1Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
 
     } else {
       icon.current.rotation.x = Math.PI/32
@@ -71,9 +76,9 @@ export function SoundIcon(props) {
       audioRing1Ball0Mat.current.opacity = 0
       audioRing1Ball1Mat.current.opacity = 0
       
-      audioRing2CylinderMat.current.opacity = 0
-      audioRing2Ball0Mat.current.opacity = 0
-      audioRing2Ball1Mat.current.opacity = 0
+      // audioRing2CylinderMat.current.opacity = 0
+      // audioRing2Ball0Mat.current.opacity = 0
+      // audioRing2Ball1Mat.current.opacity = 0
     }
   })
 
@@ -96,15 +101,15 @@ export function SoundIcon(props) {
     if (audioRing1Ball1.current) {
       audioRing1Ball1.current.renderOrder = 1
     }
-    if (audioRing2Cylinder.current) {
-      audioRing2Cylinder.current.renderOrder = 0
-    }
-    if (audioRing2Ball0.current) {
-      audioRing2Ball0.current.renderOrder = 1
-    }
-    if (audioRing2Ball1.current) {
-      audioRing2Ball1.current.renderOrder = 1
-    }
+    // if (audioRing2Cylinder.current) {
+    //   audioRing2Cylinder.current.renderOrder = 0
+    // }
+    // if (audioRing2Ball0.current) {
+    //   audioRing2Ball0.current.renderOrder = 1
+    // }
+    // if (audioRing2Ball1.current) {
+    //   audioRing2Ball1.current.renderOrder = 1
+    // }
   }, [])
 
   return (
@@ -211,7 +216,7 @@ export function SoundIcon(props) {
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing1Ball1Mat}/>
             </mesh>
           </group>
-          <group name='audio-ring-2' ref={audioRing2}>
+          {/* <group name='audio-ring-2' ref={audioRing2}>
             <mesh
               name='audio-ring-2-cylinder'
               castShadow
@@ -250,7 +255,7 @@ export function SoundIcon(props) {
             >
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing2Ball1Mat}/>
             </mesh>
-          </group>
+          </group> */}
         </group>
       </group>
     </group>

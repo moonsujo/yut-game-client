@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Html } from '@react-three/drei';
 import { socket } from './SocketManager';
 import { useAtom, useAtomValue } from 'jotai';
-import { clientAtom, joinTeamAtom, teamsAtom } from './GlobalState';
+import { audioVolumeAtom, clientAtom, joinTeamAtom, teamsAtom } from './GlobalState';
 import axios from 'axios';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
@@ -14,8 +14,9 @@ export default function JoinTeamModal({ position, rotation, scale }) {
   const [cancelHover, setCancelHover] = useState(false)
   const [joinTeam, setJoinTeam] = useAtom(joinTeamAtom)
   const client = useAtomValue(clientAtom)
-  const { playSoundEffect } = useSoundEffectsPlayer()
   const teams = useAtomValue(teamsAtom)
+  const { playSoundEffect } = useSoundEffectsPlayer()
+  const audioVolume = useAtomValue(audioVolumeAtom) // default sound off
   
   function isAlphaNumeric(str) {
     for (let i = 0; i < str.length; i++) {
@@ -64,7 +65,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
         }
       });
         
-      playSoundEffect('/sounds/effects/door-chime.mp3')
+      playSoundEffect('/sounds/effects/door-chime.mp3', audioVolume)
 
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
         eventName: 'buttonClick',

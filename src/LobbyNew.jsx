@@ -75,7 +75,6 @@ export default function LobbyNew() {
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
   const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
-  // const [audioVolume, setAudioVolume] = useAtom(audioVolumeAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
 
   useEffect(() => {
@@ -1539,8 +1538,8 @@ export default function LobbyNew() {
         </Text3D>
       </group>
       <PlayersParty position={[1, 0, -0.2]} scale={0.55}/>
-      <MenuButtons position={[0.9, 4, 6]} scale={0.9}/>
-      <StartGameButton position={[0.9, 4, 7]} scale={0.9}/>
+      <StartGameButton position={[0.9, 4, 5.8]} scale={0.9}/>
+      <MenuButtons position={[0.9, 4, 7.3]} scale={0.9}/>
       {/* { isHost && !readyToStart && <WaitingForCrewSign position={[0.9,0,5]} scale={0.8}/> }
       { !isHost && <HostWillStartSign position={[0.9,0,5]} scale={0.8}/> } */}
     </group>

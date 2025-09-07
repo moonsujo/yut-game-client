@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 import { getLegalTiles } from "../helpers/legalTiles";
 import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
-import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom, showFinishMovesAtom, helperTilesAtom } from "../GlobalState.jsx";
+import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom, showFinishMovesAtom, helperTilesAtom, audioVolumeAtom } from "../GlobalState.jsx";
 import { useParams } from "wouter";
 import { tileType } from "../helpers/helpers.js";
 import { animated } from "@react-spring/three";
@@ -35,9 +35,11 @@ export default function Piece ({
   const paused = useAtomValue(pauseGameAtom)
   const backdoLaunch = useAtomValue(backdoLaunchAtom)
   const shortcutOptions = useAtomValue(shortcutOptionsAtom)
-  const { playSoundEffect } = useSoundEffectsPlayer()
   const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
   const setHelperTiles = useSetAtom(helperTilesAtom)
+  // sounds
+  const { playSoundEffect } = useSoundEffectsPlayer()
+  const audioVolume = useAtomValue(audioVolumeAtom)
 
   const group = useRef();
   const wrapperMat = useRef();
@@ -95,11 +97,11 @@ export default function Piece ({
           setHelperTiles(helperTiles)
 
           if (!legalTiles[29]) {
-            if (team === 0) playSoundEffect('/sounds/effects/rocket-select.mp3')
-            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3')
+            if (team === 0) playSoundEffect('/sounds/effects/rocket-select.mp3', audioVolume)
+            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3', audioVolume)
           } else {
-            if (team === 0) playSoundEffect('/sounds/effects/rocket-select-finishable.mp3')
-            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3')
+            if (team === 0) playSoundEffect('/sounds/effects/rocket-select-finishable.mp3', audioVolume)
+            else if (team === 1) playSoundEffect('/sounds/effects/star-highlight.mp3', audioVolume)
           }
 
           // update other clients
@@ -108,7 +110,7 @@ export default function Piece ({
       } else {
         if (selection.tile != tile && tile in legalTiles) {
           socket.emit("move", { roomId: params.id.toUpperCase(), tile, playerName: client.name });
-          playSoundEffect('/sounds/effects/star-move.mp3')
+          playSoundEffect('/sounds/effects/star-move.mp3', audioVolume)
         } else { // deselect
           
           // update client
@@ -119,7 +121,7 @@ export default function Piece ({
           
           // update other clients
           socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
-          playSoundEffect('/sounds/effects/deselect.mp3')
+          playSoundEffect('/sounds/effects/deselect.mp3', audioVolume)
         }
       }
     }

@@ -2,7 +2,7 @@ import { Text3D, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useRef, useState } from 'react';
-import { addingDeviceMotionAtom, clientAtom, deviceAtom, hasTurnAtom, pauseGameAtom, shakeToThrowEnabledAtom, showShakeMeshAtom, throwCountAtom, turnAtom, yootAnimationPlayingAtom } from './GlobalState';
+import { addingDeviceMotionAtom, audioVolumeAtom, clientAtom, deviceAtom, hasTurnAtom, pauseGameAtom, shakeToThrowEnabledAtom, showShakeMeshAtom, throwCountAtom, turnAtom, yootAnimationPlayingAtom } from './GlobalState';
 import { socket } from './SocketManager';
 import { useParams } from "wouter";
 import layout from './layout';
@@ -29,6 +29,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
   const throwCount = useAtomValue(throwCountAtom)
   const hasThrow = client.team === turn.team && throwCount > 0
   const { playSoundEffect } = useSoundEffectsPlayer()
+  const audioVolume = useAtomValue(audioVolumeAtom)
 
   const animationPlaying = useAnimationPlaying()
   const enabled = !animationPlaying && hasTurn && hasThrow
@@ -73,7 +74,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
       if (enabled && !paused) {
         setYootAnimationPlaying(true)
         socket.emit('throwYut', { roomId: params.id.toUpperCase() })
-        playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+        playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3', audioVolume)
       }
             
       const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {

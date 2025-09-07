@@ -3,7 +3,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { socket } from "../SocketManager";
 import React from "react";
 import { useFrame, useGraph } from "@react-three/fiber";
-import { backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
+import { audioVolumeAtom, backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
 import { useParams } from "wouter";
 import { getLegalTiles } from "../helpers/legalTiles";
 import * as THREE from 'three';
@@ -43,9 +43,11 @@ export default function Tile({
   const shortcutOptions = useAtomValue(shortcutOptionsAtom)
   const animationPlaying = useAnimationPlaying()
   const params = useParams()
-  const { playSoundEffect } = useSoundEffectsPlayer()
   const setShowFinishMoves = useSetAtom(showFinishMovesAtom)
   const setHelperTiles = useSetAtom(helperTilesAtom)
+  // sounds
+  const { playSoundEffect } = useSoundEffectsPlayer()
+  const audioVolume = useAtomValue(audioVolumeAtom)
 
   const group = useRef()
   const wrapperMat = useRef();
@@ -89,7 +91,7 @@ export default function Tile({
             setHelperTiles(helperTiles)
             
             if (team === 0) {
-              playSoundEffect('/sounds/effects/rocket-select.mp3')
+              playSoundEffect('/sounds/effects/rocket-select.mp3', audioVolume)
             }
 
             // update other clients
@@ -101,7 +103,7 @@ export default function Tile({
         // When they're called separately, the order of operation is not kept
         socket.emit("move", { roomId: params.id.toUpperCase(), tile, playerName: client.name });
         
-        playSoundEffect('/sounds/effects/star-move.mp3')
+        playSoundEffect('/sounds/effects/star-move.mp3', audioVolume)
       } else {
         // update client
         setSelection(null)
@@ -111,7 +113,7 @@ export default function Tile({
           
         // update other clients
         socket.emit("select", { roomId: params.id.toUpperCase(), selection: null, legalTiles: {} });
-        playSoundEffect('/sounds/effects/deselect.mp3')
+        playSoundEffect('/sounds/effects/deselect.mp3', audioVolume)
       }
     }
   }

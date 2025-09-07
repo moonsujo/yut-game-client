@@ -1298,6 +1298,9 @@ export default {
           rotation: [-Math.PI/2, 0, 0]
         }
       },
+      audioButton: {
+        position: [5.4, 0, -4.7],
+      },
       rulebookButton: {
         position: [4.95, 0, -5.7],
         scale: 1.1,
@@ -3126,6 +3129,10 @@ export default {
           position: [-11, 0, -2.5],
           rotation: [-Math.PI/2, 0, 0]
         }
+      },
+      audioButton: {
+        position: [9.65, 0, -3.3],
+        scale: 0.6
       },
       rulebookButton: {
         position: [9.3, 0, -4.8],

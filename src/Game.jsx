@@ -77,6 +77,7 @@ import Settings from "./Settings.jsx";
 import YutBonus from "./YutBonus.jsx";
 import Chatbox from "./Chatbox.jsx";
 import ChatboxScroll from "./Chatbox.jsx";
+import AudioButton from "./soundPlayers/AudioButton.jsx";
 
 // There should be no state
 export default function Game() {
@@ -677,6 +678,11 @@ export default function Game() {
           position={layout[device].game.settings.mainButton.position}
           scale={layout[device].game.settings.mainButton.scale}
         />
+        <AudioButton 
+          position={layout[device].game.audioButton.position}
+          scale={layout[device].game.audioButton.scale}
+        />
+        <DisplayHostAndSpectating/>
         <PiecesSection 
           position={layout[device].game.piecesSection.position}
           device={device}
@@ -692,7 +698,6 @@ export default function Game() {
           pieceScale={layout[device].game.moveList.pieceScale}
           gamePhase={gamePhase}
         />
-        <DisplayHostAndSpectating/>
         <Rulebook/>
         <Timer 
           position={layout[device].game.timer.position} 

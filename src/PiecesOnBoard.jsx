@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
-import { catchPathAtom, deviceAtom, gamePhaseAtom, hasTurnAtom, pieceTeam0Id0AnimationPlayingAtom, pieceTeam0Id0Atom, pieceTeam0Id1AnimationPlayingAtom, pieceTeam0Id1Atom, pieceTeam0Id2AnimationPlayingAtom, pieceTeam0Id2Atom, pieceTeam0Id3AnimationPlayingAtom, pieceTeam0Id3Atom, pieceTeam1Id0AnimationPlayingAtom, pieceTeam1Id0Atom, pieceTeam1Id1AnimationPlayingAtom, pieceTeam1Id1Atom, pieceTeam1Id2AnimationPlayingAtom, pieceTeam1Id2Atom, pieceTeam1Id3AnimationPlayingAtom, pieceTeam1Id3Atom, selectionAtom, teamsAtom } from './GlobalState';
+import { audioVolumeAtom, catchPathAtom, deviceAtom, gamePhaseAtom, hasTurnAtom, pieceTeam0Id0AnimationPlayingAtom, pieceTeam0Id0Atom, pieceTeam0Id1AnimationPlayingAtom, pieceTeam0Id1Atom, pieceTeam0Id2AnimationPlayingAtom, pieceTeam0Id2Atom, pieceTeam0Id3AnimationPlayingAtom, pieceTeam0Id3Atom, pieceTeam1Id0AnimationPlayingAtom, pieceTeam1Id0Atom, pieceTeam1Id1AnimationPlayingAtom, pieceTeam1Id1Atom, pieceTeam1Id2AnimationPlayingAtom, pieceTeam1Id2Atom, pieceTeam1Id3AnimationPlayingAtom, pieceTeam1Id3Atom, selectionAtom, teamsAtom } from './GlobalState';
 import tilePositions from './tilePositions';
 import { useSpring } from '@react-spring/three';
 import Piece from './components/Piece';
@@ -21,9 +21,12 @@ export default function PiecesOnBoard({ boardOffset }) {
     const [pieceTeam1Id1] = useAtom(pieceTeam1Id1Atom)
     const [pieceTeam1Id2] = useAtom(pieceTeam1Id2Atom)
     const [pieceTeam1Id3] = useAtom(pieceTeam1Id3Atom)
-    const { playSoundEffect } = useSoundEffectsPlayer()
     const catchPath = useAtomValue(catchPathAtom)
     const { getCatchPosition } = useCatchPosition()
+    const [gamePhase] = useAtom(gamePhaseAtom)
+    const device = useAtomValue(deviceAtom)
+    const { playSoundEffect } = useSoundEffectsPlayer()
+    const setAudioVolume = useSetAtom(audioVolumeAtom)
     
     const setPieceTeam0Id0AnimationPlaying = useSetAtom(pieceTeam0Id0AnimationPlayingAtom)
     const setPieceTeam0Id1AnimationPlaying = useSetAtom(pieceTeam0Id1AnimationPlayingAtom)
@@ -33,8 +36,6 @@ export default function PiecesOnBoard({ boardOffset }) {
     const setPieceTeam1Id1AnimationPlaying = useSetAtom(pieceTeam1Id1AnimationPlayingAtom)
     const setPieceTeam1Id2AnimationPlaying = useSetAtom(pieceTeam1Id2AnimationPlayingAtom)
     const setPieceTeam1Id3AnimationPlaying = useSetAtom(pieceTeam1Id3AnimationPlayingAtom)
-    const [gamePhase] = useAtom(gamePhaseAtom)
-    const device = useAtomValue(deviceAtom)
     const responsiveScale = layout[device].game.board.game.scale
     const idOffsets = [
         [-0.3, 0, -0.25],
@@ -194,7 +195,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam0Id0AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -339,7 +343,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam0Id1AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -483,7 +490,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam0Id2AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -627,7 +637,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam0Id3AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -771,7 +784,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam1Id0AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -916,7 +932,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam1Id1AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -1061,7 +1080,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam1Id2AnimationPlaying(true)
                     },
                     onRest: () => {
@@ -1205,7 +1227,10 @@ export default function PiecesOnBoard({ boardOffset }) {
                     loop: false,
                     delay: catchPath ? calculateCatchDelay(catchPath) : 0,
                     onStart: () => {
-                        playSoundEffect('/sounds/effects/capture.mp3')
+                        setAudioVolume((volume) => {
+                            playSoundEffect('/sounds/effects/capture.mp3', volume)
+                            return volume
+                        })
                         setPieceTeam1Id3AnimationPlaying(true)
                     },
                     onRest: () => {

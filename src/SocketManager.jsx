@@ -56,7 +56,8 @@ import {
   lastYutAtom,
   shortcutOptionsAtom,
   hasAIAtom,
-  blueMoonBrightnessAtom
+  blueMoonBrightnessAtom,
+  audioVolumeAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./helpers/helpers.js";
 import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
@@ -172,6 +173,7 @@ export const SocketManager = () => {
 
   // sounds
   const { playSoundEffect } = useSoundEffectsPlayer()
+  const setAudioVolume = useSetAtom(audioVolumeAtom)
 
   useEffect(() => {
 
@@ -365,7 +367,10 @@ export const SocketManager = () => {
       // } else {
       //   playSoundEffect('/sounds/effects/throw-heavenly-yut-2.mp3')
       // }
-      // playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3')
+      // setAudioVolume((volume) => {
+      //   playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3', volume)
+      //   return volume
+      // })
 
       // set timeout
       // depending on game phase
@@ -614,13 +619,19 @@ export const SocketManager = () => {
           '/sounds/effects/yutThrows/produced/yut!.mp3',
           '/sounds/effects/yutThrows/produced/yuuuuuuuut.mp3',
         ]
-        playSoundEffect(pickRandomElement(yutSoundFilePaths))
+        setAudioVolume((volume) => {
+          playSoundEffect(pickRandomElement(yutSoundFilePaths), volume)
+          return volume
+        })
       } else if (yootOutcome === 5) {
         const moSoundFilePaths = [
           '/sounds/effects/yutThrows/produced/mo!.mp3',
           '/sounds/effects/yutThrows/produced/mooooooo.mp3',
         ]
-        playSoundEffect(pickRandomElement(moSoundFilePaths))
+        setAudioVolume((volume) => {
+          playSoundEffect(pickRandomElement(moSoundFilePaths), volume)
+          return volume
+        })
       } else if (yootOutcome === -1) {
         const backdoSoundFilePaths = [
           '/sounds/effects/yutThrows/produced/nak-chimes.mp3',
@@ -629,12 +640,18 @@ export const SocketManager = () => {
           // '/sounds/effects/yutThrows/produced/ditto-short.mp3',
           // '/sounds/effects/yutThrows/produced/ditto~.mp3',
         ]
-        playSoundEffect(pickRandomElement(backdoSoundFilePaths))
+        setAudioVolume((volume) => {
+          playSoundEffect(pickRandomElement(backdoSoundFilePaths), volume)
+          return volume
+        })
       } else if (yootOutcome === 0) {
         const nakSoundFilePaths = [
           '/sounds/effects/yutThrows/produced/backdo.mp3',
         ]
-        playSoundEffect(pickRandomElement(nakSoundFilePaths))
+        setAudioVolume((volume) => {
+          playSoundEffect(pickRandomElement(nakSoundFilePaths), volume)
+          return volume
+        })
       }
     })
 
@@ -915,12 +932,21 @@ export const SocketManager = () => {
 
       if (selection === null) {
         setShowFinishMoves(false)
-        playSoundEffect('/sounds/effects/deselect.mp3')
+        setAudioVolume((volume) => {
+          playSoundEffect('/sounds/effects/deselect.mp3', volume)
+          return volume
+        })
       } else {
         if (selection.pieces[0].team === 0) {
-          playSoundEffect('/sounds/effects/rocket-select.mp3')
+        setAudioVolume((volume) => {
+          playSoundEffect('/sounds/effects/rocket-select.mp3', volume)
+          return volume
+        })
         } else if (selection.pieces[0].team === 1) {
-          playSoundEffect('/sounds/effects/star-highlight.mp3')
+          setAudioVolume((volume) => {
+            playSoundEffect('/sounds/effects/star-highlight.mp3', volume)
+            return volume
+          })
         }
       }
     })
