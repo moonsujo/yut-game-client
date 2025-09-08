@@ -19,5 +19,18 @@
   <body>
     <div id="root"></div>
     <script type="module" src="./index.js"></script>
+
+    <!-- unity "deep" link -->
+    <script>
+      const path = window.location.pathname.replace(/^\/+/, ""); 
+      const roomID = path;
+
+      const appLink = `unitydl://yutnoriapp?${roomID}`;
+      window.location = appLink;
+      
+      setTimeout(() => {
+        window.location = "https://dev.yutnori.app/" + roomID;
+      }, 1500); // fallback to web if app not installed
+    </script>
   </body>
 </html>
