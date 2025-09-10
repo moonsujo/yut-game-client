@@ -2,15 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import layout from './layout';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom, deviceAtom, showGalaxyBackgroundAtom } from './GlobalState';
-import { Html, MeshDistortMaterial, Text3D } from '@react-three/drei';
+import { Center, Html, MeshDistortMaterial, Text3D } from '@react-three/drei';
 import Piece from './components/Piece';
 import { formatName, tileType } from './helpers/helpers';
 import { MeshStandardMaterial } from 'three';
 import YootMesh from './meshes/YootMesh';
 import { useFrame } from '@react-three/fiber';
-import { animated, useSpring } from '@react-spring/three';
 import { useParams } from 'wouter';
 import Star from './meshes/Star';
+import YouStars from "./YouStars.jsx";
+import * as THREE from 'three';
 
 export default function Team({ position=[0,0,0], scale=1, team }) {
   const device = useAtomValue(deviceAtom)
@@ -139,14 +140,6 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
               scale={0.3}
               color='grey'
             /> : 
-            // tileType(value.tile) === "onBoard" ? <EmptyPiece 
-            //   position={[
-            //     positionStartX + index * space,
-            //     positionStartY,
-            //     positionStartZ,
-            //   ]}
-            //   key={index}
-            // /> : 
             tileType(value.tile) === "scored" ? <ScoredPiece
               position={[
                 positionStartX + index * space,
@@ -220,10 +213,7 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
     </group>
   }
 
-  const nameSpacing = 1.17
   function PlayerIds() {
-    const playerIdsRef = useRef([[],[]])
-    const youIndicatorRef = useRef()
 
     function AIPlayingText() {
       const [text, setText] = useState('AI playing . . .')
@@ -232,7 +222,7 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
       useEffect(() => {
 
         const interval = setInterval(() => {
-          setText(text => {
+          setText(_text => {
             let newText = 'AI playing'
             for (let i = 0; i < count; i++) {
               newText += ' .'
@@ -256,34 +246,120 @@ export default function Team({ position=[0,0,0], scale=1, team }) {
       return text
     }
 
+    function PlayerIndicators({ value, index, nameWidth, position }) {
+      // YOU, host, current player
+      const isYourClient = value.name === client.name
+      const isHostClient = host.socketId === value.socketId
+      const isCurrentPlayer = turn.team === team && turn.players[turn.team] === index
+
+      // case 0: it's your client, client host
+      // case 1: it's your client
+      // case 2: it's not your client, client is host
+      // case 3: it's not your client
+      // add isCurrentPlayer at the end
+
+      if (isYourClient && isHostClient) {
+        return <group name={`player-${index}-team-${team}-indicators`} position={position}>
+          <YouStars 
+          name='you-indicator' 
+          team={team} 
+          scale={0.4} 
+          position={[nameWidth-0.4, 0, 0]} 
+          rotation={[Math.PI/2, 0, 0]}/>
+          <Star 
+          name='host-indicator' 
+          scale={0.23} 
+          rotation={[Math.PI/2, 0, 0]} 
+          position={[nameWidth+0.1, 0, 0]}/>
+          { isCurrentPlayer && <group 
+          name='current-player-indicator' 
+          position={[nameWidth+0.4, 0, 0.05]}
+          scale={0.8}>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.1, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.2, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.3, 0, 0]}/>
+          </group> }  
+        </group>
+      } else if (isYourClient && !isHostClient) {
+        return <group name={`player-${index}-team-${team}-indicators`} position={position}>
+          <YouStars 
+          name='you-indicator' 
+          team={team} 
+          scale={0.4} 
+          position={[nameWidth-0.4, 0, 0]} 
+          rotation={[Math.PI/2, 0, 0]}/>
+          { isCurrentPlayer && <group 
+          name='current-player-indicator' 
+          position={[nameWidth, 0, 0.05]}
+          scale={0.8}>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.1, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.2, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.3, 0, 0]}/>
+          </group> }  
+        </group>
+      } else if (!isYourClient && isHostClient) {
+        return <group name={`player-${index}-team-${team}-indicators`} position={position}>
+          <Star 
+          name='host-indicator' 
+          scale={0.23} 
+          rotation={[Math.PI/2, 0, 0]} 
+          position={[nameWidth-0.3, 0, 0]}/>
+          { isCurrentPlayer && <group 
+          name='current-player-indicator' 
+          position={[nameWidth, 0, 0.05]}
+          scale={0.8}>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.1, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.2, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.3, 0, 0]}/>
+          </group> }  
+        </group>
+      }  else if (!isYourClient && !isHostClient) {
+        return <group name={`player-${index}-team-${team}-indicators`} position={position}>
+          { isCurrentPlayer && <group 
+          name='current-player-indicator' 
+          position={[nameWidth-0.5, 0, 0.05]}
+          scale={0.8}>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.1, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.2, 0, 0]}/>
+            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.3, 0, 0]}/>
+          </group> }  
+        </group>
+      } 
+    }
+
+    function Player({value, index, position}) {
+      const nameRef = useRef()
+      const [nameWidth, setNameWidth] = useState(0)
+      return <group name={`player-${index}-team-${team}`} position={position}>
+        <Center right ref={nameRef} onCentered={({ boundingBox }) => {
+          const size = boundingBox.getSize(new THREE.Vector3());
+          setNameWidth(size.x);
+        }}>
+          <Text3D
+            font="/fonts/Luckiest Guy_Regular.json"
+            size={layout[device].game[`team${team}`].names.size}
+            height={layout[device].game[`team${team}`].names.height}
+          >
+            { value.type === 'human' ? formatName(value.name, layout[device].game[`team${team}`].names.maxLength)
+            + (value.status === 'away' ? ' (away)' : '') : teams[turn.team].players[turn.players[turn.team]].name === value.name ? AIPlayingText() : formatName(value.name, layout[device].game[`team${team}`].names.maxLength) }
+            <meshStandardMaterial color={ value.roomId === params.id.toUpperCase() && value.connectedToRoom ? team === 0 ? 'red' : 'turquoise' : 'gray' }/>
+          </Text3D>
+        </Center>
+        <PlayerIndicators value={value} index={index} nameWidth={nameWidth} position={[0.6, 0, 0]} />
+      </group>
+    }
+
     return <group
       position={layout[device].game[`team${team}`].names.position}
       rotation={layout[device].game[`team${team}`].names.rotation}
     >
       {teams[team].players.map((value, index) => (
         index < 4 && <group key={index}>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            size={layout[device].game[`team${team}`].names.size}
-            height={layout[device].game[`team${team}`].names.height}
-            position={[0, -index * 0.5, 0]}
-            ref={(ref => playerIdsRef.current[team][index] = ref)}
-          >
-            { value.type === 'human' ? formatName(value.name, layout[device].game[`team${team}`].names.maxLength)
-            + (host && value.socketId === host.socketId ? ' (h)' : '')
-            + (value.name === client.name ? ' (u)' : '')
-            + (value.status === 'away' ? ' (away)' : '') : teams[turn.team].players[turn.players[turn.team]].name === value.name ? AIPlayingText() : formatName(value.name, layout[device].game[`team${team}`].names.maxLength) }
-            <meshStandardMaterial color={ value.roomId === params.id.toUpperCase() && value.connectedToRoom ? team === 0 ? 'red' : 'turquoise' : 'gray' }/>
-          </Text3D>
-          { turn.team === team && turn.players[turn.team] === index && <group 
-          name='current-player-indicator' 
-          position={[-0.4, 0.17, 0 - index * 1.2]} 
-          scale={0.8}>
-            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04}/>
-            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.1, 0, 0]}/>
-            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.2, 0, 0]}/>
-            <YootMesh rotation={[0, Math.PI/2, 0]} scale={0.04} position={[0.3, 0, 0]}/>
-          </group> }
+          <Player value={value} index={index} position={[0, 0, -1.2 * index + 0.3]}/>
         </group>
       ))}
     </group>

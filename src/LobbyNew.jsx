@@ -63,6 +63,7 @@ import { SoundIcon } from "./meshes/SoundIcon.jsx";
 import SeatStar from "./stars/SeatStar.jsx";
 import useMusicPlayer from "./soundPlayers/useMusicPlayer.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
+import YouStars from "./YouStars.jsx";
 
 export default function LobbyNew() {
 
@@ -285,14 +286,6 @@ export default function LobbyNew() {
         playSoundEffect('/sounds/effects/button-click.mp3', audioVolume)
       }
 
-      function YouStars({ position, rotation, scale, team }) {
-        return <group position={position} rotation={rotation} scale={scale}>
-          <Star scale={0.3}  position={[-7, 0, -0.5]} color={ team === 0 ? 'red' : 'turquoise'}/>
-          <Star scale={0.2}  position={[-6.75, 0, -0.7]} color={ team === 0 ? 'red' : 'turquoise'}/>
-          <Star scale={0.15}  position={[-6.5, 0, -0.8]} color={ team === 0 ? 'red' : 'turquoise'}/>
-        </group>
-      }
-
       // Players are in seat by their index in the teams[team].players array
       return <group position={position} scale={scale}>
         <animated.group 
@@ -304,7 +297,7 @@ export default function LobbyNew() {
           -Math.sin(Math.PI * 2 / 8 + Math.PI/8) * radius - 0.5
         ]}>
           { teams[0].players[0] && host.socketId === teams[0].players[0].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
-          { teams[0].players[0] && client.socketId === teams[0].players[0].socketId && <YouStars team={0}/> }
+          { teams[0].players[0] && client.socketId === teams[0].players[0].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
           { !teams[0].players[0] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -356,7 +349,7 @@ export default function LobbyNew() {
           -Math.sin(Math.PI * 2 / 8 - Math.PI/8) * radius
         ]}>
           { teams[0].players[1] && host.socketId === teams[0].players[1].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
-          { teams[0].players[1] && client.socketId === teams[0].players[1].socketId && <YouStars team={0}/> }
+          { teams[0].players[1] && client.socketId === teams[0].players[1].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
           { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -408,7 +401,7 @@ export default function LobbyNew() {
           -Math.sin(0 - Math.PI/8) * radius + 0.1
         ]}>
           { teams[0].players[2] && host.socketId === teams[0].players[2].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
-          { teams[0].players[2] && client.socketId === teams[0].players[2].socketId && <YouStars team={0}/> }
+          { teams[0].players[2] && client.socketId === teams[0].players[2].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
           { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -460,7 +453,7 @@ export default function LobbyNew() {
           -Math.sin(-Math.PI * 2 / 8 - Math.PI/8) * radius + 0.6
         ]}>
           { teams[0].players[3] && host.socketId === teams[0].players[3].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
-          { teams[0].players[3] && client.socketId === teams[0].players[3].socketId && <YouStars team={0}/> }
+          { teams[0].players[3] && client.socketId === teams[0].players[3].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
           { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.8}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -512,7 +505,7 @@ export default function LobbyNew() {
           -Math.sin(Math.PI * 2 / 8 + Math.PI/8) * radius - 0.5
         ]}>
           { teams[1].players[0] && host.socketId === teams[1].players[0].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
-          { teams[1].players[0] && client.socketId === teams[1].players[0].socketId && <YouStars position={[6.4, 0, 0]} team={1}/> }
+          { teams[1].players[0] && client.socketId === teams[1].players[0].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/> }
           { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -564,7 +557,7 @@ export default function LobbyNew() {
           -Math.sin(Math.PI * 2 / 8 - Math.PI/8) * radius
         ]}>
           { teams[1].players[1] && host.socketId === teams[1].players[1].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
-          { teams[1].players[1] && client.socketId === teams[1].players[1].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { teams[1].players[1] && client.socketId === teams[1].players[1].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
           { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -616,7 +609,7 @@ export default function LobbyNew() {
           -Math.sin(0 - Math.PI/8) * radius + 0.1
         ]}>
           { teams[1].players[2] && host.socketId === teams[1].players[2].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
-          { teams[1].players[2] && client.socketId === teams[1].players[2].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { teams[1].players[2] && client.socketId === teams[1].players[2].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
           { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
@@ -668,7 +661,7 @@ export default function LobbyNew() {
           -Math.sin(-Math.PI * 2 / 8 - Math.PI/8) * radius + 0.6
         ]}>
           { teams[1].players[3] && host.socketId === teams[1].players[3].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
-          { teams[1].players[3] && client.socketId === teams[1].players[3].socketId && <YouStars position={[6.4, 0, 0]} team={1}/>}
+          { teams[1].players[3] && client.socketId === teams[1].players[3].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
           { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
