@@ -974,7 +974,7 @@ export default {
         rotation: [0,0,0],
       },
       joinTeamModal: {
-        position: [-5.5, 0, -2],
+        position: [-5.5, 0, -5],
         rotation: [-Math.PI/2, 0, 0],
         scale: 2.5
       },

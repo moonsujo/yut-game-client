@@ -1360,7 +1360,7 @@ export default function LobbyNew() {
         rotation={layout[device].lobby.joinTeamModal.rotation}
         scale={layout[device].lobby.joinTeamModal.scale}
       />
-      { seatChosen && <SeatModal position={[0, 13, 10]} rotation={[0,0,0]} scale={1.5}/> }
+      { seatChosen && <SeatModal position={[0, 13, 8]} rotation={[0,0,0]} scale={1.5}/> }
       { guestBeingEditted && <EditOneGuest 
         position={[0,12,10]} 
         scale={1.3}

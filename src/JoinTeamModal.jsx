@@ -101,6 +101,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
     setCancelHover(false)
   }
 
+  // fix HTML to threejs for all except the input placeholder
   return joinTeam !== null && <group 
     position={position}
     rotation={rotation}
