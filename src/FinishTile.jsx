@@ -26,41 +26,33 @@ export default function FinishTile({ legalTileInfo }) {
   })
   const wrapperMat = useRef();
   const wrapper = useRef();
-  const starMatRef = useRef();
   const borderMatRef = useRef();
   const finishMovesPointerRef = useRef()
 
-  let time = 0
   const finishMovesPointerPositionX = 0.2
   const baseWrapperScale = 0.8
   const wrapperIncreaseScaleFactor = 0.05
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime
-    if (wrapperMat.current && wrapper.current && starMatRef.current && borderMatRef.current) {
+    if (wrapperMat.current && wrapper.current && borderMatRef.current) {
       if (selection != null && legalTileInfo) {
-        // if (turn.team === 0) {
-        //   wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.02 + 0.03, 0.8, 0.5);
-        // } else {
-        //   wrapperMat.current.color.setHSL(Math.cos(time * 3) * 0.06 + 0.55, 1, 0.3);
-        // }
         wrapperMat.current.opacity = 0.2;
         wrapper.current.scale.x = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
         wrapper.current.scale.y = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
         wrapper.current.scale.z = Math.sin(time * 3) * wrapperIncreaseScaleFactor + baseWrapperScale;
   
         // Star shine
-        starMatRef.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
         borderMatRef.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
-        // wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.15 + 0.5, Math.cos(time * 5) * 0.3 + 1, Math.cos(time * 6) * 0.1 + 0.4);
         wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
       } else {
-        wrapperMat.current.opacity = 0;
-        starMatRef.current.color.r = 0.031
-        starMatRef.current.color.g = 0.61
-        starMatRef.current.color.b = 0.031
+        console.log('here')
+        wrapperMat.current.opacity = 0.5;
         borderMatRef.current.color.r = 0.031
         borderMatRef.current.color.g = 0.61
         borderMatRef.current.color.b = 0.031
+        wrapper.current.scale.x = 1
+        wrapper.current.scale.y = 1
+        wrapper.current.scale.z = 1
       }
     } else if (showFinishMoves && finishMovesPointerRef.current) { // Pointer point animation
       finishMovesPointerRef.current.position.x = Math.cos(time * 5) * 0.05 + finishMovesPointerPositionX
@@ -179,7 +171,7 @@ export default function FinishTile({ legalTileInfo }) {
         <cylinderGeometry args={[0.28, 0.28, 0.011, 32]}/>
         <meshStandardMaterial color='black'/>
       </mesh>
-      <Star scale={0.22} material={<meshStandardMaterial color='limegreen' ref={starMatRef}/>} position={[0, -0.03, 0]}/>
+      <Star scale={0.22} color='limegreen' position={[0, -0.03, 0]}/>
       <animated.group scale={wrapperScale}>
         <mesh
           name='wrapper'
