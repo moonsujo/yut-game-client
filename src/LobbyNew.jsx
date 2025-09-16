@@ -59,9 +59,7 @@ import axios from "axios";
 import Chatbox from "./Chatbox.jsx";
 import Settings from "./Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
-import { SoundIcon } from "./meshes/SoundIcon.jsx";
 import SeatStar from "./stars/SeatStar.jsx";
-import useMusicPlayer from "./soundPlayers/useMusicPlayer.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import YouStars from "./YouStars.jsx";
 
@@ -303,7 +301,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -355,7 +353,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -407,7 +405,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -459,7 +457,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -511,7 +509,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -563,7 +561,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -615,7 +613,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -667,7 +665,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.6}
+            size={0.7}
             height={0.01}
             lineHeight={0.7}
           >
@@ -1461,7 +1459,7 @@ export default function LobbyNew() {
     }
     function MenuButtons({ position, scale }) {
       return <group name='menu-buttons' position={position} scale={scale}>
-        <AudioButton position={[0, 0, 0]}/>
+        <AudioButtonSection position={layout[device].lobby.audioButtonSection.position}/>
       </group>
     }
     function WaitingForCrewSign({ position, scale }) {
@@ -1531,8 +1529,8 @@ export default function LobbyNew() {
         </Text3D>
       </group>
       <PlayersParty position={[1, 0, -0.2]} scale={0.55}/>
-      <StartGameButton position={[0.9, 4, 5.8]} scale={0.9}/>
-      <MenuButtons position={[0.9, 4, 7.3]} scale={0.9}/>
+      <MenuButtons position={[0.9, 4, 5.3]}/>
+      <StartGameButton position={[0.9, 4, 6.7]} scale={1}/>
       {/* { isHost && !readyToStart && <WaitingForCrewSign position={[0.9,0,5]} scale={0.8}/> }
       { !isHost && <HostWillStartSign position={[0.9,0,5]} scale={0.8}/> } */}
     </group>
@@ -2162,7 +2160,6 @@ export default function LobbyNew() {
       <SettingsButton position={[-3.8, 0, -7]} scale={1.3}/>
       <PlayersButton position={[0,0,-7]} scale={1.3}/>
       <RulebookButton position={[3.9,0,-7]} scale={1.3}/>
-      {/* { selection === 'players' && <Players/> } */}
       { selection === 'players' && <PlayersParty position={[0, 0, 0.5]}/> }
       { selection === 'settings' && <Center position={[0,0,0]}><GameRules  scale={1.2}/></Center> }
       { selection === 'rulebook' && <HowToPlay device={device} scale={0.75} position={[-2.3, 0, -1.6]}/> }
@@ -2323,10 +2320,28 @@ export default function LobbyNew() {
     }
 
     return <group position={position}>
+      <AudioButtonSection position={layout[device].lobby.audioButtonSection.position}/>
       <ShareThisLobbyButton position={[0, 5, 2.6]}/>
       { !isHost && <GuestStartButton position={[0, 5, 4.6]}/> }
       { isHost && <StartGameButton position={[0, 5, 4.6]}/> } 
     </group>
+  }
+
+  // Shared between portrait and landscape
+  function AudioButtonSection({ position }) {
+    return <Center position={position}>
+      <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={layout[device].lobby.audioButtonSection.text.position}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={layout[device].lobby.audioButtonSection.text.size}
+        height={0.01}
+        lineHeight={0.7}>
+          SOUND: 
+        <meshStandardMaterial color='yellow'/>
+      </Text3D>
+      <AudioButton scale={layout[device].lobby.audioButtonSection.button.scale}/>
+    </Center>
   }
   
   const meteorShaderColor = new THREE.Color();

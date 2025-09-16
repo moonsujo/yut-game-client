@@ -1007,6 +1007,16 @@ export default {
       teamSwitchButtonUfo: {
         position: [1.5,0,0],
         scale: 2
+      },
+      audioButtonSection: {
+        position: [0, 5, 0.5],
+        text: {
+          position: [-3, 0, 0],
+          size: 0.5
+        },
+        button: {
+          scale: 0.9
+        }
       }
     },
     game: {
@@ -2798,6 +2808,16 @@ export default {
           border: 0,
         }
       },
+      audioButtonSection: {
+        position: [0, 0, 0],
+        text: {
+          position: [-2.4, 0, 0],
+          size: 0.4
+        },
+        button: {
+          scale: 0.7
+        }
+      }
     },
     game: {
       letsPlayButton: {
