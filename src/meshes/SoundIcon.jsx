@@ -24,13 +24,6 @@ export function SoundIcon(props) {
   const audioRing1CylinderMat = useRef()
   const audioRing1Ball0Mat = useRef()
   const audioRing1Ball1Mat = useRef()
-  // const audioRing2Cylinder = useRef()
-  // const audioRing2Ball0 = useRef()
-  // const audioRing2Ball1 = useRef()
-  // const audioRing2 = useRef()
-  // const audioRing2CylinderMat = useRef()
-  // const audioRing2Ball0Mat = useRef()
-  // const audioRing2Ball1Mat = useRef()
 
   const audioRingFlashSpeed = 1
   const iconBobbingSpeed = 1.8
@@ -56,11 +49,6 @@ export function SoundIcon(props) {
       audioRing1CylinderMat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
       audioRing1Ball0Mat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
       audioRing1Ball1Mat.current.opacity = Math.sin((time - Math.PI/4) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
-      
-      // audioRing2CylinderMat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
-      // audioRing2Ball0Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
-      // audioRing2Ball1Mat.current.opacity = Math.sin((time - Math.PI/4 * 2) * audioRingFlashSpeed) * audioRingFlashOpacityFactor + 0.5
-
     } else {
       icon.current.rotation.x = Math.PI/32
       icon.current.rotation.y = -Math.PI/16
@@ -75,10 +63,6 @@ export function SoundIcon(props) {
       audioRing1CylinderMat.current.opacity = 0
       audioRing1Ball0Mat.current.opacity = 0
       audioRing1Ball1Mat.current.opacity = 0
-      
-      // audioRing2CylinderMat.current.opacity = 0
-      // audioRing2Ball0Mat.current.opacity = 0
-      // audioRing2Ball1Mat.current.opacity = 0
     }
   })
 
@@ -101,15 +85,6 @@ export function SoundIcon(props) {
     if (audioRing1Ball1.current) {
       audioRing1Ball1.current.renderOrder = 1
     }
-    // if (audioRing2Cylinder.current) {
-    //   audioRing2Cylinder.current.renderOrder = 0
-    // }
-    // if (audioRing2Ball0.current) {
-    //   audioRing2Ball0.current.renderOrder = 1
-    // }
-    // if (audioRing2Ball1.current) {
-    //   audioRing2Ball1.current.renderOrder = 1
-    // }
   }, [])
 
   return (
@@ -216,46 +191,6 @@ export function SoundIcon(props) {
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing1Ball1Mat}/>
             </mesh>
           </group>
-          {/* <group name='audio-ring-2' ref={audioRing2}>
-            <mesh
-              name='audio-ring-2-cylinder'
-              castShadow
-              receiveShadow
-              geometry={nodes.Torus021.geometry}
-              material={nodes.Torus021.material}
-              position={[0, 0.068, -3.728]}
-              rotation={[1.969, 0, -Math.PI / 2]}
-              ref={audioRing2Cylinder}
-            >
-              <meshStandardMaterial color={props.colorRings} transparent ref={audioRing2CylinderMat}/>
-            </mesh>
-            <mesh
-              name='audio-ring-2-ball-0'
-              castShadow
-              receiveShadow
-              geometry={nodes.Sphere004.geometry}
-              material={nodes.Sphere004.material}
-              position={[0, 2.367, -4.941]}
-              rotation={[-0.087, 0, 0]}
-              scale={[0.99, 0.99, 0.99]}
-              ref={audioRing2Ball0}
-            >
-              <meshStandardMaterial color={props.colorRings} transparent ref={audioRing2Ball0Mat}/>
-            </mesh>
-            <mesh
-              name='audio-ring-2-ball-1'
-              castShadow
-              receiveShadow
-              geometry={nodes.Sphere005.geometry}
-              material={nodes.Sphere005.material}
-              position={[0, -2.277, -4.853]}
-              rotation={[-0.087, 0, 0]}
-              scale={[0.99, 0.99, 0.99]}
-              ref={audioRing2Ball1}
-            >
-              <meshStandardMaterial color={props.colorRings} transparent ref={audioRing2Ball1Mat}/>
-            </mesh>
-          </group> */}
         </group>
       </group>
     </group>
