@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber'
 // Spheres overlap with pipe in each ring.
 // To avoid this, set renderOrder on spheres and pipe
 export function SoundIcon(props) {
-  const { nodes } = useGLTF('/models/sound-icon.glb')
+  const { nodes } = useGLTF('/models/sound-icon-less-details.glb')
 
   const icon = useRef()
   const audioRings = useRef()
@@ -34,8 +34,8 @@ export function SoundIcon(props) {
     if(props.animated) {
       const time = state.clock.getElapsedTime(); 
       // tilt icon up and down
-      icon.current.rotation.x = Math.sin(time * iconBobbingSpeed) * iconBobbingAngleFactor + iconBobbingAngleFactor*2
-      icon.current.rotation.y = Math.sin(time * iconBobbingSpeed) * 0.05
+      // icon.current.rotation.x = Math.sin(time * iconBobbingSpeed) * iconBobbingAngleFactor + iconBobbingAngleFactor*2
+      // icon.current.rotation.y = Math.sin(time * iconBobbingSpeed) * 0.05
 
       // make the rings pulse
       audioRings.current.scale.x = 1 + Math.sin(time * audioRingPulseSpeed) * 0.05
@@ -120,10 +120,10 @@ export function SoundIcon(props) {
               name='audio-ring-0-cylinder'
               castShadow
               receiveShadow
-              geometry={nodes.Torus019.geometry}
-              material={nodes.Torus019.material}
-              position={[0, 0.033, -2.698]}
-              rotation={[2.052, 0, -Math.PI / 2]}
+              geometry={nodes['ring-0'].geometry}
+              material={nodes['ring-0'].material}
+              position={[0, -0.048, -2.941]}
+              rotation={[0, 0, 0]}
               ref={audioRing0Cylinder}
             >
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing0CylinderMat}/>
@@ -132,9 +132,9 @@ export function SoundIcon(props) {
               name='audio-ring-0-ball-0'
               castShadow
               receiveShadow
-              geometry={nodes.Sphere.geometry}
-              material={nodes.Sphere.material}
-              position={[0, 0.596, -2.905]}
+              geometry={nodes['ring-0-ball-0'].geometry}
+              material={nodes['ring-0-ball-0'].material}
+              position={[0, -0.048, -2.941]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing0Ball0}
             >
@@ -144,9 +144,9 @@ export function SoundIcon(props) {
               name='audio-ring-0-ball-1'
               castShadow
               receiveShadow
-              geometry={nodes.Sphere001.geometry}
-              material={nodes.Sphere001.material}
-              position={[0, -0.499, -2.976]}
+              geometry={nodes['ring-0-ball-1'].geometry}
+              material={nodes['ring-0-ball-1'].material}
+              position={[0, -0.048, -2.941]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing0Ball1}
             >
@@ -158,10 +158,10 @@ export function SoundIcon(props) {
               name='audio-ring-1-cylinder'
               castShadow
               receiveShadow
-              geometry={nodes.Torus020.geometry}
-              material={nodes.Torus020.material}
-              position={[0, 0.05, -3.304]}
-              rotation={[2.077, 0, -Math.PI / 2]}
+              geometry={nodes['ring-1'].geometry}
+              material={nodes['ring-1'].material}
+              position={[0, 0, -3.204]}
+              rotation={[0, 0, 0]}
               ref={audioRing1Cylinder}
             >
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing1CylinderMat}/>
@@ -170,9 +170,9 @@ export function SoundIcon(props) {
               name='audio-ring-1-ball-0'
               castShadow
               receiveShadow
-              geometry={nodes.Sphere002.geometry}
-              material={nodes.Sphere002.material}
-              position={[0, 1.416, -3.924]}
+              geometry={nodes['ring-1-ball-0'].geometry}
+              material={nodes['ring-1-ball-0'].material}
+              position={[0, 0, -3.204]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing1Ball0}
             >
@@ -182,9 +182,9 @@ export function SoundIcon(props) {
               name='audio-ring-1-ball-1'
               castShadow
               receiveShadow
-              geometry={nodes.Sphere003.geometry}
-              material={nodes.Sphere003.material}
-              position={[0, -1.261, -4.032]}
+              geometry={nodes['ring-1-ball-1'].geometry}
+              material={nodes['ring-1-ball-1'].material}
+              position={[0, 0, -3.204]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing1Ball1}
             >

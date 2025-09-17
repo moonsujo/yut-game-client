@@ -45,7 +45,6 @@ export default function FinishTile({ legalTileInfo }) {
         borderMatRef.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
         wrapperMat.current.color.setHSL(Math.cos(time * 5) * 0.2 + 0.3, Math.cos(time * 5) * 0.06 + 1, Math.cos(time * 5) * 0.06 + 0.3);
       } else {
-        console.log('here')
         wrapperMat.current.opacity = 0.5;
         borderMatRef.current.color.r = 0.031
         borderMatRef.current.color.g = 0.61

@@ -17,7 +17,6 @@ export default function AssetLoader() {
   return
 }
 
-useGLTF.preload("/models/yoot.glb")
 useGLTF.preload("/models/rounded-rectangle.glb")
 useGLTF.preload("/models/yoot-for-button.glb")
 useGLTF.preload("/models/star.glb");
@@ -30,20 +29,13 @@ useGLTF.preload('/models/rhino-constellation-dhazele-2.glb')
 useGLTF.preload('/models/taurus-constellation-dhazele-2.glb')
 useGLTF.preload("/models/rocket.glb")
 useGLTF.preload("/models/ufo.glb")
-useGLTF.preload("/models/yoot.glb")
 useGLTF.preload("/models/cursor.glb");
-useGLTF.preload('/models/yoot-animation-2-shorter.glb')
 useGLTF.preload('/models/bam-emoji.glb')
-useGLTF.preload("/models/yoot-v3-regular.glb")
-useGLTF.preload("/models/yoot-v3-backdo.glb")
-useGLTF.preload("/models/yoot-animation-2-korean.glb")
 useGLTF.preload("/models/yoot-animation-2-korean-darker-more.glb")
 useGLTF.preload("/models/yut-v3-regular-darker-more.glb")
 useGLTF.preload("/models/yut-v3-backdo-darker-more.glb")
-useGLTF.preload("/models/aries-constellation-thin.glb")
 useGLTF.preload("/models/bull-constellation-thin.glb")
 useGLTF.preload("/models/rhino-constellation-thin.glb")
-useGLTF.preload("/models/wolf-constellation-thin-3.glb")
 useGLTF.preload("/models/planet-joined.glb")
 useGLTF.preload("/models/sound-icon.glb")
 useGLTF.preload("/models/alien.glb")
