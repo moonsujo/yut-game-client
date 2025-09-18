@@ -34,8 +34,8 @@ export function SoundIcon(props) {
     if(props.animated) {
       const time = state.clock.getElapsedTime(); 
       // tilt icon up and down
-      // icon.current.rotation.x = Math.sin(time * iconBobbingSpeed) * iconBobbingAngleFactor + iconBobbingAngleFactor*2
-      // icon.current.rotation.y = Math.sin(time * iconBobbingSpeed) * 0.05
+      icon.current.rotation.x = Math.sin(time * iconBobbingSpeed) * iconBobbingAngleFactor + iconBobbingAngleFactor*2
+      icon.current.rotation.y = Math.sin(time * iconBobbingSpeed) * 0.05
 
       // make the rings pulse
       audioRings.current.scale.x = 1 + Math.sin(time * audioRingPulseSpeed) * 0.05
@@ -123,7 +123,7 @@ export function SoundIcon(props) {
               geometry={nodes['ring-0'].geometry}
               material={nodes['ring-0'].material}
               position={[0, -0.048, -2.941]}
-              rotation={[0, 0, 0]}
+              rotation={[0.409, 0, 0]}
               ref={audioRing0Cylinder}
             >
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing0CylinderMat}/>
@@ -135,6 +135,7 @@ export function SoundIcon(props) {
               geometry={nodes['ring-0-ball-0'].geometry}
               material={nodes['ring-0-ball-0'].material}
               position={[0, -0.048, -2.941]}
+              rotation={[0.409, 0, 0]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing0Ball0}
             >
@@ -146,6 +147,7 @@ export function SoundIcon(props) {
               receiveShadow
               geometry={nodes['ring-0-ball-1'].geometry}
               material={nodes['ring-0-ball-1'].material}
+              rotation={[0.409, 0, 0]}
               position={[0, -0.048, -2.941]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing0Ball1}
@@ -153,7 +155,7 @@ export function SoundIcon(props) {
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing0Ball1Mat}/>
             </mesh>
           </group>
-          <group name='audio-ring-1' ref={audioRing1}>
+          <group name='audio-ring-1' ref={audioRing1} rotation={[0, 0, 0]}>
             <mesh
               name='audio-ring-1-cylinder'
               castShadow
@@ -161,7 +163,7 @@ export function SoundIcon(props) {
               geometry={nodes['ring-1'].geometry}
               material={nodes['ring-1'].material}
               position={[0, 0, -3.204]}
-              rotation={[0, 0, 0]}
+              rotation={[0.36, 0, 0]}
               ref={audioRing1Cylinder}
             >
               <meshStandardMaterial color={props.colorRings} transparent ref={audioRing1CylinderMat}/>
@@ -173,6 +175,7 @@ export function SoundIcon(props) {
               geometry={nodes['ring-1-ball-0'].geometry}
               material={nodes['ring-1-ball-0'].material}
               position={[0, 0, -3.204]}
+              rotation={[0.36, 0, 0]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing1Ball0}
             >
@@ -185,6 +188,7 @@ export function SoundIcon(props) {
               geometry={nodes['ring-1-ball-1'].geometry}
               material={nodes['ring-1-ball-1'].material}
               position={[0, 0, -3.204]}
+              rotation={[0.36, 0, 0]}
               scale={[0.99, 0.99, 0.99]}
               ref={audioRing1Ball1}
             >
