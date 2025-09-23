@@ -1310,6 +1310,7 @@ export default {
       },
       audioButton: {
         position: [5.4, 0, -4.7],
+        scale: 0.6
       },
       rulebookButton: {
         position: [4.95, 0, -5.7],
