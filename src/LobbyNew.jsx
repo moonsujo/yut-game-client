@@ -2319,8 +2319,10 @@ export default function LobbyNew() {
       </group>
     }
 
+    const selection = useAtomValue(portraitLobbySelectionAtom)
+
     return <group position={position}>
-      <AudioButtonSection position={layout[device].lobby.audioButtonSection.position}/>
+      { selection === 'players' && <AudioButtonSection position={layout[device].lobby.audioButtonSection.position}/> }
       <ShareThisLobbyButton position={[0, 5, 2.6]}/>
       { !isHost && <GuestStartButton position={[0, 5, 4.6]}/> }
       { isHost && <StartGameButton position={[0, 5, 4.6]}/> } 
