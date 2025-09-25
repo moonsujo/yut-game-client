@@ -24,6 +24,7 @@ import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
+import Showroom from './components/Showroom';
 
 export default function Home2() {
 
@@ -214,11 +215,13 @@ export default function Home2() {
 
     function handlePointerEnter(e) {
       e.stopPropagation();
+        document.body.style.cursor = 'pointer'
       setHover(true)
     }
 
     function handlePointerLeave(e) {
       e.stopPropagation();
+        document.body.style.cursor = 'default'
       setHover(false)
     }
 
@@ -273,11 +276,13 @@ export default function Home2() {
 
     function handlePointerEnter(e) {
       e.stopPropagation();
+        document.body.style.cursor = 'pointer'
       setHover(true)
     }
 
     function handlePointerLeave(e) {
       e.stopPropagation();
+        document.body.style.cursor = 'default'
       setHover(false)
     }
 
@@ -350,11 +355,13 @@ export default function Home2() {
 
     function handlePointerEnter(e) {
       e.stopPropagation();
+      document.body.style.cursor = 'pointer'
       setHover(true)
     }
 
     function handlePointerLeave(e) {
       e.stopPropagation();
+      document.body.style.cursor = 'default'
       setHover(false)
     }
 
@@ -544,14 +551,69 @@ export default function Home2() {
     </group>
   }
 
+  function ShowroomButton(props) {
+    const [hover, setHover] = useState(false)
+
+    function handlePointerEnter(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'pointer'
+      setHover(true)
+    }
+
+    function handlePointerLeave(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'default'
+      setHover(false)
+    }
+
+    function handlePointerDown(e) {
+      e.stopPropagation();
+
+      playSoundEffect('/sounds/effects/button-click.mp3', 1)
+      
+      setDisplay('showroom')
+    }
+
+    return <group {...props}>
+      <mesh name='background-outer'>
+        <boxGeometry args={[2.55, 0.03, 0.55]}/>
+        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+      </mesh>
+      <mesh name='background-inner'>
+        <boxGeometry args={[2.5, 0.04, 0.5]}/>
+        <meshStandardMaterial color='black'/>
+      </mesh>
+      <mesh 
+        name='wrapper' 
+        onPointerEnter={e => handlePointerEnter(e)}
+        onPointerLeave={e => handlePointerLeave(e)}
+        onPointerDown={e => handlePointerDown(e)}
+      >
+        <boxGeometry args={[2.7, 0.1, 0.55]}/>
+        <meshStandardMaterial transparent opacity={0}/>
+      </mesh>
+      <Text3D
+        font="fonts/Luckiest Guy_Regular.json"
+        position={[-1.13, 0.025, 0.15]}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={0.3}
+        height={0.01}
+      >
+        SHOWROOM
+        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+      </Text3D>
+    </group>
+  }
+
   // To make room in portrait mode
-  const {titleScale, titlePosition, titleBoardScale, howToPlayScale} = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     titleBoardScale: display === 'board' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
+    showroomScale: display === 'showroom' ? 1 : 0,
     config: {
       tension: 170,
       friction: 26
@@ -612,6 +674,11 @@ export default function Home2() {
         rotation={layout[device].title.letsPlay.rotation}
         scale={layout[device].title.letsPlay.scale}
       />
+      <ShowroomButton
+        position={layout[device].title.showroom.position} 
+        rotation={layout[device].title.showroom.rotation}
+        scale={layout[device].title.showroom.scale}
+      />
     </group>
     <group name='stats'>
       { device === 'landscape' && <PageVisits 
@@ -648,6 +715,13 @@ export default function Home2() {
           tabOrientation='right'
         />
       </animated.group> }
+      { display === 'showroom' && <animated.group scale={showroomScale}>
+        <Showroom
+          position={layout[device].showroom.position}
+          rotation={layout[device].showroom.rotation}
+          scale={layout[device].showroom.scale}
+        />  
+      </animated.group>}
     </group>
     { !connectedToServer && <DisconnectModal
       position={layout[device].title.disconnectModal.position}

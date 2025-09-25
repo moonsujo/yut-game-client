@@ -1782,6 +1782,11 @@ export default {
         rotation: [0, 0, 0],
         scale: 2.2
       },
+      showroom: {
+        position: [-12.3, 0, 5],
+        rotation: [0, 0, 0],
+        scale: 1.3
+      },
       stats: {
         position: [-13.9, 0, 5],
         rotation: [0, 0, 0],
@@ -2749,6 +2754,11 @@ export default {
         rocketScale: 0.6,
         ufoScale: 0.3,
       },
+    },
+    showroom: {
+      position: [0,0,0],
+      rotation: [0,0,0],
+      scale: 1
     },
     lobby: {
       disconnectModal: {
