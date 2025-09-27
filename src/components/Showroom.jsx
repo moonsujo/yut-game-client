@@ -4,6 +4,9 @@ import DoAlert from "../alerts/DoAlert"
 import GeAlert from "../alerts/GeAlert"
 import GulAlert from "../alerts/GulAlert"
 import YootAlert from "../alerts/YootAlert"
+import MoAlert from "../alerts/MoAlert"
+import BackdoAlert from "../alerts/BackdoAlert"
+import OutAlert from "../alerts/OutAlert"
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -106,7 +109,7 @@ export default function Showroom(props) {
     }
     function YutOutcomes(props) {
         return <group {...props}>
-            <group name='do-alert' position={[-3.5, 0, -5]} scale={0.9}>
+            <group name='do-alert' position={[-8, 0, -5]} scale={0.9}>
                 <Text3D
                     font="fonts/Luckiest Guy_Regular.json"
                     rotation={[-Math.PI/2, 0, 0]}
@@ -118,7 +121,7 @@ export default function Showroom(props) {
                 </Text3D>
                 <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
             </group>
-            <group name='ge-alert' position={[0.5, 0, -5]} scale={0.9}>
+            <group name='ge-alert' position={[-4, 0, -5]} scale={0.9}>
                 <Text3D
                     font="fonts/Luckiest Guy_Regular.json"
                     rotation={[-Math.PI/2, 0, 0]}
@@ -130,7 +133,7 @@ export default function Showroom(props) {
                 </Text3D>
                 <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
             </group>
-            <group name='gul-alert' position={[-3.5, 0, -1.3]} scale={0.9}>
+            <group name='gul-alert' position={[0, 0, -5]} scale={0.9}>
                 <Text3D
                     font="fonts/Luckiest Guy_Regular.json"
                     rotation={[-Math.PI/2, 0, 0]}
@@ -142,7 +145,7 @@ export default function Showroom(props) {
                 </Text3D>
                 <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
             </group>
-            <group name='yut-alert' position={[0.5, 0, -1.4]} scale={0.9}>
+            <group name='yut-alert' position={[-8, 0, -1.4]} scale={0.9}>
                 <Text3D
                     font="fonts/Luckiest Guy_Regular.json"
                     rotation={[-Math.PI/2, 0, 0]}
@@ -153,6 +156,42 @@ export default function Showroom(props) {
                     <meshStandardMaterial color='yellow'/>
                 </Text3D>
                 <YootAlert position={[3, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
+            </group>
+            <group name='mo-alert' position={[-1, 0, -1.4]} scale={0.9}>
+                <Text3D
+                    font="fonts/Luckiest Guy_Regular.json"
+                    rotation={[-Math.PI/2, 0, 0]}
+                    size={0.5}
+                    height={0.01}
+                >
+                    MO
+                    <meshStandardMaterial color='yellow'/>
+                </Text3D>
+                <MoAlert position={[3, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
+            </group>
+            <group name='backdo-alert' position={[-6, 0, 5.2]} scale={0.9}>
+                <Text3D
+                    font="fonts/Luckiest Guy_Regular.json"
+                    rotation={[-Math.PI/2, 0, 0]}
+                    size={0.5}
+                    height={0.01}
+                >
+                    BACKDO
+                    <meshStandardMaterial color='yellow'/>
+                </Text3D>
+                <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+            </group>
+            <group name='nak-alert' position={[0, 0, 5.2]} scale={0.9}>
+                <Text3D
+                    font="fonts/Luckiest Guy_Regular.json"
+                    rotation={[-Math.PI/2, 0, 0]}
+                    size={0.5}
+                    height={0.01}
+                >
+                    NAK (OUT)
+                    <meshStandardMaterial color='yellow'/>
+                </Text3D>
+                <OutAlert position={[3, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
             </group>
         </group>
     }

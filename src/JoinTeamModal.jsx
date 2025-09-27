@@ -31,50 +31,58 @@ export default function JoinTeamModal({ position, rotation, scale }) {
     return true;
   };
 
-  function isUniqueName(name, teams) {
-    for (let j = 0; j < teams.length; j++) {
-      for (let i = 0; i < teams[j].players.length; i++) {
-        if (teams[j].players[i].name.toUpperCase() === name.toUpperCase()) {
-          return false;
-        }
+  function isUniqueName(name, team) {
+    for (let i = 0; i < team.players.length; i++) {
+      if (team.players[i].name.toUpperCase() === name.toUpperCase()) {
+        return false;
       }
     }
     return true;
+  }
+
+  async function joinTeamHandler(joinTeam, name) {
+    setAlert("")
+    socket.emit("joinTeam", { team: joinTeam, name: name.toUpperCase() }, ({ player }) => {
+      if (player) { // refactor into mongodb stream
+        // const audio = new Audio('sounds/effects/join-2.mp3');
+        // audio.volume = 1;
+        // audio.play();
+        setName('')
+        setSubmitHover(false)
+        setJoinTeam(null);
+      }
+    });
+      
+    playSoundEffect('/sounds/effects/door-chime.mp3', audioVolume)
+
+    await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
+      eventName: 'buttonClick',
+      timestamp: new Date(),
+      payload: {
+        'button': 'joinTeam',
+        'team': joinTeam
+      }
+    })
   }
 
   async function handleJoinSubmit(e) {
     e.preventDefault();
     if (name.length == 0) {
       setAlert('Enter something')
-    } else if (!isUniqueName(name, teams) && (joinTeam === client.team)) {
+    } else if (client.team === -1 && (!isUniqueName(name, teams[0]) || !isUniqueName(name, teams[1]))) {
       setAlert('Another player has the same name.')
+    } else if (client.team !== -1 && joinTeam !== client.team) { // switching teams
+      if (name.toUpperCase() === client.name.toUpperCase()) { // allow
+        await joinTeamHandler(joinTeam, name)
+      } else if (!isUniqueName(name, teams[0]) || !isUniqueName(name, teams[1])) {
+        setAlert('Another player has the same name.')
+      }
     } else if (name.length > 15) {
       setAlert('Must be shorter than 16 characters.')
     } else if (!isAlphaNumeric(name)) { // prevent user from imitating host by adding '(host)'
       setAlert('Can only contain letters and numbers.')
     } else {
-      setAlert("")
-      socket.emit("joinTeam", { team: joinTeam, name: name.toUpperCase() }, ({ player }) => {
-        if (player) { // refactor into mongodb stream
-          // const audio = new Audio('sounds/effects/join-2.mp3');
-          // audio.volume = 1;
-          // audio.play();
-          setName('')
-          setSubmitHover(false)
-          setJoinTeam(null);
-        }
-      });
-        
-      playSoundEffect('/sounds/effects/door-chime.mp3', audioVolume)
-
-      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'buttonClick',
-        timestamp: new Date(),
-        payload: {
-          'button': 'joinTeam',
-          'team': joinTeam
-        }
-      })
+      await joinTeamHandler(joinTeam, name)
     }
   }
   

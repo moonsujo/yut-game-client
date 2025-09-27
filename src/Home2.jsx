@@ -606,7 +606,7 @@ export default function Home2() {
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
@@ -614,6 +614,7 @@ export default function Home2() {
     titleBoardScale: display === 'board' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
     showroomScale: display === 'showroom' ? 1 : 0,
+    navigationPosition: display === 'showroom' && device === 'landscapeDesktop' ? [-5,0,0] : [0,0,0],
     config: {
       tension: 170,
       friction: 26
@@ -627,7 +628,7 @@ export default function Home2() {
       position={layout[device].title.camera.position}
       lookAt={layout[device].title.camera.lookAt}
     />
-    <group name='navigation'>
+    <animated.group name='navigation' position={navigationPosition}>
       { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
         <Title 
           position={layout[device].title.text.position}
@@ -679,7 +680,7 @@ export default function Home2() {
         rotation={layout[device].title.showroom.rotation}
         scale={layout[device].title.showroom.scale}
       />
-    </group>
+    </animated.group>
     <group name='stats'>
       { device === 'landscape' && <PageVisits 
         position={layout[device].title.pageVisits.position} 
