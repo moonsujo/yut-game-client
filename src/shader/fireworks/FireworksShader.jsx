@@ -34,7 +34,7 @@ export function useFireworksShader() {
         useLoader(TextureLoader, '/textures/particles/8.png'),
     ]
 
-    function CreateFirework({count, position, rotation, size, radius, color, type='regular'}) {
+    function CreateFirework({count, position, size, radius, color, type='regular'}) {
 
         let geometry
         let material
@@ -47,6 +47,7 @@ export function useFireworksShader() {
             const sizesArray = new Float32Array(count)
             const timeMultipliersArray = new Float32Array(count)
 
+            // set positions randomly in a sphere
             for (let i = 0; i < count; i++) {
                 const i3 = i * 3
 

@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import Star from "../meshes/Star";
 import { animated, useSpring } from "@react-spring/three";
 
-export default function MoAlert({ position, rotation }) {
+export default function MoAlert({ position, rotation, scale=1 }) {
 
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();
@@ -47,7 +47,7 @@ export default function MoAlert({ position, rotation }) {
     e.stopPropagation();
   }
 
-  return <animated.group position={position} rotation={rotation} onPointerDown={(e) => handleAlertClick(e)}>
+  return <animated.group position={position} rotation={rotation} scale={scale} onPointerDown={(e) => handleAlertClick(e)}>
     <mesh
       castShadow
       receiveShadow

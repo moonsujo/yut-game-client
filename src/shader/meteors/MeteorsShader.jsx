@@ -63,7 +63,7 @@ export default function useMeteorsShader() {
                 uColor: new THREE.Uniform(color),
                 uProgress: new THREE.Uniform(0),
                 uDuration: new THREE.Uniform(duration),
-                uSpeedX: new THREE.Uniform(2.0 + Math.random() * 1.0),
+                uSpeedX: new THREE.Uniform(4.0 + Math.random() * 1.0),
                 uSpeedY: new THREE.Uniform(1.0 + Math.random() * 0.5),
             },
             transparent: true,
