@@ -34,7 +34,17 @@ export default function useStarRoll() {
   gl.setSize(sizes.width, sizes.height)
   gl.setPixelRatio(sizes.pixelRatio)
 
-  function RollStar({ position, rotation, scale, omitFactor=4, size=0.01, color, duration=3 }) {
+  function RollStar({ 
+    position, 
+    rotation, 
+    scale, 
+    omitFactor=4, 
+    size=0.01, 
+    color, 
+    duration=3,
+    speedX=-8.0,
+    speedY=4.0
+  }) {
 
     let geometry
     let material
@@ -59,7 +69,9 @@ export default function useStarRoll() {
         uSize: new THREE.Uniform(size), // needs the THREE.Uniform object
         uResolution: new THREE.Uniform(sizes.resolution),
         uColor: new THREE.Uniform(color),
-        uProgress: new THREE.Uniform(0)
+        uProgress: new THREE.Uniform(0),
+        uSpeedX: new THREE.Uniform(speedX),
+        uSpeedY: new THREE.Uniform(speedY)
       },
       transparent: true,
       depthWrite: false,

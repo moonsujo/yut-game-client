@@ -1,6 +1,8 @@
 uniform float uSize;
 uniform vec2 uResolution;
 uniform float uProgress;
+uniform float uSpeedX;
+uniform float uSpeedY;
 
 float remap(float value, float xMin, float xMax, float yMin, float yMax) {
     return yMin + (value - xMin) * (yMax - yMin) / (xMax - xMin);
@@ -31,8 +33,8 @@ void main()
 
     // Falling
     float fallingProgress = remap(progress, 0.0, 1.0, 0.0, 1.0);
-    newPosition.x -= fallingProgress * 8.0;
-    newPosition.z += fallingProgress * 4.0;
+    newPosition.x += fallingProgress * uSpeedX;
+    newPosition.z += fallingProgress * uSpeedY;
 
     vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;

@@ -552,8 +552,14 @@ export const SocketManager = () => {
         }
 
         // meteor effect (alert)
+        // color
+        // speed
+        // size
+        // count
         if (yootOutcome === 4 || yootOutcome === 5) {
-          for (let i = 0; i < 13; i++) {
+          const count0 = 16
+          // big stars
+          for (let i = 0; i < count0; i++) {
           
               // need a THREE.Vector3 for position
               const position = new THREE.Vector3(
@@ -569,15 +575,47 @@ export const SocketManager = () => {
               )
               
               const omitFactor = 4
-              const size = 0.001
-              const scale = 0.8 + Math.random() * 0.5
+              const size = 0.001 // particle size
+              const scale = 0.4 + Math.random() * 0.7 // star size
               const color = new THREE.Color();
               color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
               const duration = 2.0
-              // depending on 
+              const speedX = -(8 + Math.random() * 4)
+              const speedY = 4 + Math.random() * 2
               setTimeout(() => {
-                RollStar({ position, rotation, duration, omitFactor, size, scale, color })
+                RollStar({ position, rotation, duration, omitFactor, size, scale, color, speedX, speedY })
               }, i * 50)
+          }
+          // small stars
+          // reduced omit count to make them less brighter
+          // delayed start
+          const count1 = 16
+          for (let i = 0; i < count1; i++) {
+          
+              // need a THREE.Vector3 for position
+              const position = new THREE.Vector3(
+                  (Math.random() - 0.5) * 15 + 2, 
+                  -5.0,
+                  (Math.random() - 0.5) * 15 - 4.0, 
+              )
+              
+              const rotation = new THREE.Vector3(
+                  Math.PI/3, 
+                  0,
+                  0, 
+              )
+              
+              const omitFactor = 6
+              const size = 0.0008 // particle size
+              const scale = 0.1 + Math.random() * 0.3 // star size
+              const color = new THREE.Color();
+              color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
+              const duration = 2.0
+              const speedX = -(8 + Math.random() * 4)
+              const speedY = 4 + Math.random() * 2
+              setTimeout(() => {
+                RollStar({ position, rotation, duration, omitFactor, size, scale, color, speedX, speedY })
+              }, i * 50 + 200)
           }
         }
       }
