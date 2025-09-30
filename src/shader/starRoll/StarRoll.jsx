@@ -34,39 +34,32 @@ export default function useStarRoll() {
   gl.setSize(sizes.width, sizes.height)
   gl.setPixelRatio(sizes.pixelRatio)
 
-  // each one is one star
-  // expand
-  // roll across the screen
-  // apply rotation with cos and sin to position
-    // radius, uTime
-  // contract
-  // run for x counts
-  function RollStar({ position, size=1, scale=1, color }) {
+  function RollStar({ position, rotation, scale, omitFactor=4, size=0.01, color, duration=3 }) {
 
-    console.log('roll star')
     let geometry
     let material
 
     const count = nodes.star.geometry.attributes.position.count;
-    const positionArray = new Float32Array((count)*3);
+    const reducedCount = Math.floor(count/omitFactor)
+    const positionArray = new Float32Array(reducedCount*3);
     geometry = new THREE.BufferGeometry()
     
-    for (let i = 0; i < count; i++) {
-      positionArray[i*3] = nodes.star.geometry.attributes.position.array[(i*3)]
-      positionArray[i*3+1] = nodes.star.geometry.attributes.position.array[(i*3)+1]
-      positionArray[i*3+2] = nodes.star.geometry.attributes.position.array[(i*3)+2]
+    for (let i = 0; i < reducedCount; i++) {
+      positionArray[i*3] = nodes.star.geometry.attributes.position.array[(i*omitFactor*3)]
+      positionArray[i*3+1] = nodes.star.geometry.attributes.position.array[(i*omitFactor*3)+1]
+      positionArray[i*3+2] = nodes.star.geometry.attributes.position.array[(i*omitFactor*3)+2]
     }
+
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3))
 
     material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
-          uSize: new THREE.Uniform(size), // needs the THREE.Uniform object
-          uScale: new THREE.Uniform(scale),
-          uResolution: new THREE.Uniform(sizes.resolution),
-          uColor: new THREE.Uniform(color),
-          uProgress: new THREE.Uniform(0)
+        uSize: new THREE.Uniform(size), // needs the THREE.Uniform object
+        uResolution: new THREE.Uniform(sizes.resolution),
+        uColor: new THREE.Uniform(color),
+        uProgress: new THREE.Uniform(0)
       },
       transparent: true,
       depthWrite: false,
@@ -76,6 +69,8 @@ export default function useStarRoll() {
 
     const points = new THREE.Points(geometry, material)
     points.position.copy(position)
+    points.rotation.set(rotation.x, rotation.y, rotation.z)
+    points.scale.set(scale, scale, scale)
     const destroy = () => {
       scene.remove(points)
       geometry.dispose()
@@ -84,7 +79,7 @@ export default function useStarRoll() {
 
     gsap.to(
       material.uniforms.uProgress,
-      { value: 1, duration: 3, ease: 'linear', onComplete: destroy }
+      { value: 1, duration, ease: 'linear', onComplete: destroy }
     )
     
     scene.add(points)

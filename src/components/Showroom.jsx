@@ -10,11 +10,15 @@ import MoAlert from "../alerts/MoAlert"
 import BackdoAlert from "../alerts/BackdoAlert"
 import OutAlert from "../alerts/OutAlert"
 import useStarRoll from "../shader/starRoll/StarRoll"
+import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
+import { pickRandomElement } from "../helpers/helpers.js";
+
 
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
     const [RollStar] = useStarRoll();
+    const { playSoundEffect } = useSoundEffectsPlayer()
 
     function YutOutcomesButton(props) {
         // pointer in
@@ -128,12 +132,38 @@ export default function Showroom(props) {
             }
             function onPointerDown(e) {
                 e.stopPropagation()
-                const position = [5,0,0]
-                const size = 1
-                const scale = 1
-                const color = new THREE.Color();
-                color.setHSL(0.01, 1, 0.6)
-                RollStar({ position, size, scale, color })
+                // play visual effect
+                for (let i = 0; i < 13; i++) {
+                
+                    // need a THREE.Vector3 for position
+                    const position = new THREE.Vector3(
+                        (Math.random() - 0.5) * 10, 
+                        5.0,
+                        (Math.random() - 0.5) * 10, 
+                    )
+                    
+                    const rotation = new THREE.Vector3(
+                        Math.PI/3, 
+                        0,
+                        0, 
+                    )
+                    
+                    const omitFactor = 4
+                    const size = 0.001
+                    const scale = 0.8 + Math.random() * 0.5
+                    const color = new THREE.Color();
+                    color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
+                    setTimeout(() => {
+                        RollStar({ position, rotation, omitFactor, size, scale, color })
+                    }, i * 50)
+                }
+                // play sound effect
+                const yutSoundFilePaths = [
+                    '/sounds/effects/yutThrows/produced/yut!.mp3',
+                    '/sounds/effects/yutThrows/produced/yuuuuuuuut.mp3',
+                ]
+                
+                playSoundEffect(pickRandomElement(yutSoundFilePaths), 1)
             }
             return <group name='effect-button' {...props}>
                 <mesh>

@@ -9,7 +9,6 @@ export default function useSoundEffectsPlayer() {
   function playSoundEffect(filePath, volume) {
     try {
       const newSoundEffect = new Audio(listener)
-      // setSoundEffect(newSoundEffect)
       audioLoader.load(filePath, (buffer) => {
         newSoundEffect.setBuffer(buffer);
         newSoundEffect.setLoop(false);

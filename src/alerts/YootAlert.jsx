@@ -60,10 +60,10 @@ export default function YootAlert({ position, rotation, scale=1 }) {
       <Text3D
         font="/fonts/Luckiest Guy_Regular.json"
         rotation={[Math.PI/2, Math.PI, Math.PI/2]}
-        position={[-0.4, 0, -1.5]}
+        position={[-0.4, 0, -1.05]}
         size={0.95}
       >
-        YOOT!
+        YUT!
         <meshStandardMaterial color="yellow"/>
       </Text3D>
       <Text3D

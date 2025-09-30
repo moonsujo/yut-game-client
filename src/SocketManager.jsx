@@ -66,13 +66,14 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
+import useStarRoll from "./shader/starRoll/StarRoll.jsx";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
 // prod endpoint
 // const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 // dev endpoint
-const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+// const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -145,11 +146,6 @@ export const SocketManager = () => {
   const [_catchOutcome] = useAtom(catchOutcomeAtom)
   const setYootAnimationPlaying = useSetAtom(yootAnimationPlayingAtom)
   const [_catchPath, setCatchPath] = useAtom(catchPathAtom);
-  const [CreateMeteor] = useMeteorsShader();
-  const meteorTextures = [
-    useLoader(TextureLoader, '/textures/particles/3.png'),
-    useLoader(TextureLoader, '/textures/particles/7.png'), // heart
-  ] 
 
   const setConnectedToServer = useSetAtom(connectedToServerAtom)
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
@@ -174,6 +170,7 @@ export const SocketManager = () => {
   // sounds
   const { playSoundEffect } = useSoundEffectsPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
+  const [RollStar] = useStarRoll();
 
   useEffect(() => {
 
@@ -556,27 +553,31 @@ export const SocketManager = () => {
 
         // meteor effect (alert)
         if (yootOutcome === 4 || yootOutcome === 5) {
-          const numMeteors = 10;
-          for (let i = 0; i < numMeteors; i++) {
-            const count = Math.round(400 + Math.random() * 1000);
-            const position = new THREE.Vector3(
-              0, 
-              1,
-              0, 
-            )
-            const size = 0.6 + Math.random() * 0.02
-            const texture = meteorTextures[Math.floor(Math.random() * meteorTextures.length)]
-            const color = new THREE.Color();
-            color.setHSL(0.1, 1.0, 0.4)
-            setTimeout(() => {
-              CreateMeteor({
-                count,
-                position,
-                size,
-                texture,
-                color
-              })
-            }, i * 300)
+          for (let i = 0; i < 13; i++) {
+          
+              // need a THREE.Vector3 for position
+              const position = new THREE.Vector3(
+                  (Math.random() - 0.5) * 15 + 2, 
+                  -5.0,
+                  (Math.random() - 0.5) * 15 - 4.0, 
+              )
+              
+              const rotation = new THREE.Vector3(
+                  Math.PI/3, 
+                  0,
+                  0, 
+              )
+              
+              const omitFactor = 4
+              const size = 0.001
+              const scale = 0.8 + Math.random() * 0.5
+              const color = new THREE.Color();
+              color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
+              const duration = 2.0
+              // depending on 
+              setTimeout(() => {
+                RollStar({ position, rotation, duration, omitFactor, size, scale, color })
+              }, i * 50)
           }
         }
       }
