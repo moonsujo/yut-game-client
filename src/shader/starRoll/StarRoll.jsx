@@ -21,6 +21,7 @@ export default function useStarRoll() {
   }
   
   sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
+  
   window.addEventListener('resize', () =>
   {
     // Update sizes
@@ -30,9 +31,6 @@ export default function useStarRoll() {
     sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
   })
 
-  const { gl } = useThree();
-  gl.setSize(sizes.width, sizes.height)
-  gl.setPixelRatio(sizes.pixelRatio)
 
   function RollStar({ 
     position, 
@@ -61,6 +59,7 @@ export default function useStarRoll() {
     }
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3))
+
 
     material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,

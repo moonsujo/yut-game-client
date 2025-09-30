@@ -20,9 +20,17 @@ import MusicController from './soundPlayers/MusicController';
 
 export default function App () {
 
-  const created = ({ gl }) =>
-  {
-      gl.setClearColor('#090f16', 1)
+  const created = ({ gl }) => {
+    gl.setClearColor('#090f16', 1)
+
+    // for shader
+    const sizes = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      pixelRatio: Math.min(window.devicePixelRatio, 2)
+    }
+    gl.setSize(sizes.width, sizes.height)
+    gl.setPixelRatio(sizes.pixelRatio)
   }
 
   console.log('[App]')

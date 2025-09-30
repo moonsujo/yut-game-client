@@ -44,7 +44,7 @@ void main()
     gl_PointSize *= 1.0 / - viewPosition.z;
     gl_PointSize = uSize * uResolution.y;
 
-    if (gl_PointSize < 1.0) {
+    if (gl_PointSize < 0.1) {
         gl_Position = vec4(9999.9);
     }
 }
