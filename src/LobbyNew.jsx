@@ -97,8 +97,6 @@ export default function LobbyNew() {
     log()
   }, [])
 
-  console.log('[LobbyNew]')
-
   function PlayersParty({ position=[0,0,0], scale=0.7 }) {
     const host = useAtomValue(hostAtom)
     const client = useAtomValue(clientAtom)  

@@ -68,12 +68,12 @@ import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import useStarRoll from "./shader/starRoll/StarRoll.jsx";
 
-const ENDPOINT = 'localhost:5000';
+// const ENDPOINT = 'localhost:5000';
 
 // prod endpoint
 // const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 // dev endpoint
-// const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 

@@ -230,6 +230,12 @@ export default function Showroom(props) {
                 </Text3D>
             </group>
         }
+        function MoEffectButton(props) {
+            // on click effect
+            // add shooting stars to rolling stars
+            return <group {...props}>
+            </group>
+        }
         return <group {...props}>
             <group name='do-alert' position={[-8, 0, -5]} scale={0.9}>
                 <Text3D
