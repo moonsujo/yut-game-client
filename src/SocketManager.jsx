@@ -60,10 +60,7 @@ import {
   audioVolumeAtom
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./helpers/helpers.js";
-import useMeteorsShader from "./shader/meteors/MeteorsShader.jsx";
 import * as THREE from 'three';
-import { useLoader } from "@react-three/fiber";
-import { TextureLoader } from 'three'
 import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import useStarRoll from "./shader/starRoll/StarRoll.jsx";

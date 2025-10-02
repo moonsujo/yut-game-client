@@ -409,8 +409,6 @@ export default function Game() {
       e.stopPropagation()
     }
 
-    const meteorShaderColor = new THREE.Color();
-    meteorShaderColor.setHSL(0.05, 0.7, 0.4)
     return <group>
       <RulebookButton 
         position={layout[device].game.rulebookButton.position}
