@@ -41,7 +41,8 @@ export default function useStarRoll() {
     color, 
     duration=3,
     speedX=-8.0,
-    speedY=4.0
+    speedY=4.0,
+    shiny=false
   }) {
 
     let geometry
@@ -60,7 +61,6 @@ export default function useStarRoll() {
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3))
 
-
     material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
@@ -70,7 +70,8 @@ export default function useStarRoll() {
         uColor: new THREE.Uniform(color),
         uProgress: new THREE.Uniform(0),
         uSpeedX: new THREE.Uniform(speedX),
-        uSpeedY: new THREE.Uniform(speedY)
+        uSpeedY: new THREE.Uniform(speedY),
+        uShiny: new THREE.Uniform(shiny ? 1.0 : 0.0),
       },
       transparent: true,
       depthWrite: false,

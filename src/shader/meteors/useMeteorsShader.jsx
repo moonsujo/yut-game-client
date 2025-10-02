@@ -9,43 +9,50 @@ import { useEffect, useRef } from 'react';
 export default function useMeteorsShader() {
 
     const { scene } = useThree();
-
     const sizes = {
         width: window.innerWidth,
         height: window.innerHeight,
         pixelRatio: Math.min(window.devicePixelRatio, 2)
     }
+    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio);
 
-    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-    window.addEventListener('resize', () =>
-    {
+    window.addEventListener('resize', () => {
         // Update sizes
         sizes.width = window.innerWidth
         sizes.height = window.innerHeight
         sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
         sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-    })
-    
-    const { gl } = useThree();
-    gl.setSize(sizes.width, sizes.height)
-    gl.setPixelRatio(sizes.pixelRatio)
 
-    function CreateMeteor({ count, position, size, texture, color }) {
-        const duration = 5.0;
-        count = 4;
+    })
+
+    const textures = [
+        useLoader(TextureLoader, 'textures/particles/3.png'),
+    ]
+
+    // one particle in the center
+    // other particles shine around it
+    function CreateMeteor({count, position, size, texture, color, speedX, speedY}) {
+        const duration = 3.0;
         const positionsArray = new Float32Array(count * 3)
+        const setOffTimeArray = new Float32Array(count);
         const sizesArray = new Float32Array(count)
+        const timeMultipliersArray = new Float32Array(count)
+        const trailDurationArray = new Float32Array(count)
 
         for (let i = 0; i < count; i++) {
             const i3 = i * 3
 
-            const position = new THREE.Vector3((Math.random()-0.5)*20, 0, (Math.random()-0.5)*20)
+            const position = new THREE.Vector3(Math.random()*0.02, Math.random()*0.02, 0)
             
             positionsArray[i3] = position.x
             positionsArray[i3+1] = position.y
             positionsArray[i3+2] = position.z
 
-            sizesArray[i] = 2.0
+            sizesArray[i] = 1.0
+
+            trailDurationArray[i] = 0.15 + Math.random()*0.03
+
+            setOffTimeArray[i] = (i / count) * 0.8
         }
 
         texture.flipY = false;
@@ -53,6 +60,9 @@ export default function useMeteorsShader() {
         const geometry = new THREE.BufferGeometry()
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsArray, 3))
         geometry.setAttribute('aSize', new THREE.Float32BufferAttribute(sizesArray, 1))
+        geometry.setAttribute('aSetOffTime', new THREE.Float32BufferAttribute(setOffTimeArray, 1))
+        geometry.setAttribute('aTimeMultiplier', new THREE.Float32BufferAttribute(timeMultipliersArray, 1));
+        geometry.setAttribute('aTrailDuration', new THREE.Float32BufferAttribute(trailDurationArray, 1));
         const material = new THREE.ShaderMaterial({
             vertexShader: fireworkVertexShader,
             fragmentShader: fireworkFragmentShader,
@@ -63,8 +73,8 @@ export default function useMeteorsShader() {
                 uColor: new THREE.Uniform(color),
                 uProgress: new THREE.Uniform(0),
                 uDuration: new THREE.Uniform(duration),
-                uSpeedX: new THREE.Uniform(4.0 + Math.random() * 1.0),
-                uSpeedY: new THREE.Uniform(1.0 + Math.random() * 0.5),
+                uSpeedX: new THREE.Uniform(speedX),
+                uSpeedY: new THREE.Uniform(speedY),
             },
             transparent: true,
             depthWrite: false,
@@ -86,6 +96,6 @@ export default function useMeteorsShader() {
 
         scene.add(points)
     }
-
+    
     return [CreateMeteor]
 }

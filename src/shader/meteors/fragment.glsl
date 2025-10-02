@@ -2,15 +2,26 @@ uniform sampler2D uTexture;
 uniform vec3 uColor;
 uniform float uProgress;
 
+varying float vSetOffTime;
+varying float vTrailDuration;
+
+float remap(float value, float xMin, float xMax, float yMin, float yMax) {
+    return yMin + (value - xMin) * (yMax - yMin) / (xMax - xMin);
+}
+
 void main()
 {
     float textureAlpha = texture(uTexture, gl_PointCoord).r;
-
     float progress = uProgress;
     vec3 newColor = uColor;
-    newColor.r = sin(progress * 50.0) * 0.1 + newColor.r;
-    newColor.g = sin(progress * 50.0) * 0.05 + newColor.g;
 
+    // color changes from start to finish
+    float burnProgressR = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.0, 1.0);
+    float burnProgressG = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.3, 0.5);
+    float burnProgressB = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.2, 0.4);
+    newColor.x = burnProgressR;
+    newColor.y = burnProgressG;
+    newColor.z = burnProgressB;
     // Final color
     gl_FragColor = vec4(newColor, textureAlpha);
     // gl_FragColor = vec4(gl_PointCoord, 1.0, 1.0);
