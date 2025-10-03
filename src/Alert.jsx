@@ -16,20 +16,11 @@ import YootAlert from "./alerts/YootAlert";
 import MoAlert from "./alerts/MoAlert";
 import OutAlert from "./alerts/OutAlert";
 import BackdoAlert from "./alerts/BackdoAlert";
-import Catch1RocketAlert from "./alerts/Catch1RocketAlert";
-import Catch1UfoAlert from "./alerts/Catch1UfoAlert";
-import Catch2RocketAlert from "./alerts/Catch2RocketAlert";
-import Catch2UfoAlert from "./alerts/Catch2UfoAlert";
-import Catch3RocketAlert from "./alerts/Catch3RocketAlert";
-import Catch3UfoAlert from "./alerts/Catch3UfoAlert";
-import Catch4RocketAlert from "./alerts/Catch4RocketAlert";
-import Catch4UfoAlert from "./alerts/Catch4UfoAlert";
 import YootAlertPregame from "./alerts/YootAlertPregame";
 import MoAlertPregame from "./alerts/MoAlertPregame";
 import { useFireworksShader } from "./shader/fireworks/FireworksShader";
 import { useSparkShader } from "./shader/spark/SparkShader";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import tilePositions from './tilePositions';
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying";
 import CatchRocketMemeAlert from "./alerts/CatchRocketMemeAlert";
 import CatchUfoEnergyAlert from "./alerts/CatchUfoEnergyAlert";
@@ -725,138 +716,6 @@ export default function Alert({ position, rotation }) {
       }
     }, [alerts, animationPlaying])
 
-    function TurnAlert() {
-      const currentPlayerName = useAtomValue(currentPlayerNameAtom)
-      const turn = useAtomValue(turnAtom)
-      const borderMesh0Ref = useRef();
-      const borderMesh1Ref = useRef();
-      const borderMesh2Ref = useRef();
-      const borderMesh3Ref = useRef();
-      const borderMesh4Ref = useRef();
-      const borderMesh5Ref = useRef();
-      const borderMesh6Ref = useRef();
-      const borderMeshRefs = [
-        borderMesh0Ref,
-        borderMesh1Ref,
-        borderMesh2Ref,
-        borderMesh3Ref,
-        borderMesh4Ref,
-        borderMesh5Ref,
-        borderMesh6Ref
-      ]
-  
-      useFrame((state, delta) => {
-        for (let i = 0; i < borderMeshRefs.length; i++) {      
-          if (borderMeshRefs[i].current) {
-            borderMeshRefs[i].current.position.x = Math.cos(state.clock.elapsedTime / 2 + 2 * Math.PI/borderMeshRefs.length * i) * 2
-            borderMeshRefs[i].current.position.y = 0.3
-            borderMeshRefs[i].current.position.z = Math.sin(state.clock.elapsedTime / 2 + 2 * Math.PI/borderMeshRefs.length * i) * 2.7
-          }
-        }
-      })
-
-      return <animated.group scale={springs.turnAlertScale} rotation={[0, Math.PI/2, 0]}>
-        <mesh
-          castShadow
-          receiveShadow
-          scale={[2, 0.055, 2.6]}
-        >
-          <cylinderGeometry args={[1, 1, 1, 64]}/>
-          <meshStandardMaterial color='black' opacity={0.8} transparent/>
-        </mesh>
-        <Center position={[0.4,0,0]}>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            rotation={[Math.PI/2, Math.PI, Math.PI/2]}
-            size={0.6}
-            height={0.1}
-          >
-            {formatName(currentPlayerName, 9)}
-            <meshStandardMaterial color={ turn.team === 0 ? 'red': 'turquoise' }/>
-          </Text3D>
-        </Center>
-        <Text3D
-          font="/fonts/Luckiest Guy_Regular.json"
-          rotation={[Math.PI/2, Math.PI, Math.PI/2]}
-          position={[-0.7, 0, -1.5]}
-          size={0.4}
-          height={0.1}
-        >
-          your turn!
-          <meshStandardMaterial color={ turn.team === 0 ? 'red': 'turquoise' }/>
-        </Text3D>
-        <group ref={borderMesh0Ref}>
-          <Star position={[0, 0, 0]} rotation={[Math.PI/2, -Math.PI/2, Math.PI/2]} scale={0.3} color={ turn.team === 0 ? 'red': 'turquoise' }/>
-        </group>
-        <group ref={borderMesh1Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-        <group ref={borderMesh2Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-        <group ref={borderMesh3Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-        <group ref={borderMesh4Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-        <group ref={borderMesh5Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-        <group ref={borderMesh6Ref}>
-          { turn.team === 0 ? <Rocket 
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-          scale={0.4}
-          /> : <Ufo
-          position={[0, 0, 0]} 
-          rotation={[Math.PI/2, -Math.PI/8 * 4, Math.PI/2]} 
-          scale={0.5}
-          />}
-        </group>
-      </animated.group>
-    }
-
     function GameStartAlert() {
       const borderMesh0Ref = useRef();
       const borderMesh1Ref = useRef();
@@ -1489,6 +1348,13 @@ export default function Alert({ position, rotation }) {
       </animated.group>
     }
 
+    function TurnAlertGame() {
+      const currentPlayerName = useAtomValue(currentPlayerNameAtom)
+      return <animated.group scale={springs.turnAlertScale}>
+        <TurnAlert name={currentPlayerName} rotation={[0, Math.PI/2, 0]}/>
+      </animated.group>
+    }
+
     function handleAlertPointerDown(e) {
       e.stopPropagation()
         api.start({
@@ -1543,7 +1409,8 @@ export default function Alert({ position, rotation }) {
       rotation={rotation}
       onPointerDown={e=>handleAlertPointerDown(e)}
     >
-      <TurnAlert/>
+      {/* refactored to use with Showroom */}
+      <TurnAlertGame/>
       <GameStartAlert/>
       <PregameTieAlert/>
       <PregameRocketsWinAlert/>

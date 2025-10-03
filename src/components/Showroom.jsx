@@ -17,76 +17,142 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
+import { meteorTexturesAtom } from "../GlobalState.jsx";
+import { useAtomValue } from "jotai";
+import TurnAlert from "../alerts/TurnAlert.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
     const [RollStar] = useStarRoll();
     const [CreateMeteor] = useMeteorsShader();
     const { playSoundEffect } = useSoundEffectsPlayer()
+    const meteorTextures = useAtomValue(meteorTexturesAtom)
 
     // helper function
+    function CreateMoMeteor() {
+        const count = Math.round(400 + Math.random() * 1000);
+        const position = new THREE.Vector3(
+            (Math.random()-0.5) * 7 + 3, 
+            8.0,
+            (Math.random()-0.5) * 10 + 4.0, 
+        )
+        const size = 0.15 + Math.random() * 0.1
+        const texture = meteorTextures[Math.floor(Math.random() * meteorTextures.length)]
+        // color is determined in the fragment shader with the burn progress
+        const color = new THREE.Color();
+        const speedX = 4.0 + Math.random() * 1.0
+        const speedY = 2.0 + Math.random() * 0.6
+        color.setHSL(1.0, 1.0, 1.0)
+        CreateMeteor({
+            count,
+            position,
+            size,
+            texture,
+            color,
+            speedX,
+            speedY
+        })
+    }
 
-    // this causes black screen before component load
-    // const textures = [
-    //     useLoader(TextureLoader, 'textures/particles/3.png'),
-    // ]
-
-    // function CreateMoMeteor() {
-    //     const count = Math.round(400 + Math.random() * 1000);
-    //     const position = new THREE.Vector3(
-    //         (Math.random()-0.5) * 7 + 3, 
-    //         8.0,
-    //         (Math.random()-0.5) * 10 + 4.0, 
-    //     )
-    //     const size = 0.15 + Math.random() * 0.1
-    //     const texture = textures[Math.floor(Math.random() * textures.length)]
-    //     // color is determined in the fragment shader with the burn progress
-    //     const color = new THREE.Color();
-    //     const speedX = 4.0 + Math.random() * 1.0
-    //     const speedY = 2.0 + Math.random() * 0.6
-    //     color.setHSL(1.0, 1.0, 1.0)
-    //     CreateMeteor({
-    //         count,
-    //         position,
-    //         size,
-    //         texture,
-    //         color,
-    //         speedX,
-    //         speedY
-    //     })
-    // }
-
-    // const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
-    // const AnimatedMeshDistortMaterial = null
-    // const [curtainSprings, curtainSpringApi] = useSpring(() => ({        
-    //     from: {
-    //         opacity: 0, 
-    //     }
-    // }))
+    const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
+    const [curtainSprings, curtainSpringApi] = useSpring(() => ({        
+        from: {
+            opacity: 0, 
+        }
+    }))
     function YutOutcomesButton(props) {
+        
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('yutOutcomes')
+        }
+
         return <group {...props}>
+            <mesh>
+                <boxGeometry args={[3.2, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[3.15, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[3.2, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
-                position={[0,0,0]}
+                position={[-1.4, 0.02, 0.1]}
                 rotation={[-Math.PI/2, 0, 0]}
                 size={0.3}
                 height={0.01}
             >
                 YUT OUTCOMES
-                <meshStandardMaterial color='yellow'/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
     }
+    // enable adding a custom name
+    // play animation with button
     function NewTurnButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('newTurn')
+        }
         return <group {...props}>
+            <mesh>
+                <boxGeometry args={[2.3, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[2.25, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.2, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
+                position={[-1.0, 0.02, 0.1]}
                 rotation={[-Math.PI/2, 0, 0]}
                 size={0.3}
                 height={0.01}
             >
                 NEW TURN
-                <meshStandardMaterial color='yellow'/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
     }
@@ -501,7 +567,7 @@ export default function Showroom(props) {
                     MO
                     <meshStandardMaterial color='yellow'/>
                 </Text3D>
-                {/* <MoEffectButton position={[2.5, 0, -0.21]}/> */}
+                <MoEffectButton position={[2.5, 0, -0.21]}/>
                 <MoAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
             </group>
             <group name='backdo-alert' position={[-8, 0, 3]} scale={0.9}>
@@ -530,6 +596,111 @@ export default function Showroom(props) {
             </group>
         </group>
     }
+    function NewTurn(props) {
+        // edit name
+            // push alert up
+            // spawn html input
+        // play animation
+        // const [springs, api] = useSpring({})
+        const [alertSprings, alertSpringApi] = useSpring(() => ({
+            from: {
+                scale: 0
+            }
+        }))
+        const [playing, setPlaying] = useState(false)
+        function PlayAnimationButton(props) {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                console.log('play click')
+                e.stopPropagation()
+                // play spring api
+                alertSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: [
+                        {
+                            scale: 1,
+                            // if not set, animation plays quickly on the second time
+                            config: {
+                                tension: 170,
+                                friction: 26,
+                                clamp: true
+                            },
+                        },
+                        {
+                            scale: 0,
+                            config: {
+                                tension: 300,
+                                friction: 26,
+                                clamp: true
+                            },
+                            delay: 700
+                        }
+                    ],
+                    onStart: () => { setPlaying(true) },
+                    onRest: () => { 
+                        // if not set, alert restores immediately
+                        setTimeout(() => {
+                            setPlaying(false) 
+                        }, 500)
+                    }
+                })
+            }
+            return <group {...props}>
+                <mesh>
+                    <boxGeometry args={[1.65, 0.03, 0.75]}/>
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </mesh>
+                <mesh>
+                    <boxGeometry args={[1.6, 0.04, 0.7]}/>
+                    <meshStandardMaterial color='black'/>
+                </mesh>
+                <mesh 
+                    name='wrapper' 
+                    onPointerEnter={e => onPointerEnter(e)}
+                    onPointerLeave={e => onPointerLeave(e)}
+                    onPointerDown={e => onPointerDown(e)}
+                >
+                    <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh>
+                <Text3D
+                    font="fonts/Luckiest Guy_Regular.json"
+                    position={[-0.625, 0.025, 0.2]}
+                    rotation={[-Math.PI/2, 0, 0]}
+                    size={0.4}
+                    height={0.01}
+                >
+                    { `PLAY` }
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </Text3D>
+            </group>
+        }
+        return <group {...props}>
+            <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
+            { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
+            <PlayAnimationButton position={[-1, 0, 3]}/>
+        </group>
+    }
+    const positionStart = [-15, 0, 3]
+    const positionEnd = [0, 0, 0]
+    const {yutOutcomesScale, yutOutcomesPosition, newTurnScale, newTurnPosition} = useSpring({
+        yutOutcomesScale: display === 'yutOutcomes' ? 1 : 0,
+        yutOutcomesPosition: display === 'yutOutcomes' ? positionEnd : positionStart,
+        newTurnScale: display === 'newTurn' ? 1 : 0,
+        newTurnPosition: display === 'newTurn' ? positionEnd : positionStart,
+    })
     return <group {...props}>
         <group name='tab'>
             <Text3D
@@ -542,19 +713,19 @@ export default function Showroom(props) {
                 ALERTS
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
-            <YutOutcomesButton position={[5.7, 0.02, -4.5]}/>
-            <NewTurnButton position={[5.7, 0.02, -4]}/>
-            <CatchButton position={[5.7, 0.02, -3.5]}/>
-            <PregameButton position={[5.7, 0.02, -3]}/>
-            <ScoreButton position={[5.7, 0.02, -2.5]}/>
-            <GameStartButton position={[5.4, 0.02, -2]}/>
-            <EndScenesButton position={[5.4, 0.02, -1.5]}/>
+            <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
+            <NewTurnButton position={[6.75, 0.02, -3.8]}/>
+            <CatchButton position={[5.7, 0.02, -3.2]}/>
+            <PregameButton position={[5.7, 0.02, -2.7]}/>
+            <ScoreButton position={[5.7, 0.02, -2.1]}/>
+            <GameStartButton position={[5.4, 0.02, -1.5]}/>
+            <EndScenesButton position={[5.4, 0.02, -1.0]}/>
         </group>
-        { display === 'yutOutcomes' && <YutOutcomes/> }
+        <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
+        <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
-            {/* <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/> */}
-            <meshStandardMaterial color='yellow' opacity={0} transparent/>
+            <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
         </mesh>
     </group>
 }

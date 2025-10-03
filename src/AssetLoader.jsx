@@ -2,7 +2,7 @@ import { useLoader } from "@react-three/fiber"
 import { useGLTF } from '@react-three/drei';
 import { useSetAtom } from "jotai"
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { fireworkTexturesAtom } from "./GlobalState"
+import { fireworkTexturesAtom, meteorTexturesAtom } from "./GlobalState"
 
 export default function AssetLoader() {
   const fireworkTextures = [
@@ -13,6 +13,12 @@ export default function AssetLoader() {
   ]
   const setFireworkTextures = useSetAtom(fireworkTexturesAtom)
   setFireworkTextures(fireworkTextures)
+  
+  const meteorTextures = [
+    useLoader(TextureLoader, 'textures/particles/3.png'),
+  ]
+  const setMeteorTextures = useSetAtom(meteorTexturesAtom)
+  setMeteorTextures(meteorTextures)
 
   return
 }

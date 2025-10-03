@@ -1301,7 +1301,7 @@ export default function HowToPlay({
       <group 
       position={layout[device].howToPlay.shortcutsPage.board.position} 
       scale={layout[device].howToPlay.shortcutsPage.board.scale}>
-        <Board showArrows={false} starColor='#44442B' highlightShortcuts/>
+        <Board showArrows={false} starColor={'#678a00'} highlightShortcuts/>
         <group name='mars-left' position={[-0.4, 0.5, 0.2]}>
           <animated.mesh scale={springsArrow0.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
             <coneGeometry args={[0.15, 0.4, 32]}/>

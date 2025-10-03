@@ -109,6 +109,7 @@ export const turnExpireTimeAtom = atom(null);
 export const remainingTimeAtom = atom(100000);
 export const resultsAtom = atom([])
 export const fireworkTexturesAtom = atom([])
+export const meteorTexturesAtom = atom([])
 export const pieceTeam0Id0AnimationPlayingAtom = atom(false)
 export const pieceTeam0Id1AnimationPlayingAtom = atom(false)
 export const pieceTeam0Id2AnimationPlayingAtom = atom(false)
