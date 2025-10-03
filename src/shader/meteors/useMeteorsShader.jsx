@@ -25,10 +25,6 @@ export default function useMeteorsShader() {
 
     })
 
-    const textures = [
-        useLoader(TextureLoader, 'textures/particles/3.png'),
-    ]
-
     // one particle in the center
     // other particles shine around it
     function CreateMeteor({count, position, size, texture, color, speedX, speedY}) {
@@ -50,7 +46,7 @@ export default function useMeteorsShader() {
 
             sizesArray[i] = 1.0
 
-            trailDurationArray[i] = 0.15 + Math.random()*0.03
+            trailDurationArray[i] = 0.12 + Math.random()*0.05
 
             setOffTimeArray[i] = (i / count) * 0.8
         }

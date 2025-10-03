@@ -64,13 +64,16 @@ import * as THREE from 'three';
 import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import useStarRoll from "./shader/starRoll/StarRoll.jsx";
+import { useLoader } from "@react-three/fiber";
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import useMeteorsShader from "./shader/meteors/useMeteorsShader.jsx";
 
-// const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'localhost:5000';
 
 // prod endpoint
 // const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
 // dev endpoint
-const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+// const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
 
 export const socket = io(
   ENDPOINT, { 
@@ -168,6 +171,7 @@ export const SocketManager = () => {
   const { playSoundEffect } = useSoundEffectsPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
   const [RollStar] = useStarRoll();
+  const [CreateMeteor] = useMeteorsShader();
 
   useEffect(() => {
 
@@ -553,14 +557,14 @@ export const SocketManager = () => {
         // speed
         // size
         // count
-        if (yootOutcome === 4 || yootOutcome === 5) {
+        if (yootOutcome === 4) {
           const count0 = 16
           // big stars
           for (let i = 0; i < count0; i++) {
           
               // need a THREE.Vector3 for position
               const position = new THREE.Vector3(
-                  (Math.random() - 0.5) * 15 + 2, 
+                  (Math.random() - 0.5) * 15 + 4.0, 
                   -5.0,
                   (Math.random() - 0.5) * 15 - 4.0, 
               )
@@ -591,7 +595,7 @@ export const SocketManager = () => {
           
               // need a THREE.Vector3 for position
               const position = new THREE.Vector3(
-                  (Math.random() - 0.5) * 15 + 2, 
+                  (Math.random() - 0.5) * 15 + 4.0, 
                   -5.0,
                   (Math.random() - 0.5) * 15 - 4.0, 
               )
@@ -613,6 +617,96 @@ export const SocketManager = () => {
               setTimeout(() => {
                 RollStar({ position, rotation, duration, omitFactor, size, scale, color, speedX, speedY })
               }, i * 50 + 200)
+          }
+        } else if (yootOutcome === 5) {
+          // shiny rolling stars
+          const count0 = 16
+          // big stars
+          for (let i = 0; i < count0; i++) {
+          
+              // need a THREE.Vector3 for position
+              const position = new THREE.Vector3(
+                  (Math.random() - 0.5) * 15 + 4, 
+                  -5.0,
+                  (Math.random() - 0.5) * 15 - 4.0, 
+              )
+              
+              const rotation = new THREE.Vector3(
+                  Math.PI/3, 
+                  0,
+                  0, 
+              )
+              
+              const omitFactor = 4
+              const size = 0.001 // particle size
+              const scale = 0.4 + Math.random() * 0.7 // star size
+              const color = new THREE.Color();
+              color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
+              const duration = 2.0
+              const speedX = -(8 + Math.random() * 4)
+              const speedY = 4 + Math.random() * 2
+              setTimeout(() => {
+                  RollStar({ position, rotation, duration, omitFactor, size, scale, color, speedX, speedY, shiny: true })
+              }, i * 50)
+          }
+          // small stars
+          // reduced omit count to make them less brighter
+          // delayed start
+          const count1 = 16
+          for (let i = 0; i < count1; i++) {
+          
+              // need a THREE.Vector3 for position
+              const position = new THREE.Vector3(
+                  (Math.random() - 0.5) * 15 + 4, 
+                  -5.0,
+                  (Math.random() - 0.5) * 15 - 4.0, 
+              )
+              
+              const rotation = new THREE.Vector3(
+                  Math.PI/3, 
+                  0,
+                  0, 
+              )
+              
+              const omitFactor = 6
+              const size = 0.0008 // particle size
+              const scale = 0.1 + Math.random() * 0.3 // star size
+              const color = new THREE.Color();
+              color.setHSL(0.5 + Math.random() * 0.05, 1, 0.5);
+              const duration = 2.0
+              const speedX = -(8 + Math.random() * 4)
+              const speedY = 4 + Math.random() * 2
+              setTimeout(() => {
+                  RollStar({ position, rotation, duration, omitFactor, size, scale, color, speedX, speedY, shiny: true })
+              }, i * 50 + 200)
+          }
+          // meteors
+          const meteorCount = 9
+          for (let i = 0; i < meteorCount; i++) {
+              setTimeout(() => {
+                const count = Math.round(400 + Math.random() * 1000);
+                const position = new THREE.Vector3(
+                    (Math.random()-0.5) * 7 + 5, 
+                    -5.0,
+                    (Math.random()-0.5) * 10 - 4.0, 
+                )
+                const size = 0.15 + Math.random() * 0.1
+                const texture = useLoader(TextureLoader, 'textures/particles/3.png')
+                // color is determined in the fragment shader with the burn progress
+                const color = new THREE.Color();
+                const speedX = 4.0 + Math.random() * 1.0
+                const speedY = 2.0 + Math.random() * 0.6
+                color.setHSL(1.0, 1.0, 1.0)
+                CreateMeteor({
+                  count,
+                  position,
+                  size,
+                  texture,
+                  color,
+                  speedX,
+                  speedY
+                })
+              }, i * 50)
           }
         }
       }

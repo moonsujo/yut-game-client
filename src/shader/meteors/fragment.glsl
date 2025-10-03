@@ -16,9 +16,9 @@ void main()
     vec3 newColor = uColor;
 
     // color changes from start to finish
-    float burnProgressR = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.0, 1.0);
-    float burnProgressG = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.3, 0.5);
-    float burnProgressB = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.2, 0.4);
+    float burnProgressR = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.3, 1.0);
+    float burnProgressG = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.3, 0.4);
+    float burnProgressB = remap(progress, vSetOffTime, vSetOffTime+vTrailDuration, 0.2, 0.3);
     newColor.x = burnProgressR;
     newColor.y = burnProgressG;
     newColor.z = burnProgressB;

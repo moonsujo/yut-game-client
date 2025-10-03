@@ -3,6 +3,8 @@ import { useState } from "react"
 import * as THREE from "three"
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { MeshDistortMaterial } from '@react-three/drei'
+import { animated, useSpring } from '@react-spring/three'
 
 import DoAlert from "../alerts/DoAlert"
 import GeAlert from "../alerts/GeAlert"
@@ -15,7 +17,6 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
-import { animated } from '@react-spring/three'
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -28,19 +29,19 @@ export default function Showroom(props) {
         useLoader(TextureLoader, 'textures/particles/3.png'),
     ]
 
-    function CreateRandomMeteor() {
+    function CreateMoMeteor() {
         const count = Math.round(400 + Math.random() * 1000);
         const position = new THREE.Vector3(
             (Math.random()-0.5) * 7 + 3, 
-            (Math.random()-0.5) * 5,
-            (Math.random()-0.5) * 8, 
+            8.0,
+            (Math.random()-0.5) * 10 + 4.0, 
         )
-        const size = 0.2 + Math.random() * 0.1
+        const size = 0.15 + Math.random() * 0.1
         const texture = textures[Math.floor(Math.random() * textures.length)]
         // color is determined in the fragment shader with the burn progress
         const color = new THREE.Color();
         const speedX = 4.0 + Math.random() * 1.0
-        const speedY = 2.0 + Math.random() * 0.5
+        const speedY = 2.0 + Math.random() * 0.6
         color.setHSL(1.0, 1.0, 1.0)
         CreateMeteor({
             count,
@@ -53,11 +54,12 @@ export default function Showroom(props) {
         })
     }
 
-    function YutOutcomesButton(props) {
-        // pointer in
-        // pointer out
-        // pointer down
-    }
+    const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
+    const [curtainSprings, curtainSpringApi] = useSpring(() => ({        
+        from: {
+            opacity: 0, 
+        }
+    }))
     function YutOutcomesButton(props) {
         return <group {...props}>
             <Text3D
@@ -181,8 +183,8 @@ export default function Showroom(props) {
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
-                        -5.0,
-                        (Math.random() - 0.5) * 15 - 4.0, 
+                        8,
+                        (Math.random() - 0.5) * 15, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -212,8 +214,8 @@ export default function Showroom(props) {
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
-                        -5.0,
-                        (Math.random() - 0.5) * 15 - 4.0, 
+                        8,
+                        (Math.random() - 0.5) * 15, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -239,8 +241,26 @@ export default function Showroom(props) {
                     '/sounds/effects/yutThrows/produced/yut!.mp3',
                     '/sounds/effects/yutThrows/produced/yuuuuuuuut.mp3',
                 ]
-                
                 playSoundEffect(pickRandomElement(yutSoundFilePaths), 1)
+                // draw curtain
+                curtainSpringApi.start({
+                    from: {
+                        opacity: 0
+                    },
+                    to: [
+                        {
+                            opacity: 0.5
+                        },
+                        { 
+                            opacity: 0,
+                            delay: 1500,
+                            config: {
+                                tension: 170,
+                                friction: 26
+                            }
+                        }
+                    ]
+                })
             }
             return <group name='effect-button' {...props}>
                 <mesh>
@@ -298,8 +318,8 @@ export default function Showroom(props) {
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
-                        -5.0,
-                        (Math.random() - 0.5) * 15 - 4.0, 
+                        8.0,
+                        (Math.random() - 0.5) * 15, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -329,8 +349,8 @@ export default function Showroom(props) {
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
-                        -5.0,
-                        (Math.random() - 0.5) * 15 - 4.0, 
+                        8.0,
+                        (Math.random() - 0.5) * 15, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -352,11 +372,11 @@ export default function Showroom(props) {
                     }, i * 50 + 200)
                 }
 
-                const meteorCount = 7
+                const meteorCount = 9
                 for (let i = 0; i < meteorCount; i++) {
                     setTimeout(() => {
                         console.log('timeout')
-                        CreateRandomMeteor()
+                        CreateMoMeteor()
                     }, i * 50)
                 }
 
@@ -367,6 +387,26 @@ export default function Showroom(props) {
                 ]
                 
                 playSoundEffect(pickRandomElement(moSoundFilePaths), 1)
+
+                // draw curtain
+                curtainSpringApi.start({
+                    from: {
+                        opacity: 0
+                    },
+                    to: [
+                        {
+                            opacity: 0.5
+                        },
+                        { 
+                            opacity: 0,
+                            delay: 1500,
+                            config: {
+                                tension: 170,
+                                friction: 26
+                            }
+                        }
+                    ]
+                })
             }
             return <group name='effect-button' {...props}>
                 <mesh>
@@ -508,9 +548,9 @@ export default function Showroom(props) {
             <EndScenesButton position={[5.4, 0.02, -1.5]}/>
         </group>
         { display === 'yutOutcomes' && <YutOutcomes/> }
-        <animated.mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
+        <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
-            <meshStandardMaterial color='black' transparent opacity={0.5}/>
-        </animated.mesh>
+            <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
+        </mesh>
     </group>
 }
