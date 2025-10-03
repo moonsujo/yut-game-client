@@ -25,41 +25,44 @@ export default function Showroom(props) {
     const { playSoundEffect } = useSoundEffectsPlayer()
 
     // helper function
-    const textures = [
-        useLoader(TextureLoader, 'textures/particles/3.png'),
-    ]
 
-    function CreateMoMeteor() {
-        const count = Math.round(400 + Math.random() * 1000);
-        const position = new THREE.Vector3(
-            (Math.random()-0.5) * 7 + 3, 
-            8.0,
-            (Math.random()-0.5) * 10 + 4.0, 
-        )
-        const size = 0.15 + Math.random() * 0.1
-        const texture = textures[Math.floor(Math.random() * textures.length)]
-        // color is determined in the fragment shader with the burn progress
-        const color = new THREE.Color();
-        const speedX = 4.0 + Math.random() * 1.0
-        const speedY = 2.0 + Math.random() * 0.6
-        color.setHSL(1.0, 1.0, 1.0)
-        CreateMeteor({
-            count,
-            position,
-            size,
-            texture,
-            color,
-            speedX,
-            speedY
-        })
-    }
+    // this causes black screen before component load
+    // const textures = [
+    //     useLoader(TextureLoader, 'textures/particles/3.png'),
+    // ]
 
-    const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
-    const [curtainSprings, curtainSpringApi] = useSpring(() => ({        
-        from: {
-            opacity: 0, 
-        }
-    }))
+    // function CreateMoMeteor() {
+    //     const count = Math.round(400 + Math.random() * 1000);
+    //     const position = new THREE.Vector3(
+    //         (Math.random()-0.5) * 7 + 3, 
+    //         8.0,
+    //         (Math.random()-0.5) * 10 + 4.0, 
+    //     )
+    //     const size = 0.15 + Math.random() * 0.1
+    //     const texture = textures[Math.floor(Math.random() * textures.length)]
+    //     // color is determined in the fragment shader with the burn progress
+    //     const color = new THREE.Color();
+    //     const speedX = 4.0 + Math.random() * 1.0
+    //     const speedY = 2.0 + Math.random() * 0.6
+    //     color.setHSL(1.0, 1.0, 1.0)
+    //     CreateMeteor({
+    //         count,
+    //         position,
+    //         size,
+    //         texture,
+    //         color,
+    //         speedX,
+    //         speedY
+    //     })
+    // }
+
+    // const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
+    // const AnimatedMeshDistortMaterial = null
+    // const [curtainSprings, curtainSpringApi] = useSpring(() => ({        
+    //     from: {
+    //         opacity: 0, 
+    //     }
+    // }))
     function YutOutcomesButton(props) {
         return <group {...props}>
             <Text3D
@@ -498,7 +501,7 @@ export default function Showroom(props) {
                     MO
                     <meshStandardMaterial color='yellow'/>
                 </Text3D>
-                <MoEffectButton position={[2.5, 0, -0.21]}/>
+                {/* <MoEffectButton position={[2.5, 0, -0.21]}/> */}
                 <MoAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
             </group>
             <group name='backdo-alert' position={[-8, 0, 3]} scale={0.9}>
@@ -550,7 +553,8 @@ export default function Showroom(props) {
         { display === 'yutOutcomes' && <YutOutcomes/> }
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
-            <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
+            {/* <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/> */}
+            <meshStandardMaterial color='yellow' opacity={0} transparent/>
         </mesh>
     </group>
 }
