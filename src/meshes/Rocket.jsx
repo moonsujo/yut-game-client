@@ -72,33 +72,39 @@ export default function Rocket({
     if (onBoard) {
       flame.current.scale.y = 4 + Math.sin(state.clock.elapsedTime * 10 + offset) * 0.7;
       rocket.current.position.z = position[2] + Math.cos(state.clock.elapsedTime * 2) * 0.05
+    } else {
+      flame.current.scale.x = 0
+      flame.current.scale.y = 0
+      flame.current.scale.z = 0
     }
   });
 
   return (
     <animated.group position={position} rotation={rotation} scale={scale} ref={rocket}>
       <group scale={0.02} position={[0.5, 0.2, -0.3]} rotation={[Math.PI/4, Math.PI/2, -Math.PI/4, "YZX"]}>
-        {/* Body */}
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Circle007.geometry}
-          material={whiteMat}
-        />
-        {/* Cone */}
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Circle007_1.geometry}
-          material={redMat}
-        >
-        </mesh>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Circle007_2.geometry}
-          material={materials["Alien Black"]}
-        />
+        <group name='rocket'>
+          <mesh
+            name='body'
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle007.geometry}
+            material={whiteMat}
+          />
+          {/* Cone */}
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle007_1.geometry}
+            material={redMat}
+          >
+          </mesh>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle007_2.geometry}
+            material={materials["Alien Black"]}
+          />
+        </group>
         <mesh
           castShadow
           receiveShadow
@@ -129,24 +135,6 @@ export default function Rocket({
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Circle008.geometry}
-          material={redMat}
-          position={[-8.273, -26.198, -2.835]}
-          rotation={[0.634, 0.103, Math.PI / 2]}
-          scale={0.33}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cube.geometry}
-          material={nodes.Cube.material}
-          position={[-7.987, -26.625, -3.186]}
-          rotation={[0.634, -1.467, Math.PI / 2]}
-          scale={8.171}
-        />
-        <mesh
-          castShadow
-          receiveShadow
           geometry={nodes.Plane.geometry}
           material={redMat}
           position={[0.008, -43.911, 6.028]}
@@ -163,86 +151,111 @@ export default function Rocket({
           scale={3.393}
           ref={flame}
         />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane001.geometry}
-          material={redMat}
-          position={[6.036, -43.911, 0]}
-          rotation={[Math.PI / 2, 0.869, 0]}
-          scale={13.763}
-        />
-        <group
-          position={[-6.539, -22.012, -9.453]}
-          rotation={[-0.936, -Math.PI / 2, 0]}
-          scale={4.202}
-        >
+        <group name='astronaut'>
+          <group name='gadget'>
+            <mesh
+              name='gadget'
+              castShadow
+              receiveShadow
+              geometry={nodes.Cube.geometry}
+              material={nodes.Cube.material}
+              position={[-7.987, -26.625, -3.186]}
+              rotation={[0.634, -1.467, Math.PI / 2]}
+              scale={8.171}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Circle008.geometry}
+              material={redMat}
+              position={[-8.273, -26.198, -2.835]}
+              rotation={[0.634, 0.103, Math.PI / 2]}
+              scale={0.33}
+            />
+          </group>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Roundcube006_1.geometry}
-            material={materials.Black}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Roundcube006_2.geometry}
-            material={whiteMat}
-          />
-        </group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Roundcube007.geometry}
-          material={whiteMat}
-          position={[-6.539, -18.893, -7.157]}
-          rotation={[-0.936, -1.571, 0]}
-          scale={[-0.79, -1.12, -1.12]}
-        />
-        <group
-          position={[-5.718, -24.503, -6.068]}
-          rotation={[-0.936, -Math.PI / 2, 0]}
-          scale={[2.608, 2.608, 2.062]}
-        >
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Roundcube008_1.geometry}
+            geometry={nodes.Plane001.geometry}
             material={redMat}
+            position={[6.036, -43.911, 0]}
+            rotation={[Math.PI / 2, 0.869, 0]}
+            scale={13.763}
           />
+          <group 
+            name='head'
+            position={[-6.539, -22.012, -9.453]}
+            rotation={[-0.936, -Math.PI / 2, 0]}
+            scale={4.202}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube006_1.geometry}
+              material={materials.Black}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube006_2.geometry}
+              material={whiteMat}
+            />
+          </group>
           <mesh
+            name='ears'
             castShadow
             receiveShadow
-            geometry={nodes.Roundcube008_2.geometry}
+            geometry={nodes.Roundcube007.geometry}
             material={whiteMat}
+            position={[-6.539, -18.893, -7.157]}
+            rotation={[-0.936, -1.571, 0]}
+            scale={[-0.79, -1.12, -1.12]}
           />
-        </group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Roundcube009.geometry}
-          material={whiteMat}
-          position={[-5.718, -26.617, -3.197]}
-          rotation={[-0.936, -Math.PI / 2, 0]}
-          scale={[2.548, 2.548, 2.014]}
-        />
-        <group
-          position={[-5.718, -27.179, -2.433]}
-          rotation={[-0.936, -Math.PI / 2, 0]}
-          scale={10.73}
-        >
+          <group
+            position={[-5.718, -24.503, -6.068]}
+            rotation={[-0.936, -Math.PI / 2, 0]}
+            scale={[2.608, 2.608, 2.062]}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube008_1.geometry}
+              material={redMat}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube008_2.geometry}
+              material={whiteMat}
+            />
+          </group>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Roundcube010_1.geometry}
-            material={redMat}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Roundcube010_2.geometry}
+            geometry={nodes.Roundcube009.geometry}
             material={whiteMat}
+            position={[-5.718, -26.617, -3.197]}
+            rotation={[-0.936, -Math.PI / 2, 0]}
+            scale={[2.548, 2.548, 2.014]}
           />
+          <group
+            position={[-5.718, -27.179, -2.433]}
+            rotation={[-0.936, -Math.PI / 2, 0]}
+            scale={10.73}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube010_1.geometry}
+              material={redMat}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Roundcube010_2.geometry}
+              material={whiteMat}
+            />
+          </group>
         </group>
       </group>
     </animated.group>
