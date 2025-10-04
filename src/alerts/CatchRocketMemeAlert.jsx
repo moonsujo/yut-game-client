@@ -31,7 +31,7 @@ export default function CatchRocketMemeAlert({ position, rotation }) {
   ]
   let [animationStartTime, setAnimationStartTime] = useState(0)
 
-  const height = 2.2
+  const height = 2.4
   const width = 2.9
   useFrame((state, delta) => {
     // Meshes circle alert on the edge

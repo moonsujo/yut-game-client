@@ -20,6 +20,8 @@ import { pickRandomElement } from "../helpers/helpers.js";
 import { meteorTexturesAtom } from "../GlobalState.jsx";
 import { useAtomValue } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
+import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
+import CatchRocketMemeAlert from "../alerts/CatchRocketMemeAlert.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -157,15 +159,48 @@ export default function Showroom(props) {
         </group>
     }
     function CatchButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('catch')
+        }
         return <group {...props}>
+            <mesh>
+                <boxGeometry args={[1.5, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[1.45, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.2, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
+                position={[-0.6, 0.05, 0.15]}
                 rotation={[-Math.PI/2, 0, 0]}
                 size={0.3}
                 height={0.01}
             >
                 CATCH
-                <meshStandardMaterial color='yellow'/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
     }
@@ -333,11 +368,11 @@ export default function Showroom(props) {
             }
             return <group name='effect-button' {...props}>
                 <mesh>
-                    <boxGeometry args={[1.65, 0.03, 0.55]}/>
+                    <boxGeometry args={[0.9, 0.03, 0.55]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
                 </mesh>
                 <mesh>
-                    <boxGeometry args={[1.6, 0.04, 0.5]}/>
+                    <boxGeometry args={[0.85, 0.04, 0.5]}/>
                     <meshStandardMaterial color='black'/>
                 </mesh>
                 <mesh 
@@ -349,16 +384,10 @@ export default function Showroom(props) {
                     <boxGeometry args={[1.5, 0.1, 0.55]}/>
                     <meshStandardMaterial transparent opacity={0}/>
                 </mesh>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    position={[-0.625, 0.025, 0.15]}
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.3}
-                    height={0.01}
-                >
-                    EFFECT
+                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                </Text3D>
+                </mesh>
             </group>
         }
         function MoEffectButton(props) {
@@ -388,7 +417,7 @@ export default function Showroom(props) {
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
                         8.0,
-                        (Math.random() - 0.5) * 15, 
+                        (Math.random() - 0.5) * 15 + 2, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -419,7 +448,7 @@ export default function Showroom(props) {
                     const position = new THREE.Vector3(
                         (Math.random() - 0.5) * 15 + 2, 
                         8.0,
-                        (Math.random() - 0.5) * 15, 
+                        (Math.random() - 0.5) * 15 + 2, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -479,11 +508,11 @@ export default function Showroom(props) {
             }
             return <group name='effect-button' {...props}>
                 <mesh>
-                    <boxGeometry args={[1.65, 0.03, 0.55]}/>
+                    <boxGeometry args={[0.9, 0.03, 0.55]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
                 </mesh>
                 <mesh>
-                    <boxGeometry args={[1.6, 0.04, 0.5]}/>
+                    <boxGeometry args={[0.85, 0.04, 0.5]}/>
                     <meshStandardMaterial color='black'/>
                 </mesh>
                 <mesh 
@@ -495,16 +524,10 @@ export default function Showroom(props) {
                     <boxGeometry args={[1.5, 0.1, 0.55]}/>
                     <meshStandardMaterial transparent opacity={0}/>
                 </mesh>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    position={[-0.625, 0.025, 0.15]}
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.3}
-                    height={0.01}
-                >
-                    EFFECT
+                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                </Text3D>
+                </mesh>
             </group>
         }
         return <group {...props}>
@@ -554,7 +577,7 @@ export default function Showroom(props) {
                     YUT
                     <meshStandardMaterial color='yellow'/>
                 </Text3D>
-                <YutEffectButton position={[2.5, 0, -0.21]}/>
+                <YutEffectButton position={[2, 0, -0.21]}/>
                 <YootAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]} scale={0.7}/>
             </group>
             <group name='mo-alert' position={[-2, 0, -1.8]}>
@@ -567,7 +590,7 @@ export default function Showroom(props) {
                     MO
                     <meshStandardMaterial color='yellow'/>
                 </Text3D>
-                <MoEffectButton position={[2.5, 0, -0.21]}/>
+                <MoEffectButton position={[1.7, 0, -0.21]}/>
                 <MoAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
             </group>
             <group name='backdo-alert' position={[-8, 0, 3]} scale={0.9}>
@@ -597,11 +620,6 @@ export default function Showroom(props) {
         </group>
     }
     function NewTurn(props) {
-        // edit name
-            // push alert up
-            // spawn html input
-        // play animation
-        // const [springs, api] = useSpring({})
         const [alertSprings, alertSpringApi] = useSpring(() => ({
             from: {
                 scale: 0
@@ -621,7 +639,6 @@ export default function Showroom(props) {
                 document.body.style.cursor = 'default';
             }
             function onPointerDown(e) {
-                console.log('play click')
                 e.stopPropagation()
                 // play spring api
                 alertSpringApi.start({
@@ -659,11 +676,11 @@ export default function Showroom(props) {
             }
             return <group {...props}>
                 <mesh>
-                    <boxGeometry args={[1.65, 0.03, 0.75]}/>
+                    <boxGeometry args={[1.2, 0.03, 0.75]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
                 </mesh>
                 <mesh>
-                    <boxGeometry args={[1.6, 0.04, 0.7]}/>
+                    <boxGeometry args={[1.15, 0.04, 0.7]}/>
                     <meshStandardMaterial color='black'/>
                 </mesh>
                 <mesh 
@@ -675,31 +692,198 @@ export default function Showroom(props) {
                     <boxGeometry args={[1.65, 0.04, 0.75]}/>
                     <meshStandardMaterial transparent opacity={0}/>
                 </mesh>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    position={[-0.625, 0.025, 0.2]}
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.4}
-                    height={0.01}
-                >
-                    { `PLAY` }
+                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                </Text3D>
+                </mesh>
             </group>
         }
         return <group {...props}>
             <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
             { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
-            <PlayAnimationButton position={[-1, 0, 3]}/>
+            <PlayAnimationButton position={[0, 0, 3]}/>
+        </group>
+    }
+    function Catch(props) {
+        const [ufoEnergyAlertSprings, ufoEnergyAlertSpringApi] = useSpring(() => ({
+            from: {
+                scale: 0
+            }
+        }))
+        const [ufoEnergyAlertPlaying, setUfoEnergyAlertPlaying] = useState(false)
+        function PlayUfoEnergyAlertButton(props) {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                // play sound effect
+                playSoundEffect('/sounds/effects/capture.mp3', 1)
+                ufoEnergyAlertSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: [
+                        {
+                            scale: 1,
+                            // if not set, animation plays quickly on the second time
+                            config: {
+                                tension: 170,
+                                friction: 26,
+                                clamp: true
+                            },
+                        },
+                        {
+                            scale: 0,
+                            config: {
+                                tension: 300,
+                                friction: 26,
+                                clamp: true
+                            },
+                            delay: 700
+                        }
+                    ],
+                    onStart: () => { setUfoEnergyAlertPlaying(true) },
+                    onRest: () => { 
+                        // if not set, alert restores immediately
+                        setTimeout(() => {
+                            setUfoEnergyAlertPlaying(false) 
+                        }, 500)
+                    }
+                })
+            }
+            return <group {...props}>
+                <mesh>
+                    <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </mesh>
+                <mesh>
+                    <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                    <meshStandardMaterial color='black'/>
+                </mesh>
+                <mesh 
+                    name='wrapper' 
+                    onPointerEnter={e => onPointerEnter(e)}
+                    onPointerLeave={e => onPointerLeave(e)}
+                    onPointerDown={e => onPointerDown(e)}
+                >
+                    <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh>
+                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </mesh>
+            </group>
+        }
+            
+        const [rocketMemeAlertSprings, rocketMemeAlertSpringApi] = useSpring(() => ({
+            from: {
+                scale: 0
+            }
+        }))
+        const [rocketMemeAlertPlaying, setRocketMemeAlertPlaying] = useState(false)
+        function PlayRocketMemeAlertButton(props) {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                // play sound effect
+                playSoundEffect('/sounds/effects/capture.mp3', 1)
+                rocketMemeAlertSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: [
+                        {
+                            scale: 1,
+                            // if not set, animation plays quickly on the second time
+                            config: {
+                                tension: 170,
+                                friction: 26,
+                                clamp: true
+                            },
+                        },
+                        {
+                            scale: 0,
+                            config: {
+                                tension: 300,
+                                friction: 26,
+                                clamp: true
+                            },
+                            delay: 700
+                        }
+                    ],
+                    onStart: () => { setRocketMemeAlertPlaying(true) },
+                    onRest: () => { 
+                        // if not set, alert restores immediately
+                        setTimeout(() => {
+                            setRocketMemeAlertPlaying(false) 
+                        }, 500)
+                    }
+                })
+            }
+            return <group {...props}>
+                <mesh>
+                    <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </mesh>
+                <mesh>
+                    <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                    <meshStandardMaterial color='black'/>
+                </mesh>
+                <mesh 
+                    name='wrapper' 
+                    onPointerEnter={e => onPointerEnter(e)}
+                    onPointerLeave={e => onPointerLeave(e)}
+                    onPointerDown={e => onPointerDown(e)}
+                >
+                    <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh>
+                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                </mesh>
+            </group>
+        }
+        return <group {...props}>
+            {/* rocket catch ufo */}
+            <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert  rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+            { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[-5.5, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
+            <PlayUfoEnergyAlertButton position={[-5.5, 0, 3.5]}/>
+            <animated.group position={[1.5, 0, 0]} scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+            { !rocketMemeAlertPlaying && <CatchRocketMemeAlert position={[1.5, 0, 0]} rotation={[0, Math.PI/2, 0]}/> }
+            <PlayRocketMemeAlertButton position={[1.55, 0, 3.5]}/>
+            {/* ufo catch rocket */}
         </group>
     }
     const positionStart = [-15, 0, 3]
     const positionEnd = [0, 0, 0]
-    const {yutOutcomesScale, yutOutcomesPosition, newTurnScale, newTurnPosition} = useSpring({
+    const {yutOutcomesScale, yutOutcomesPosition, newTurnScale, newTurnPosition, catchScale, catchPosition} = useSpring({
         yutOutcomesScale: display === 'yutOutcomes' ? 1 : 0,
         yutOutcomesPosition: display === 'yutOutcomes' ? positionEnd : positionStart,
         newTurnScale: display === 'newTurn' ? 1 : 0,
         newTurnPosition: display === 'newTurn' ? positionEnd : positionStart,
+        catchScale: display === 'catch' ? 1 : 0,
+        catchPosition: display === 'catch' ? positionEnd : positionStart,
     })
     return <group {...props}>
         <group name='tab'>
@@ -715,14 +899,15 @@ export default function Showroom(props) {
             </Text3D>
             <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
             <NewTurnButton position={[6.75, 0.02, -3.8]}/>
-            <CatchButton position={[5.7, 0.02, -3.2]}/>
-            <PregameButton position={[5.7, 0.02, -2.7]}/>
-            <ScoreButton position={[5.7, 0.02, -2.1]}/>
-            <GameStartButton position={[5.4, 0.02, -1.5]}/>
-            <EndScenesButton position={[5.4, 0.02, -1.0]}/>
+            <CatchButton position={[6.35, 0.02, -3.1]}/>
+            <PregameButton position={[5.7, 0.02, -2.5]}/>
+            <ScoreButton position={[5.7, 0.02, -2]}/>
+            <GameStartButton position={[5.4, 0.02, -1.4]}/>
+            <EndScenesButton position={[5.4, 0.02, -0.8]}/>
         </group>
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
+        <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
