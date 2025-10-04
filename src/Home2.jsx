@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from './layout';
 import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
@@ -30,7 +30,7 @@ export default function Home2() {
 
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
-  const [display, setDisplay] = useState('board')
+  const [display, setDisplay] = useState('title')
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
@@ -611,7 +611,7 @@ export default function Home2() {
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
-    titleBoardScale: display === 'board' ? 1 : 0,
+    titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
     showroomScale: display === 'showroom' ? 1 : 0,
     navigationPosition: display === 'showroom' && device === 'landscapeDesktop' ? [-5,0,0] : [0,0,0],
@@ -692,7 +692,7 @@ export default function Home2() {
       /> }
     </group>
     <group name='display'>
-      { display === 'board' && <group position={layout[device].title.board.position} 
+      { display === 'title' && <group position={layout[device].title.board.position} 
         scale={layout[device].title.board.scale}>
         <animated.group scale={titleBoardScale}>
           <Board 
@@ -721,6 +721,7 @@ export default function Home2() {
           position={layout[device].showroom.position}
           rotation={layout[device].showroom.rotation}
           scale={layout[device].showroom.scale}
+          setHomeDisplay={setDisplay}
         />  
       </animated.group>}
     </group>

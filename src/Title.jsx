@@ -13,7 +13,7 @@ export default function Title({ position, rotation, scale, setDisplay }) {
       setHover(false)
   }
   function handlePointerDown() {
-      setDisplay('board')
+      setDisplay('title')
       playSoundEffect('/sounds/effects/button-click.mp3')
   }
 

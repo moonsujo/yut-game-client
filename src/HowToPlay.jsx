@@ -30,47 +30,49 @@ export default function HowToPlay({
 }) {
   
   const [page, setPage] = useState(0)
-  const [pageTimeout, setPageTimeout] = useState(null)
+  const pageTimeoutRef = useRef(null)
   const [tabClicked, setTabClicked] = useState(false)
 
   useEffect(() => {
-    clearTimeout(pageTimeout)
+    clearTimeout(pageTimeoutRef.current)
     if (!tabClicked) {
-      if (page === 0) { // Overview
+      // page 0 timeout is set on component load
+      if (page === 0) {
         const page1Timeout = setTimeout(() => {
           setPage(1)
-        }, 23000)
-        setPageTimeout(page1Timeout)
+        }, 23500)
+        // use useRef to not re-render while setting a state
+        pageTimeoutRef.current = page1Timeout
       } else if (page === 1) { // Throw the dice
         const page2Timeout = setTimeout(() => {
           setPage(2)
         }, 10700)
-        setPageTimeout(page2Timeout)
+        pageTimeoutRef.current = page2Timeout
       } else if (page === 2) { // Catch enemies
         const page3Timeout = setTimeout(() => {
           setPage(3)
         }, 8500)
-        setPageTimeout(page3Timeout)
+        pageTimeoutRef.current = page3Timeout
       } else if (page === 3) { // Piggyback
         const page4Timeout = setTimeout(() => {
           setPage(4)
         }, 5700)
-        setPageTimeout(page4Timeout)
+        pageTimeoutRef.current = page4Timeout
       } else if (page === 4) { // Score
         const page5Timeout = setTimeout(() => {
           setPage(5)
         }, 9000)
-        setPageTimeout(page5Timeout)
+        pageTimeoutRef.current = page5Timeout
       } else if (page === 5) { // Read the Yut
         const page6Timeout = setTimeout(() => {
           setPage(6)
         }, 11500)
-        setPageTimeout(page6Timeout)
+        pageTimeoutRef.current = page6Timeout
       } else if (page === 6) { // Shortcut
         const page7Timeout = setTimeout(() => {
           setPage(0)
         }, 12000)
-        setPageTimeout(page7Timeout)
+        pageTimeoutRef.current = page7Timeout
       }
     }
   }, [page])
@@ -1301,59 +1303,59 @@ export default function HowToPlay({
       <group 
       position={layout[device].howToPlay.shortcutsPage.board.position} 
       scale={layout[device].howToPlay.shortcutsPage.board.scale}>
-        <Board showArrows={false} starColor={'#678a00'} highlightShortcuts/>
-        <group name='mars-left' position={[-0.4, 0.5, 0.2]}>
-          <animated.mesh scale={springsArrow0.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
-            <coneGeometry args={[0.15, 0.4, 32]}/>
-            <meshBasicMaterial color='#ffff33'/>
-          </animated.mesh>
-        </group>
+        <Board showArrows={false} starColor={'#7a7a21'} highlightShortcuts/>
         {dotSpringsMiddle.map((value, index) => {
           return <animated.mesh key={index} scale={value.scale} position={[3 - 0.4*index, 0.5, 0.2]}>
             <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         })}
         {dotSpringsCorner.map((value, index) => {
           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
             <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         })}
         {dotSpringsVertical.map((value, index) => {
           return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
             <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         })}
         {dotSpringsMiddleHalf.map((value, index) => {
           return <animated.mesh key={index} scale={value.scale} position={[3.5 - 0.4*index, 0.5, 0.2]}>
             <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         })}
         {dotSpringsVerticalHalf.map((value, index) => {
           return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
             <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         })}
-        <group name='moon-left' position={[-5.45, 0.5, 0.2]}>
+        <group name='mars-left-arrow' position={[-0.4, 0.5, 0.2]}>
+          <animated.mesh scale={springsArrow0.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
+            <coneGeometry args={[0.15, 0.4, 32]}/>
+            <meshBasicMaterial color='#33ff00'/>
+          </animated.mesh>
+        </group>
+        <group name='moon-left-arrow' position={[-5.45, 0.5, 0.2]}>
           <animated.mesh scale={springsArrow1.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
             <coneGeometry args={[0.15, 0.4, 32]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         </group>
-        <group name='saturn-bottom' position={[-4, 0.5, -3.3]}>
+        <group name='saturn-bottom-arrow' position={[-4, 0.5, -3.3]}>
           <animated.mesh scale={springsArrow2.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, 0]}>
             <coneGeometry args={[0.15, 0.4, 32]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         </group>
-        <group name='moon-bottom' position={[-4, 0.5, 1.8]}>
+        <group name='moon-bottom-arrow' position={[-4, 0.5, 1.8]}>
           <animated.mesh scale={springsArrow3.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, 0]}>
             <coneGeometry args={[0.15, 0.4, 32]}/>
-            <meshBasicMaterial color='#ffff33'/>
+            <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
         </group>
       </group>

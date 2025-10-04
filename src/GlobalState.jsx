@@ -138,9 +138,12 @@ export const showGalaxyBackgroundAtom = atom(true)
 export const showBlackholeAtom = atom(false)
 export const showRedGalaxyAtom = atom(false)
 export const showBlackhole2Atom = atom(false)
+export const hasAIAtom = atom(false)
+
+// display
+// lobby
 export const portraitLobbySelectionAtom = atom('players')
 export const landscapeLobbyThirdSectionSelectionAtom = atom('invite')
-export const hasAIAtom = atom(false)
 
 // sounds
 export const listenerAtom = atom(null)
