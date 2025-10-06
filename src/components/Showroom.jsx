@@ -1009,27 +1009,25 @@ export default function Showroom(props) {
                 <PlayAnimationButton position={[0, 0, 3]}/>
             </group>
         }
-        function PregameRocketsWinSection(props) {
+        function PregameRocketsWinSection({ scale, position }) {
             const [alertSprings, alertSpringApi] = useSpring(() => ({
                 from: {
                     scale: 0
                 }
             }))
             const [playing, setPlaying] = useState(false)
-            function PlayAnimationButton(props) {
+            function PlayAnimationButton({ position }) {
                 const [hover, setHover] = useState(false)
                 function onPointerEnter(e) {
-                    e.stopPropagation()
                     setHover(true)
                     document.body.style.cursor = 'pointer';
                 }
                 function onPointerLeave(e) {
-                    e.stopPropagation()
                     setHover(false)
                     document.body.style.cursor = 'default';
                 }
                 function onPointerDown(e) {
-                    e.stopPropagation()
+                    console.log('pointer down')
                     // play spring api
                     alertSpringApi.start({
                         from: {
@@ -1064,95 +1062,7 @@ export default function Showroom(props) {
                         }
                     })
                 }
-                return <group {...props}>
-                    <mesh>
-                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                    <mesh>
-                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
-                        <meshStandardMaterial color='black'/>
-                    </mesh>
-                    <mesh 
-                        name='wrapper' 
-                        onPointerEnter={e => onPointerEnter(e)}
-                        onPointerLeave={e => onPointerLeave(e)}
-                        onPointerDown={e => onPointerDown(e)}
-                    >
-                        <boxGeometry args={[1.2, 0.04, 0.75]}/>
-                        <meshStandardMaterial transparent opacity={0}/>
-                    </mesh>
-                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
-                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                </group>
-            }
-
-            return <group {...props}>
-                <animated.group scale={alertSprings.scale}><PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
-                { !playing && <PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/> }
-                <PlayAnimationButton position={[0, 0, 3]}/>
-            </group>
-        }
-        function PregameUfosWinSection(props) {
-            const [alertSprings, alertSpringApi] = useSpring(() => ({
-                from: {
-                    scale: 0
-                }
-            }))
-            const [playing, setPlaying] = useState(false)
-            function PlayAnimationButton(props) {
-
-                const [hover, setHover] = useState(false)
-                function onPointerEnter(e) {
-                    e.stopPropagation()
-                    setHover(true)
-                    document.body.style.cursor = 'pointer';
-                }
-                function onPointerLeave(e) {
-                    e.stopPropagation()
-                    setHover(false)
-                    document.body.style.cursor = 'default';
-                }
-                function onPointerDown(e) {
-                    e.stopPropagation()
-                    console.log('click')
-                    // play spring api
-                    alertSpringApi.start({
-                        from: {
-                            scale: 0
-                        },
-                        to: [
-                            {
-                                scale: 1,
-                                // if not set, animation plays quickly on the second time
-                                config: {
-                                    tension: 170,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                            },
-                            {
-                                scale: 0,
-                                config: {
-                                    tension: 300,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                                delay: 700
-                            }
-                        ],
-                        onStart: () => { setPlaying(true) },
-                        onRest: () => { 
-                            // if not set, alert restores immediately
-                            setTimeout(() => {
-                                setPlaying(false) 
-                            }, 500)
-                        }
-                    })
-                }
-                return <group {...props}>
+                return <group position={position}>
                     <mesh>
                         <boxGeometry args={[1.2, 0.03, 0.75]}/>
                         <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
@@ -1177,15 +1087,105 @@ export default function Showroom(props) {
                 </group>
             }
 
-            return <group {...props}>
+            return <group scale={scale} position={position}>
+                <animated.group scale={alertSprings.scale}><PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
+                { !playing && <PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/> }
+                {/* need to raise y to 1. otherwise, clicks won't register consistently */}
+                <PlayAnimationButton position={[0, 1, 3.5]}/>
+            </group>
+        }
+        function PregameUfosWinSection({ scale, position }) {
+            const [alertSprings, alertSpringApi] = useSpring(() => ({
+                from: {
+                    scale: 0
+                }
+            }))
+            const [playing, setPlaying] = useState(false)
+            function PlayAnimationButton({ position }) {
+
+                const [hover, setHover] = useState(false)
+                function onPointerEnter(e) {
+                    e.stopPropagation()
+                    setHover(true)
+                    document.body.style.cursor = 'pointer';
+                }
+                function onPointerLeave(e) {
+                    e.stopPropagation()
+                    setHover(false)
+                    document.body.style.cursor = 'default';
+                }
+                function onPointerDown(e) {
+                    e.stopPropagation()
+                    // play spring api
+                    alertSpringApi.start({
+                        from: {
+                            scale: 0
+                        },
+                        to: [
+                            {
+                                scale: 1,
+                                // if not set, animation plays quickly on the second time
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                scale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 700
+                            }
+                        ],
+                        onStart: () => { setPlaying(true) },
+                        onRest: () => { 
+                            // if not set, alert restores immediately
+                            setTimeout(() => {
+                                setPlaying(false) 
+                            }, 500)
+                        }
+                    })
+                }
+                return <group position={position}>
+                    <mesh>
+                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                        <meshStandardMaterial color='black'/>
+                    </mesh>
+                    <mesh 
+                        name='wrapper' 
+                        onPointerEnter={e => onPointerEnter(e)}
+                        onPointerLeave={e => onPointerLeave(e)}
+                        onPointerDown={e => onPointerDown(e)}
+                    >
+                        <boxGeometry args={[1.2, 0.05, 0.75]}/>
+                        <meshStandardMaterial transparent opacity={0}/>
+                    </mesh>
+                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                </group>
+            }
+
+            return <group scale={scale} position={position}>
                 <animated.group scale={alertSprings.scale}><PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
                 { !playing && <PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/> }
-                <PlayAnimationButton position={[0, 0, 3]}/>
+                {/* need to raise y by 1 to consistently click */}
+                {/* wrapping with group with raised y and undoing it in component doesn't work */}
+                <PlayAnimationButton position={[0, 1, 3.5]}/>
             </group>
         }
         return <group {...props}>
-            {/* <PregameTieSection scale={0.7} position={[-1, 0, 2]}/>
-            <PregameRocketsWinSection scale={0.8} position={[-4, 0, -3]}/> */}
+            <PregameTieSection scale={0.8} position={[-1, 0, 2]}/>
+            <PregameRocketsWinSection scale={0.8} position={[-4, 0, -3]}/>
             <PregameUfosWinSection scale={0.8} position={[2, 0, -3]}/>
         </group>
     }
