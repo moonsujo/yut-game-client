@@ -1,4 +1,4 @@
-import { Text3D } from "@react-three/drei"
+import { Float, Text3D } from "@react-three/drei"
 import { useState } from "react"
 import * as THREE from "three"
 import { useLoader } from '@react-three/fiber';
@@ -25,6 +25,12 @@ import CatchRocketMemeAlert from "../alerts/CatchRocketMemeAlert.jsx";
 import PregameTieAlert from "../alerts/PregameTieAlert.jsx";
 import PregameUfosWinAlert from "../alerts/PregameUfosWinAlert.jsx";
 import PregameRocketsWinAlert from "../alerts/PregameRocketsWinAlert.jsx";
+import Board from "../Board.jsx";
+import Moon from "../meshes/Moon.jsx";
+import Rocket from "../meshes/Rocket.jsx";
+import Ufo from "../meshes/Ufo.jsx";
+import Star from "../meshes/Star.jsx";
+import Constellation from "../shader/constellation/Constellation.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -255,15 +261,48 @@ export default function Showroom(props) {
         </group>
     }
     function ScoreButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('score')
+        }
         return <group {...props}>
+            <mesh>
+                <boxGeometry args={[1.5, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[1.45, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.1, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
+                position={[-0.6, 0.05, 0.15]}
                 rotation={[-Math.PI/2, 0, 0]}
                 size={0.3}
                 height={0.01}
             >
                 SCORE
-                <meshStandardMaterial color='yellow'/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
     }
@@ -1189,6 +1228,187 @@ export default function Showroom(props) {
             <PregameUfosWinSection scale={0.8} position={[2, 0, -3]}/>
         </group>
     }
+
+    function PlayAnimationButton(props) {
+        return <group {...props}>
+            <mesh>
+                <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                <meshStandardMaterial color={ props.hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                <meshStandardMaterial color={ props.hover ? 'green': 'yellow' }/>
+            </mesh>
+        </group>
+    }
+    function Score(props) {
+
+        function RocketButton({ scale, position }) {
+            
+            // animation button props
+            const [scoreSprings, scoreSpringApi] = useSpring(() => ({
+                from: {
+                    scale: 0
+                }
+            }))
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                // play spring api
+                // add rockets that hook up to springs
+                // send it down stars
+                // show alert, fire fireworks
+                scoreSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: [
+                        {
+                            scale: 1,
+                            // if not set, animation plays quickly on the second time
+                            config: {
+                                tension: 170,
+                                friction: 26,
+                                clamp: true
+                            },
+                        },
+                        {
+                            scale: 0,
+                            config: {
+                                tension: 300,
+                                friction: 26,
+                                clamp: true
+                            },
+                            delay: 700
+                        }
+                    ],
+                    onStart: () => {},
+                    onRest: () => {}
+                })
+            }
+            
+            return <group scale={scale} position={position}>
+                <Rocket scale={1.6}/>
+                <PlayAnimationButton 
+                    position={[2, 0, 0]} 
+                    onPointerEnter={e => onPointerEnter(e)}
+                    onPointerLeave={e => onPointerLeave(e)}
+                    onPointerDown={e => onPointerDown(e)}
+                    hover={hover}
+                />
+            </group>
+        }
+        function UfoButton({ scale, position }) {
+            
+            // animation button props
+            const [scoreSprings, scoreSpringApi] = useSpring(() => ({
+                from: {
+                    ufoScale: 0,
+                    ufoPosition: [0,0,0],
+                    star0Scale: 0,
+                    star0Position: [0,0,0]
+                }
+            }))
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                // play spring api
+                scoreSpringApi.start({
+                    from: {
+                        ufoScale: 0,
+                        ufoPosition: [-7.1, 0, -4.5],
+                        star0Scale: 0,
+                        star0Position: [-6.15, 2, 0.1],
+                    },
+                    to: [
+                        {
+                            ufoScale: 1.3,
+                            ufoPosition: [-7.1, 2, -3.1],
+                            // if not set, animation plays quickly on the second time
+                        },
+                        {
+                            ufoPosition: [-7.15, 2, -1.5],
+                        },
+                        {
+                            ufoPosition: [-7.15, 2, 0.1],
+                        },
+                        // score
+                        {
+                            ufoScale: 2.5,
+                            ufoPosition: [-7.15, 5, 0.1],
+                            star0Scale: 2,
+                            star0Position: [-6.15, 5, 0.1],
+                        }
+                    ],
+                    config: {
+                        tension: 170,
+                        friction: 26
+                    },
+                    onStart: () => {},
+                    onRest: () => {}
+                })
+            }
+        
+            return <group scale={scale} position={position}>
+                <Ufo scale={1.6}/>
+                <PlayAnimationButton 
+                    position={[2, 0, 0]} 
+                    onPointerEnter={e => onPointerEnter(e)}
+                    onPointerLeave={e => onPointerLeave(e)}
+                    onPointerDown={e => onPointerDown(e)}
+                    hover={hover}
+                />
+                <group name='animation-parts'>
+                    {/* had to put the springs as a parent */}
+                    <animated.group scale={scoreSprings.ufoScale} position={scoreSprings.ufoPosition}>
+                        <Ufo onBoard/>
+                    </animated.group>
+                    <animated.group scale={scoreSprings.star0Scale} position={scoreSprings.star0Position}>
+                        <Constellation rotation={[-Math.PI/2, 0, Math.PI/16]} modelPath={'/models/star.glb'}/>
+                    </animated.group>
+                </group>
+            </group>
+        }
+        return <group {...props}>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-8, 0.02, -5]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.3}
+                height={0.01}
+            >
+                SCORE ANIMATION
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <Board scale={0.8} position={[-3, 0, 0]}/>
+            <RocketButton scale={0.7} position={[2, 0, 2.5]}/>
+            <UfoButton scale={0.7} position={[2, 0, 4]}/>
+        </group>
+    }
     const positionStart = [-15, 0, 3]
     const positionEnd = [0, 0, 0]
     const {
@@ -1199,7 +1419,9 @@ export default function Showroom(props) {
         catchScale, 
         catchPosition,
         pregameScale,
-        pregamePosition
+        pregamePosition,
+        scoreScale,
+        scorePosition
     } = useSpring({
         yutOutcomesScale: display === 'yutOutcomes' ? 1 : 0,
         yutOutcomesPosition: display === 'yutOutcomes' ? positionEnd : positionStart,
@@ -1209,6 +1431,8 @@ export default function Showroom(props) {
         catchPosition: display === 'catch' ? positionEnd : positionStart,
         pregameScale: display === 'pregame' ? 1 : 0,
         pregamePosition: display === 'pregame' ? positionEnd : positionStart,
+        scoreScale: display === 'score' ? 1 : 0,
+        scorePosition: display === 'score' ? positionEnd : positionStart,
     })
     function MainMenuButton(props) {
         const [hover, setHover] = useState(false)
@@ -1254,6 +1478,13 @@ export default function Showroom(props) {
             </mesh>
         </group>
     }
+    // score
+    // snippet of board with Earth
+    // choose ufo or rocket
+    // place them on a star
+    // indicate 'click earth' to trigger animation
+    // click earth
+    // play animation
     return <group {...props}>
         <group name='tab'>
             <Text3D
@@ -1270,7 +1501,7 @@ export default function Showroom(props) {
             <NewTurnButton position={[6.75, 0.02, -3.8]}/>
             <CatchButton position={[6.35, 0.02, -3.1]}/>
             <PregameButton position={[6.65, 0.02, -2.4]}/>
-            <ScoreButton position={[5.7, 0.02, -1.5]}/>
+            <ScoreButton position={[6.35, 0.02, -1.7]}/>
             <GameStartButton position={[5.4, 0.02, -1]}/>
             <EndScenesButton position={[5.4, 0.02, 0]}/>
         </group>
@@ -1278,6 +1509,7 @@ export default function Showroom(props) {
         <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
+        <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>

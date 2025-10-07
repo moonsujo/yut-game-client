@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import { useTexture } from "@react-three/drei";
+import { useRef } from "react";
 import { animated } from "@react-spring/three";
 import * as THREE from 'three';
 import AtmosphereFragmentShader from '../shader/moon/atmosphere/fragment.glsl'
@@ -8,7 +7,7 @@ import FragmentShader from '../shader/moon/fragment.glsl'
 import VertexShader from '../shader/moon/vertex.glsl'
 import { useFrame } from "@react-three/fiber";
 
-export default function Moon({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
+export default function Moon({ position=[0,0,0], rotation=[0,0,0], scale=1, shiny=true }) {
   const textureLoader = new THREE.TextureLoader()
   const moonTexture = textureLoader.load("/textures/moon/moon-color.jpg") // must use absolute path - string starts with a slash
   moonTexture.colorSpace = THREE.SRGBColorSpace
@@ -39,7 +38,7 @@ export default function Moon({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
             }}
           />
         </mesh>
-        <mesh scale={1.5}>
+        { shiny && <mesh scale={1.5}>
           <sphereGeometry args={[0.6, 32, 32]} />
           <shaderMaterial 
           side={THREE.BackSide} 
@@ -52,7 +51,7 @@ export default function Moon({ position=[0,0,0], rotation=[0,0,0], scale=1 }) {
             uAtmosphereTwilightColor: new THREE.Uniform(new THREE.Color('#EFEFEF')),
           }}
           />
-        </mesh>
+        </mesh> }
       </group>
     </animated.group>
   );

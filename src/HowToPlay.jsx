@@ -560,7 +560,7 @@ export default function HowToPlay({
       position={layout[device].howToPlay.scoringPage.board.position}
       scale={layout[device].howToPlay.scoringPage.board.scale}>
         <Board
-        constellations={false}
+        showConstellations={false}
         omit
         showTiles={[0, 15, 16, 17, 18, 19, 29]}
         showArrows={false}
@@ -2956,7 +2956,7 @@ export default function HowToPlay({
       <PiggybackAlert position={[-1.5, 1, -5]} scale={springs.piggybackAlertScale}/>
       <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
       <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
-        <Board constellations={false} showStart/>
+        <Board showConstellations={false} showStart/>
         {/* Catch token */}
         <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
           <Ufo onBoard/>

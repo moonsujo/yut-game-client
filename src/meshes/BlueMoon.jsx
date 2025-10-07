@@ -16,7 +16,6 @@ export default function BlueMoon({ position=[0,0,0], rotation=[0,0,0], scale=1, 
   const moon = useRef();
   const shaderRef = useRef()
   
-
   // useFrame
   // lerp
   // uniform

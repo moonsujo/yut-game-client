@@ -29,10 +29,10 @@ export default function Board({
   showStart=false, 
   interactive=false,
   device="landscapeDesktop",
-  constellations=true,
   omit=false,
   showTiles=[],
   showArrows=true,
+  showConstellations=true,
   starColor='yellow',
   highlightShortcuts=false,
   showFinishMoves=false,
@@ -53,10 +53,9 @@ export default function Board({
     } else if (tile == 15) {
       return <Neptune scale={0.4}/>
     } else if (tile == 22) {
-      return <Moon scale={!highlightShortcuts ? 0.33 : 0.42} shiny/>
+      return <Moon scale={!highlightShortcuts ? 0.33 : 0.42}/>
     } else if (tile == 1) {
       return <Star scale={0.3} color={starColor}/>
-      // return <Star scale={0.4} color='limegreen'/>
     } else {
       return <Star scale={0.3} color={starColor}/>
     }
@@ -330,10 +329,10 @@ export default function Board({
         <meshBasicMaterial color='grey'/>
       </mesh>
     </group>}
-    { constellations && <WolfConstellation position={[-2.1,0,-1.2]} rotation={[-Math.PI/2, 0, 0]} scale={0.85} opacity={0.5}/> }
-    { constellations && <RhinoConstellation position={[2.1,0,-1.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.8} opacity={0.5}/> }
-    { constellations && <AriesConstellation position={[-2.3,-1.3,3.6]} rotation={[-Math.PI/2, 0, 0]} scale={0.75} opacity={0.5}/> }
-    { constellations && <animated.group name='taurus-constellation-animation-wrapper' scale={taurusConstellationScale} position={[2.3, 0, 3.5]}>
+    { showConstellations && <WolfConstellation position={[-2.1,0,-1.2]} rotation={[-Math.PI/2, 0, 0]} scale={0.85} opacity={0.5}/> }
+    { showConstellations && <RhinoConstellation position={[2.1,0,-1.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.8} opacity={0.5}/> }
+    { showConstellations && <AriesConstellation position={[-2.3,-1.3,3.6]} rotation={[-Math.PI/2, 0, 0]} scale={0.75} opacity={0.5}/> }
+    { showConstellations && <animated.group name='taurus-constellation-animation-wrapper' scale={taurusConstellationScale} position={[2.3, 0, 3.5]}>
       <TaurusConstellation rotation={[-Math.PI/2, 0, Math.PI/16]}  opacity={0.5}/> 
     </animated.group> }
     {/* rotationIntensity: rotate around a center in a sphere pattern */}
