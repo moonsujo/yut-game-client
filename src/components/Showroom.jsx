@@ -1,5 +1,5 @@
 import { Float, Text3D } from "@react-three/drei"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import * as THREE from "three"
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
@@ -31,6 +31,8 @@ import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
 import Star from "../meshes/Star.jsx";
 import Constellation from "../shader/constellation/Constellation.jsx";
+import ScoreAlert from "../alerts/ScoreAlert.jsx";
+import { useFireworksShader } from "../shader/fireworks/FireworksShader.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -303,19 +305,6 @@ export default function Showroom(props) {
             >
                 SCORE
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
-    function GameStartButton(props) {
-        return <group {...props}>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                GAME START
-                <meshStandardMaterial color='yellow'/>
             </Text3D>
         </group>
     }
@@ -1247,15 +1236,170 @@ export default function Showroom(props) {
     }
     function Score(props) {
 
+        const [CreateFirework] = useFireworksShader();
+        function shootFireworks(center, team) {
+            
+            const hue = team === 0 ? 0.01 : 0.5
+
+            // firework 1 - left
+            const count = Math.round(700 + Math.random() * 400);
+            const position = new THREE.Vector3(
+                center[0] + Math.random()*0.1, 
+                center[1],
+                center[2]-0.9 + Math.random()*0.2, 
+            )
+    
+            const size = 0.25 + Math.random() * 0.1
+            const radius = 1.0 + Math.random() * 0.2
+            const color = new THREE.Color();
+            color.setHSL(hue, 0.7, 0.5)
+    
+            CreateFirework({ count, position, size, radius, color });
+    
+            // firework 2 - right
+            setTimeout(() => {
+                // setting 2
+                const count = Math.round(700 + Math.random() * 300);
+                const position = new THREE.Vector3(
+                    center[0] + 4 + Math.random()*0.1, 
+                    center[1],
+                    center[2] - 0.9 + Math.random()*0.2, 
+                )
+                const size = 0.3 + Math.random() * 0.09
+                const radius = 1.0 + Math.random() * 0.2
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.7, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 220)
+    
+            // firework 3 - middle
+            setTimeout(() => {
+                const count = Math.round(600 + Math.random() * 400);
+                const position = new THREE.Vector3(
+                    center[0], 
+                    center[1],
+                    center[2]-1.9 + Math.random() * 0.1, 
+                )
+                const size = 0.25 + Math.random() * 0.08
+                const radius = 1.2 + Math.random() * 0.4
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.7, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 500)
+    
+            // firework 4 - upper left
+            setTimeout(() => {
+                const count = Math.round(600 + Math.random() * 400);
+                const position = new THREE.Vector3(
+                    center[0] - 2.3 + Math.random() * 0.1, 
+                    center[1],
+                    center[2] - 3 + Math.random() * 0.1, 
+                )
+                const size = 0.3 + Math.random() * 0.1
+                const radius = 1.3 + Math.random() * 0.2
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.7, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 900)
+    
+            // firework 5 - upper right
+            setTimeout(() => {
+                const count = Math.round(600 + Math.random() * 400);
+                const position = new THREE.Vector3(
+                    center[0]+3 + Math.random() * 0.1, 
+                    center[1],
+                    center[2]-2.7 + Math.random() * 0.1, 
+                )
+                const size = 0.2 + Math.random() * 0.08
+                const radius = 0.8 + Math.random() * 0.2
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.7, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 1000)
+            
+            // firework 6 - upper upper left
+            setTimeout(() => {
+                const count = Math.round(600 + Math.random() * 400);
+                const position = new THREE.Vector3(
+                    center[0]-4 + Math.random() * 0.3, 
+                    center[1],
+                    center[2] + Math.random() * 0.3, 
+                )
+                const size = 0.2 + Math.random() * 0.04
+                const radius = 1.0 + Math.random() * 0.2
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.7, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 1210)
+    
+            // firework 8
+            setTimeout(() => {
+                const count = Math.round(800 + Math.random() * 500);
+                const position = new THREE.Vector3(
+                    center[0]-2.4 + Math.random() * 0.3, 
+                    center[1],
+                    center[2]+0.5 + Math.random() * 0.3, 
+                )
+                const size = 0.27 + Math.random() * 0.04
+                const radius = 1.1 + Math.random() * 0.4
+                const color = new THREE.Color();
+                color.setHSL(hue, 0.8, 0.5)
+                CreateFirework({ count, position, size, radius, color });
+            }, 1500)
+        }
+
         function RocketButton({ scale, position }) {
             
             // animation button props
             const [scoreSprings, scoreSpringApi] = useSpring(() => ({
                 from: {
-                    scale: 0
+                    rocketScale: 0,
+                    rocketPosition: [0,0,0]
                 }
             }))
+            const [alertSprings, alertSpringApi] = useSpring(() => ({
+                from: {
+                    alertScale: 0,
+                }
+            }))
+            
             const [hover, setHover] = useState(false)
+            const [animationPlaying, setAnimationPlaying] = useState(null)
+            useEffect(() => {
+                if (animationPlaying === false) {
+                    alertSpringApi.start({
+                        from: {
+                            alertScale: 0
+                        },
+                        to: [
+                            {
+                                alertScale: 1,
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                alertScale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 1000
+                            },
+                        ],
+                        onStart: () => {},
+                        onRest: () => {}
+                    })
+                    shootFireworks([-3, 2, 0], 0)
+                }
+
+                return () => {
+                    setAnimationPlaying(null)
+                }
+            }, [animationPlaying])
             function onPointerEnter(e) {
                 e.stopPropagation()
                 setHover(true)
@@ -1268,36 +1412,40 @@ export default function Showroom(props) {
             }
             function onPointerDown(e) {
                 e.stopPropagation()
-                // play spring api
-                // add rockets that hook up to springs
-                // send it down stars
-                // show alert, fire fireworks
                 scoreSpringApi.start({
                     from: {
-                        scale: 0
+                        rocketScale: 0,
+                        rocketPosition: [-7.1, 0, -4.5],
                     },
                     to: [
                         {
-                            scale: 1,
+                            rocketScale: 1.5,
+                            rocketPosition: [-7.1, 2, -3],
                             // if not set, animation plays quickly on the second time
-                            config: {
-                                tension: 170,
-                                friction: 26,
-                                clamp: true
-                            },
                         },
                         {
-                            scale: 0,
-                            config: {
-                                tension: 300,
-                                friction: 26,
-                                clamp: true
-                            },
-                            delay: 700
+                            rocketPosition: [-7.15, 2, -1.1],
+                        },
+                        {
+                            rocketPosition: [-7.15, 2, 0.4],
+                        },
+                        // score
+                        {
+                            rocketScale: 2.75,
+                            rocketPosition: [-7.15, 5, 0.1],
+                        },
+                        {
+                            rocketScale: 0,
+                            rocketPosition: [-7.15, 2, 0.9],
+                            delay: 500
                         }
                     ],
-                    onStart: () => {},
-                    onRest: () => {}
+                    config: {
+                        tension: 170,
+                        friction: 26
+                    },
+                    onStart: () => { setAnimationPlaying(true) },
+                    onRest: () => { setAnimationPlaying(false) }
                 })
             }
             
@@ -1310,6 +1458,15 @@ export default function Showroom(props) {
                     onPointerDown={e => onPointerDown(e)}
                     hover={hover}
                 />
+                <group name='animation-parts' position={[0, 0, 1.5]}>
+                    {/* had to put the springs as a parent */}
+                    <animated.group scale={scoreSprings.rocketScale} position={scoreSprings.rocketPosition}>
+                        <Rocket onBoard/>
+                    </animated.group>
+                    <animated.group scale={alertSprings.alertScale} position={[-7.1, 3, -4.5]}>
+                        <ScoreAlert scale={alertSprings.alertScale} scoringTeam={0}/>
+                    </animated.group>
+                </group>
             </group>
         }
         function UfoButton({ scale, position }) {
@@ -1323,7 +1480,50 @@ export default function Showroom(props) {
                     star0Position: [0,0,0]
                 }
             }))
+            const [alertSprings, alertSpringApi] = useSpring(() => ({
+                from: {
+                    alertScale: 0,
+                }
+            }))
+            
             const [hover, setHover] = useState(false)
+            const [animationPlaying, setAnimationPlaying] = useState(null)
+            useEffect(() => {
+                if (animationPlaying === false) {
+                    alertSpringApi.start({
+                        from: {
+                            alertScale: 0
+                        },
+                        to: [
+                            {
+                                alertScale: 1,
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                alertScale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 1000
+                            },
+                        ],
+                        onStart: () => {},
+                        onRest: () => {}
+                    })
+                    shootFireworks([-3, 2, 0], 1)
+                }
+
+                return () => {
+                    setAnimationPlaying(null)
+                }
+            }, [animationPlaying])
+
             function onPointerEnter(e) {
                 e.stopPropagation()
                 setHover(true)
@@ -1341,12 +1541,10 @@ export default function Showroom(props) {
                     from: {
                         ufoScale: 0,
                         ufoPosition: [-7.1, 0, -4.5],
-                        star0Scale: 0,
-                        star0Position: [-6.15, 2, 0.1],
                     },
                     to: [
                         {
-                            ufoScale: 1.3,
+                            ufoScale: 1.5,
                             ufoPosition: [-7.1, 2, -3.1],
                             // if not set, animation plays quickly on the second time
                         },
@@ -1358,18 +1556,21 @@ export default function Showroom(props) {
                         },
                         // score
                         {
-                            ufoScale: 2.5,
+                            ufoScale: 2.75,
                             ufoPosition: [-7.15, 5, 0.1],
-                            star0Scale: 2,
-                            star0Position: [-6.15, 5, 0.1],
+                        },
+                        {
+                            ufoScale: 0,
+                            ufoPosition: [-7.15, 2, 0.1],
+                            delay: 500
                         }
                     ],
                     config: {
                         tension: 170,
                         friction: 26
                     },
-                    onStart: () => {},
-                    onRest: () => {}
+                    onStart: () => { setAnimationPlaying(true) },
+                    onRest: () => { setAnimationPlaying(false) }
                 })
             }
         
@@ -1387,8 +1588,8 @@ export default function Showroom(props) {
                     <animated.group scale={scoreSprings.ufoScale} position={scoreSprings.ufoPosition}>
                         <Ufo onBoard/>
                     </animated.group>
-                    <animated.group scale={scoreSprings.star0Scale} position={scoreSprings.star0Position}>
-                        <Constellation rotation={[-Math.PI/2, 0, Math.PI/16]} modelPath={'/models/star.glb'}/>
+                    <animated.group scale={alertSprings.alertScale} position={[-7.1, 3, -4.5]}>
+                        <ScoreAlert scale={alertSprings.alertScale} scoringTeam={1}/>
                     </animated.group>
                 </group>
             </group>
@@ -1502,7 +1703,6 @@ export default function Showroom(props) {
             <CatchButton position={[6.35, 0.02, -3.1]}/>
             <PregameButton position={[6.65, 0.02, -2.4]}/>
             <ScoreButton position={[6.35, 0.02, -1.7]}/>
-            <GameStartButton position={[5.4, 0.02, -1]}/>
             <EndScenesButton position={[5.4, 0.02, 0]}/>
         </group>
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
