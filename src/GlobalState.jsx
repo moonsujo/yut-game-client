@@ -3,7 +3,6 @@ import initialState from "../initialState";
 import mediaValues from "./mediaValues";
 
 import { atomWithReducer } from 'jotai/utils'
-import { useEffect } from "react";
 
 function atomWithCompare(initialValue, areEqual) {
   return atomWithReducer(initialValue, (prev, next) => {

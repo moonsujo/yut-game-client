@@ -108,19 +108,19 @@ export function useFireworksShader() {
             let nodes, materials, animations, geometry
             let shape = Math.random()
             if (shape < 0.25) {
-                let model = useGLTF('/models/aries-constellation-thin.glb', false, false)
+                let model = useGLTF('/models/aries-constellation-dhazele-6.glb', false, false)
                 nodes = model.nodes
                 geometry = nodes.BezierCurve001.geometry
             } else if (shape < 0.5) {
-                let model = useGLTF('/models/bull-constellation-thin.glb')
+                let model = useGLTF('/models/taurus-constellation-dhazele-2.glb')
                 nodes = model.nodes
                 geometry = nodes.BezierCurve001.geometry
             } else if (shape < 0.75) {
-                let model = useGLTF('/models/rhino-constellation-thin.glb')
+                let model = useGLTF('/models/rhino-constellation-dhazele-2.glb')
                 nodes = model.nodes
                 geometry = nodes.rhino.geometry
             } else {
-                let model = useGLTF('/models/wolf-constellation-thin-3.glb')
+                let model = useGLTF('/models/wolf-constellation-dhazele-2-new-mat.glb')
                 nodes = model.nodes
                 geometry = nodes.wolf.geometry
             }

@@ -57,8 +57,8 @@ export default function Earth({ position=[0,0,0], rotation=[0,0,0], scale=1, sho
             material={materials.earth}
           />
         </mesh>
-        { showParticles && <NeptuneParticles/> }
       </group>
+      { showParticles && <NeptuneParticles/> }
     </animated.group>
   );
 }

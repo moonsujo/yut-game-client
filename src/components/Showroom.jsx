@@ -1,10 +1,11 @@
 import { Float, Text3D } from "@react-three/drei"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
-import { useLoader } from '@react-three/fiber';
+import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { MeshDistortMaterial } from '@react-three/drei'
 import { animated, useSpring } from '@react-spring/three'
+import { useControls } from "leva"
 
 import DoAlert from "../alerts/DoAlert"
 import GeAlert from "../alerts/GeAlert"
@@ -33,6 +34,17 @@ import Star from "../meshes/Star.jsx";
 import Constellation from "../shader/constellation/Constellation.jsx";
 import ScoreAlert from "../alerts/ScoreAlert.jsx";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader.jsx";
+import RocketsWin2 from "../endScenes/RocketsWin2.jsx";
+import Earth from "../meshes/Earth.jsx";
+
+import FragmentShaderBeam2 from '../shader/beamShaderSimple/fragment.glsl'
+import VertexShaderBeam2 from '../shader/beamShaderSimple/vertex.glsl'
+import gsap from "gsap";
+import Wolf from "../meshes/Wolf.jsx";
+import CyberTruck from "../meshes/CyberTruck.jsx";
+import Barn from "../meshes/Barn.jsx";
+import { Llama } from "../meshes/Llama.jsx";
+import Ruby from "../meshes/Ruby.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -305,19 +317,6 @@ export default function Showroom(props) {
             >
                 SCORE
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
-    function EndScenesButton(props) {
-        return <group {...props}>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                END SCENES
-                <meshStandardMaterial color='yellow'/>
             </Text3D>
         </group>
     }
@@ -1331,21 +1330,6 @@ export default function Showroom(props) {
                 color.setHSL(hue, 0.7, 0.5)
                 CreateFirework({ count, position, size, radius, color });
             }, 1210)
-    
-            // firework 8
-            setTimeout(() => {
-                const count = Math.round(800 + Math.random() * 500);
-                const position = new THREE.Vector3(
-                    center[0]-2.4 + Math.random() * 0.3, 
-                    center[1],
-                    center[2]+0.5 + Math.random() * 0.3, 
-                )
-                const size = 0.27 + Math.random() * 0.04
-                const radius = 1.1 + Math.random() * 0.4
-                const color = new THREE.Color();
-                color.setHSL(hue, 0.8, 0.5)
-                CreateFirework({ count, position, size, radius, color });
-            }, 1500)
         }
 
         function RocketButton({ scale, position }) {
@@ -1373,7 +1357,7 @@ export default function Showroom(props) {
                         },
                         to: [
                             {
-                                alertScale: 1,
+                                alertScale: 1.1,
                                 config: {
                                     tension: 170,
                                     friction: 26,
@@ -1496,7 +1480,7 @@ export default function Showroom(props) {
                         },
                         to: [
                             {
-                                alertScale: 1,
+                                alertScale: 1.1,
                                 config: {
                                     tension: 170,
                                     friction: 26,
@@ -1622,7 +1606,9 @@ export default function Showroom(props) {
         pregameScale,
         pregamePosition,
         scoreScale,
-        scorePosition
+        scorePosition,
+        endScenesScale,
+        endScenesPosition
     } = useSpring({
         yutOutcomesScale: display === 'yutOutcomes' ? 1 : 0,
         yutOutcomesPosition: display === 'yutOutcomes' ? positionEnd : positionStart,
@@ -1634,6 +1620,8 @@ export default function Showroom(props) {
         pregamePosition: display === 'pregame' ? positionEnd : positionStart,
         scoreScale: display === 'score' ? 1 : 0,
         scorePosition: display === 'score' ? positionEnd : positionStart,
+        endScenesScale: display === 'endScenes' ? 1 : 0,
+        endScenesPosition: display === 'endScenes' ? positionEnd : positionStart,
     })
     function MainMenuButton(props) {
         const [hover, setHover] = useState(false)
@@ -1679,16 +1667,281 @@ export default function Showroom(props) {
             </mesh>
         </group>
     }
-    // score
-    // snippet of board with Earth
-    // choose ufo or rocket
-    // place them on a star
-    // indicate 'click earth' to trigger animation
-    // click earth
-    // play animation
+    
+    // show four buttons, one for each scenario
+    // on click, draw a curtain
+    // put on the scene
+    // add back button to go back
+    function RocketsWinButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('rocketsWin')
+        }
+        return <group {...props}>
+            <mesh>
+                <boxGeometry args={[2.9, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[2.85, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.1, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-1.25, 0.05, 0.15]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.3}
+                height={0.01}
+            >
+                ROCKETS WIN
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </Text3D>
+        </group>
+    }
+    function EndScenes(props) {
+        
+          const progressRef2 = useRef({ value: 0 })
+
+          const shaderMaterialBeam2 = new THREE.ShaderMaterial({
+            vertexShader: VertexShaderBeam2,
+            fragmentShader: FragmentShaderBeam2,
+            transparent: true,
+            uniforms:
+            {
+              uOpacity: { value: 0 }
+            }
+          })
+
+          
+        // const { rotationX, rotationY, rotationZ, rotationW } = useControls({ rotationX: 0, rotationY: 0, rotationZ: 0, rotationW : 0 })
+
+            const beamBrightness = 0.2
+            useFrame((state, delta) => {
+              const time = state.clock.elapsedTime
+              shaderMaterialBeam2.uniforms.uOpacity.value = Math.sin(time * 3) * 0.05 + beamBrightness
+            })
+
+            
+        const pWolfRise = 0.0
+        const pWolfAbsorbed = 0.2
+        const pCybertruckRise = 0.2
+        const pCybertruckAbsorbed = 0.4
+        const pBarnRise = 0.4
+        const pBarnAbsorbed = 0.6
+        const pLlamaRise = 0.6
+        const pLlamaAbsorbed = 0.8
+        const pGemRise = 0.8
+        const pGemAbsorbed = 1.0
+
+        const [{ wolfScale, wolfPosition, cybertruckPosition, cybertruckScale, barnPosition, barnScale, llamaPosition, llamaScale, gemPosition, gemScale }, api2] = useSpring(() => ({
+        wolfPosition: [0, -2, 2],
+        wolfScale: [0, 0, 0],
+        cybertruckPosition: [0, -2, 2],
+        cybertruckScale: [0, 0, 0],
+        barnPosition: [0, -2, 2],
+        barnScale: [0, 0, 0],
+        llamaPosition: [0, -2, 2],
+        llamaScale: [0, 0, 0],
+        gemPosition: [0, -2, 2],
+        gemScale: [0, 0, 0],
+        config: { tension: 70, friction: 20 },
+        }))
+
+        gsap.to(progressRef2.current, {
+                value: 1,
+                duration: 7,
+                ease: 'linear',
+                repeat: -1,
+                onUpdate: () => {
+                const p = progressRef2.current.value
+        
+                // Interpolate position and scale manually
+                let wolfPosition,
+                wolfScale,
+                cybertruckPosition,
+                cybertruckScale,
+                barnPosition,
+                barnScale,
+                llamaPosition,
+                llamaScale,
+                gemPosition,
+                gemScale
+        
+                function calculateProgress(value, start, finish) {
+                    return (value - start) / (finish - start)
+                }
+                // Wolf
+                if (p < pWolfAbsorbed) { // 0.0 - 0.2
+                    let progress = calculateProgress(p, 0, pWolfAbsorbed)
+                    wolfPosition = [0, -2, 5 - progress * 6]
+                    wolfScale = 1 - progress
+                }
+        
+                // Cybertruck
+                if (p > pCybertruckRise && p < pCybertruckAbsorbed) { // 0.0 - 0.2
+                    let progress = calculateProgress(p, pCybertruckRise, pCybertruckAbsorbed)
+                    cybertruckPosition = [0, -4, 4 - progress * 6]
+                    cybertruckScale = 1 - progress
+                }
+        
+                // Barn
+                if (p > pBarnRise && p < pBarnAbsorbed) { // 0.0 - 0.2
+                    let progress = calculateProgress(p, pBarnRise, pBarnAbsorbed)
+                    barnPosition = [0, -4, 4 - progress * 6]
+                    barnScale = 1 - progress
+                }
+                
+                // Llama
+                if (p > pLlamaRise && p < pLlamaAbsorbed) { // 0.0 - 0.2
+                    let progress = calculateProgress(p, pLlamaRise, pLlamaAbsorbed)
+                    llamaPosition = [0, -4, 4 - progress * 6]
+                    llamaScale = 1 - progress
+                }
+        
+                // Gem
+                if (p > pGemRise && p < pGemAbsorbed) { // 0.0 - 0.2
+                    let progress = calculateProgress(p, pGemRise, pGemAbsorbed)
+                    gemPosition = [0, -4, 4 - progress * 6]
+                    gemScale = 1 - progress
+                }
+        
+                api2.set({
+                    wolfPosition,
+                    wolfScale,
+                    cybertruckPosition,
+                    cybertruckScale,
+                    barnPosition,
+                    barnScale,
+                    llamaPosition,
+                    llamaScale,
+                    gemPosition,
+                    gemScale
+                })
+                }
+        })
+
+        return <group {...props}>
+            <group name='rockets-win' position={[-4, 0, -3]}>
+                <group name='picture' position={[0, 0, 0.5]}>
+                    <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                </group>
+                <PlayAnimationButton position={[0, 0, 2.5]} scale={0.8}/>
+            </group>
+            <group name='rockets-lose' position={[1, 0, -2.5]}>
+                <group name='picture'>
+                    <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
+                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                </group>
+                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
+            </group>
+            <group name='ufos-win' position={[-4, 0, 2.5]}>
+                <group name='picture'>
+                    <Ufo position={[0, 2, 0]} scale={2} onBoard/>
+                    <mesh name='beam' rotation={[-Math.PI/2 + Math.PI/9, Math.PI, 0]} position={[0, -2.2, 2.0]} scale={0.45} material={shaderMaterialBeam2}>
+                        <cylinderGeometry args={[1, 3, 13, 32]}/>
+                    </mesh>
+                        <animated.group name='wolf' position={wolfPosition} scale={wolfScale}>
+                            <Wolf rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='cybertruck' position={cybertruckPosition} scale={cybertruckScale}>
+                            <CyberTruck rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.4}/>
+                        </animated.group>
+                        <animated.group name='barn' position={barnPosition} scale={barnScale}>
+                            <Barn rotation={[-Math.PI/8, Math.PI/4, -Math.PI/4]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='llama' position={llamaPosition} scale={llamaScale}>
+                            <Llama rotation={[-Math.PI/4, Math.PI/2, 0]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='gem' position={gemPosition} scale={gemScale} rotation={[-Math.PI/16, 0, 0]}>
+                            <Ruby rotation={[-Math.PI/4, Math.PI/2, 0]} scale={1}/>
+                            <Ruby position={[1, 0, 0.5]} rotation={[-Math.PI/6, Math.PI, 0]} scale={0.5} color='#0055FF'/>
+                            <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
+                        </animated.group>
+                </group>
+                <PlayAnimationButton position={[2, 0, 1.5]} scale={0.8}/>
+            </group>
+            <group name='ufos-win' position={[2, 0, 2]}>
+                <group name='picture'>
+                    <Ufo rotation={[Math.PI/4, Math.PI, 0]}/>
+                    <Star color='grey' position={[0, -1, -0.3]} scale={0.9}/>
+                </group>
+                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
+            </group>
+        </group>
+    }
+    function EndScenesButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('endScenes')
+        }
+        return <group {...props}>
+            <mesh>
+                <boxGeometry args={[2.5, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[2.45, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.5, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-1.1, 0.04, 0.15]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.3}
+                height={0.01}
+            >
+                END SCENES
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </Text3D>
+        </group>
+    }
     return <group {...props}>
         <group name='tab'>
-            <Text3D
+            {/* <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
                 position={[5.4, 0.02, -5]}
                 rotation={[-Math.PI/2, 0, 0]}
@@ -1697,23 +1950,26 @@ export default function Showroom(props) {
             >
                 ALERTS
                 <meshStandardMaterial color='yellow'/>
-            </Text3D>
+            </Text3D> */}
             <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
             <NewTurnButton position={[6.75, 0.02, -3.8]}/>
             <CatchButton position={[6.35, 0.02, -3.1]}/>
             <PregameButton position={[6.65, 0.02, -2.4]}/>
             <ScoreButton position={[6.35, 0.02, -1.7]}/>
-            <EndScenesButton position={[5.4, 0.02, 0]}/>
+            <EndScenesButton position={[6.85, 0.02, -1.0]}/>
         </group>
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
+        <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
+        {/* <animated.group position={rocketsWinPosition} scale={rocketsWinScale}><RocketsWin2/></animated.group> */}
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
         </mesh>
+        {/* back button */}
         <MainMenuButton position={[-10.5, 0, 2]}/>
     </group>
 }
