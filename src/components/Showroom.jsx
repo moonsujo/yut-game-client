@@ -45,9 +45,11 @@ import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
+import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
+    const [endScene, setEndScene] = useState(null)
     const [endScene, setEndScene] = useState(null)
     const setHomeDisplay = props.setHomeDisplay
     const [RollStar] = useStarRoll();
@@ -1677,12 +1679,9 @@ export default function Showroom(props) {
     // on click, draw a curtain
     // put on the scene
     // add back button to go back
-    const { rocketsWinScale, endSceneCurtainOpacity } = useSpring({
+    const { rocketsWinScale } = useSpring({
         rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
-        endSceneCurtainOpacity: endScene ? 1 : 0
     })
-
-    console.log('endSceneCurtainOpacity', endSceneCurtainOpacity)
     function EndScenes(props) {
         
           const progressRef2 = useRef({ value: 0 })
