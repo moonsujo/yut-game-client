@@ -34,7 +34,6 @@ import Star from "../meshes/Star.jsx";
 import Constellation from "../shader/constellation/Constellation.jsx";
 import ScoreAlert from "../alerts/ScoreAlert.jsx";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader.jsx";
-import RocketsWin2 from "../endScenes/RocketsWin2.jsx";
 import Earth from "../meshes/Earth.jsx";
 
 import FragmentShaderBeam2 from '../shader/beamShaderSimple/fragment.glsl'
@@ -45,9 +44,11 @@ import CyberTruck from "../meshes/CyberTruck.jsx";
 import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
+import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
+    const [endScene, setEndScene] = useState(null)
     const setHomeDisplay = props.setHomeDisplay
     const [RollStar] = useStarRoll();
     const [CreateMeteor] = useMeteorsShader();
@@ -1217,19 +1218,23 @@ export default function Showroom(props) {
         </group>
     }
 
-    function PlayAnimationButton(props) {
-        return <group {...props}>
+    function PlayAnimationButton({ position, scale, onPointerEnter, onPointerLeave, onPointerDown, hover }) {
+        return <group position={position} scale={scale}>
             <mesh>
                 <boxGeometry args={[1.2, 0.03, 0.75]}/>
-                <meshStandardMaterial color={ props.hover ? 'green': 'yellow' }/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </mesh>
             <mesh>
                 <boxGeometry args={[1.15, 0.04, 0.7]}/>
                 <meshStandardMaterial color='black'/>
             </mesh>
+            <mesh onPointerEnter={e=>onPointerEnter(e)} onPointerLeave={e=>onPointerLeave(e)} onPointerDown={e=>onPointerDown(e)}>
+                <boxGeometry args={[1.2, 0.04, 0.75]}/>
+                <meshStandardMaterial color='black' transparent opacity={0}/>
+            </mesh>
             <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
                 <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                <meshStandardMaterial color={ props.hover ? 'green': 'yellow' }/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </mesh>
         </group>
     }
@@ -1672,52 +1677,12 @@ export default function Showroom(props) {
     // on click, draw a curtain
     // put on the scene
     // add back button to go back
-    function RocketsWinButton(props) {
-        const [hover, setHover] = useState(false)
-        function onPointerEnter(e) {
-            e.stopPropagation()
-            setHover(true)
-            document.body.style.cursor = 'pointer';
-        }
-        function onPointerLeave(e) {
-            e.stopPropagation()
-            setHover(false)
-            document.body.style.cursor = 'default';
-        }
-        function onPointerDown(e) {
-            e.stopPropagation()
-            setDisplay('rocketsWin')
-        }
-        return <group {...props}>
-            <mesh>
-                <boxGeometry args={[2.9, 0.03, 0.55]}/>
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh>
-                <boxGeometry args={[2.85, 0.04, 0.5]}/>
-                <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-                name='wrapper' 
-                onPointerEnter={e => onPointerEnter(e)}
-                onPointerLeave={e => onPointerLeave(e)}
-                onPointerDown={e => onPointerDown(e)}
-            >
-                <boxGeometry args={[2.1, 0.04, 0.55]}/>
-                <meshStandardMaterial transparent opacity={0}/>
-            </mesh>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[-1.25, 0.05, 0.15]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                ROCKETS WIN
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
+    const { rocketsWinScale, endSceneCurtainOpacity } = useSpring({
+        rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
+        endSceneCurtainOpacity: endScene ? 1 : 0
+    })
+
+    console.log('endSceneCurtainOpacity', endSceneCurtainOpacity)
     function EndScenes(props) {
         
           const progressRef2 = useRef({ value: 0 })
@@ -1732,15 +1697,11 @@ export default function Showroom(props) {
             }
           })
 
-          
-        // const { rotationX, rotationY, rotationZ, rotationW } = useControls({ rotationX: 0, rotationY: 0, rotationZ: 0, rotationW : 0 })
-
-            const beamBrightness = 0.2
-            useFrame((state, delta) => {
-              const time = state.clock.elapsedTime
-              shaderMaterialBeam2.uniforms.uOpacity.value = Math.sin(time * 3) * 0.05 + beamBrightness
-            })
-
+        const beamBrightness = 0.2
+        useFrame((state, delta) => {
+            const time = state.clock.elapsedTime
+            shaderMaterialBeam2.uniforms.uOpacity.value = Math.sin(time * 3) * 0.05 + beamBrightness
+        })
             
         const pWolfRise = 0.0
         const pWolfAbsorbed = 0.2
@@ -1840,8 +1801,23 @@ export default function Showroom(props) {
                 }
         })
 
-        return <group {...props}>
-            <group name='rockets-win' position={[-4, 0, -3]}>
+        function RocketsWin() {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                setEndScene('rocketsWin')
+            }
+            return <group name='rockets-win' position={[-4, 0, -3]}>
                 <group name='picture' position={[0, 0, 0.5]}>
                     <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
                     <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
@@ -1849,18 +1825,29 @@ export default function Showroom(props) {
                     <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
                     <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
                 </group>
-                <PlayAnimationButton position={[0, 0, 2.5]} scale={0.8}/>
+                <PlayAnimationButton 
+                    position={[0, 0, 2.5]} 
+                    scale={0.8} 
+                    onPointerEnter={e=>onPointerEnter(e)}
+                    onPointerLeave={e=>onPointerLeave(e)}
+                    onPointerDown={e=>onPointerDown(e)}
+                    hover={hover}
+                />
             </group>
-            <group name='rockets-lose' position={[1, 0, -2.5]}>
+        }
+        function RocketsLose() {
+            return <group name='rockets-lose' position={[1, 0, -2.5]}>
                 <group name='picture'>
                     <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
             </group>
-            <group name='ufos-win' position={[-4, 0, 2.5]}>
+        }
+        function UfosWin() {
+            return <group name='ufos-win' position={[-4, 0, 2.5]}>
                 <group name='picture'>
-                    <Ufo position={[0, 2, 0]} scale={2} onBoard/>
+                    <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
                     <mesh name='beam' rotation={[-Math.PI/2 + Math.PI/9, Math.PI, 0]} position={[0, -2.2, 2.0]} scale={0.45} material={shaderMaterialBeam2}>
                         <cylinderGeometry args={[1, 3, 13, 32]}/>
                     </mesh>
@@ -1884,13 +1871,21 @@ export default function Showroom(props) {
                 </group>
                 <PlayAnimationButton position={[2, 0, 1.5]} scale={0.8}/>
             </group>
-            <group name='ufos-win' position={[2, 0, 2]}>
+        }
+        function UfosLose() {
+            return <group name='ufos-lose' position={[2, 0, 2]}>
                 <group name='picture'>
-                    <Ufo rotation={[Math.PI/4, Math.PI, 0]}/>
+                    <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
                     <Star color='grey' position={[0, -1, -0.3]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
             </group>
+        }
+        return <group {...props}>
+            <RocketsWin/>
+            <RocketsLose/>
+            <UfosWin/>
+            <UfosLose/>
         </group>
     }
     function EndScenesButton(props) {
@@ -1964,10 +1959,10 @@ export default function Showroom(props) {
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        {/* <animated.group position={rocketsWinPosition} scale={rocketsWinScale}><RocketsWin2/></animated.group> */}
+        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[0, 15, 6.5]}/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
-            <AnimatedMeshDistortMaterial color='black' transparent opacity={curtainSprings.opacity}/>
+            <AnimatedMeshDistortMaterial color='black' transparent opacity={ endSceneCurtainOpacity ? endSceneCurtainOpacity : curtainSprings.opacity}/>
         </mesh>
         {/* back button */}
         <MainMenuButton position={[-10.5, 0, 2]}/>
