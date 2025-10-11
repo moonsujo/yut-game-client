@@ -1,7 +1,7 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
-import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
+import { deviceAtom } from "../GlobalState";
+import { formatName, generateRandomNumberInRange } from "../helpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
 import { useEffect, useRef } from "react";
@@ -20,6 +20,7 @@ import MilkyWay from "../shader/MilkyWay";
 
 export default function RocketsWin2Preview({ position }) {
 
+  console.log('rockets win preview')
   // Hooks
   const [CreateFirework] = useFireworksShader();
   useResponsiveSetting();
@@ -35,10 +36,6 @@ export default function RocketsWin2Preview({ position }) {
   const rocket1 = useRef()
   const rocket2 = useRef()
   const rocket3 = useRef()
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -136,29 +133,14 @@ export default function RocketsWin2Preview({ position }) {
         }
       }
     }, 200)
-    setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(true)
     return (() => {
       clearInterval(intervalFireworks);
     })
   }, [])
 
-  useEffect(() => {
-    if (device === 'landscapeDesktop') {
-      setShowBlackhole2(true)
-    } else {
-      setShowBlackhole2(false)
-    }
-  }, [device])
-
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
   return <group position={position}>
-    <group name='setup'>
-      <GameCamera position={layout[device].camera.position}/>
-    </group>
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
       position={layout[device].rocketsWinScene.title.position}
@@ -314,7 +296,7 @@ export default function RocketsWin2Preview({ position }) {
     {/* for preview, because curtain is drawn */}
     <MilkyWay // will not show without a camera
       rotation={[-Math.PI/2, 0, -35.0]} 
-      position={[0, 0, 0]}
+      position={[0, -3.5, 0]}
       scale={5}
       brightness={0.5}
       colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}

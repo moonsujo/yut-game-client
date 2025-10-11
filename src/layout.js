@@ -3481,13 +3481,13 @@ export default {
     },
     rocketsWinScene: {
       title: {
-        position: [-12.5, 14, 0],
+        position: [-12.5, 0, -5.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5,
         text: 'MISSION ACCOMPLISHED!'
       },
       teams: {
-        position: [-12.5, 12, 0],
+        position: [-12.5, 0, -4.8],
         scale: 1
       },
       scene0: {

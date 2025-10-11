@@ -45,11 +45,9 @@ import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
-import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
-    const [endScene, setEndScene] = useState(null)
     const [endScene, setEndScene] = useState(null)
     const setHomeDisplay = props.setHomeDisplay
     const [RollStar] = useStarRoll();
@@ -89,6 +87,9 @@ export default function Showroom(props) {
             opacity: 0, 
         }
     }))
+    const { curtainEndSceneOpacity } = useSpring({
+        curtainEndSceneOpacity: endScene ? 1 : 0
+    })
     function YutOutcomesButton(props) {
         
         const [hover, setHover] = useState(false)
@@ -1958,10 +1959,14 @@ export default function Showroom(props) {
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[0, 15, 6.5]}/></animated.group>
+        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[-4, 10, 4]}/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
-            <AnimatedMeshDistortMaterial color='black' transparent opacity={ endSceneCurtainOpacity ? endSceneCurtainOpacity : curtainSprings.opacity}/>
+            <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
+        </mesh>
+        <mesh name='background-curtain-end-scene' rotation={[-Math.PI/2, 0, 0]} position={[0, 4, 0]} scale={10}>
+            <boxGeometry args={[20, 10, 0.1]}/>
+            <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainEndSceneOpacity }/>
         </mesh>
         {/* back button */}
         <MainMenuButton position={[-10.5, 0, 2]}/>
