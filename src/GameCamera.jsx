@@ -36,7 +36,7 @@ export default function GameCamera({ position=[0, 17, 7], lookAt=[0,0,0], contro
   })
 
   return <>
-    <CameraControls enabled={controlsEnabled}/>
+    <CameraControls enabled={true}/>
     <OrthographicCamera
       makeDefault
       zoom={zoom}

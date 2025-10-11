@@ -49,7 +49,8 @@ void main()
     gl_Position = projectionMatrix * viewPosition;
 
     // Final size
-    gl_PointSize = uSize * uResolution.y * aSize * sizeProgress * sizeTwinkling;
+    gl_PointSize = uSize * uResolution.y * sizeProgress * sizeTwinkling;
+    // gl_PointSize = uSize * uResolution.y * aSize * sizeProgress * sizeTwinkling;
     gl_PointSize *= 1.0 / - viewPosition.z;
 
     if (gl_PointSize < 1.0) {

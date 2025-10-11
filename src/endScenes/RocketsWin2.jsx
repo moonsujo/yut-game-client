@@ -16,6 +16,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
+import { useParams } from "wouter";
 
 export default function RocketsWin2() {
 
@@ -23,6 +24,7 @@ export default function RocketsWin2() {
   const [CreateFirework] = useFireworksShader();
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
+  const params = useParams()
 
   // State
   const teamRockets = useAtomValue(teamsAtom)[0]
@@ -302,7 +304,7 @@ export default function RocketsWin2() {
           height={0.03} 
           position={[0, 0, 0]}
         >
-          ROOM ID: ABCD
+          {`ROOM ID: ${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </group> }

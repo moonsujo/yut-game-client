@@ -3481,13 +3481,13 @@ export default {
     },
     rocketsWinScene: {
       title: {
-        position: [-12.5, 0, -5.5],
+        position: [-12.5, 3, -4.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5,
         text: 'MISSION ACCOMPLISHED!'
       },
       teams: {
-        position: [-12.5, 0, -4.8],
+        position: [-12.5, 3, -3.8],
         scale: 1
       },
       scene0: {
@@ -3518,7 +3518,7 @@ export default {
           position: [-1.9, -0.25, 0],
           fontSize: 0.5
         },
-        position: [2.2, 0, 1],
+        position: [2.2, 3, 3],
         rotation: [-Math.PI/2, 0, 0]
       },
       shareLinkButton: {
@@ -3539,7 +3539,7 @@ export default {
           position: [-4.3,0,-0.4],
           fontSize: 0.4
         },
-        position: [2.1, 0, 2.4],
+        position: [2.1, 3, 4.4],
         rotation: [-Math.PI/2, 0, 0]
       },
       discordButton: {
@@ -3560,11 +3560,11 @@ export default {
           position: [1.4, -0.04, 0],
           scale: 0.4
         },
-        position: [2.1, 0, 3.8],
+        position: [2.1, 3, 5.8],
         rotation: [-Math.PI/2, 0, 0]
       },
       roomId: {
-        position: [0, 0, 0],
+        position: [0, 3, 2],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5
       }

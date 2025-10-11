@@ -107,6 +107,8 @@ export function useFireworksShader() {
         } else if (type==='constellation') {
             let nodes, materials, animations, geometry
             let shape = Math.random()
+            // restore original models
+            // background stars
             if (shape < 0.25) {
                 let model = useGLTF('/models/aries-constellation-dhazele-6.glb', false, false)
                 nodes = model.nodes
