@@ -18,8 +18,8 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
-import { meteorTexturesAtom } from "../GlobalState.jsx";
-import { useAtomValue } from "jotai";
+import { deviceAtom, meteorTexturesAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom } from "../GlobalState.jsx";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
 import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
 import CatchRocketMemeAlert from "../alerts/CatchRocketMemeAlert.jsx";
@@ -45,6 +45,7 @@ import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
+import MilkyWayShowroom from "../shader/MilkyWayShowroom.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -55,6 +56,9 @@ export default function Showroom(props) {
     const [CreateMeteor] = useMeteorsShader();
     const { playSoundEffect } = useSoundEffectsPlayer()
     const meteorTextures = useAtomValue(meteorTexturesAtom)
+    const [intervalFireworksId, setIntervalFireworksId] = useState(null)
+    const device = useAtomValue(deviceAtom)
+    const [CreateFirework] = useFireworksShader();
 
     // helper function
     function CreateMoMeteor() {
@@ -1251,7 +1255,6 @@ export default function Showroom(props) {
     }
     function Score(props) {
 
-        const [CreateFirework] = useFireworksShader();
         function shootFireworks(center, team) {
             
             const hue = team === 0 ? 0.01 : 0.5
@@ -1693,6 +1696,57 @@ export default function Showroom(props) {
     
     const { rocketsWinScale } = useSpring({
         rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
+        config: { tension: 70, friction: 20 },
+        onRest: () => { 
+            if (endScene === 'rocketsWin') {
+                const newIntervalFireworksId = setInterval(() => {
+                    const constellationChance = 0.07
+                    const planetChance = 0.14
+                    const position = [-4, 10, 4]
+                    if (document.hasFocus()) {
+                        const count = Math.round(300 + Math.random() * 100);
+                        let positionShader;
+                        let size;
+                        let radius;
+                        if (device === 'portrait') {
+                            const radians = Math.random() * Math.PI*2
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
+                                position[1] + -5,
+                                position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
+                            )
+                            size = 0.1 + Math.random() * 0.15
+                            radius = 1.5 + Math.random() * 1.0
+                        } else {
+                            let angle = Math.PI * 2 * Math.random()
+                            let radiusCircle = 5
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(angle) * radiusCircle * 1.7,
+                                position[1] - 1,
+                                position[2] + 3 + Math.sin(angle) * radiusCircle - 3
+                            )
+                            size = 0.15
+                            radius = 1.5 + Math.random() * 0.5
+                        }
+                        const color = new THREE.Color();
+                        color.setHSL(Math.random(), 0.7, 0.4)
+                
+                        let type = Math.random()
+                        if (type < constellationChance) {
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
+                        } else if (type > constellationChance && type < planetChance) {
+                            console.log('showroom, planet')
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
+                        } else {
+                            CreateFirework({ count, position: positionShader, size, radius, color });
+                        }
+                    }
+                }, 200)
+                setIntervalFireworksId(newIntervalFireworksId)
+            } else {
+                clearInterval(intervalFireworksId)
+            }
+        }
     })
     function EndScenes(props) {
         
@@ -1949,8 +2003,8 @@ export default function Showroom(props) {
     }
 
     const { backButtonPosition, tabPosition } = useSpring({
-        backButtonPosition: homeDisplay === 'endScene' ? [-15.5, 0, 2] : [-10.5, 0, 2],
-        tabPosition: endScene === null ? [0, 0, 0] : [4, 0, 0]
+        backButtonPosition: homeDisplay === 'endScene' ? [-18.5, 0, 2] : [-10.5, 0, 2],
+        tabPosition: endScene === null ? [0, 0, 0] : [5, 0, 0]
     })
     return <group {...props}>
         <animated.group name='tab' position={tabPosition}>
@@ -1979,7 +2033,7 @@ export default function Showroom(props) {
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        {/* <animated.group scale={rocketsWinScale}> { <RocketsWin2Preview position={[-4, 10, 4]}/> }</animated.group> */}
+        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[-4, 10, 4]}/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>

@@ -18,10 +18,10 @@ import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import MilkyWay from "../shader/MilkyWay";
 import StarsPatterns2Shader from "../shader/starsPatterns2/StarsPatterns2Shader";
+import MilkyWayShowroom from "../shader/MilkyWayShowroom";
 
 export default function RocketsWin2Preview({ position }) {
 
-  console.log('rockets win preview')
   // Hooks
   const [CreateFirework] = useFireworksShader();
   useResponsiveSetting();
@@ -87,54 +87,6 @@ export default function RocketsWin2Preview({ position }) {
       }
     }
   })
-
-  // Fireworks
-  useEffect(() => {
-    const intervalFireworks = setInterval(() => {
-      const constellationChance = 0.1
-      const planetChance = 0.2
-      if (document.hasFocus()) {
-        const count = Math.round(300 + Math.random() * 100);
-        let positionShader;
-        let size;
-        let radius;
-        if (device === 'portrait') {
-          const radians = Math.random() * Math.PI*2
-          positionShader = new THREE.Vector3(
-              position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-              position[1] + -5,
-              position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-          )
-          size = 0.1 + Math.random() * 0.15
-          radius = 1.5 + Math.random() * 1.0
-        } else {
-          let angle = Math.PI * 2 * Math.random()
-          let radiusCircle = 5
-          positionShader = new THREE.Vector3(
-              position[0] + Math.cos(angle) * radiusCircle * 1.7,
-              position[1] - 1,
-              position[2] + 3 + Math.sin(angle) * radiusCircle - 3
-          )
-          size = 0.15
-          radius = 1.5 + Math.random() * 0.5
-        }
-        const color = new THREE.Color();
-        color.setHSL(Math.random(), 0.7, 0.4)
-  
-        let type = Math.random()
-        if (type < constellationChance) {
-          CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
-        } else if (type > constellationChance && type < planetChance) {
-          // CreateFirework({ count, position, size, radius, color, type: 'planet' });
-        } else {
-          CreateFirework({ count, position: positionShader, size, radius, color });
-        }
-      }
-    }, 200)
-    return (() => {
-      clearInterval(intervalFireworks);
-    })
-  }, [])
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
@@ -290,18 +242,5 @@ export default function RocketsWin2Preview({ position }) {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
-    <MeteorsRealShader color={meteorShaderColor}/>
-    {/* for preview, because curtain is drawn */}
-    <MilkyWay // will not show without a camera
-      rotation={[-Math.PI/2, 0, -35.0]} 
-      position={[0, -3.5, 0]}
-      scale={5}
-      brightness={0.5}
-      colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-      colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-      colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-    />
-    <StarsPatterns2Shader position={[0, 5, 0]} count={10000} texturePath={'/textures/particles/3.png'}/>
-    <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/6.png'} size={2}/>
   </group>
 }

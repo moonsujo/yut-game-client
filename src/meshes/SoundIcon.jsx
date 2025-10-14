@@ -200,5 +200,3 @@ export function SoundIcon(props) {
     </group>
   )
 }
-
-useGLTF.preload('/models/sound-icon.glb')

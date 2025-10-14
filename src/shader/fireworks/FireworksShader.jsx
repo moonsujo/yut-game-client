@@ -33,6 +33,11 @@ export function useFireworksShader() {
         useLoader(TextureLoader, '/textures/particles/6.png'),
         useLoader(TextureLoader, '/textures/particles/8.png'),
     ]
+    const ariesModel = useGLTF('/models/aries-constellation-thin.glb', false, false)
+    const bullModel = useGLTF('/models/bull-constellation-thin.glb')
+    const rhinoModel = useGLTF('/models/rhino-constellation-thin.glb')
+    const wolfModel = useGLTF('/models/wolf-constellation-thin-3.glb')
+    const planetModel = useGLTF("/models/planet-joined.glb");
 
     function CreateFirework({count, position, size, radius, color, type='regular'}) {
 
@@ -63,7 +68,8 @@ export function useFireworksShader() {
                 positionsArray[i3+1] = position.y
                 positionsArray[i3+2] = position.z
 
-                sizesArray[i] = Math.random()
+                sizesArray[i] = 0.5
+                // sizesArray[i] = Math.random()
 
                 timeMultipliersArray[i] = 1 + Math.random()
             }
@@ -105,36 +111,32 @@ export function useFireworksShader() {
             scene.add(points)
 
         } else if (type==='constellation') {
-            let nodes, materials, animations, geometry
+            let nodes, geometry
             let shape = Math.random()
             // restore original models
             // background stars
             if (shape < 0.25) {
-                let model = useGLTF('/models/aries-constellation-dhazele-6.glb', false, false)
-                nodes = model.nodes
+                nodes = ariesModel.nodes
                 geometry = nodes.BezierCurve001.geometry
             } else if (shape < 0.5) {
-                let model = useGLTF('/models/taurus-constellation-dhazele-2.glb')
-                nodes = model.nodes
+                nodes = bullModel.nodes
                 geometry = nodes.BezierCurve001.geometry
             } else if (shape < 0.75) {
-                let model = useGLTF('/models/rhino-constellation-dhazele-2.glb')
-                nodes = model.nodes
+                nodes = rhinoModel.nodes
                 geometry = nodes.rhino.geometry
             } else {
-                let model = useGLTF('/models/wolf-constellation-dhazele-2-new-mat.glb')
-                nodes = model.nodes
+                nodes = wolfModel.nodes
                 geometry = nodes.wolf.geometry
             }
             
-            texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+            texture = fireworkTextures[0]
             texture.flipY = false;
             let colorConstellation = new THREE.Color(color.r * 0.1, color.g * 0.15, color.b * 0.15)
             material = new THREE.ShaderMaterial({
                 vertexShader: shapeVertexShader,
                 fragmentShader: shapeFragmentShader,
                 uniforms: {
-                    uSize: new THREE.Uniform(0.08), // needs the THREE.Uniform object
+                    uSize: new THREE.Uniform(size * 0.5), // needs the THREE.Uniform object
                     uResolution: new THREE.Uniform(sizes.resolution),
                     uTexture: new THREE.Uniform(texture),
                     uColor: new THREE.Uniform(colorConstellation),
@@ -151,7 +153,8 @@ export function useFireworksShader() {
             
             let randomRotation = generateRandomNumberInRange(0, Math.PI/16)
             points.rotation.copy(new THREE.Euler(0, randomRotation, randomRotation))
-            let scale = Math.random() * 0.4 + 0.4
+            let scale = radius * 0.3 + 0.4
+            // let scale = Math.random() * 0.4 + 0.4
             points.scale.copy(new THREE.Vector3(scale, scale, scale))
             const destroy = () => { // may need to run on component unmount as well
                 scene.remove(points)
@@ -166,17 +169,18 @@ export function useFireworksShader() {
 
             scene.add(points)
         } else if (type === 'planet') { // refactor to use the constellation shader
-            const { nodes, materials } = useGLTF("/models/planet-joined.glb");
-            
+            console.log('planet')
+            let nodes, geometry;
+            nodes = planetModel.nodes;
             geometry = nodes.Sphere002.geometry
-            texture = fireworkTextures[Math.floor(Math.random() * fireworkTextures.length)]
+            texture = fireworkTextures[0]
             texture.flipY = false;
             let colorPlanet = new THREE.Color(color.r * 0.15, color.g * 0.15, color.b * 0.15)
             material = new THREE.ShaderMaterial({
                 vertexShader: shapeVertexShader,
                 fragmentShader: shapeFragmentShader,
                 uniforms: {
-                    uSize: new THREE.Uniform(0.03), // needs the THREE.Uniform object
+                    uSize: new THREE.Uniform(size * 0.3), // needs the THREE.Uniform object
                     uResolution: new THREE.Uniform(sizes.resolution),
                     uTexture: new THREE.Uniform(texture),
                     uColor: new THREE.Uniform(colorPlanet),
@@ -197,7 +201,7 @@ export function useFireworksShader() {
                 0, 
                 randomRotation
             ))
-            let scale = Math.random() * 0.5 + 0.7
+            let scale = radius * 0.3 + 0.4
             points.scale.copy(new THREE.Vector3(scale, scale, scale))
             const destroy = () => { // may need to run on component unmount as well
                 scene.remove(points)
@@ -209,8 +213,10 @@ export function useFireworksShader() {
                 material.uniforms.uProgress,
                 { value: 1, duration: 3, ease: 'linear', onComplete: destroy }
             )
+            console.log('points', points)
 
             scene.add(points)
+            console.log('added planet')
         }
     }
 

@@ -614,7 +614,7 @@ export default function Home2() {
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
     showroomScale: (display === 'showroom' || display === 'endScene') ? 1 : 0,
-    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-5,0,0] : (display === 'endScene' && device === 'landscapeDesktop') ? [-12, 0, 0] : [0,0,0],
+    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-5,0,0] : (display === 'endScene' && device === 'landscapeDesktop') ? [-13, 0, 0] : [0,0,0],
     config: {
       tension: 170,
       friction: 26
