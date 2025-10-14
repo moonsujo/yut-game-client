@@ -613,8 +613,8 @@ export default function Home2() {
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
-    showroomScale: display === 'showroom' ? 1 : 0,
-    navigationPosition: display === 'showroom' && device === 'landscapeDesktop' ? [-5,0,0] : display === 'endScene' && device === 'landscapeDesktop' ? [-10, 0, 0] : [0,0,0],
+    showroomScale: (display === 'showroom' || display === 'endScene') ? 1 : 0,
+    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-5,0,0] : (display === 'endScene' && device === 'landscapeDesktop') ? [-12, 0, 0] : [0,0,0],
     config: {
       tension: 170,
       friction: 26
@@ -716,12 +716,13 @@ export default function Home2() {
           tabOrientation='right'
         />
       </animated.group> }
-      { display === 'showroom' && <animated.group scale={showroomScale}>
+      { (display === 'showroom' || display === 'endScene') && <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
           rotation={layout[device].showroom.rotation}
           scale={layout[device].showroom.scale}
           setHomeDisplay={setDisplay}
+          homeDisplay={display}
         />  
       </animated.group>}
     </group>

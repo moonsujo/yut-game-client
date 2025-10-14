@@ -50,6 +50,7 @@ export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
     const [endScene, setEndScene] = useState(null)
     const setHomeDisplay = props.setHomeDisplay
+    const homeDisplay = props.homeDisplay
     const [RollStar] = useStarRoll();
     const [CreateMeteor] = useMeteorsShader();
     const { playSoundEffect } = useSoundEffectsPlayer()
@@ -87,9 +88,6 @@ export default function Showroom(props) {
             opacity: 0, 
         }
     }))
-    const { curtainEndSceneOpacity } = useSpring({
-        curtainEndSceneOpacity: endScene ? 1 : 0
-    })
     function YutOutcomesButton(props) {
         
         const [hover, setHover] = useState(false)
@@ -106,6 +104,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('yutOutcomes')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
 
         return <group {...props}>
@@ -155,6 +155,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('newTurn')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -201,6 +203,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('catch')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -247,6 +251,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('pregame')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -293,6 +299,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('score')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -1628,10 +1636,10 @@ export default function Showroom(props) {
         pregamePosition: display === 'pregame' ? positionEnd : positionStart,
         scoreScale: display === 'score' ? 1 : 0,
         scorePosition: display === 'score' ? positionEnd : positionStart,
-        endScenesScale: display === 'endScenes' ? 1 : 0,
+        endScenesScale: (display === 'endScenes' && endScene === null) ?  1 : 0,
         endScenesPosition: display === 'endScenes' ? positionEnd : positionStart,
     })
-    function MainMenuButton(props) {
+    function BackButton(props) {
         const [hover, setHover] = useState(false)
         function onPointerEnter(e) {
             e.stopPropagation()
@@ -1647,7 +1655,7 @@ export default function Showroom(props) {
             e.stopPropagation()
             setHomeDisplay('title')
         }
-        return <group name='main-menu-button' {...props}>
+        return <animated.group name='back-button' {...props}>
             <mesh>
                 <boxGeometry args={[0.9, 0.03, 0.55]}/>
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
@@ -1673,37 +1681,32 @@ export default function Showroom(props) {
                 <cylinderGeometry args={[1, 1, 1, 3, 1]} />
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </mesh>
-        </group>
+        </animated.group>
     }
     
-    // show four buttons, one for each scenario
-    // on click, draw a curtain
-    // put on the scene
-    // add back button to go back
     const { rocketsWinScale } = useSpring({
         rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
     })
     function EndScenes(props) {
         
-          const progressRef2 = useRef({ value: 0 })
+        const progressRef2 = useRef({ value: 0 })
 
-          const shaderMaterialBeam2 = new THREE.ShaderMaterial({
+        const shaderMaterialBeam2 = new THREE.ShaderMaterial({
             vertexShader: VertexShaderBeam2,
             fragmentShader: FragmentShaderBeam2,
             transparent: true,
             uniforms:
             {
-              uOpacity: { value: 0 }
+                uOpacity: { value: 0 }
             }
-          })
+        })
 
         const beamBrightness = 0.2
-        useFrame((state, delta) => {
+        useFrame((state) => {
             const time = state.clock.elapsedTime
             shaderMaterialBeam2.uniforms.uOpacity.value = Math.sin(time * 3) * 0.05 + beamBrightness
         })
             
-        const pWolfRise = 0.0
         const pWolfAbsorbed = 0.2
         const pCybertruckRise = 0.2
         const pCybertruckAbsorbed = 0.4
@@ -1715,25 +1718,25 @@ export default function Showroom(props) {
         const pGemAbsorbed = 1.0
 
         const [{ wolfScale, wolfPosition, cybertruckPosition, cybertruckScale, barnPosition, barnScale, llamaPosition, llamaScale, gemPosition, gemScale }, api2] = useSpring(() => ({
-        wolfPosition: [0, -2, 2],
-        wolfScale: [0, 0, 0],
-        cybertruckPosition: [0, -2, 2],
-        cybertruckScale: [0, 0, 0],
-        barnPosition: [0, -2, 2],
-        barnScale: [0, 0, 0],
-        llamaPosition: [0, -2, 2],
-        llamaScale: [0, 0, 0],
-        gemPosition: [0, -2, 2],
-        gemScale: [0, 0, 0],
-        config: { tension: 70, friction: 20 },
+            wolfPosition: [0, -2, 2],
+            wolfScale: [0, 0, 0],
+            cybertruckPosition: [0, -2, 2],
+            cybertruckScale: [0, 0, 0],
+            barnPosition: [0, -2, 2],
+            barnScale: [0, 0, 0],
+            llamaPosition: [0, -2, 2],
+            llamaScale: [0, 0, 0],
+            gemPosition: [0, -2, 2],
+            gemScale: [0, 0, 0],
+            config: { tension: 70, friction: 20 },
         }))
 
         gsap.to(progressRef2.current, {
-                value: 1,
-                duration: 7,
-                ease: 'linear',
-                repeat: -1,
-                onUpdate: () => {
+            value: 1,
+            duration: 7,
+            ease: 'linear',
+            repeat: -1,
+            onUpdate: () => {
                 const p = progressRef2.current.value
         
                 // Interpolate position and scale manually
@@ -1798,7 +1801,7 @@ export default function Showroom(props) {
                     gemPosition,
                     gemScale
                 })
-                }
+            }
         })
 
         function RocketsWin() {
@@ -1817,9 +1820,6 @@ export default function Showroom(props) {
                 e.stopPropagation()
                 setEndScene('rocketsWin')
                 setHomeDisplay('endScene')
-                // add button to go back to main menu
-                // stutter on showroom button click
-                // remove curtain and add RocketsWin2Preview like other showroom displays.
             }
             return <group name='rockets-win' position={[-4, 0, -3]}>
                 <group name='picture' position={[0, 0, 0.5]}>
@@ -1830,7 +1830,7 @@ export default function Showroom(props) {
                     <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
                 </group>
                 <PlayAnimationButton 
-                    position={[0, 0, 2.5]} 
+                    position={[0, 1, 3.0]} 
                     scale={0.8} 
                     onPointerEnter={e=>onPointerEnter(e)}
                     onPointerLeave={e=>onPointerLeave(e)}
@@ -1907,6 +1907,8 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('endScenes')
+            setHomeDisplay('showroom')
+            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -1938,8 +1940,13 @@ export default function Showroom(props) {
             </Text3D>
         </group>
     }
+
+    const { backButtonPosition, tabPosition } = useSpring({
+        backButtonPosition: homeDisplay === 'endScene' ? [-15.5, 0, 2] : [-10.5, 0, 2],
+        tabPosition: endScene === null ? [0, 0, 0] : [4, 0, 0]
+    })
     return <group {...props}>
-        <group name='tab'>
+        <animated.group name='tab' position={tabPosition}>
             {/* <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
                 position={[5.4, 0.02, -5]}
@@ -1956,23 +1963,19 @@ export default function Showroom(props) {
             <PregameButton position={[6.65, 0.02, -2.4]}/>
             <ScoreButton position={[6.35, 0.02, -1.7]}/>
             <EndScenesButton position={[6.85, 0.02, -1.0]}/>
-        </group>
+        </animated.group>
+        {/* back button */}
+        <BackButton position={backButtonPosition}/>
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        <animated.group scale={rocketsWinScale}> { endScene === 'rocketsWin' && <RocketsWin2Preview position={[-4, 10, 4]}/> }</animated.group>
+        {/* <animated.group scale={rocketsWinScale}> { endScene === 'rocketsWin' && <RocketsWin2Preview position={[-4, 10, 4]}/> }</animated.group> */}
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
         </mesh>
-        <mesh name='background-curtain-end-scene' rotation={[-Math.PI/2, 0, 0]} position={[0, 4, 0]} scale={10}>
-            <boxGeometry args={[20, 10, 0.1]}/>
-            <AnimatedMeshDistortMaterial color='black' transparent opacity={ 0.7 }/>
-        </mesh>
-        {/* back button */}
-        <MainMenuButton position={[-10.5, 0, 2]}/>
     </group>
 }
