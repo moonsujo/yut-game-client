@@ -3,6 +3,7 @@ import {useFrame, useThree} from '@react-three/fiber'
 import * as THREE from 'three'
 import { OrbitControls } from '@react-three/drei'
 import { useAtomValue } from 'jotai'
+import { showMilkyWayShowroomAtom } from '../GlobalState'
 
 const vertexShader = `
   varying vec3 Normal;
@@ -90,6 +91,8 @@ function MilkyWayShowroom(props) {
     const sky2 = loader.load('/textures/Marbles.jpg');
     const sky3 = loader.load('/textures/Marbles.jpg');
 
+    const showMilkyWayShowroom = useAtomValue(showMilkyWayShowroomAtom)
+
     sky.wrapS = THREE.RepeatWrapping;
     sky.wrapT = THREE.RepeatWrapping;
     sky2.wrapS = THREE.RepeatWrapping;
@@ -157,13 +160,15 @@ function MilkyWayShowroom(props) {
 
 
     useFrame((state) => {
-        meshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
-        secondMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
-        thirdMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+        if (showMilkyWayShowroom) {
+            meshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+            secondMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+            thirdMeshRef.current.material.uniforms.time.value = state.clock.getElapsedTime() / 0.5;
+        }
     });
    
     return <>
-        <mesh 
+        { showMilkyWayShowroom && <mesh 
             {...props}
             ref={meshRef}
         >
@@ -185,7 +190,7 @@ function MilkyWayShowroom(props) {
                     <planeGeometry args={[5.5, 5.5, 32]} />
                     <shaderMaterial attach="material"{...MaterialMilkyWayThirdLayer} depthWrite={false}/>
                 </mesh>
-        </mesh>
+        </mesh> }
     </>
 }
 

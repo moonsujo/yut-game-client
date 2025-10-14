@@ -25,6 +25,7 @@ import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
 import Showroom from './components/Showroom';
+import MilkyWayShowroom from './shader/MilkyWayShowroom';
 
 export default function Home2() {
 
@@ -615,6 +616,7 @@ export default function Home2() {
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
     showroomScale: (display === 'showroom' || display === 'endScene') ? 1 : 0,
     navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-5,0,0] : (display === 'endScene' && device === 'landscapeDesktop') ? [-13, 0, 0] : [0,0,0],
+    
     config: {
       tension: 170,
       friction: 26

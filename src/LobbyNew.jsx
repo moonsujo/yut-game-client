@@ -2347,7 +2347,7 @@ export default function LobbyNew() {
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
   return <animated.group>
-    <GameCamera position={layout[device].camera.position} lookAtOffset={[0,0,0]}/>
+    <GameCamera position={layout[device].camera.position}/>
     { device === 'landscapeDesktop' && <group>
       <FirstSectionNew position={[-9, 0, 0]} />
       <SecondSection position={[0.5, 0, 0]}/>

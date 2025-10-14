@@ -18,7 +18,7 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
-import { deviceAtom, meteorTexturesAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom } from "../GlobalState.jsx";
+import { deviceAtom, meteorTexturesAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showMilkyWayShowroomAtom, showRedGalaxyAtom } from "../GlobalState.jsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
 import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
@@ -1693,10 +1693,17 @@ export default function Showroom(props) {
             </mesh>
         </animated.group>
     }
+
+    const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
+    const setShowMilkywayShowroom = useSetAtom(showMilkyWayShowroomAtom)
     
     const { rocketsWinScale } = useSpring({
         rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
         config: { tension: 70, friction: 20 },
+        onStart: () => {
+            setShowGalaxy(false)
+            setShowMilkywayShowroom(true)
+        },
         onRest: () => { 
             if (endScene === 'rocketsWin') {
                 const newIntervalFireworksId = setInterval(() => {

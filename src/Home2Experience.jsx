@@ -3,6 +3,7 @@ import MilkyWay from "./shader/MilkyWay";
 import * as THREE from 'three';
 import StarsPatterns2Shader from "./shader/starsPatterns2/StarsPatterns2Shader";
 import Constellation from "./shader/constellation/Constellation";
+import MilkyWayShowroom from "./shader/MilkyWayShowroom";
 
 export default function Home2Experience() {
 
@@ -13,6 +14,15 @@ export default function Home2Experience() {
         <MilkyWay
             rotation={[-Math.PI/2, 0, -35.0]} 
             position={[0,-1,0]} 
+            scale={4}
+            brightness={0.5}
+            colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+            colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+            colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+        />
+        <MilkyWayShowroom
+            rotation={[-Math.PI/2, 0, -35.0]} 
+            position={[-4,-1,0]} 
             scale={4}
             brightness={0.5}
             colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
