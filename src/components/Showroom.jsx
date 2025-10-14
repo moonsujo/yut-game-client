@@ -1653,7 +1653,14 @@ export default function Showroom(props) {
         }
         function onPointerDown(e) {
             e.stopPropagation()
-            setHomeDisplay('title')
+            console.log('end scene', endScene)
+            if (endScene !== null) {
+                setDisplay('endScenes')
+                setHomeDisplay('showroom')
+                setEndScene(null)
+            } else {
+                setHomeDisplay('title')
+            }
         }
         return <animated.group name='back-button' {...props}>
             <mesh>
@@ -1972,7 +1979,7 @@ export default function Showroom(props) {
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        {/* <animated.group scale={rocketsWinScale}> { endScene === 'rocketsWin' && <RocketsWin2Preview position={[-4, 10, 4]}/> }</animated.group> */}
+        {/* <animated.group scale={rocketsWinScale}> { <RocketsWin2Preview position={[-4, 10, 4]}/> }</animated.group> */}
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
