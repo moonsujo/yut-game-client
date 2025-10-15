@@ -25,7 +25,7 @@ import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
 import Showroom from './components/Showroom';
-import MilkyWayShowroom from './shader/MilkyWayShowroom';
+import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 
 export default function Home2() {
 
@@ -607,16 +607,16 @@ export default function Home2() {
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
-    showroomScale: (display === 'showroom' || display === 'endScene') ? 1 : 0,
-    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-5,0,0] : (display === 'endScene' && device === 'landscapeDesktop') ? [-13, 0, 0] : [0,0,0],
-    
+    showroomScale: (display === 'showroom') ? 1 : 0,
+    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-13,0,0] : [0,0,0],
+    milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
     config: {
       tension: 170,
       friction: 26
@@ -733,5 +733,16 @@ export default function Home2() {
       rotation={layout[device].title.disconnectModal.rotation}
     /> }
     <MeteorsRealShader color={meteorShaderColor}/>
+    <animated.group position={milkyWayPosition}>
+      <MilkyWayNew
+        rotation={[-Math.PI/2, 0, -35.0]} 
+        position={[0,-1,0]} 
+        scale={4}
+        brightness={0.5}
+        colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+        colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+        colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      />
+    </animated.group>
   </>
 }

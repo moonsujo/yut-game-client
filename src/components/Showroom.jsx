@@ -45,11 +45,9 @@ import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
-import MilkyWayShowroom from "../shader/MilkyWayShowroom.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
-    const [endScene, setEndScene] = useState(null)
     const setHomeDisplay = props.setHomeDisplay
     const homeDisplay = props.homeDisplay
     const [RollStar] = useStarRoll();
@@ -59,6 +57,8 @@ export default function Showroom(props) {
     const [intervalFireworksId, setIntervalFireworksId] = useState(null)
     const device = useAtomValue(deviceAtom)
     const [CreateFirework] = useFireworksShader();
+    const setShowBlackhole = useSetAtom(showBlackholeAtom)
+    const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
     // helper function
     function CreateMoMeteor() {
@@ -109,7 +109,6 @@ export default function Showroom(props) {
             e.stopPropagation()
             setDisplay('yutOutcomes')
             setHomeDisplay('showroom')
-            setEndScene(null)
         }
 
         return <group {...props}>
@@ -160,7 +159,6 @@ export default function Showroom(props) {
             e.stopPropagation()
             setDisplay('newTurn')
             setHomeDisplay('showroom')
-            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -208,7 +206,6 @@ export default function Showroom(props) {
             e.stopPropagation()
             setDisplay('catch')
             setHomeDisplay('showroom')
-            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -256,7 +253,6 @@ export default function Showroom(props) {
             e.stopPropagation()
             setDisplay('pregame')
             setHomeDisplay('showroom')
-            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -304,7 +300,6 @@ export default function Showroom(props) {
             e.stopPropagation()
             setDisplay('score')
             setHomeDisplay('showroom')
-            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -1639,7 +1634,7 @@ export default function Showroom(props) {
         pregamePosition: display === 'pregame' ? positionEnd : positionStart,
         scoreScale: display === 'score' ? 1 : 0,
         scorePosition: display === 'score' ? positionEnd : positionStart,
-        endScenesScale: (display === 'endScenes' && endScene === null) ?  1 : 0,
+        endScenesScale: display === 'endScenes' ?  1 : 0,
         endScenesPosition: display === 'endScenes' ? positionEnd : positionStart,
     })
     function BackButton(props) {
@@ -1656,14 +1651,8 @@ export default function Showroom(props) {
         }
         function onPointerDown(e) {
             e.stopPropagation()
-            console.log('end scene', endScene)
-            if (endScene !== null) {
-                setDisplay('endScenes')
-                setHomeDisplay('showroom')
-                setEndScene(null)
-            } else {
-                setHomeDisplay('title')
-            }
+            // make another button to return to the showroom from an end scene
+            setHomeDisplay('title')
         }
         return <animated.group name='back-button' {...props}>
             <mesh>
@@ -1693,68 +1682,13 @@ export default function Showroom(props) {
             </mesh>
         </animated.group>
     }
-
-    const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-    const setShowMilkywayShowroom = useSetAtom(showMilkyWayShowroomAtom)
     
-    const { rocketsWinScale } = useSpring({
-        rocketsWinScale: endScene === 'rocketsWin' ? 1 : 0,
-        config: { tension: 70, friction: 20 },
-        onStart: () => {
-            setShowGalaxy(false)
-            setShowMilkywayShowroom(true)
-        },
-        onRest: () => { 
-            if (endScene === 'rocketsWin') {
-                const newIntervalFireworksId = setInterval(() => {
-                    const constellationChance = 0.07
-                    const planetChance = 0.14
-                    const position = [-4, 10, 4]
-                    if (document.hasFocus()) {
-                        const count = Math.round(300 + Math.random() * 100);
-                        let positionShader;
-                        let size;
-                        let radius;
-                        if (device === 'portrait') {
-                            const radians = Math.random() * Math.PI*2
-                            positionShader = new THREE.Vector3(
-                                position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-                                position[1] + -5,
-                                position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-                            )
-                            size = 0.1 + Math.random() * 0.15
-                            radius = 1.5 + Math.random() * 1.0
-                        } else {
-                            let angle = Math.PI * 2 * Math.random()
-                            let radiusCircle = 5
-                            positionShader = new THREE.Vector3(
-                                position[0] + Math.cos(angle) * radiusCircle * 1.7,
-                                position[1] - 1,
-                                position[2] + 3 + Math.sin(angle) * radiusCircle - 3
-                            )
-                            size = 0.15
-                            radius = 1.5 + Math.random() * 0.5
-                        }
-                        const color = new THREE.Color();
-                        color.setHSL(Math.random(), 0.7, 0.4)
-                
-                        let type = Math.random()
-                        if (type < constellationChance) {
-                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
-                        } else if (type > constellationChance && type < planetChance) {
-                            console.log('showroom, planet')
-                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
-                        } else {
-                            CreateFirework({ count, position: positionShader, size, radius, color });
-                        }
-                    }
-                }, 200)
-                setIntervalFireworksId(newIntervalFireworksId)
-            } else {
-                clearInterval(intervalFireworksId)
-            }
+    const [rocketsWinSprings, rocketsWinSpringApi] = useSpring(() => ({
+        from: {
+            scale: 0,
         }
-    })
+    }))
+
     function EndScenes(props) {
         
         const progressRef2 = useRef({ value: 0 })
@@ -1886,8 +1820,67 @@ export default function Showroom(props) {
             }
             function onPointerDown(e) {
                 e.stopPropagation()
-                setEndScene('rocketsWin')
-                setHomeDisplay('endScene')
+                setDisplay('rocketsWin')
+
+                rocketsWinSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: {
+                        scale: 1
+                    },
+                    onStart: () => {
+                        // setShowGalaxy(false)
+                        // setShowMilkywayShowroom(true)
+                        setShowBlackhole2(true)
+                    },
+                    onRest: () => { 
+                        const newIntervalFireworksId = setInterval(() => {
+                            const constellationChance = 0.07
+                            const planetChance = 0.14
+                            const position = [-4, 10, 4]
+                            if (document.hasFocus()) {
+                                const count = Math.round(300 + Math.random() * 100);
+                                let positionShader;
+                                let size;
+                                let radius;
+                                if (device === 'portrait') {
+                                    const radians = Math.random() * Math.PI*2
+                                    positionShader = new THREE.Vector3(
+                                        position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
+                                        position[1] + -5,
+                                        position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
+                                    )
+                                    size = 0.1 + Math.random() * 0.15
+                                    radius = 1.5 + Math.random() * 1.0
+                                } else {
+                                    let angle = Math.PI * 2 * Math.random()
+                                    let radiusCircle = 5
+                                    positionShader = new THREE.Vector3(
+                                        position[0] + Math.cos(angle) * radiusCircle * 1.7,
+                                        position[1] - 1,
+                                        position[2] + 3 + Math.sin(angle) * radiusCircle - 3
+                                    )
+                                    size = 0.15
+                                    radius = 1.5 + Math.random() * 0.5
+                                }
+                                const color = new THREE.Color();
+                                color.setHSL(Math.random(), 0.7, 0.4)
+                        
+                                let type = Math.random()
+                                if (type < constellationChance) {
+                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
+                                } else if (type > constellationChance && type < planetChance) {
+                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
+                                } else {
+                                    CreateFirework({ count, position: positionShader, size, radius, color });
+                                }
+                            }
+                        }, 200)
+                        setIntervalFireworksId(newIntervalFireworksId)
+                        // clear on back button click to showroom
+                    }
+                })
             }
             return <group name='rockets-win' position={[-4, 0, -3]}>
                 <group name='picture' position={[0, 0, 0.5]}>
@@ -1975,8 +1968,6 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('endScenes')
-            setHomeDisplay('showroom')
-            setEndScene(null)
         }
         return <group {...props}>
             <mesh>
@@ -2009,9 +2000,8 @@ export default function Showroom(props) {
         </group>
     }
 
-    const { backButtonPosition, tabPosition } = useSpring({
-        backButtonPosition: homeDisplay === 'endScene' ? [-18.5, 0, 2] : [-10.5, 0, 2],
-        tabPosition: endScene === null ? [0, 0, 0] : [5, 0, 0]
+    const { tabPosition } = useSpring({
+        tabPosition: display !== 'rocketsWin' ? [0, 0, 0] : [5, 0, 0]
     })
     return <group {...props}>
         <animated.group name='tab' position={tabPosition}>
@@ -2031,16 +2021,16 @@ export default function Showroom(props) {
             <PregameButton position={[6.65, 0.02, -2.4]}/>
             <ScoreButton position={[6.35, 0.02, -1.7]}/>
             <EndScenesButton position={[6.85, 0.02, -1.0]}/>
+            <BackButton position={[6.05, 0, -0.3]}/>
         </animated.group>
         {/* back button */}
-        <BackButton position={backButtonPosition}/>
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[-4, 10, 4]}/></animated.group>
+        { display === 'rocketsWin' && <RocketsWin2Preview position={[-4, 10, 4]}/> }
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>

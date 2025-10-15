@@ -8,22 +8,16 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Ufo from "../meshes/Ufo";
 import * as THREE from 'three';
-import GameCamera from "../GameCamera";
 import layout from "../layout";
-import { useFireworksShader } from "../shader/fireworks/FireworksShader";
-import MeteorsRealShader from "../shader/meteorsReal/MeteorsRealShader";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
-import MilkyWay from "../shader/MilkyWay";
-import StarsPatterns2Shader from "../shader/starsPatterns2/StarsPatterns2Shader";
-import MilkyWayShowroom from "../shader/MilkyWayShowroom";
+import { useSpring, animated } from "@react-spring/three";
 
 export default function RocketsWin2Preview({ position }) {
 
   // Hooks
-  const [CreateFirework] = useFireworksShader();
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
 
@@ -88,9 +82,29 @@ export default function RocketsWin2Preview({ position }) {
     }
   })
 
+  const [ springs, api ] = useSpring(() => ({
+    from: {
+      scale: 0
+    }
+  }))
+  useEffect(() => {
+    api.start({
+      from: {
+        scale: 0
+      },
+      to: {
+        scale: 1
+      },
+      config: {
+        tension: 70, 
+        friction: 20,
+      }
+    })
+  }, [])
+
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <group position={position}>
+  return <animated.group position={position} scale={springs.scale}>
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
       position={layout[device].rocketsWinScene.title.position}
@@ -242,5 +256,5 @@ export default function RocketsWin2Preview({ position }) {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
-  </group>
+  </animated.group>
 }

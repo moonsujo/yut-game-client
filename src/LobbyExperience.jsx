@@ -1,11 +1,11 @@
 import Lobby from "./Lobby";
-import MilkyWay from "./shader/MilkyWay";
 import * as THREE from 'three'
+import MilkyWayNew from "./shader/milkyway/MilkyWayNew";
 
 export default function LobbyExperience() {
     return <>
         <Lobby/>
-        <MilkyWay // will not show without a camera
+        <MilkyWayNew // will not show without a camera
             rotation={[-Math.PI/2, 0, -35.0]} 
             position={[0, -10, -4]}
             scale={5}

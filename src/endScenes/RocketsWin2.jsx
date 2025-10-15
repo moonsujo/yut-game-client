@@ -17,6 +17,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
+import Blackhole2 from "../Blackhole2";
 
 export default function RocketsWin2() {
 
@@ -93,57 +94,10 @@ export default function RocketsWin2() {
 
   // Fireworks
   useEffect(() => {
-    const intervalFireworks = setInterval(() => {
-      const constellationChance = 0.1
-      const planetChance = 0.2
-      if (document.hasFocus()) {
-        const count = Math.round(700 + Math.random() * 400);
-        let position;
-        let size;
-        let radius;
-        if (device === 'portrait') {
-          const radians = Math.random() * Math.PI*2
-          position = new THREE.Vector3(
-              Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-              -5,
-              Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-          )
-          size = 0.1 + Math.random() * 0.15
-          radius = 1.5 + Math.random() * 1.0
-        } else {
-          let angle = Math.PI * 2 * Math.random()
-          let radiusCircle = 5
-          position = new THREE.Vector3(
-              // generateRandomNumberInRange(0, 20) * (Math.random() > 0.5 ? 1 : -1), 
-              // generateRandomNumberInRange(0, 5) * (Math.random() > 0.5 ? 1 : -1) + 15,
-              // 0, 
-              Math.cos(angle) * radiusCircle * 1.7,
-              -10,
-              Math.sin(angle) * radiusCircle - 3
-          )
-          size = 0.3 + Math.random() * 0.3
-          radius = 1.0 + Math.random() * 1.0
-        }
-        const color = new THREE.Color();
-        color.setHSL(Math.random(), 0.7, 0.4)
-  
-        let type = Math.random()
-        if (type < constellationChance) {
-          CreateFirework({ count, position, size, radius, color, type: 'constellation' });
-        } else if (type > constellationChance && type < planetChance) {
-          // CreateFirework({ count, position, size, radius, color, type: 'planet' });
-        } else {
-          CreateFirework({ count, position, size, radius, color });
-        }
-      }
-    }, 200)
     setShowGalaxy(true)
     setShowBlackhole(false)
     setShowRedGalaxy(false)
     setShowBlackhole2(true)
-    return (() => {
-      clearInterval(intervalFireworks);
-    })
   }, [])
 
   useEffect(() => {
@@ -253,16 +207,6 @@ export default function RocketsWin2() {
           </group>
         })}
       </group>
-      {/* <MilkyWay name='milky-way'// will not show without a camera
-        rotation={[-Math.PI/2, 0, 0]} 
-        position={[0, -2, 0]}
-        scale={2}
-        brightness={0.7}
-        colorTint1={new THREE.Vector4(0.80, 0.49, 0.19, 1.0)} // small
-        colorTint3={new THREE.Vector4(1.0, 1.0, 1.0, 0.7)} // medium
-        colorTint2={new THREE.Vector4(1.0, 1.0, 1.0, 0.5)} // large
-      />
-      <Portal position={[0, 0.3, -3]} scale={1} rotation={[-Math.PI/2, 0, 0]}/> */}
     </group> }
     {/* scene 1 in the middle */}
     <group name='scene-1' 
@@ -322,5 +266,6 @@ export default function RocketsWin2() {
       device={device}/>
     </group>
     <MeteorsRealShader color={meteorShaderColor}/>
+    {/* <Blackhole2 scale={3} position={[-8, 0, 0]}/> */}
   </group>
 }

@@ -7,7 +7,6 @@ import ParticleSystem from './particles/ParticleSystem';
 import Home2Experience from './Home2Experience';
 import LoadingScreen from './LoadingScreen';
 import { Loader } from '@react-three/drei';
-import MilkyWay from './shader/MilkyWay';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import * as THREE from 'three';
 import Alert from './Alert';
@@ -17,6 +16,7 @@ import RedGalaxy from './RedGalaxy';
 import Blackhole2 from './Blackhole2';
 import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
+import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 
 export default function App () {
 
@@ -54,7 +54,7 @@ export default function App () {
           <Experience/>
           <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
           <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/6.png'} size={2}/>
-          <MilkyWay // will not show without a camera
+          <MilkyWayNew // will not show without a camera
             rotation={[-Math.PI/2, 0, -35.0]} 
             position={[0, -10, -4]}
             scale={5}
