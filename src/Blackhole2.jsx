@@ -9,9 +9,7 @@ import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 
 export default function Blackhole2({scale, position}) {
 
-    const showBlackhole2 = useAtomValue(showBlackhole2Atom)
-
-    return showBlackhole2 && <group scale={scale} position={position}>
+    return <group scale={scale} position={position}>
         <MilkyWayNew // will not show without a camera
             rotation={[-Math.PI/2, 0, 0]} 
             position={[0, -2, 0]}

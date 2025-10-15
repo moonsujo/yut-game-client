@@ -14,8 +14,9 @@ import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useSpring, animated } from "@react-spring/three";
+import Blackhole2 from "../Blackhole2";
 
-export default function RocketsWin2Preview({ position }) {
+export default function RocketsWin2Preview({ position, backButton }) {
 
   // Hooks
   useResponsiveSetting();
@@ -246,7 +247,8 @@ export default function RocketsWin2Preview({ position }) {
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
-      device={device}/>
+      device={device}
+      preview/>
       <ShareLinkButton 
       position={layout[device].endSceneActionButtons.shareLinkButton.position} 
       rotation={layout[device].endSceneActionButtons.shareLinkButton.rotation} 
@@ -256,5 +258,7 @@ export default function RocketsWin2Preview({ position }) {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
+    <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
+    {backButton}
   </animated.group>
 }

@@ -36,7 +36,6 @@ export default function RocketsLose() {
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const setShowBlackhole = useSetAtom(showBlackholeAtom)
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
   // Ref
   const ufo0 = useRef()
@@ -227,7 +226,6 @@ export default function RocketsLose() {
     setShowGalaxy(false)
     setShowBlackhole(false)
     setShowRedGalaxy(true)
-    setShowBlackhole2(false)
   }, [])
   
   const turquoise = new THREE.Color('turquoise')

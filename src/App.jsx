@@ -64,7 +64,6 @@ export default function App () {
             colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
           />
           <Blackhole scale={1.5} position={[0, 0, -1.1]}/>
-          <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
           <RedGalaxy/>
           <Alert position={[0,2,0.5]} rotation={[0,0,0]}/>
         </Route>

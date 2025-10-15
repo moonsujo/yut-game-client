@@ -8,7 +8,7 @@ import { socket } from "../SocketManager";
 import axios from "axios";
 import layout from "../layout";
 
-export default function PlayAgainButton({ rotation, position, device='landscapeDesktop' }) {
+export default function PlayAgainButton({ rotation, position, device='landscapeDesktop', preview=false }) {
   
   const playAgainTextMaterialRef = useRef()
   const playAgainBoxMaterialRef = useRef()
@@ -29,6 +29,7 @@ export default function PlayAgainButton({ rotation, position, device='landscapeD
   async function handlePlayAgainPointerUp(e) {
     e.stopPropagation()
 
+    if (preview) return
     socket.emit('reset', { roomId: params.id.toUpperCase(), clientId: client._id })
     await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
       eventName: 'buttonClick',

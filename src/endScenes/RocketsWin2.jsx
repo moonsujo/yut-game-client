@@ -40,7 +40,6 @@ export default function RocketsWin2() {
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const setShowBlackhole = useSetAtom(showBlackholeAtom)
   const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -97,16 +96,7 @@ export default function RocketsWin2() {
     setShowGalaxy(true)
     setShowBlackhole(false)
     setShowRedGalaxy(false)
-    setShowBlackhole2(true)
   }, [])
-
-  useEffect(() => {
-    if (device === 'landscapeDesktop') {
-      setShowBlackhole2(true)
-    } else {
-      setShowBlackhole2(false)
-    }
-  }, [device])
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
@@ -266,6 +256,6 @@ export default function RocketsWin2() {
       device={device}/>
     </group>
     <MeteorsRealShader color={meteorShaderColor}/>
-    {/* <Blackhole2 scale={3} position={[-8, 0, 0]}/> */}
+    <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
   </group>
 }

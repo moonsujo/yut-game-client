@@ -718,7 +718,7 @@ export default function Home2() {
           tabOrientation='right'
         />
       </animated.group> }
-      { (display === 'showroom' || display === 'endScene') && <animated.group scale={showroomScale}>
+      { display === 'showroom' && <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
           rotation={layout[device].showroom.rotation}

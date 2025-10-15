@@ -58,7 +58,6 @@ export default function Showroom(props) {
     const device = useAtomValue(deviceAtom)
     const [CreateFirework] = useFireworksShader();
     const setShowBlackhole = useSetAtom(showBlackholeAtom)
-    const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
     // helper function
     function CreateMoMeteor() {
@@ -1652,7 +1651,12 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             // make another button to return to the showroom from an end scene
-            setHomeDisplay('title')
+            if (display === 'rocketsWin') {
+                setDisplay('endScenes')
+                clearInterval(intervalFireworksId)
+            } else {
+                setHomeDisplay('title')
+            }
         }
         return <animated.group name='back-button' {...props}>
             <mesh>
@@ -1806,7 +1810,7 @@ export default function Showroom(props) {
             }
         })
 
-        function RocketsWin() {
+        function RocketsWin({position, scale}) {
             const [hover, setHover] = useState(false)
             function onPointerEnter(e) {
                 e.stopPropagation()
@@ -1829,11 +1833,7 @@ export default function Showroom(props) {
                     to: {
                         scale: 1
                     },
-                    onStart: () => {
-                        // setShowGalaxy(false)
-                        // setShowMilkywayShowroom(true)
-                        setShowBlackhole2(true)
-                    },
+                    onStart: () => {},
                     onRest: () => { 
                         const newIntervalFireworksId = setInterval(() => {
                             const constellationChance = 0.07
@@ -1882,7 +1882,7 @@ export default function Showroom(props) {
                     }
                 })
             }
-            return <group name='rockets-win' position={[-4, 0, -3]}>
+            return <group name='rockets-win' position={position} scale={scale}>
                 <group name='picture' position={[0, 0, 0.5]}>
                     <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
                     <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
@@ -1900,17 +1900,17 @@ export default function Showroom(props) {
                 />
             </group>
         }
-        function RocketsLose() {
-            return <group name='rockets-lose' position={[1, 0, -2.5]}>
+        function RocketsLose({position, scale}) {
+            return <group name='rockets-lose' position={position} scale={scale}>
                 <group name='picture'>
                     <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
-                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
+                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
             </group>
         }
-        function UfosWin() {
-            return <group name='ufos-win' position={[-4, 0, 2.5]}>
+        function UfosWin({position, scale}) {
+            return <group name='ufos-win' position={position} scale={scale}>
                 <group name='picture'>
                     <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
                     <mesh name='beam' rotation={[-Math.PI/2 + Math.PI/9, Math.PI, 0]} position={[0, -2.2, 2.0]} scale={0.45} material={shaderMaterialBeam2}>
@@ -1937,20 +1937,30 @@ export default function Showroom(props) {
                 <PlayAnimationButton position={[2, 0, 1.5]} scale={0.8}/>
             </group>
         }
-        function UfosLose() {
-            return <group name='ufos-lose' position={[2, 0, 2]}>
+        function UfosLose({ position, scale }) {
+            return <group name='ufos-lose' position={position} scale={scale}>
                 <group name='picture'>
                     <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
-                    <Star color='grey' position={[0, -1, -0.3]} scale={0.9}/>
+                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
-                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.8}/>
+                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
             </group>
         }
         return <group {...props}>
-            <RocketsWin/>
-            <RocketsLose/>
-            <UfosWin/>
-            <UfosLose/>
+            <Text3D name='title'
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-15.1, 0.04, -4.5]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.4}
+                height={0.01}
+            >
+                END SCENES
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <RocketsWin position={[-12.5, 0, -0.5]} scale={1.4}/>
+            <UfosWin position={[-7, 0, 0.8]} scale={1.3}/>
+            <RocketsLose position={[-0.9, 0.5, 0]} scale={1.3}/>
+            <UfosLose position={[2.7, 0.5, 0.5]} scale={1.3}/>
         </group>
     }
     function EndScenesButton(props) {
@@ -2030,7 +2040,7 @@ export default function Showroom(props) {
         <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        { display === 'rocketsWin' && <RocketsWin2Preview position={[-4, 10, 4]}/> }
+        { display === 'rocketsWin' && <group><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
