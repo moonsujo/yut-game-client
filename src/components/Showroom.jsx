@@ -45,6 +45,7 @@ import Barn from "../meshes/Barn.jsx";
 import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
+import UfosWin2NewPreview from "../endScenes/UfosWin2NewPreview.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -1651,7 +1652,7 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             // make another button to return to the showroom from an end scene
-            if (display === 'rocketsWin') {
+            if (display === 'rocketsWin' || display === 'ufosWin') {
                 setDisplay('endScenes')
                 clearInterval(intervalFireworksId)
             } else {
@@ -1687,14 +1688,106 @@ export default function Showroom(props) {
         </animated.group>
     }
     
-    const [rocketsWinSprings, rocketsWinSpringApi] = useSpring(() => ({
+    const [_springs, endSceneSpringApi] = useSpring(() => ({
         from: {
             scale: 0,
         }
     }))
 
     function EndScenes(props) {
-        
+
+        function RocketsWin({position, scale}) {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                setDisplay('rocketsWin')
+
+                endSceneSpringApi.start({
+                    from: {
+                        scale: 0
+                    },
+                    to: {
+                        scale: 1
+                    },
+                    onStart: () => {},
+                    onRest: () => { 
+                        const newIntervalFireworksId = setInterval(() => {
+                            const constellationChance = 0.07
+                            const planetChance = 0.14
+                            const position = [-4, 10, 4]
+                            if (document.hasFocus()) {
+                                const count = Math.round(300 + Math.random() * 100);
+                                let positionShader;
+                                let size;
+                                let radius;
+                                if (device === 'portrait') {
+                                    const radians = Math.random() * Math.PI*2
+                                    positionShader = new THREE.Vector3(
+                                        position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
+                                        position[1] + -5,
+                                        position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
+                                    )
+                                    size = 0.1 + Math.random() * 0.15
+                                    radius = 1.5 + Math.random() * 1.0
+                                } else {
+                                    let angle = Math.PI * 2 * Math.random()
+                                    let radiusCircle = 5
+                                    positionShader = new THREE.Vector3(
+                                        position[0] + Math.cos(angle) * radiusCircle * 1.7,
+                                        position[1] - 1,
+                                        position[2] + 3 + Math.sin(angle) * radiusCircle - 3
+                                    )
+                                    size = 0.15
+                                    radius = 1.5 + Math.random() * 0.5
+                                }
+                                const color = new THREE.Color();
+                                color.setHSL(Math.random(), 0.7, 0.4)
+                        
+                                let type = Math.random()
+                                if (type < constellationChance) {
+                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
+                                } else if (type > constellationChance && type < planetChance) {
+                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
+                                } else {
+                                    CreateFirework({ count, position: positionShader, size, radius, color });
+                                }
+                            }
+                        }, 200)
+                        setIntervalFireworksId(newIntervalFireworksId)
+                    }
+                })
+            }
+            return <group name='rockets-win' position={position} scale={scale}>
+                <group name='picture' position={[0, 0, 0.5]}>
+                    <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                </group>
+                <PlayAnimationButton 
+                    position={[0, 1, 3.0]} 
+                    scale={0.8} 
+                    onPointerEnter={e=>onPointerEnter(e)}
+                    onPointerLeave={e=>onPointerLeave(e)}
+                    onPointerDown={e=>onPointerDown(e)}
+                    hover={hover}
+                />
+            </group>
+        }
+
+        /* animation code for UfosWin */
+        // #region
         const progressRef2 = useRef({ value: 0 })
 
         const shaderMaterialBeam2 = new THREE.ShaderMaterial({
@@ -1809,8 +1902,8 @@ export default function Showroom(props) {
                 })
             }
         })
-
-        function RocketsWin({position, scale}) {
+        // #endregion
+        function UfosWin({position, scale}) {
             const [hover, setHover] = useState(false)
             function onPointerEnter(e) {
                 e.stopPropagation()
@@ -1824,9 +1917,9 @@ export default function Showroom(props) {
             }
             function onPointerDown(e) {
                 e.stopPropagation()
-                setDisplay('rocketsWin')
+                setDisplay('ufosWin')
 
-                rocketsWinSpringApi.start({
+                endSceneSpringApi.start({
                     from: {
                         scale: 0
                     },
@@ -1878,38 +1971,9 @@ export default function Showroom(props) {
                             }
                         }, 200)
                         setIntervalFireworksId(newIntervalFireworksId)
-                        // clear on back button click to showroom
                     }
                 })
             }
-            return <group name='rockets-win' position={position} scale={scale}>
-                <group name='picture' position={[0, 0, 0.5]}>
-                    <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
-                    <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
-                </group>
-                <PlayAnimationButton 
-                    position={[0, 1, 3.0]} 
-                    scale={0.8} 
-                    onPointerEnter={e=>onPointerEnter(e)}
-                    onPointerLeave={e=>onPointerLeave(e)}
-                    onPointerDown={e=>onPointerDown(e)}
-                    hover={hover}
-                />
-            </group>
-        }
-        function RocketsLose({position, scale}) {
-            return <group name='rockets-lose' position={position} scale={scale}>
-                <group name='picture'>
-                    <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
-                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
-                </group>
-                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
-            </group>
-        }
-        function UfosWin({position, scale}) {
             return <group name='ufos-win' position={position} scale={scale}>
                 <group name='picture'>
                     <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
@@ -1934,9 +1998,28 @@ export default function Showroom(props) {
                             <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
                         </animated.group>
                 </group>
-                <PlayAnimationButton position={[2, 0, 1.5]} scale={0.8}/>
+                <PlayAnimationButton 
+                    position={[2, 0, 1.5]} 
+                    scale={0.8}
+                    onPointerEnter={e=>onPointerEnter(e)}
+                    onPointerLeave={e=>onPointerLeave(e)}
+                    onPointerDown={e=>onPointerDown(e)}
+                    hover={hover}
+                />
             </group>
         }
+
+        function RocketsLose({position, scale}) {
+            const [hover, setHover] = useState(false)
+            return <group name='rockets-lose' position={position} scale={scale}>
+                <group name='picture'>
+                    <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
+                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                </group>
+                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
+            </group>
+        }
+
         function UfosLose({ position, scale }) {
             return <group name='ufos-lose' position={position} scale={scale}>
                 <group name='picture'>
@@ -2011,20 +2094,10 @@ export default function Showroom(props) {
     }
 
     const { tabPosition } = useSpring({
-        tabPosition: display !== 'rocketsWin' ? [0, 0, 0] : [5, 0, 0]
+        tabPosition: (display !== 'rocketsWin' && display !== 'ufosWin') ? [0, 0, 0] : [5, 0, 0]
     })
     return <group {...props}>
         <animated.group name='tab' position={tabPosition}>
-            {/* <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[5.4, 0.02, -5]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                ALERTS
-                <meshStandardMaterial color='yellow'/>
-            </Text3D> */}
             <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
             <NewTurnButton position={[6.75, 0.02, -3.8]}/>
             <CatchButton position={[6.35, 0.02, -3.1]}/>
@@ -2041,6 +2114,7 @@ export default function Showroom(props) {
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
         { display === 'rocketsWin' && <group><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
+        { display === 'ufosWin' && <group><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>

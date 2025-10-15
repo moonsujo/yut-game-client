@@ -1,5 +1,4 @@
 import { Float, Text3D } from "@react-three/drei";
-import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
 import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
@@ -20,10 +19,8 @@ import { useBeamDustShader } from "../shader/beamDust/BeamDustShader";
 import Wolf from "../meshes/Wolf";
 import CyberTruck from "../meshes/CyberTruck";
 import Barn from "../meshes/Barn";
-import { useFireworksShader } from "../shader/fireworks/FireworksShader";
 import { Llama } from "../meshes/Llama";
 import Ruby from "../meshes/Ruby";
-import MeteorsRealShader from "../shader/meteorsReal/MeteorsRealShader";
 import PlayAgainButton from "./PlayAgainButton";
 import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
@@ -31,20 +28,15 @@ import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
 
 // add falling rocket parts in the background
-export default function UfosWin2New() {
+export default function UfosWin2NewPreview({ position, backButton }) {
 
   // State
-  const params = useParams();
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
-  const teamRockets = useAtomValue(teamsAtom)[0]
-  const teamUfos = useAtomValue(teamsAtom)[1]
-  let rocketsScore = getScore(teamRockets)
-  let ufosScore = getScore(teamUfos)
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
+  const teamRockets = { players: [ { name: 'rocky' }, { name: 'cosmo' }] }
+  const teamUfos = { players: [ { name: 'obi' }, { name: 'verdy' }] }
+  let rocketsScore = 0
+  let ufosScore = 4
 
   // Ref
   const ufoBoss = useRef()
@@ -53,7 +45,6 @@ export default function UfosWin2New() {
 
   // Hooks - particles
   const [CreateBeamDust] = useBeamDustShader();
-  const [CreateFirework] = useFireworksShader();
 
   // Animation - useEffect, gsap progress
   const progressRef = useRef({ value: 0 })
@@ -64,8 +55,6 @@ export default function UfosWin2New() {
   const pMax3 = 0.9
   const pMax4 = 1.0
   
-  // Wolf Absorbed
-  const pWolfRise = 0.0
   const pWolfAbsorbed = 0.2
   const pCybertruckRise = 0.2
   const pCybertruckAbsorbed = 0.4
@@ -110,7 +99,7 @@ export default function UfosWin2New() {
           rocketGroupScale = 0
         }
 
-        api.set({
+        rocketGroupSpringsApi.set({
           rocketGroupPosition,
           rocketGroupScale,
         })
@@ -193,50 +182,6 @@ export default function UfosWin2New() {
       }
     })
 
-    const intervalFireworks = setInterval(() => {
-      const constellationChance = 0.1
-      const planetChance = 0.2
-      if (document.hasFocus()) {
-        const count = Math.round(700 + Math.random() * 400);
-        let position;
-        let size;
-        let radius;
-        if (device === 'portrait') {
-          const radians = Math.random() * Math.PI*2
-          position = new THREE.Vector3(
-              Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-              -5,
-              Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-          )
-          size = 0.1 + Math.random() * 0.15
-          radius = 1.5 + Math.random() * 1.0
-        } else {
-          let angle = Math.PI * 2 * Math.random()
-          let radiusCircle = 5
-          position = new THREE.Vector3(
-              // generateRandomNumberInRange(0, 20) * (Math.random() > 0.5 ? 1 : -1), 
-              // generateRandomNumberInRange(0, 5) * (Math.random() > 0.5 ? 1 : -1) + 15,
-              // 0, 
-              Math.cos(angle) * radiusCircle * 1.7,
-              -10,
-              Math.sin(angle) * radiusCircle - 3
-          )
-          size = 0.3 + Math.random() * 0.3
-          radius = 1.0 + Math.random() * 1.0
-        }
-        const color = new THREE.Color();
-        color.setHSL(Math.random(), 0.7, 0.4)
-  
-        let type = Math.random()
-        if (type < constellationChance) {
-          CreateFirework({ count, position, size, radius, color, type: 'constellation' });
-        } else if (type > constellationChance && type < planetChance) {
-          CreateFirework({ count, position, size, radius, color, type: 'planet' });
-        } else {
-          CreateFirework({ count, position, size, radius, color });
-        }
-      }
-    }, 200)
     const intervalBeamDust = setInterval(() => {
       const position = new THREE.Vector3(
         Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
@@ -248,12 +193,7 @@ export default function UfosWin2New() {
       CreateBeamDust({ position, size, speed });
     }, 70)
 
-    setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(false)
     return (() => {
-      clearInterval(intervalFireworks);
       clearInterval(intervalBeamDust);
     })
   }, [])
@@ -294,7 +234,7 @@ export default function UfosWin2New() {
 
   // Spring Animation
   // Rockets Absorbed
-  const [{ rocketGroupScale, rocketGroupPosition }, api] = useSpring(() => ({
+  const [{ rocketGroupScale, rocketGroupPosition }, rocketGroupSpringsApi] = useSpring(() => ({
     rocketGroupPosition: [0, 0, 10],
     rocketGroupScale: 1,
     config: { tension: 70, friction: 20 },
@@ -324,13 +264,29 @@ export default function UfosWin2New() {
     }
   })
 
+  const [ springs, api ] = useSpring(() => ({
+    from: {
+      scale: 0
+    }
+  }))
+  useEffect(() => {
+    api.start({
+      from: {
+        scale: 0
+      },
+      to: {
+        scale: 1
+      },
+      config: {
+        tension: 70, 
+        friction: 20,
+      }
+    })
+  }, [])
+
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <group>
-    {/* camera */}
-    <group name='setup'>
-      <GameCamera position={layout[device].camera.position}/>
-    </group>
+  return <animated.group position={position} scale={springs.scale}>
     {/* title */}
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
@@ -511,17 +467,16 @@ export default function UfosWin2New() {
           rotation={[-Math.PI/2, 0, 0]}
           size={0.5}
           height={0.03} 
-          position={layout[device].endSceneActionButtons.roomId.position} // camera is shifted up (y-axis)
+          position={layout[device].endSceneActionButtons.roomId.position}
         >
-          ROOM ID: {`${params.id}`}
+          ROOM ID: {`9999`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
-      device={device}
-      preview/>
+      device={device}/>
       <ShareLinkButton 
       position={layout[device].endSceneActionButtons.shareLinkButton.position} 
       rotation={layout[device].endSceneActionButtons.shareLinkButton.rotation} 
@@ -531,5 +486,6 @@ export default function UfosWin2New() {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
-  </group>
+    {backButton}
+  </animated.group>
 }

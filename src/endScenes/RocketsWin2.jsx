@@ -161,7 +161,7 @@ export default function RocketsWin2() {
               rotation={[-Math.PI/2, 0, 0]}
               size={0.4} 
               height={0.003} 
-              position={[0, 0, 0]} // camera is shifted up (y-axis)
+              position={[0, 0, 0 + index * 0.7]} // camera is shifted up (y-axis)
             >
               {formatName(value.name, 10)}
               <meshStandardMaterial color='red'/>
@@ -176,7 +176,7 @@ export default function RocketsWin2() {
               rotation={[-Math.PI/2, 0, 0]}
               size={0.4} 
               height={0.003} 
-              position={[0, 0, 0]} // camera is shifted up (y-axis)
+              position={[0, 0, 0 + index * 0.7]} // camera is shifted up (y-axis)
             >
               {formatName(value.name, 10)}
               <meshStandardMaterial color='turquoise'/>

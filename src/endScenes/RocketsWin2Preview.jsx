@@ -23,8 +23,8 @@ export default function RocketsWin2Preview({ position, backButton }) {
   const device = useAtomValue(deviceAtom)
 
   // State
-  const teamRockets = { players: [] }
-  const teamUfos = { players: [] }
+  const teamRockets = { players: [ { name: 'rocky' }, { name: 'cosmo' }] }
+  const teamUfos = { players: [ { name: 'obi' }, { name: 'verdy' }] }
   let rocketsScore = 4
   let ufosScore = 0
   const earth = useRef()
@@ -163,7 +163,7 @@ export default function RocketsWin2Preview({ position, backButton }) {
               rotation={[-Math.PI/2, 0, 0]}
               size={0.4} 
               height={0.003} 
-              position={[0, 0, 0]} // camera is shifted up (y-axis)
+              position={[0, 0, 0 + index * 0.7]} // camera is shifted up (y-axis)
             >
               {formatName(value.name, 10)}
               <meshStandardMaterial color='red'/>
@@ -178,7 +178,7 @@ export default function RocketsWin2Preview({ position, backButton }) {
               rotation={[-Math.PI/2, 0, 0]}
               size={0.4} 
               height={0.003} 
-              position={[0, 0, 0]} // camera is shifted up (y-axis)
+              position={[0, 0, 0 + index * 0.7]} // camera is shifted up (y-axis)
             >
               {formatName(value.name, 10)}
               <meshStandardMaterial color='turquoise'/>

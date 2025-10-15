@@ -3435,12 +3435,12 @@ export default {
     },
     ufoWinScene: {
       title: {
-        position: [-12.5, 14, 0],
+        position: [-12.5, 3, -4.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5
       },
       teams: {
-        position: [-12.5, 12, 0],
+        position: [-12.5, 3, -3.8],
         scale: 1
       },
       scene0: {
