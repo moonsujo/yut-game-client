@@ -716,7 +716,7 @@ export default function Showroom(props) {
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
                     <YootSet 
-                        points="ge"
+                        points="gul"
                         scale={0.25}
                         position={[2, 0, -0.5]}
                     />

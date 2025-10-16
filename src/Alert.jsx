@@ -28,6 +28,7 @@ import PregameRocketsWinAlert from "./alerts/PregameRocketsWinAlert";
 import PregameTieAlert from "./alerts/PregameTieAlert";
 import PregameUfosWinAlert from "./alerts/PregameUfosWinAlert";
 import ScoreAlert from "./alerts/ScoreAlert";
+import TurnAlert from "./alerts/TurnAlert";
 
 export default function Alert({ position, rotation }) {
     
