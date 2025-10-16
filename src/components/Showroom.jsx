@@ -49,6 +49,8 @@ import UfosWin2NewPreview from "../endScenes/UfosWin2NewPreview.jsx";
 import RocketsLosePreview from "../endScenes/RocketsLosePreview.jsx";
 import UfosLosePreview from "../endScenes/UfosLosePreview.jsx";
 import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
+import YootDisplay from "../YootDisplay.jsx";
+import YootSet from "../meshes/YootSet.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -364,9 +366,9 @@ export default function Showroom(props) {
                 
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
-                        (Math.random() - 0.5) * 15 + 2, 
+                        (Math.random() - 0.5) * 15 -2, 
                         8,
-                        (Math.random() - 0.5) * 15, 
+                        (Math.random() - 0.5) * 15 + 2, 
                     )
                     
                     const rotation = new THREE.Vector3(
@@ -493,7 +495,7 @@ export default function Showroom(props) {
                 
                     // need a THREE.Vector3 for position
                     const position = new THREE.Vector3(
-                        (Math.random() - 0.5) * 15 + 2, 
+                        (Math.random() - 0.5) * 15, 
                         8.0,
                         (Math.random() - 0.5) * 15 + 2, 
                     )
@@ -609,91 +611,134 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
-            <group name='do-alert' position={[-8, 0, -5]} scale={0.9}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    DO
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-            </group>
-            <group name='ge-alert' position={[-4, 0, -5]} scale={0.9}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    GE
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-            </group>
-            <group name='gul-alert' position={[0, 0, -5]} scale={0.9}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    GUL
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-            </group>
-            <group name='yut-alert' position={[-8, 0, -1.8]} >
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    YUT
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <YutEffectButton position={[2, 0, -0.21]}/>
-                <YootAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]} scale={0.7}/>
-            </group>
-            <group name='mo-alert' position={[-2, 0, -1.8]}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    MO
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <MoEffectButton position={[1.7, 0, -0.21]}/>
-                <MoAlert position={[2, 0, 2]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
-            </group>
-            <group name='backdo-alert' position={[-8, 0, 3]} scale={0.9}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    BACKDO
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-            </group>
-            <group name='nak-alert' position={[-2, 0, 3]} scale={0.9}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    size={0.5}
-                    height={0.01}
-                >
-                    NAK (OUT)
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <OutAlert position={[3, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                rotation={[-Math.PI/2, 0, 0]}
+                position={[-15, 0, -5.5]}
+                size={0.4}
+                height={0.01}
+            >
+                YUT OUTCOME ALERTS
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <group name='components' position={[6, 0, 0]}>
+                <group name='do-alert' position={[-18, 0, -3.5]} scale={0.9}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        DO
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="do"
+                        scale={0.25}
+                        position={[2, 0, -0.5]}
+                    />
+                    <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                </group>
+                <group name='ge-alert' position={[-12, 0, -3.5]} scale={0.9}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        GE
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="ge"
+                        scale={0.25}
+                        position={[2, 0, -0.5]}
+                    />
+                    <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                </group>
+                <group name='gul-alert' position={[-6, 0, -3.5]} scale={0.9}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        GUL
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="ge"
+                        scale={0.25}
+                        position={[2, 0, -0.5]}
+                    />
+                    <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                </group>
+                <group name='yut-alert' position={[-20, 0, 1]} scale={1.1}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        YUT
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="yoot"
+                        scale={0.25}
+                        position={[2, 0, -0.5]}
+                    />
+                    <YutEffectButton position={[4.3, 0, -0.21]}/>
+                    <YootAlert position={[2, 0, 2.4]} rotation={[0, Math.PI/2, 0]} scale={0.7}/>
+                </group>
+                <group name='mo-alert' position={[-13, 0, 1]} scale={1.1}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        MO
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="mo"
+                        scale={0.25}
+                        position={[2, 0, -0.5]}
+                    />
+                    <MoEffectButton position={[4.3, 0, -0.21]}/>
+                    <MoAlert position={[2, 0, 2.4]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
+                </group>
+                <group name='backdo-alert' position={[-5.5, 0, 0.5]} scale={0.9}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                        position={[-0.5, 0, 0]}
+                    >
+                        BACKDO
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <YootSet 
+                        points="backdo"
+                        scale={0.3}
+                        position={[3, 0, -0.5]}
+                    />
+                    <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                </group>
+                <group name='nak-alert' position={[-5.5, 0, 4]} scale={0.9}>
+                    <Text3D
+                        font="fonts/Luckiest Guy_Regular.json"
+                        rotation={[-Math.PI/2, 0, 0]}
+                        size={0.5}
+                        height={0.01}
+                    >
+                        NAK (OUT)
+                        <meshStandardMaterial color='yellow'/>
+                    </Text3D>
+                    <OutAlert position={[1.8, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                </group>
             </group>
         </group>
     }
@@ -753,6 +798,16 @@ export default function Showroom(props) {
                 })
             }
             return <group {...props}>
+                <Text3D
+                    font="fonts/Luckiest Guy_Regular.json"
+                    rotation={[-Math.PI/2, 0, 0]}
+                    position={[-11, 0, -7.5]}
+                    size={0.4}
+                    height={0.01}
+                >
+                    NEW TURN ALERT
+                    <meshStandardMaterial color='yellow'/>
+                </Text3D>
                 <mesh>
                     <boxGeometry args={[1.2, 0.03, 0.75]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
@@ -783,7 +838,7 @@ export default function Showroom(props) {
         </group>
     }
     function Catch(props) {
-        function RocketsCatchUfo() {
+        function RocketsCatchUfo({ position }) {
             const [ufoEnergyAlertSprings, ufoEnergyAlertSpringApi] = useSpring(() => ({
                 from: {
                     scale: 0
@@ -863,14 +918,14 @@ export default function Showroom(props) {
                     </mesh>
                 </group>
             }
-            return <group>
-                <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert  rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+            return <group position={position}>
+                <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
                 { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[-5.5, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
                 <PlayUfoEnergyAlertButton position={[-5.5, 0, 3.5]}/>
             </group>
         }
         
-        function UfosCatchRocket() {
+        function UfosCatchRocket({position}) {
             const [rocketMemeAlertSprings, rocketMemeAlertSpringApi] = useSpring(() => ({
                 from: {
                     scale: 0
@@ -951,7 +1006,7 @@ export default function Showroom(props) {
                 </group>
             }
 
-            return <group>
+            return <group position={position}>
                 <animated.group position={[1.5, 0, 0]} scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
                 { !rocketMemeAlertPlaying && <CatchRocketMemeAlert position={[1.5, 0, 0]} rotation={[0, Math.PI/2, 0]}/> }
                 <PlayRocketMemeAlertButton position={[1.55, 0, 3.5]}/>
@@ -959,8 +1014,18 @@ export default function Showroom(props) {
         }
 
         return <group {...props}>
-            <RocketsCatchUfo/>
-            <UfosCatchRocket/>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                rotation={[-Math.PI/2, 0, 0]}
+                position={[-15, 0, -4.5]}
+                size={0.4}
+                height={0.01}
+            >
+                CATCH ALERTS
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <RocketsCatchUfo position={[-4, 0, 0]}/>
+            <UfosCatchRocket position={[-2, 0, 0]}/>
         </group>
     }
     function Pregame(props) {
@@ -1225,9 +1290,19 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
-            <PregameTieSection scale={0.8} position={[-1, 0, 2]}/>
-            <PregameRocketsWinSection scale={0.8} position={[-4, 0, -3]}/>
-            <PregameUfosWinSection scale={0.8} position={[2, 0, -3]}/>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                rotation={[-Math.PI/2, 0, 0]}
+                position={[-15, 0, -4.5]}
+                size={0.4}
+                height={0.01}
+            >
+                PREGAME RESULT ALERTS
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <PregameRocketsWinSection scale={1} position={[-13, 0, 0]}/>
+            <PregameUfosWinSection scale={1} position={[-6, 0, 0]}/>
+            <PregameTieSection scale={1} position={[1, 0, 0]}/>
         </group>
     }
 
@@ -1262,7 +1337,7 @@ export default function Showroom(props) {
             const position = new THREE.Vector3(
                 center[0] + Math.random()*0.1, 
                 center[1],
-                center[2]-0.9 + Math.random()*0.2, 
+                center[2]-4 + Math.random()*0.2, 
             )
     
             const size = 0.25 + Math.random() * 0.1
@@ -1294,7 +1369,7 @@ export default function Showroom(props) {
                 const position = new THREE.Vector3(
                     center[0], 
                     center[1],
-                    center[2]-1.9 + Math.random() * 0.1, 
+                    center[2]+1 + Math.random() * 0.1, 
                 )
                 const size = 0.25 + Math.random() * 0.08
                 const radius = 1.2 + Math.random() * 0.4
@@ -1349,20 +1424,27 @@ export default function Showroom(props) {
             }, 1210)
         }
 
+        const [rocketSprings, rocketSpringApi] = useSpring(() => ({
+            from: {
+                rocketScale: 0,
+                rocketPosition: [0,0,0]
+            }
+        }))
+        const [ufoSprings, ufoSpringApi] = useSpring(() => ({
+                from: {
+                    ufoScale: 0,
+                    ufoPosition: [0,0,0],
+                }
+            }))
+        const [alertSprings, alertSpringApi] = useSpring(() => ({
+            from: {
+                alertScale: 0,
+            }
+        }))
+
         function RocketButton({ scale, position }) {
             
             // animation button props
-            const [scoreSprings, scoreSpringApi] = useSpring(() => ({
-                from: {
-                    rocketScale: 0,
-                    rocketPosition: [0,0,0]
-                }
-            }))
-            const [alertSprings, alertSpringApi] = useSpring(() => ({
-                from: {
-                    alertScale: 0,
-                }
-            }))
             
             const [hover, setHover] = useState(false)
             const [animationPlaying, setAnimationPlaying] = useState(null)
@@ -1394,7 +1476,7 @@ export default function Showroom(props) {
                         onStart: () => {},
                         onRest: () => {}
                     })
-                    shootFireworks([-3, 2, 0], 0)
+                    shootFireworks([-10, 0, 2], 0)
                 }
 
                 return () => {
@@ -1413,31 +1495,31 @@ export default function Showroom(props) {
             }
             function onPointerDown(e) {
                 e.stopPropagation()
-                scoreSpringApi.start({
+                rocketSpringApi.start({
                     from: {
                         rocketScale: 0,
-                        rocketPosition: [-7.1, 0, -4.5],
+                        rocketPosition: [0,0,0],
                     },
                     to: [
                         {
                             rocketScale: 1.5,
-                            rocketPosition: [-7.1, 2, -3],
+                            rocketPosition: [0,2,2],
                             // if not set, animation plays quickly on the second time
                         },
                         {
-                            rocketPosition: [-7.15, 2, -1.1],
+                            rocketPosition: [0,2,4],
                         },
                         {
-                            rocketPosition: [-7.15, 2, 0.4],
+                            rocketPosition: [0,2,5.5],
                         },
                         // score
                         {
                             rocketScale: 2.75,
-                            rocketPosition: [-7.15, 5, 0.1],
+                            rocketPosition: [0, 5, 3],
                         },
                         {
                             rocketScale: 0,
-                            rocketPosition: [-7.15, 2, 0.9],
+                            rocketPosition: [0, 2, 5.5],
                             delay: 500
                         }
                     ],
@@ -1451,7 +1533,7 @@ export default function Showroom(props) {
             }
             
             return <group scale={scale} position={position}>
-                <Rocket scale={1.6}/>
+                <Rocket scale={1.8}/>
                 <PlayAnimationButton 
                     position={[2, 0, 0]} 
                     onPointerEnter={e => onPointerEnter(e)}
@@ -1459,33 +1541,9 @@ export default function Showroom(props) {
                     onPointerDown={e => onPointerDown(e)}
                     hover={hover}
                 />
-                <group name='animation-parts' position={[0, 0, 1.5]}>
-                    {/* had to put the springs as a parent */}
-                    <animated.group scale={scoreSprings.rocketScale} position={scoreSprings.rocketPosition}>
-                        <Rocket onBoard/>
-                    </animated.group>
-                    <animated.group scale={alertSprings.alertScale} position={[-7.1, 3, -4.5]}>
-                        <ScoreAlert scale={alertSprings.alertScale} scoringTeam={0}/>
-                    </animated.group>
-                </group>
             </group>
         }
         function UfoButton({ scale, position }) {
-            
-            // animation button props
-            const [scoreSprings, scoreSpringApi] = useSpring(() => ({
-                from: {
-                    ufoScale: 0,
-                    ufoPosition: [0,0,0],
-                    star0Scale: 0,
-                    star0Position: [0,0,0]
-                }
-            }))
-            const [alertSprings, alertSpringApi] = useSpring(() => ({
-                from: {
-                    alertScale: 0,
-                }
-            }))
             
             const [hover, setHover] = useState(false)
             const [animationPlaying, setAnimationPlaying] = useState(null)
@@ -1517,7 +1575,7 @@ export default function Showroom(props) {
                         onStart: () => {},
                         onRest: () => {}
                     })
-                    shootFireworks([-3, 2, 0], 1)
+                    shootFireworks([-10, 0, 2], 1)
                 }
 
                 return () => {
@@ -1538,31 +1596,31 @@ export default function Showroom(props) {
             function onPointerDown(e) {
                 e.stopPropagation()
                 // play spring api
-                scoreSpringApi.start({
+                ufoSpringApi.start({
                     from: {
                         ufoScale: 0,
-                        ufoPosition: [-7.1, 0, -4.5],
+                        ufoPosition: [0,0,0],
                     },
                     to: [
                         {
                             ufoScale: 1.5,
-                            ufoPosition: [-7.1, 2, -3.1],
+                            ufoPosition: [0,2,2],
                             // if not set, animation plays quickly on the second time
                         },
                         {
-                            ufoPosition: [-7.15, 2, -1.5],
+                            ufoPosition: [0,2,4],
                         },
                         {
-                            ufoPosition: [-7.15, 2, 0.1],
+                            ufoPosition: [0,2,5.5],
                         },
                         // score
                         {
                             ufoScale: 2.75,
-                            ufoPosition: [-7.15, 5, 0.1],
+                            ufoPosition: [0, 5, 3],
                         },
                         {
                             ufoScale: 0,
-                            ufoPosition: [-7.15, 2, 0.1],
+                            ufoPosition: [0, 2, 5.5],
                             delay: 500
                         }
                     ],
@@ -1584,31 +1642,33 @@ export default function Showroom(props) {
                     onPointerDown={e => onPointerDown(e)}
                     hover={hover}
                 />
-                <group name='animation-parts'>
-                    {/* had to put the springs as a parent */}
-                    <animated.group scale={scoreSprings.ufoScale} position={scoreSprings.ufoPosition}>
-                        <Ufo onBoard/>
-                    </animated.group>
-                    <animated.group scale={alertSprings.alertScale} position={[-7.1, 3, -4.5]}>
-                        <ScoreAlert scale={alertSprings.alertScale} scoringTeam={1}/>
-                    </animated.group>
-                </group>
             </group>
         }
         return <group {...props}>
+            <group name='board-and-animation' scale={0.9} position={[-10, 0, -0.5]}>
+                <Board/>
+                <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
+                    <Rocket onBoard/>
+                </animated.group>
+                <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
+                    <Ufo onBoard/>
+                </animated.group>
+                <animated.group scale={alertSprings.alertScale} position={[0,2,1]}>
+                    <ScoreAlert scale={alertSprings.alertScale} scoringTeam={1}/>
+                </animated.group>
+            </group>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
-                position={[-8, 0.02, -5]}
+                position={[-3, 0.02, -4.5]}
                 rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
+                size={0.4}
                 height={0.01}
             >
                 SCORE ANIMATION
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
-            <Board scale={0.8} position={[-3, 0, 0]}/>
-            <RocketButton scale={0.7} position={[2, 0, 2.5]}/>
-            <UfoButton scale={0.7} position={[2, 0, 4]}/>
+            <RocketButton scale={1} position={[-2, 0, -2]}/>
+            <UfoButton scale={1} position={[-2, 0, 1]}/>
         </group>
     }
     const positionStart = [-15, 0, 3]
@@ -1627,10 +1687,10 @@ export default function Showroom(props) {
         endScenesScale,
         endScenesPosition
     } = useSpring({
-        yutOutcomesScale: display === 'yutOutcomes' ? 1 : 0,
-        yutOutcomesPosition: display === 'yutOutcomes' ? positionEnd : positionStart,
+        yutOutcomesScale: display === 'yutOutcomes' ? 0.9 : 0,
+        yutOutcomesPosition: display === 'yutOutcomes' ? [-1, 0, 0] : positionStart,
         newTurnScale: display === 'newTurn' ? 1 : 0,
-        newTurnPosition: display === 'newTurn' ? positionEnd : positionStart,
+        newTurnPosition: display === 'newTurn' ? [-4, 0, 0] : positionStart,
         catchScale: display === 'catch' ? 1 : 0,
         catchPosition: display === 'catch' ? positionEnd : positionStart,
         pregameScale: display === 'pregame' ? 1 : 0,
