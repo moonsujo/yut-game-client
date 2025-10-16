@@ -3412,20 +3412,20 @@ export default {
     },
     ufoLoseScene: {
       title: {
-        position: [-12.5, 14, 0],
+        position: [-12.5, 3, -4.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5
       },
       teams: {
-        position: [-12.5, 12, 0],
+        position: [-12.5, 3, -3.8],
         scale: 1
       },
       scene0: {
-        position: [-13, 0, 7],
+        position: [-13, -5, 4],
         scale: 1.5
       },
       scene1: {
-        position: [0, 0, -1],
+        position: [0, 0, -0.5],
         scale: 1.3
       },
       actionButtons: {
@@ -3458,16 +3458,16 @@ export default {
     },
     rocketsLoseScene: {
       title: {
-        position: [-12.5, 14, 0],
+        position: [-12.5, 3, -4.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5
       },
       teams: {
-        position: [-12.5, 12, 0],
+        position: [-12.5, 3, -3.8],
         scale: 1
       },
       scene0: {
-        position: [-11.8, 0, 5.5],
+        position: [-11.8, -1, 5.0],
         scale: 0.8
       },
       scene1: {

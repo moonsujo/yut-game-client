@@ -46,6 +46,9 @@ import { Llama } from "../meshes/Llama.jsx";
 import Ruby from "../meshes/Ruby.jsx";
 import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
 import UfosWin2NewPreview from "../endScenes/UfosWin2NewPreview.jsx";
+import RocketsLosePreview from "../endScenes/RocketsLosePreview.jsx";
+import UfosLosePreview from "../endScenes/UfosLosePreview.jsx";
+import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -1652,7 +1655,7 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             // make another button to return to the showroom from an end scene
-            if (display === 'rocketsWin' || display === 'ufosWin') {
+            if (display === 'rocketsWin' || display === 'ufosWin' || display === 'rocketsLose' || display === 'ufosLose') {
                 setDisplay('endScenes')
                 clearInterval(intervalFireworksId)
             } else {
@@ -1724,7 +1727,7 @@ export default function Showroom(props) {
                         const newIntervalFireworksId = setInterval(() => {
                             const constellationChance = 0.07
                             const planetChance = 0.14
-                            const position = [-4, 10, 4]
+                            const position = [-4, 8, 2]
                             if (document.hasFocus()) {
                                 const count = Math.round(300 + Math.random() * 100);
                                 let positionShader;
@@ -1931,7 +1934,7 @@ export default function Showroom(props) {
                         const newIntervalFireworksId = setInterval(() => {
                             const constellationChance = 0.07
                             const planetChance = 0.14
-                            const position = [-4, 10, 4]
+                            const position = [-4, 8, 2]
                             if (document.hasFocus()) {
                                 const count = Math.round(300 + Math.random() * 100);
                                 let positionShader;
@@ -2011,22 +2014,65 @@ export default function Showroom(props) {
 
         function RocketsLose({position, scale}) {
             const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                setDisplay('rocketsLose')
+            }
             return <group name='rockets-lose' position={position} scale={scale}>
                 <group name='picture'>
                     <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
-                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
+                <PlayAnimationButton 
+                position={[0, 0, 1.5]} 
+                scale={0.7}
+                onPointerEnter={e=>onPointerEnter(e)}
+                onPointerLeave={e=>onPointerLeave(e)}
+                onPointerDown={e=>onPointerDown(e)}
+                hover={hover}
+                />
             </group>
         }
 
         function UfosLose({ position, scale }) {
+            const [hover, setHover] = useState(false)
+            function onPointerEnter(e) {
+                e.stopPropagation()
+                setHover(true)
+                document.body.style.cursor = 'pointer';
+            }
+            function onPointerLeave(e) {
+                e.stopPropagation()
+                setHover(false)
+                document.body.style.cursor = 'default';
+            }
+            function onPointerDown(e) {
+                e.stopPropagation()
+                setDisplay('ufosLose')
+            }
             return <group name='ufos-lose' position={position} scale={scale}>
                 <group name='picture'>
                     <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
-                <PlayAnimationButton position={[0, 0, 1.5]} scale={0.7}/>
+                <PlayAnimationButton 
+                position={[0, 0, 1.5]} 
+                scale={0.7}
+                onPointerEnter={e=>onPointerEnter(e)}
+                onPointerLeave={e=>onPointerLeave(e)}
+                onPointerDown={e=>onPointerDown(e)}
+                hover={hover}
+                />
             </group>
         }
         return <group {...props}>
@@ -2094,7 +2140,7 @@ export default function Showroom(props) {
     }
 
     const { tabPosition } = useSpring({
-        tabPosition: (display !== 'rocketsWin' && display !== 'ufosWin') ? [0, 0, 0] : [5, 0, 0]
+        tabPosition: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0, 0, 0] : [5, 0, 0]
     })
     return <group {...props}>
         <animated.group name='tab' position={tabPosition}>
@@ -2104,7 +2150,7 @@ export default function Showroom(props) {
             <PregameButton position={[6.65, 0.02, -2.4]}/>
             <ScoreButton position={[6.35, 0.02, -1.7]}/>
             <EndScenesButton position={[6.85, 0.02, -1.0]}/>
-            <BackButton position={[6.05, 0, -0.3]}/>
+            <BackButton position={[6.05, 0.02, -0.3]}/>
         </animated.group>
         {/* back button */}
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
@@ -2115,9 +2161,20 @@ export default function Showroom(props) {
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
         { display === 'rocketsWin' && <group><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
         { display === 'ufosWin' && <group><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
+        { display === 'rocketsLose' && <group><RocketsLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
+        { display === 'ufosLose' && <group><UfosLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
         </mesh>
+        { display !== 'ufosLose' && <MilkyWayNew
+            rotation={[-Math.PI/2, 0, -35.0]} 
+            position={[-4,-1,0]} 
+            scale={4}
+            brightness={0.5}
+            colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+            colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+            colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+        /> }
     </group>
 }

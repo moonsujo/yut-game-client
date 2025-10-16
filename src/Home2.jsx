@@ -607,7 +607,7 @@ export default function Home2() {
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
@@ -617,6 +617,7 @@ export default function Home2() {
     showroomScale: (display === 'showroom') ? 1 : 0,
     navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-13,0,0] : [0,0,0],
     milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
+    milkyWayScale: display !== 'showroom' ? 1 : 0,
     config: {
       tension: 170,
       friction: 26
@@ -733,7 +734,7 @@ export default function Home2() {
       rotation={layout[device].title.disconnectModal.rotation}
     /> }
     <MeteorsRealShader color={meteorShaderColor}/>
-    <animated.group position={milkyWayPosition}>
+    <animated.group position={milkyWayPosition} scale={milkyWayScale}>
       <MilkyWayNew
         rotation={[-Math.PI/2, 0, -35.0]} 
         position={[0,-1,0]} 
