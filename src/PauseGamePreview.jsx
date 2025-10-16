@@ -3,18 +3,9 @@ import { useFrame } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
 import Star from "./meshes/Star";
 import MeshColors from "./MeshColors";
-import { socket } from "./SocketManager";
-import { useParams } from "wouter";
-import { useAtomValue } from "jotai";
-import { clientAtom, hostAtom } from "./GlobalState";
 
-export default function PauseGame({ position, scale=1 }) {
+export default function PauseGamePreview({ position, scale=1, isHost=false }) {
   const [hover, setHover] = useState(false);
-
-  const params = useParams();
-  const client = useAtomValue(clientAtom)
-  const host = useAtomValue(hostAtom)
-  const isHost = client._id === host._id
 
   const borderMesh0Ref = useRef();
   const borderMesh1Ref = useRef();
@@ -54,13 +45,11 @@ export default function PauseGame({ position, scale=1 }) {
   
   function handlePointerUp(e) {
     e.stopPropagation()
-    if (isHost) {    
-      socket.emit('pauseGame', ({ roomId: params.id, clientId: client._id, flag: false}))
-    }
   }
 
   return <group position={position} rotation={[0, Math.PI/2, 0]} scale={scale}>
     <mesh
+      name='wrapper'
       castShadow
       receiveShadow
       scale={[2, 0.055, 2.6]}

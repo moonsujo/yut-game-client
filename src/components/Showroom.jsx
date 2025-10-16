@@ -51,6 +51,8 @@ import UfosLosePreview from "../endScenes/UfosLosePreview.jsx";
 import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
 import YootDisplay from "../YootDisplay.jsx";
 import YootSet from "../meshes/YootSet.jsx";
+import PauseGame from "../PauseGame.jsx";
+import PauseGamePreview from "../PauseGamePreview.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -242,7 +244,7 @@ export default function Showroom(props) {
             </Text3D>
         </group>
     }
-    function PregameButton(props) {
+    function PiggybackButton(props) {
         const [hover, setHover] = useState(false)
         function onPointerEnter(e) {
             e.stopPropagation()
@@ -256,16 +258,63 @@ export default function Showroom(props) {
         }
         function onPointerDown(e) {
             e.stopPropagation()
-            setDisplay('pregame')
+            setDisplay('piggyback')
             setHomeDisplay('showroom')
         }
         return <group {...props}>
             <mesh>
-                <boxGeometry args={[2.1, 0.03, 0.55]}/>
+                <boxGeometry args={[2.5, 0.03, 0.55]}/>
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </mesh>
             <mesh>
-                <boxGeometry args={[2.05, 0.04, 0.5]}/>
+                <boxGeometry args={[2.45, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.5, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-1.1, 0.05, 0.15]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.3}
+                height={0.01}
+            >
+                PIGGYBACK
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </Text3D>
+        </group>
+    }
+    function GamePhasesButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('gamePhases')
+            setHomeDisplay('showroom')
+        }
+        return <group {...props}>
+            <mesh>
+                <boxGeometry args={[2.9, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[2.85, 0.04, 0.5]}/>
                 <meshStandardMaterial color='black'/>
             </mesh>
             <mesh 
@@ -279,12 +328,12 @@ export default function Showroom(props) {
             </mesh>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
-                position={[-0.9, 0.05, 0.15]}
+                position={[-1.3, 0.05, 0.15]}
                 rotation={[-Math.PI/2, 0, 0]}
                 size={0.3}
                 height={0.01}
             >
-                PREGAME
+                GAME PHASES
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
@@ -622,7 +671,7 @@ export default function Showroom(props) {
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
             <group name='components' position={[6, 0, 0]}>
-                <group name='do-alert' position={[-18, 0, -3.5]} scale={0.9}>
+                <group name='do-alert' position={[-20, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -639,7 +688,7 @@ export default function Showroom(props) {
                     />
                     <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
                 </group>
-                <group name='ge-alert' position={[-12, 0, -3.5]} scale={0.9}>
+                <group name='ge-alert' position={[-14, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -656,7 +705,7 @@ export default function Showroom(props) {
                     />
                     <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
                 </group>
-                <group name='gul-alert' position={[-6, 0, -3.5]} scale={0.9}>
+                <group name='gul-alert' position={[-8, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -740,101 +789,6 @@ export default function Showroom(props) {
                     <OutAlert position={[1.8, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
                 </group>
             </group>
-        </group>
-    }
-    function NewTurn(props) {
-        const [alertSprings, alertSpringApi] = useSpring(() => ({
-            from: {
-                scale: 0
-            }
-        }))
-        const [playing, setPlaying] = useState(false)
-        function PlayAnimationButton(props) {
-            const [hover, setHover] = useState(false)
-            function onPointerEnter(e) {
-                e.stopPropagation()
-                setHover(true)
-                document.body.style.cursor = 'pointer';
-            }
-            function onPointerLeave(e) {
-                e.stopPropagation()
-                setHover(false)
-                document.body.style.cursor = 'default';
-            }
-            function onPointerDown(e) {
-                e.stopPropagation()
-                // play spring api
-                alertSpringApi.start({
-                    from: {
-                        scale: 0
-                    },
-                    to: [
-                        {
-                            scale: 1,
-                            // if not set, animation plays quickly on the second time
-                            config: {
-                                tension: 170,
-                                friction: 26,
-                                clamp: true
-                            },
-                        },
-                        {
-                            scale: 0,
-                            config: {
-                                tension: 300,
-                                friction: 26,
-                                clamp: true
-                            },
-                            delay: 700
-                        }
-                    ],
-                    onStart: () => { setPlaying(true) },
-                    onRest: () => { 
-                        // if not set, alert restores immediately
-                        setTimeout(() => {
-                            setPlaying(false) 
-                        }, 500)
-                    }
-                })
-            }
-            return <group {...props}>
-                <Text3D
-                    font="fonts/Luckiest Guy_Regular.json"
-                    rotation={[-Math.PI/2, 0, 0]}
-                    position={[-11, 0, -7.5]}
-                    size={0.4}
-                    height={0.01}
-                >
-                    NEW TURN ALERT
-                    <meshStandardMaterial color='yellow'/>
-                </Text3D>
-                <mesh>
-                    <boxGeometry args={[1.2, 0.03, 0.75]}/>
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                </mesh>
-                <mesh>
-                    <boxGeometry args={[1.15, 0.04, 0.7]}/>
-                    <meshStandardMaterial color='black'/>
-                </mesh>
-                <mesh 
-                    name='wrapper' 
-                    onPointerEnter={e => onPointerEnter(e)}
-                    onPointerLeave={e => onPointerLeave(e)}
-                    onPointerDown={e => onPointerDown(e)}
-                >
-                    <boxGeometry args={[1.65, 0.04, 0.75]}/>
-                    <meshStandardMaterial transparent opacity={0}/>
-                </mesh>
-                <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
-                    <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                </mesh>
-            </group>
-        }
-        return <group {...props}>
-            <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
-            { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
-            <PlayAnimationButton position={[0, 0, 3]}/>
         </group>
     }
     function Catch(props) {
@@ -1028,7 +982,198 @@ export default function Showroom(props) {
             <UfosCatchRocket position={[-2, 0, 0]}/>
         </group>
     }
-    function Pregame(props) {
+    function Piggyback(props) {
+        function RocketsCatchUfo({ position }) {
+            const [ufoEnergyAlertSprings, ufoEnergyAlertSpringApi] = useSpring(() => ({
+                from: {
+                    scale: 0
+                }
+            }))
+            const [ufoEnergyAlertPlaying, setUfoEnergyAlertPlaying] = useState(false)
+            function PlayUfoEnergyAlertButton(props) {
+                const [hover, setHover] = useState(false)
+                function onPointerEnter(e) {
+                    e.stopPropagation()
+                    setHover(true)
+                    document.body.style.cursor = 'pointer';
+                }
+                function onPointerLeave(e) {
+                    e.stopPropagation()
+                    setHover(false)
+                    document.body.style.cursor = 'default';
+                }
+                function onPointerDown(e) {
+                    e.stopPropagation()
+                    // play sound effect
+                    playSoundEffect('/sounds/effects/capture.mp3', 1)
+                    ufoEnergyAlertSpringApi.start({
+                        from: {
+                            scale: 0
+                        },
+                        to: [
+                            {
+                                scale: 1,
+                                // if not set, animation plays quickly on the second time
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                scale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 700
+                            }
+                        ],
+                        onStart: () => { setUfoEnergyAlertPlaying(true) },
+                        onRest: () => { 
+                            // if not set, alert restores immediately
+                            setTimeout(() => {
+                                setUfoEnergyAlertPlaying(false) 
+                            }, 500)
+                        }
+                    })
+                }
+                return <group {...props}>
+                    <mesh>
+                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                        <meshStandardMaterial color='black'/>
+                    </mesh>
+                    <mesh 
+                        name='wrapper' 
+                        onPointerEnter={e => onPointerEnter(e)}
+                        onPointerLeave={e => onPointerLeave(e)}
+                        onPointerDown={e => onPointerDown(e)}
+                    >
+                        <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                        <meshStandardMaterial transparent opacity={0}/>
+                    </mesh>
+                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                </group>
+            }
+            return <group position={position}>
+                <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[-5.5, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
+                <PlayUfoEnergyAlertButton position={[-5.5, 0, 3.5]}/>
+            </group>
+        }
+        
+        function UfosCatchRocket({position}) {
+            const [rocketMemeAlertSprings, rocketMemeAlertSpringApi] = useSpring(() => ({
+                from: {
+                    scale: 0
+                }
+            }))
+            const [rocketMemeAlertPlaying, setRocketMemeAlertPlaying] = useState(false)
+            function PlayRocketMemeAlertButton(props) {
+                const [hover, setHover] = useState(false)
+                function onPointerEnter(e) {
+                    e.stopPropagation()
+                    setHover(true)
+                    document.body.style.cursor = 'pointer';
+                }
+                function onPointerLeave(e) {
+                    e.stopPropagation()
+                    setHover(false)
+                    document.body.style.cursor = 'default';
+                }
+                function onPointerDown(e) {
+                    e.stopPropagation()
+                    // play sound effect
+                    playSoundEffect('/sounds/effects/capture.mp3', 1)
+                    rocketMemeAlertSpringApi.start({
+                        from: {
+                            scale: 0
+                        },
+                        to: [
+                            {
+                                scale: 1,
+                                // if not set, animation plays quickly on the second time
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                scale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 700
+                            }
+                        ],
+                        onStart: () => { setRocketMemeAlertPlaying(true) },
+                        onRest: () => { 
+                            // if not set, alert restores immediately
+                            setTimeout(() => {
+                                setRocketMemeAlertPlaying(false) 
+                            }, 500)
+                        }
+                    })
+                }
+                return <group {...props}>
+                    <mesh>
+                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                        <meshStandardMaterial color='black'/>
+                    </mesh>
+                    <mesh 
+                        name='wrapper' 
+                        onPointerEnter={e => onPointerEnter(e)}
+                        onPointerLeave={e => onPointerLeave(e)}
+                        onPointerDown={e => onPointerDown(e)}
+                    >
+                        <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                        <meshStandardMaterial transparent opacity={0}/>
+                    </mesh>
+                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                </group>
+            }
+
+            return <group position={position}>
+                <animated.group position={[1.5, 0, 0]} scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                { !rocketMemeAlertPlaying && <CatchRocketMemeAlert position={[1.5, 0, 0]} rotation={[0, Math.PI/2, 0]}/> }
+                <PlayRocketMemeAlertButton position={[1.55, 0, 3.5]}/>
+            </group>
+        }
+
+        return <group {...props}>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                rotation={[-Math.PI/2, 0, 0]}
+                position={[-15, 0, -4.5]}
+                size={0.4}
+                height={0.01}
+            >
+                PIGGYBACK ALERTS
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
+            <RocketsCatchUfo position={[-4, 0, 0]}/>
+            <UfosCatchRocket position={[-2, 0, 0]}/>
+        </group>
+    }
+    function GamePhases(props) {
         function PregameTieSection(props) {
             const [alertSprings, alertSpringApi] = useSpring(() => ({
                 from: {
@@ -1289,6 +1434,97 @@ export default function Showroom(props) {
                 <PlayAnimationButton position={[0, 1, 3.5]}/>
             </group>
         }
+        function NewTurnSection(props) {
+            const [alertSprings, alertSpringApi] = useSpring(() => ({
+                from: {
+                    scale: 0
+                }
+            }))
+            const [playing, setPlaying] = useState(false)
+            function PlayAnimationButton(props) {
+                const [hover, setHover] = useState(false)
+                function onPointerEnter(e) {
+                    e.stopPropagation()
+                    setHover(true)
+                    document.body.style.cursor = 'pointer';
+                }
+                function onPointerLeave(e) {
+                    e.stopPropagation()
+                    setHover(false)
+                    document.body.style.cursor = 'default';
+                }
+                function onPointerDown(e) {
+                    e.stopPropagation()
+                    // play spring api
+                    alertSpringApi.start({
+                        from: {
+                            scale: 0
+                        },
+                        to: [
+                            {
+                                scale: 1,
+                                // if not set, animation plays quickly on the second time
+                                config: {
+                                    tension: 170,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                            },
+                            {
+                                scale: 0,
+                                config: {
+                                    tension: 300,
+                                    friction: 26,
+                                    clamp: true
+                                },
+                                delay: 700
+                            }
+                        ],
+                        onStart: () => { setPlaying(true) },
+                        onRest: () => { 
+                            // if not set, alert restores immediately
+                            setTimeout(() => {
+                                setPlaying(false) 
+                            }, 500)
+                        }
+                    })
+                }
+                return <group {...props}>
+                    <mesh>
+                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
+                        <meshStandardMaterial color='black'/>
+                    </mesh>
+                    <mesh 
+                        name='wrapper' 
+                        onPointerEnter={e => onPointerEnter(e)}
+                        onPointerLeave={e => onPointerLeave(e)}
+                        onPointerDown={e => onPointerDown(e)}
+                    >
+                        <boxGeometry args={[1.65, 0.04, 0.75]}/>
+                        <meshStandardMaterial transparent opacity={0}/>
+                    </mesh>
+                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
+                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    </mesh>
+                </group>
+            }
+            return <group {...props}>
+                <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
+                { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
+                <PlayAnimationButton position={[0, 0, 3]}/>
+            </group>
+        }
+        function PauseGameGuestSection(props) {
+            return <PauseGamePreview {...props} isHost={false}/>
+        }
+        function PauseGameHostSection(props) {
+            return <PauseGamePreview {...props} isHost={true}/>
+        }
         return <group {...props}>
             <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
@@ -1297,12 +1533,15 @@ export default function Showroom(props) {
                 size={0.4}
                 height={0.01}
             >
-                PREGAME RESULT ALERTS
+                GAME PHASE ALERTS
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
-            <PregameRocketsWinSection scale={1} position={[-13, 0, 0]}/>
-            <PregameUfosWinSection scale={1} position={[-6, 0, 0]}/>
-            <PregameTieSection scale={1} position={[1, 0, 0]}/>
+            <PregameRocketsWinSection scale={0.7} position={[-12, 0, -2]}/>
+            <PregameUfosWinSection scale={0.7} position={[-6, 0, -2]}/>
+            <PregameTieSection scale={0.7} position={[0, 0, -2]}/>
+            <NewTurnSection scale={0.7} position={[-12, 0, 3]}/>
+            <PauseGameGuestSection scale={0.8} position={[-6, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
+            <PauseGameHostSection scale={0.8} position={[0, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
         </group>
     }
 
@@ -1675,13 +1914,13 @@ export default function Showroom(props) {
     const positionEnd = [0, 0, 0]
     const {
         yutOutcomesScale, 
-        yutOutcomesPosition, 
-        newTurnScale, 
-        newTurnPosition, 
+        yutOutcomesPosition,
         catchScale, 
         catchPosition,
-        pregameScale,
-        pregamePosition,
+        // piggybackScale, 
+        // piggybackPosition,
+        gamePhasesScale,
+        gamePhasesPosition,
         scoreScale,
         scorePosition,
         endScenesScale,
@@ -1693,8 +1932,10 @@ export default function Showroom(props) {
         newTurnPosition: display === 'newTurn' ? [-4, 0, 0] : positionStart,
         catchScale: display === 'catch' ? 1 : 0,
         catchPosition: display === 'catch' ? positionEnd : positionStart,
-        pregameScale: display === 'pregame' ? 1 : 0,
-        pregamePosition: display === 'pregame' ? positionEnd : positionStart,
+        // piggybackScale: display === 'piggyback' ? 1 : 0,
+        // piggybackPosition: display === 'piggyback' ? positionEnd : positionStart,
+        gamePhasesScale: display === 'gamePhases' ? 1 : 0,
+        gamePhasesPosition: display === 'gamePhases' ? positionEnd : positionStart,
         scoreScale: display === 'score' ? 1 : 0,
         scorePosition: display === 'score' ? positionEnd : positionStart,
         endScenesScale: display === 'endScenes' ?  1 : 0,
@@ -2090,7 +2331,9 @@ export default function Showroom(props) {
             }
             return <group name='rockets-lose' position={position} scale={scale}>
                 <group name='picture'>
-                    <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4, 0]}/>
+                    <Float>
+                        <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4 - Math.PI/8, 0]}/>
+                    </Float>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton 
@@ -2122,7 +2365,9 @@ export default function Showroom(props) {
             }
             return <group name='ufos-lose' position={position} scale={scale}>
                 <group name='picture'>
-                    <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
+                    <Float>
+                        <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
+                    </Float>
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton 
@@ -2205,18 +2450,18 @@ export default function Showroom(props) {
     return <group {...props}>
         <animated.group name='tab' position={tabPosition}>
             <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
-            <NewTurnButton position={[6.75, 0.02, -3.8]}/>
+            <GamePhasesButton position={[7.05, 0.02, -3.8]}/>
             <CatchButton position={[6.35, 0.02, -3.1]}/>
-            <PregameButton position={[6.65, 0.02, -2.4]}/>
-            <ScoreButton position={[6.35, 0.02, -1.7]}/>
-            <EndScenesButton position={[6.85, 0.02, -1.0]}/>
-            <BackButton position={[6.05, 0.02, -0.3]}/>
+            <ScoreButton position={[6.35, 0.02, -2.4]}/>
+            <EndScenesButton position={[6.85, 0.02, -1.7]}/>
+            <BackButton position={[6.05, 0.02, -1.0]}/>
+            {/* <PiggybackButton position={[6.85, 0.02, -3.1]}/> */}
         </animated.group>
         {/* back button */}
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
-        <animated.group position={newTurnPosition} scale={newTurnScale}><NewTurn/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
-        <animated.group position={pregamePosition} scale={pregameScale}><Pregame/></animated.group>
+        {/* <animated.group position={piggybackPosition} scale={piggybackScale}><Piggyback/></animated.group> */}
+        <animated.group position={gamePhasesPosition} scale={gamePhasesScale}><GamePhases/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
         { display === 'rocketsWin' && <group><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
