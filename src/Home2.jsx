@@ -552,7 +552,7 @@ export default function Home2() {
     </group>
   }
 
-  function ShowroomButton(props) {
+  function ShowroomButtonLandscape(props) {
     const [hover, setHover] = useState(false)
 
     function handlePointerEnter(e) {
@@ -601,6 +601,59 @@ export default function Home2() {
         height={0.01}
       >
         SHOWROOM
+        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+      </Text3D>
+    </group>
+  }
+  function ShowroomButtonPortrait(props) {
+    const [hover, setHover] = useState(false)
+
+    function handlePointerEnter(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'pointer'
+      setHover(true)
+    }
+
+    function handlePointerLeave(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'default'
+      setHover(false)
+    }
+
+    function handlePointerDown(e) {
+      e.stopPropagation();
+
+      playSoundEffect('/sounds/effects/button-click.mp3', 1)
+      
+      setDisplay('showroom')
+    }
+
+    return <group {...props}>
+      <mesh name='background-outer'>
+        <boxGeometry args={[1.5, 0.03, 1.35]}/>
+        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+      </mesh>
+      <mesh name='background-inner'>
+        <boxGeometry args={[1.45, 0.04, 1.3]}/>
+        <meshStandardMaterial color='black'/>
+      </mesh>
+      <mesh 
+        name='wrapper' 
+        onPointerEnter={e => handlePointerEnter(e)}
+        onPointerLeave={e => handlePointerLeave(e)}
+        onPointerDown={e => handlePointerDown(e)}
+      >
+        <boxGeometry args={[2.05, 0.1, 1.55]}/>
+        <meshStandardMaterial transparent opacity={0}/>
+      </mesh>
+      <Text3D
+        font="fonts/Luckiest Guy_Regular.json"
+        position={[-0.55, 0.025, -0.15]}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={0.3}
+        height={0.01}
+      >
+        {`SHOW\nROOM`}
         <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
       </Text3D>
     </group>
@@ -678,11 +731,16 @@ export default function Home2() {
         rotation={layout[device].title.letsPlay.rotation}
         scale={layout[device].title.letsPlay.scale}
       />
-      <ShowroomButton
+      { device === 'landscapeDesktop' && <ShowroomButtonLandscape
         position={layout[device].title.showroom.position} 
         rotation={layout[device].title.showroom.rotation}
         scale={layout[device].title.showroom.scale}
-      />
+      /> }
+      { device === 'portrait' && <ShowroomButtonPortrait
+        position={layout[device].title.showroom.position} 
+        rotation={layout[device].title.showroom.rotation}
+        scale={layout[device].title.showroom.scale}
+      /> }
     </animated.group>
     <group name='stats'>
       { device === 'landscape' && <PageVisits 

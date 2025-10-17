@@ -119,6 +119,11 @@ export default {
         position: [0, 10, 3.7],
         rotation: [0,0,0],
       },
+      showroom: {
+        position: [5.5,0,10],
+        rotation: [0,0,0],
+        scale: 1
+      },
     },
     howToPlay: {
       position: [-2.5,0,-2.2],
