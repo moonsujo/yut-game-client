@@ -18,6 +18,7 @@ import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
 import Blackhole2 from "../Blackhole2";
+import MilkyWayNew from "../shader/milkyway/MilkyWayNew";
 
 export default function RocketsWin2() {
 
@@ -37,7 +38,6 @@ export default function RocketsWin2() {
   const rocket1 = useRef()
   const rocket2 = useRef()
   const rocket3 = useRef()
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -88,11 +88,6 @@ export default function RocketsWin2() {
       }
     }
   })
-
-  // Fireworks
-  useEffect(() => {
-    setShowGalaxy(true)
-  }, [])
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
@@ -253,5 +248,14 @@ export default function RocketsWin2() {
     </group>
     <MeteorsRealShader color={meteorShaderColor}/>
     <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
+    <MilkyWayNew // will not show without a camera
+      rotation={[-Math.PI/2, 0, -35.0]} 
+      position={[0, -10, -4]}
+      scale={5}
+      brightness={0.5}
+      colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+    />
   </group>
 }

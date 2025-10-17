@@ -2,7 +2,7 @@ import { Float, Text3D } from "@react-three/drei";
 import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, teamsAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -29,6 +29,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
+import MilkyWayNew from "../shader/milkyway/MilkyWayNew";
 
 // add falling rocket parts in the background
 export default function UfosWin2New() {
@@ -41,7 +42,6 @@ export default function UfosWin2New() {
   const teamUfos = useAtomValue(teamsAtom)[1]
   let rocketsScore = getScore(teamRockets)
   let ufosScore = getScore(teamUfos)
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
 
   // Ref
   const ufoBoss = useRef()
@@ -525,5 +525,14 @@ export default function UfosWin2New() {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
+    <MilkyWayNew // will not show without a camera
+      rotation={[-Math.PI/2, 0, -35.0]} 
+      position={[0, -10, -4]}
+      scale={5}
+      brightness={0.5}
+      colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+    />
   </group>
 }

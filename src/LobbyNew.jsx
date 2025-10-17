@@ -59,6 +59,7 @@ import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import SeatStar from "./stars/SeatStar.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import YouStars from "./YouStars.jsx";
+import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
 
 export default function LobbyNew() {
 
@@ -2354,5 +2355,14 @@ export default function LobbyNew() {
       rotation={layout[device].lobby.disconnectModal.rotation}
     /> }
     <MeteorsRealShader color={meteorShaderColor}/>
+    <MilkyWayNew // will not show without a camera
+      rotation={[-Math.PI/2, 0, -35.0]} 
+      position={[0, -10, -4]}
+      scale={5}
+      brightness={0.5}
+      colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+      colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+    />
   </animated.group>
 }

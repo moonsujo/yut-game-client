@@ -1,8 +1,8 @@
-import { Float, MeshDistortMaterial, OrthographicCamera, Text3D } from "@react-three/drei";
+import { Float, Text3D } from "@react-three/drei";
 import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { clientAtom, deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, teamsAtom } from "../GlobalState";
 import { formatName, getScore } from "../helpers/helpers";
 import UfoNew from "../meshes/UfoNew";
 import Earth from "../meshes/Earth";
@@ -18,7 +18,6 @@ import UfoNewBoss from "../meshes/UfoNewBoss";
 import Asteroids from "../Asteroids";
 import { socket } from "../SocketManager";
 import { useParams } from "wouter";
-import axios from "axios";
 import DiscordButton from "./DiscordButton";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
@@ -34,7 +33,6 @@ export default function RocketsLose() {
   const teamUfos = useAtomValue(teamsAtom)[1]
   let rocketsScore = getScore(teamRockets)
   let ufosScore = getScore(teamUfos)
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
 
   // Ref
   const ufo0 = useRef()
@@ -222,7 +220,6 @@ export default function RocketsLose() {
         shaderMaterial.uniforms.uProgress.value = p
       }
     })
-    setShowGalaxy(false)
   }, [])
   
   const turquoise = new THREE.Color('turquoise')

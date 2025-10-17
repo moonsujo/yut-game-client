@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, teamsAtom } from "../GlobalState";
 import { formatName, getScore } from "../helpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
@@ -40,7 +40,6 @@ export default function UfosLose() {
   const rocket1 = useRef()
   const rocket2 = useRef()
   const rocket3 = useRef()
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -50,10 +49,6 @@ export default function UfosLose() {
   for (let i = 0; i < numUfos; i++) {
     ufos.push(useRef())
   }
-
-  useEffect(() => {
-    setShowGalaxy(false)
-  }, [])
 
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime

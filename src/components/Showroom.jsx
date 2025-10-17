@@ -18,7 +18,7 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
-import { deviceAtom, meteorTexturesAtom, showGalaxyBackgroundAtom } from "../GlobalState.jsx";
+import { deviceAtom, meteorTexturesAtom } from "../GlobalState.jsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
 import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
@@ -2023,12 +2023,6 @@ export default function Showroom(props) {
             </mesh>
         </animated.group>
     }
-    
-    const [_springs, endSceneSpringApi] = useSpring(() => ({
-        from: {
-            scale: 0,
-        }
-    }))
 
     function EndScenes(props) {
 

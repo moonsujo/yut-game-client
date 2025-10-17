@@ -134,10 +134,6 @@ export const languageOpenAtom = atom(false)
 export const lastYutAtom = atom(null)
 export const seatChosenAtom = atom(null) // [team, seatIndex]
 export const showGalaxyBackgroundAtom = atom(true)
-export const showMilkyWayShowroomAtom = atom(false)
-export const showBlackholeAtom = atom(false)
-export const showRedGalaxyAtom = atom(false)
-export const showBlackhole2Atom = atom(false)
 export const hasAIAtom = atom(false)
 
 // display
