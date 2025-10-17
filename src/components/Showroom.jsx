@@ -18,7 +18,7 @@ import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../helpers/helpers.js";
-import { deviceAtom, meteorTexturesAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showMilkyWayShowroomAtom, showRedGalaxyAtom } from "../GlobalState.jsx";
+import { deviceAtom, meteorTexturesAtom, showGalaxyBackgroundAtom } from "../GlobalState.jsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
 import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
@@ -53,6 +53,7 @@ import YootDisplay from "../YootDisplay.jsx";
 import YootSet from "../meshes/YootSet.jsx";
 import PauseGame from "../PauseGame.jsx";
 import PauseGamePreview from "../PauseGamePreview.jsx";
+import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -63,9 +64,11 @@ export default function Showroom(props) {
     const { playSoundEffect } = useSoundEffectsPlayer()
     const meteorTextures = useAtomValue(meteorTexturesAtom)
     const [intervalFireworksId, setIntervalFireworksId] = useState(null)
+    const [intervalBeamDustSmallId, setIntervalBeamDustSmallId] = useState(null)
+    const [intervalBeamDustId, setIntervalBeamDustId] = useState(null)
     const device = useAtomValue(deviceAtom)
     const [CreateFirework] = useFireworksShader();
-    const setShowBlackhole = useSetAtom(showBlackholeAtom)
+    const [CreateBeamDust] = useBeamDustShader();
 
     // helper function
     function CreateMoMeteor() {
@@ -1924,7 +1927,12 @@ export default function Showroom(props) {
         scoreScale,
         scorePosition,
         endScenesScale,
-        endScenesPosition
+        endScenesPosition,
+        rocketsWinScale,
+        ufosWinScale,
+        rocketsLoseScale,
+        ufosLoseScale,
+        milkyWayScale
     } = useSpring({
         yutOutcomesScale: display === 'yutOutcomes' ? 0.9 : 0,
         yutOutcomesPosition: display === 'yutOutcomes' ? [-1, 0, 0] : positionStart,
@@ -1940,6 +1948,11 @@ export default function Showroom(props) {
         scorePosition: display === 'score' ? positionEnd : positionStart,
         endScenesScale: display === 'endScenes' ?  1 : 0,
         endScenesPosition: display === 'endScenes' ? positionEnd : positionStart,
+        rocketsWinScale: display === 'rocketsWin' ? 1 : 0,
+        ufosWinScale: display === 'ufosWin' ? 1 : 0,
+        rocketsLoseScale: display === 'rocketsLose' ? 1 : 0,
+        ufosLoseScale: display === 'ufosLose' ? 1 : 0,
+        milkyWayScale: (display !== 'ufosLose' && display !== 'rocketsLose') ? 1 : 0
     })
     function BackButton(props) {
         const [hover, setHover] = useState(false)
@@ -1959,6 +1972,25 @@ export default function Showroom(props) {
             if (display === 'rocketsWin' || display === 'ufosWin' || display === 'rocketsLose' || display === 'ufosLose') {
                 setDisplay('endScenes')
                 clearInterval(intervalFireworksId)
+                clearInterval(intervalBeamDustId)
+
+                // back to end scenes. start beam dust for ufo win preview preview
+                const newIntervalBeamDustSmallId = setInterval(() => {
+                    const positionParticles = new THREE.Vector3(
+                        Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
+                        -7.5,
+                        Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
+                    )
+                    const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
+                    const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
+                    const position = new THREE.Vector3(
+                        -7,
+                        0,
+                        2.2,
+                    )
+                    CreateBeamDust({ position, positionParticles, size, speed });
+                }, 70)
+                setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
             } else {
                 setHomeDisplay('title')
             }
@@ -2000,6 +2032,11 @@ export default function Showroom(props) {
 
     function EndScenes(props) {
 
+        useEffect(() => {
+            return () => {
+                clearInterval(intervalBeamDustSmallId)
+            }
+        }, [])
         function RocketsWin({position, scale}) {
             const [hover, setHover] = useState(false)
             function onPointerEnter(e) {
@@ -2015,61 +2052,49 @@ export default function Showroom(props) {
             function onPointerDown(e) {
                 e.stopPropagation()
                 setDisplay('rocketsWin')
-
-                endSceneSpringApi.start({
-                    from: {
-                        scale: 0
-                    },
-                    to: {
-                        scale: 1
-                    },
-                    onStart: () => {},
-                    onRest: () => { 
-                        const newIntervalFireworksId = setInterval(() => {
-                            const constellationChance = 0.07
-                            const planetChance = 0.14
-                            const position = [-4, 8, 2]
-                            if (document.hasFocus()) {
-                                const count = Math.round(300 + Math.random() * 100);
-                                let positionShader;
-                                let size;
-                                let radius;
-                                if (device === 'portrait') {
-                                    const radians = Math.random() * Math.PI*2
-                                    positionShader = new THREE.Vector3(
-                                        position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-                                        position[1] + -5,
-                                        position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-                                    )
-                                    size = 0.1 + Math.random() * 0.15
-                                    radius = 1.5 + Math.random() * 1.0
-                                } else {
-                                    let angle = Math.PI * 2 * Math.random()
-                                    let radiusCircle = 5
-                                    positionShader = new THREE.Vector3(
-                                        position[0] + Math.cos(angle) * radiusCircle * 1.7,
-                                        position[1] - 1,
-                                        position[2] + 3 + Math.sin(angle) * radiusCircle - 3
-                                    )
-                                    size = 0.15
-                                    radius = 1.5 + Math.random() * 0.5
-                                }
-                                const color = new THREE.Color();
-                                color.setHSL(Math.random(), 0.7, 0.4)
-                        
-                                let type = Math.random()
-                                if (type < constellationChance) {
-                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
-                                } else if (type > constellationChance && type < planetChance) {
-                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
-                                } else {
-                                    CreateFirework({ count, position: positionShader, size, radius, color });
-                                }
-                            }
-                        }, 200)
-                        setIntervalFireworksId(newIntervalFireworksId)
+                const newIntervalFireworksId = setInterval(() => {
+                    const constellationChance = 0.07
+                    const planetChance = 0.14
+                    const position = [-4, 8, 2]
+                    if (document.hasFocus()) {
+                        const count = Math.round(300 + Math.random() * 100);
+                        let positionShader;
+                        let size;
+                        let radius;
+                        if (device === 'portrait') {
+                            const radians = Math.random() * Math.PI*2
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
+                                position[1] + -5,
+                                position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
+                            )
+                            size = 0.1 + Math.random() * 0.15
+                            radius = 1.5 + Math.random() * 1.0
+                        } else {
+                            let angle = Math.PI * 2 * Math.random()
+                            let radiusCircle = 5
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(angle) * radiusCircle * 1.7,
+                                position[1] - 1,
+                                position[2] + 3 + Math.sin(angle) * radiusCircle - 3
+                            )
+                            size = 0.15
+                            radius = 1.5 + Math.random() * 0.5
+                        }
+                        const color = new THREE.Color();
+                        color.setHSL(Math.random(), 0.7, 0.4)
+                
+                        let type = Math.random()
+                        if (type < constellationChance) {
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
+                        } else if (type > constellationChance && type < planetChance) {
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
+                        } else {
+                            CreateFirework({ count, position: positionShader, size, radius, color });
+                        }
                     }
-                })
+                }, 200)
+                setIntervalFireworksId(newIntervalFireworksId)
             }
             return <group name='rockets-win' position={position} scale={scale}>
                 <group name='picture' position={[0, 0, 0.5]}>
@@ -2222,61 +2247,66 @@ export default function Showroom(props) {
             function onPointerDown(e) {
                 e.stopPropagation()
                 setDisplay('ufosWin')
-
-                endSceneSpringApi.start({
-                    from: {
-                        scale: 0
-                    },
-                    to: {
-                        scale: 1
-                    },
-                    onStart: () => {},
-                    onRest: () => { 
-                        const newIntervalFireworksId = setInterval(() => {
-                            const constellationChance = 0.07
-                            const planetChance = 0.14
-                            const position = [-4, 8, 2]
-                            if (document.hasFocus()) {
-                                const count = Math.round(300 + Math.random() * 100);
-                                let positionShader;
-                                let size;
-                                let radius;
-                                if (device === 'portrait') {
-                                    const radians = Math.random() * Math.PI*2
-                                    positionShader = new THREE.Vector3(
-                                        position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
-                                        position[1] + -5,
-                                        position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
-                                    )
-                                    size = 0.1 + Math.random() * 0.15
-                                    radius = 1.5 + Math.random() * 1.0
-                                } else {
-                                    let angle = Math.PI * 2 * Math.random()
-                                    let radiusCircle = 5
-                                    positionShader = new THREE.Vector3(
-                                        position[0] + Math.cos(angle) * radiusCircle * 1.7,
-                                        position[1] - 1,
-                                        position[2] + 3 + Math.sin(angle) * radiusCircle - 3
-                                    )
-                                    size = 0.15
-                                    radius = 1.5 + Math.random() * 0.5
-                                }
-                                const color = new THREE.Color();
-                                color.setHSL(Math.random(), 0.7, 0.4)
-                        
-                                let type = Math.random()
-                                if (type < constellationChance) {
-                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
-                                } else if (type > constellationChance && type < planetChance) {
-                                    CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
-                                } else {
-                                    CreateFirework({ count, position: positionShader, size, radius, color });
-                                }
-                            }
-                        }, 200)
-                        setIntervalFireworksId(newIntervalFireworksId)
+                const newIntervalFireworksId = setInterval(() => {
+                    const constellationChance = 0.07
+                    const planetChance = 0.14
+                    const position = [-4, 8, 2]
+                    if (document.hasFocus()) {
+                        const count = Math.round(300 + Math.random() * 100);
+                        let positionShader;
+                        let size;
+                        let radius;
+                        if (device === 'portrait') {
+                            const radians = Math.random() * Math.PI*2
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(radians) * generateRandomNumberInRange(4, 1), 
+                                position[1] + -5,
+                                position[2] + Math.sin(radians) * generateRandomNumberInRange(9, 1.5) - 2, 
+                            )
+                            size = 0.1 + Math.random() * 0.15
+                            radius = 1.5 + Math.random() * 1.0
+                        } else {
+                            let angle = Math.PI * 2 * Math.random()
+                            let radiusCircle = 5
+                            positionShader = new THREE.Vector3(
+                                position[0] + Math.cos(angle) * radiusCircle * 1.7,
+                                position[1] - 1,
+                                position[2] + 3 + Math.sin(angle) * radiusCircle - 3
+                            )
+                            size = 0.15
+                            radius = 1.5 + Math.random() * 0.5
+                        }
+                        const color = new THREE.Color();
+                        color.setHSL(Math.random(), 0.7, 0.4)
+                
+                        let type = Math.random()
+                        if (type < constellationChance) {
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'constellation' });
+                        } else if (type > constellationChance && type < planetChance) {
+                            CreateFirework({ count, position: positionShader, size, radius, color, type: 'planet' });
+                        } else {
+                            CreateFirework({ count, position: positionShader, size, radius, color });
+                        }
                     }
-                })
+                }, 200)
+                setIntervalFireworksId(newIntervalFireworksId)
+
+                const newIntervalBeamDustId = setInterval(() => {
+                    const positionParticles = new THREE.Vector3(
+                        Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
+                        -7.5,
+                        Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
+                    )
+                    const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
+                    const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
+                    const position = new THREE.Vector3(
+                        -4,
+                        0,
+                        -1,
+                    )
+                    CreateBeamDust({ position, positionParticles, size, speed });
+                }, 70)
+                setIntervalBeamDustId(newIntervalBeamDustId)
             }
             return <group name='ufos-win' position={position} scale={scale}>
                 <group name='picture'>
@@ -2392,7 +2422,7 @@ export default function Showroom(props) {
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
             <RocketsWin position={[-12.5, 0, -0.5]} scale={1.4}/>
-            <UfosWin position={[-7, 0, 0.8]} scale={1.3}/>
+            <UfosWin position={[-7, 2, 1.4]} scale={1.3}/>
             <RocketsLose position={[-0.9, 0.5, 0]} scale={1.3}/>
             <UfosLose position={[2.7, 0.5, 0.5]} scale={1.3}/>
         </group>
@@ -2412,6 +2442,23 @@ export default function Showroom(props) {
         function onPointerDown(e) {
             e.stopPropagation()
             setDisplay('endScenes')
+            // for ufos win preview preview
+            const newIntervalBeamDustSmallId = setInterval(() => {
+                const positionParticles = new THREE.Vector3(
+                    Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
+                    -7.5,
+                    Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
+                )
+                const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
+                const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
+                const position = new THREE.Vector3(
+                    -7,
+                    0,
+                    2.2,
+                )
+                CreateBeamDust({ position, positionParticles, size, speed });
+            }, 70)
+            setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
         }
         return <group {...props}>
             <mesh>
@@ -2464,22 +2511,24 @@ export default function Showroom(props) {
         <animated.group position={gamePhasesPosition} scale={gamePhasesScale}><GamePhases/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        { display === 'rocketsWin' && <group><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
-        { display === 'ufosWin' && <group><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
-        { display === 'rocketsLose' && <group><RocketsLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
-        { display === 'ufosLose' && <group><UfosLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></group> }
+        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
+        <animated.group scale={ufosWinScale}><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
+        <animated.group scale={rocketsLoseScale}><RocketsLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
+        <animated.group scale={ufosLoseScale}><UfosLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
         </mesh>
-        { display !== 'ufosLose' && <MilkyWayNew
-            rotation={[-Math.PI/2, 0, -35.0]} 
-            position={[-4,-1,0]} 
-            scale={4}
-            brightness={0.5}
-            colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-            colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-            colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-        /> }
+        <animated.group scale={milkyWayScale}>
+            <MilkyWayNew
+                rotation={[-Math.PI/2, 0, -35.0]} 
+                position={[-4,-1,0]} 
+                scale={4}
+                brightness={0.5}
+                colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+                colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+                colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+            />
+        </animated.group>
     </group>
 }

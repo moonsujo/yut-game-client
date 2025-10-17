@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
@@ -38,8 +38,6 @@ export default function RocketsWin2() {
   const rocket2 = useRef()
   const rocket3 = useRef()
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -94,8 +92,6 @@ export default function RocketsWin2() {
   // Fireworks
   useEffect(() => {
     setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
   }, [])
 
   const meteorShaderColor = new THREE.Color();

@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, getScore } from "../helpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
@@ -17,6 +17,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import { useParams } from "wouter";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
+import Blackhole from "../Blackhole";
 
 export default function UfosLose() {
   
@@ -40,9 +41,6 @@ export default function UfosLose() {
   const rocket2 = useRef()
   const rocket3 = useRef()
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
   // Animation - Ufos lose
   const ufos = []
@@ -55,9 +53,6 @@ export default function UfosLose() {
 
   useEffect(() => {
     setShowGalaxy(false)
-    setShowBlackhole(true)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(false)
   }, [])
 
   useFrame((state, delta) => {
@@ -261,5 +256,6 @@ export default function UfosLose() {
     {/* background */}
     <Asteroids position={[-10, -5, -20]} scale={1.5}/>
     <MeteorsRealShader color={meteorShaderColor}/>
+    <Blackhole scale={1.5} position={[0, 0, -1.1]}/>
   </group>
 }

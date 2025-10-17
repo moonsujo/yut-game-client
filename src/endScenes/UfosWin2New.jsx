@@ -2,7 +2,7 @@ import { Float, Text3D } from "@react-three/drei";
 import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -42,9 +42,6 @@ export default function UfosWin2New() {
   let rocketsScore = getScore(teamRockets)
   let ufosScore = getScore(teamUfos)
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
 
   // Ref
   const ufoBoss = useRef()
@@ -249,9 +246,6 @@ export default function UfosWin2New() {
     }, 70)
 
     setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(false)
     return (() => {
       clearInterval(intervalFireworks);
       clearInterval(intervalBeamDust);

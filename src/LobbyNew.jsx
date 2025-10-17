@@ -27,9 +27,6 @@ import {
   guestBeingEdittedAtom,
   seatChosenAtom,
   showGalaxyBackgroundAtom,
-  showBlackholeAtom,
-  showRedGalaxyAtom,
-  showBlackhole2Atom,
   settingsOpenAtom,
   portraitLobbySelectionAtom,
   landscapeLobbyThirdSectionSelectionAtom,
@@ -70,17 +67,11 @@ export default function LobbyNew() {
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const params = useParams();
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
 
   useEffect(() => {
     setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(false)
   }, [])
 
   useEffect(() => {

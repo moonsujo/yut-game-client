@@ -1,17 +1,10 @@
-import React, {useRef, useMemo} from 'react'
-import {useFrame, useThree} from '@react-three/fiber'
 import * as THREE from 'three'
-import { OrbitControls } from '@react-three/drei'
 import Portal from "./Portal";
-import { useAtomValue } from 'jotai';
-import { showBlackholeAtom } from './GlobalState';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 
 export default function Blackhole({scale, position}) {
 
-    const showBlackhole = useAtomValue(showBlackholeAtom)
-
-    return showBlackhole && <group scale={scale} position={position}>
+    return <group scale={scale} position={position}>
         <MilkyWayNew // will not show without a camera
             rotation={[-Math.PI/2, 0, 0]} 
             position={[0, -2, 0]}

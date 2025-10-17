@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showGalaxyBackgroundAtom } from "../GlobalState";
+import { deviceAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange } from "../helpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
@@ -84,29 +84,9 @@ export default function RocketsWin2Preview({ position, backButton }) {
     }
   })
 
-  const [ springs, api ] = useSpring(() => ({
-    from: {
-      scale: 0
-    }
-  }))
-  useEffect(() => {
-    api.start({
-      from: {
-        scale: 0
-      },
-      to: {
-        scale: 1
-      },
-      config: {
-        tension: 70, 
-        friction: 20,
-      }
-    })
-  }, [])
-
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position} scale={springs.scale}>
+  return <animated.group position={position}>
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
       position={layout[device].rocketsWinScene.title.position}

@@ -28,14 +28,14 @@ export function useBeamDustShader() {
     // one particle
     // spawn via setInterval
     // randomize position and size
-    function CreateBeamDust({ position, size, speed }) {
+    function CreateBeamDust({ position, positionParticles, size, speed }) {
         const color = new THREE.Color();
         color.setHSL(0.5, 0.5, 0.6)
         const geometry = new THREE.BufferGeometry()
         const positionsArray = new Float32Array(3)
-        positionsArray[0] = position.x
-        positionsArray[1] = position.y
-        positionsArray[2] = position.z
+        positionsArray[0] = positionParticles.x
+        positionsArray[1] = positionParticles.y
+        positionsArray[2] = positionParticles.z
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsArray, 3))
         const material = new THREE.ShaderMaterial({
             vertexShader: beamDustVertexShader,
@@ -44,7 +44,7 @@ export function useBeamDustShader() {
                 uSize: new THREE.Uniform(size), // needs the THREE.Uniform object
                 uResolution: new THREE.Uniform(sizes.resolution),
                 uProgress: new THREE.Uniform(0),
-                uPosition: new THREE.Uniform(position),
+                uPosition: new THREE.Uniform(positionParticles),
                 uColor: new THREE.Uniform(color),
                 uSpeed: new THREE.Uniform(speed)
             },
@@ -53,11 +53,7 @@ export function useBeamDustShader() {
             blending: THREE.AdditiveBlending,
         })
         const points = new THREE.Points(geometry, material)
-        points.position.copy(new THREE.Vector3(
-            0, 
-            0,
-            0, 
-        ))
+        points.position.copy(position)
         const destroy = () => { // may need to run on component unmount as well
             scene.remove(points)
             geometry.dispose()

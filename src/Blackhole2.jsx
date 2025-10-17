@@ -1,10 +1,5 @@
-import React, {useRef, useMemo} from 'react'
-import {useFrame, useThree} from '@react-three/fiber'
 import * as THREE from 'three'
-import { OrbitControls } from '@react-three/drei'
 import Portal from "./Portal";
-import { useAtomValue } from 'jotai';
-import { showBlackhole2Atom, showBlackholeAtom } from './GlobalState';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 
 export default function Blackhole2({scale, position}) {

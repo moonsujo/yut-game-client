@@ -2,11 +2,11 @@ import { Float, MeshDistortMaterial, OrthographicCamera, Text3D } from "@react-t
 import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { clientAtom, deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { clientAtom, deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, getScore } from "../helpers/helpers";
 import UfoNew from "../meshes/UfoNew";
 import Earth from "../meshes/Earth";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from 'three';
 import { animated, useSpring } from "@react-spring/three";
@@ -16,13 +16,11 @@ import VertexShader from '../shader/ufoBeam/vertex.glsl'
 import gsap from "gsap";
 import UfoNewBoss from "../meshes/UfoNewBoss";
 import Asteroids from "../Asteroids";
-import { socket } from "../SocketManager";
-import { useParams } from "wouter";
-import axios from "axios";
 import DiscordButton from "./DiscordButton";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
+import RedGalaxy from "../RedGalaxy";
 
 export default function RocketsLosePreview({ position, backButton }) {
 
@@ -93,8 +91,8 @@ export default function RocketsLosePreview({ position, backButton }) {
   const glassOpacityMax = 0.5
 
   const pRightEyeCloseStart = 0.92
-  const pRightEyeCloseEnd = 0.93
-  const pRightEyeOpenEnd = 0.94
+  const pRightEyeCloseEnd = 0.94
+  const pRightEyeOpenEnd = 0.96
 
   useEffect(() => {
     gsap.to(progressRef.current, {
@@ -225,25 +223,28 @@ export default function RocketsLosePreview({ position, backButton }) {
   const turquoise = new THREE.Color('turquoise')
   // apply color
   // draw particle by time - multiply opacity by time (converted from dependent value)
-  const shaderMaterial = new THREE.ShaderMaterial({
-    vertexShader: VertexShader,
-    fragmentShader: FragmentShader,
-    transparent: true,
-    depthWrite: true,
-    uniforms:
-    {
-      uOpacity: { value: 0.5 },
-      uColor: {
-        value: new THREE.Vector3(
-          turquoise.r,
-          turquoise.g,
-          turquoise.b
-        )
-      },
-      uProgress: new THREE.Uniform(progressRef.current.value)
-    }
-  })
 
+  const beamUniform = useMemo(() => ({
+    uOpacity: { value: 0.5 },
+    uColor: {
+      value: new THREE.Vector3(
+        turquoise.r,
+        turquoise.g,
+        turquoise.b
+      )
+    },
+    uProgress: new THREE.Uniform(progressRef.current.value)
+  }), [])
+  const shaderMaterial = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      vertexShader: VertexShader,
+      fragmentShader: FragmentShader,
+      transparent: true,
+      depthWrite: true,
+      uniforms: beamUniform
+    })
+  }, [beamUniform, VertexShader, FragmentShader]);
+  
   // Animation
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime
@@ -294,30 +295,10 @@ export default function RocketsLosePreview({ position, backButton }) {
     rightEyeScale: [1, 1, 1],
     config: { tension: 70, friction: 20 },
   }))
-
-  const [ sceneSprings, sceneSpringApi ] = useSpring(() => ({
-    from: {
-      scale: 0
-    }
-  }))
-  useEffect(() => {
-    sceneSpringApi.start({
-      from: {
-        scale: 0
-      },
-      to: {
-        scale: 1
-      },
-      config: {
-        tension: 70, 
-        friction: 20,
-      }
-    })
-  }, [])
   
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position} scale={sceneSprings.scale}>
+  return <animated.group position={position}>
     {/* title */}
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
@@ -502,5 +483,6 @@ export default function RocketsLosePreview({ position, backButton }) {
     </group>
     <Asteroids scale={1.3} position={[-10, -5, -20]}/>
     {backButton}
+    <RedGalaxy/>
   </animated.group>
 }

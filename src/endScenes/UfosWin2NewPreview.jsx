@@ -1,7 +1,7 @@
 import { Float, Text3D } from "@react-three/drei";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -25,7 +25,6 @@ import PlayAgainButton from "./PlayAgainButton";
 import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
-import { useParams } from "wouter";
 
 // add falling rocket parts in the background
 export default function UfosWin2NewPreview({ position, backButton }) {
@@ -182,20 +181,7 @@ export default function UfosWin2NewPreview({ position, backButton }) {
       }
     })
 
-    const intervalBeamDust = setInterval(() => {
-      const position = new THREE.Vector3(
-        Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
-        -7.5,
-        Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
-      )
-      const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
-      const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
-      CreateBeamDust({ position, size, speed });
-    }, 70)
-
-    return (() => {
-      clearInterval(intervalBeamDust);
-    })
+    // beam dust moved to showroom
   }, [])
   
   const turquoise = new THREE.Color('turquoise')

@@ -49,9 +49,6 @@ import {
   showBonusAtom,
   musicAtom,
   showGalaxyBackgroundAtom,
-  showBlackholeAtom,
-  showRedGalaxyAtom,
-  showBlackhole2Atom,
   logDisplayAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./MoveList.jsx";
@@ -88,16 +85,10 @@ export default function Game() {
   const gamePhase = useAtomValue(gamePhaseAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
-  const setShowBlackhole2 = useSetAtom(showBlackhole2Atom)
   const logDisplay = useAtomValue(logDisplayAtom)
 
   useEffect(() => {
     setShowGalaxy(true)
-    setShowBlackhole(false)
-    setShowRedGalaxy(false)
-    setShowBlackhole2(false)
   }, [])
 
   // Animations

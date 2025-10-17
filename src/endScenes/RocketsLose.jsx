@@ -2,7 +2,7 @@ import { Float, MeshDistortMaterial, OrthographicCamera, Text3D } from "@react-t
 import GameCamera from "../GameCamera";
 import layout from "../layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { clientAtom, deviceAtom, showBlackhole2Atom, showBlackholeAtom, showGalaxyBackgroundAtom, showRedGalaxyAtom, teamsAtom } from "../GlobalState";
+import { clientAtom, deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
 import { formatName, getScore } from "../helpers/helpers";
 import UfoNew from "../meshes/UfoNew";
 import Earth from "../meshes/Earth";
@@ -23,6 +23,7 @@ import DiscordButton from "./DiscordButton";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
+import RedGalaxy from "../RedGalaxy";
 
 export default function RocketsLose() {
 
@@ -34,8 +35,6 @@ export default function RocketsLose() {
   let rocketsScore = getScore(teamRockets)
   let ufosScore = getScore(teamUfos)
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
-  const setShowBlackhole = useSetAtom(showBlackholeAtom)
-  const setShowRedGalaxy = useSetAtom(showRedGalaxyAtom)
 
   // Ref
   const ufo0 = useRef()
@@ -224,8 +223,6 @@ export default function RocketsLose() {
       }
     })
     setShowGalaxy(false)
-    setShowBlackhole(false)
-    setShowRedGalaxy(true)
   }, [])
   
   const turquoise = new THREE.Color('turquoise')
@@ -491,5 +488,6 @@ export default function RocketsLose() {
       device={device}/>
     </group>
     <Asteroids scale={1.3} position={[-10, -5, -20]}/>
+    <RedGalaxy/>
   </group>
 }
