@@ -930,6 +930,11 @@ export default {
         ufoScale: 0.3,
       }
     },
+    showroom: {
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      scale: 1.3
+    },
     about: {
       position: [-4.9, 0, -4.2],
       rotation: [-Math.PI/2,0,0],
