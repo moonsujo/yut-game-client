@@ -39,6 +39,7 @@ export default function Home2() {
   const { playSoundEffect } = useSoundEffectsPlayer()
   const { loopMusic } = useMusicPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
+  const [howToPlayPage, setHowToPlayPage] = useState(0)
   useEffect(() => {
     async function log() {
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
@@ -229,6 +230,7 @@ export default function Home2() {
     async function handlePointerDown(e) {
       e.stopPropagation();
       setDisplay('howToPlay')
+      setHowToPlayPage(0)
 
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
 
@@ -372,6 +374,7 @@ export default function Home2() {
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
       setJoinGameModalDisplay(true)
+      
     }
 
     return <group position={position} rotation={rotation} scale={scale}>
@@ -573,6 +576,8 @@ export default function Home2() {
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
       setDisplay('showroom')
+      
+      setHowToPlayPage(0) // stop the fireworks from score page
     }
 
     return <group {...props}>
@@ -626,6 +631,8 @@ export default function Home2() {
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
       setDisplay('showroom')
+      
+      setHowToPlayPage(0) // stop the fireworks from score page
     }
 
     return <group {...props}>
@@ -667,7 +674,7 @@ export default function Home2() {
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
-    showroomScale: (display === 'showroom') ? 1 : 0,
+    showroomScale: display === 'showroom' ? 1 : 0,
     navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-13,0,0] : [0,0,0],
     milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
     milkyWayScale: display !== 'showroom' ? 1 : 0,
@@ -691,6 +698,7 @@ export default function Home2() {
           rotation={layout[device].title.text.rotation}
           scale={layout[device].title.text.scale}
           setDisplay={setDisplay}
+          setHowToPlayPage={setHowToPlayPage}
         />
       </animated.group>}
       { device === 'landscapeDesktop' && <Title 
@@ -698,6 +706,7 @@ export default function Home2() {
           rotation={layout[device].title.text.rotation}
           scale={layout[device].title.text.scale}
           setDisplay={setDisplay}
+          setHowToPlayPage={setHowToPlayPage}
         />}
       { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
         <YootDisplay
@@ -753,7 +762,7 @@ export default function Home2() {
       /> }
     </group>
     <group name='display'>
-      { display === 'title' && <group position={layout[device].title.board.position} 
+      <group position={layout[device].title.board.position} 
         scale={layout[device].title.board.scale}>
         <animated.group scale={titleBoardScale}>
           <Board 
@@ -761,23 +770,25 @@ export default function Home2() {
             interactive={false}/>
           <Pieces/>
         </animated.group>
-      </group> }
-      { display === 'about' && <About 
+      </group>
+      {/* { display === 'about' && <About 
         device={device}
         position={layout[device].about.position}
         rotation={layout[device].about.rotation}
         scale={layout[device].about.scale}
-      />}
-      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
+      />} */}
+      <animated.group scale={howToPlayScale}>
         <HowToPlay 
           device={device}
           position={layout[device].howToPlay.position}
           rotation={[0,0,0]}
           scale={layout[device].howToPlay.scale}
           tabOrientation='right'
+          page={howToPlayPage}
+          setPage={setHowToPlayPage}
         />
-      </animated.group> }
-      { display === 'showroom' && <animated.group scale={showroomScale}>
+      </animated.group>
+      <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
           rotation={layout[device].showroom.rotation}
@@ -785,7 +796,7 @@ export default function Home2() {
           setHomeDisplay={setDisplay}
           homeDisplay={display}
         />  
-      </animated.group>}
+      </animated.group>
     </group>
     { !connectedToServer && <DisconnectModal
       position={layout[device].title.disconnectModal.position}

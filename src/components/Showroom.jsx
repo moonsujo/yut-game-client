@@ -400,6 +400,14 @@ export default function Showroom(props) {
     function YutOutcomes(props) {
         function YutEffectButton(props) {
             const [hover, setHover] = useState(false)
+            const button = useRef()
+
+            useFrame((state) => {
+                const time = state.clock.elapsedTime
+                button.current.scale.x = Math.cos(time) * 0.1 + 0.9
+                button.current.scale.y = Math.cos(time) * 0.1 + 0.9
+                button.current.scale.z = Math.cos(time) * 0.1 + 0.9 
+            })
             function onPointerEnter(e) {
                 e.stopPropagation()
                 setHover(true)
@@ -498,7 +506,7 @@ export default function Showroom(props) {
                     ]
                 })
             }
-            return <group name='effect-button' {...props}>
+            return <group name='effect-button' {...props} ref={button}>
                 <mesh>
                     <boxGeometry args={[0.9, 0.03, 0.55]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
@@ -526,6 +534,14 @@ export default function Showroom(props) {
             // on click effect
             // add shooting stars to rolling stars
             const [hover, setHover] = useState(false)
+            const button = useRef()
+
+            useFrame((state) => {   
+                const time = state.clock.elapsedTime
+                button.current.scale.x = Math.cos(time) * 0.1 + 0.9
+                button.current.scale.y = Math.cos(time) * 0.1 + 0.9
+                button.current.scale.z = Math.cos(time) * 0.1 + 0.9 
+            })
             function onPointerEnter(e) {
                 e.stopPropagation()
                 setHover(true)
@@ -638,7 +654,7 @@ export default function Showroom(props) {
                     ]
                 })
             }
-            return <group name='effect-button' {...props}>
+            return <group name='effect-button' ref={button} {...props}>
                 <mesh>
                     <boxGeometry args={[0.9, 0.03, 0.55]}/>
                     <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
@@ -1678,12 +1694,16 @@ export default function Showroom(props) {
                     ufoPosition: [0,0,0],
                 }
             }))
-        const [alertSprings, alertSpringApi] = useSpring(() => ({
+        const [rocketsScoreAlertSprings, rocketsScoreAlertSpringApi] = useSpring(() => ({
             from: {
                 alertScale: 0,
             }
         }))
-
+        const [ufosScoreAlertSprings, ufosScoreAlertSpringApi] = useSpring(() => ({
+            from: {
+                alertScale: 0,
+            }
+        }))
         function RocketButton({ scale, position }) {
             
             // animation button props
@@ -1692,7 +1712,7 @@ export default function Showroom(props) {
             const [animationPlaying, setAnimationPlaying] = useState(null)
             useEffect(() => {
                 if (animationPlaying === false) {
-                    alertSpringApi.start({
+                    rocketsScoreAlertSpringApi.start({
                         from: {
                             alertScale: 0
                         },
@@ -1791,7 +1811,7 @@ export default function Showroom(props) {
             const [animationPlaying, setAnimationPlaying] = useState(null)
             useEffect(() => {
                 if (animationPlaying === false) {
-                    alertSpringApi.start({
+                    ufosScoreAlertSpringApi.start({
                         from: {
                             alertScale: 0
                         },
@@ -1895,8 +1915,11 @@ export default function Showroom(props) {
                 <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
                     <Ufo onBoard/>
                 </animated.group>
-                <animated.group scale={alertSprings.alertScale} position={[0,2,1]}>
-                    <ScoreAlert scale={alertSprings.alertScale} scoringTeam={1}/>
+                <animated.group scale={rocketsScoreAlertSprings.alertScale} position={[0,2,1]}>
+                    <ScoreAlert scoringTeam={0}/>
+                </animated.group>
+                <animated.group scale={ufosScoreAlertSprings.alertScale} position={[0,2,1]}>
+                    <ScoreAlert scoringTeam={1}/>
                 </animated.group>
             </group>
             <Text3D

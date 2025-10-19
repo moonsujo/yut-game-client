@@ -1074,7 +1074,7 @@ export default function Alert({ position, rotation }) {
       <YootOutcomeOutAlert/>
       <YootOutcomeBackdoAlert/>
       <CatchAlert/>
-      <ScoreAlert scale={springs.scoreAlertScale} rotation={[0, Math.PI/2, 0]} scoringTeam={scoringTeam}/>
+      <ScoreAlert scale={springs.scoreAlertScale} scoringTeam={scoringTeam}/>
       <JoinAlert/>
       <TimesUpAlert/>
     </group>

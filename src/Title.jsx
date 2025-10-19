@@ -2,7 +2,7 @@ import { Text3D } from '@react-three/drei';
 import { useState } from 'react';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
-export default function Title({ position, rotation, scale, setDisplay }) {
+export default function Title({ position, rotation, scale, setDisplay, setHowToPlayPage }) {
 
   const [hover, setHover] = useState(false);
   const { playSoundEffect } = useSoundEffectsPlayer()
@@ -12,9 +12,11 @@ export default function Title({ position, rotation, scale, setDisplay }) {
   function handlePointerLeave() {
       setHover(false)
   }
-  function handlePointerDown() {
-      setDisplay('title')
-      playSoundEffect('/sounds/effects/button-click.mp3')
+  function handlePointerDown(e) {
+    e.stopPropagation()
+    setDisplay('title')
+    playSoundEffect('/sounds/effects/button-click.mp3', 1)
+    setHowToPlayPage(0) // stop the fireworks from score page
   }
 
   return <group scale={scale} position={position} rotation={rotation}>
@@ -45,11 +47,10 @@ export default function Title({ position, rotation, scale, setDisplay }) {
       position={[0.7, -0.5, 0]} 
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      onPointerDown={handlePointerDown}
+      onPointerDown={e=>handlePointerDown(e)}
     >
       <boxGeometry args={[1.5, 1, 0.1]}/>
       <meshStandardMaterial color="grey" transparent opacity={0}/>
     </mesh>
-    {/* <TitleStarsShader texturePath={'/textures/particles/6.png'}/> */}
   </group>
 }
