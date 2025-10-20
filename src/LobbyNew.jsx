@@ -70,7 +70,6 @@ export default function LobbyNew() {
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
-  const [howToPlayPage, setHowToPlayPage] = useState(0)
 
   useEffect(() => {
     setShowGalaxy(true)
@@ -1559,8 +1558,6 @@ export default function LobbyNew() {
         position={[-1,0,-1]} 
         scale={0.6}
         closeButton={false}
-        page={howToPlayPage}
-        setPage={setHowToPlayPage}
       />
     </group>
   }

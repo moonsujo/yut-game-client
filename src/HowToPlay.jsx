@@ -27,12 +27,11 @@ export default function HowToPlay({
   closeButton=false,
   setShowRulebook=null,
   tabOrientation='bottom',
-  page=0,
-  setPage=null
 }) {
   
   const pageTimeoutRef = useRef(null)
   const [tabClicked, setTabClicked] = useState(false)
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     clearTimeout(pageTimeoutRef.current)

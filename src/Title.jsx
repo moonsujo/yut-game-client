@@ -2,7 +2,7 @@ import { Text3D } from '@react-three/drei';
 import { useState } from 'react';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
-export default function Title({ position, rotation, scale, setDisplay, setHowToPlayPage }) {
+export default function Title({ position, rotation, scale, setDisplay }) {
 
   const [hover, setHover] = useState(false);
   const { playSoundEffect } = useSoundEffectsPlayer()
@@ -16,7 +16,6 @@ export default function Title({ position, rotation, scale, setDisplay, setHowToP
     e.stopPropagation()
     setDisplay('title')
     playSoundEffect('/sounds/effects/button-click.mp3', 1)
-    setHowToPlayPage(0) // stop the fireworks from score page
   }
 
   return <group scale={scale} position={position} rotation={rotation}>

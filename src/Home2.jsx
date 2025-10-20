@@ -39,7 +39,6 @@ export default function Home2() {
   const { playSoundEffect } = useSoundEffectsPlayer()
   const { loopMusic } = useMusicPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
-  const [howToPlayPage, setHowToPlayPage] = useState(0)
   useEffect(() => {
     async function log() {
       await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
@@ -230,7 +229,6 @@ export default function Home2() {
     async function handlePointerDown(e) {
       e.stopPropagation();
       setDisplay('howToPlay')
-      setHowToPlayPage(0)
 
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
 
@@ -576,8 +574,6 @@ export default function Home2() {
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
       setDisplay('showroom')
-      
-      setHowToPlayPage(0) // stop the fireworks from score page
     }
 
     return <group {...props}>
@@ -631,8 +627,6 @@ export default function Home2() {
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
       setDisplay('showroom')
-      
-      setHowToPlayPage(0) // stop the fireworks from score page
     }
 
     return <group {...props}>
@@ -698,7 +692,6 @@ export default function Home2() {
           rotation={layout[device].title.text.rotation}
           scale={layout[device].title.text.scale}
           setDisplay={setDisplay}
-          setHowToPlayPage={setHowToPlayPage}
         />
       </animated.group>}
       { device === 'landscapeDesktop' && <Title 
@@ -706,7 +699,6 @@ export default function Home2() {
           rotation={layout[device].title.text.rotation}
           scale={layout[device].title.text.scale}
           setDisplay={setDisplay}
-          setHowToPlayPage={setHowToPlayPage}
         />}
       { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
         <YootDisplay
@@ -777,17 +769,15 @@ export default function Home2() {
         rotation={layout[device].about.rotation}
         scale={layout[device].about.scale}
       />} */}
-      <animated.group scale={howToPlayScale}>
+      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
         <HowToPlay 
           device={device}
           position={layout[device].howToPlay.position}
           rotation={[0,0,0]}
           scale={layout[device].howToPlay.scale}
           tabOrientation='right'
-          page={howToPlayPage}
-          setPage={setHowToPlayPage}
         />
-      </animated.group>
+      </animated.group> }
       <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
