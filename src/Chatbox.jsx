@@ -7,6 +7,7 @@ import layout from "./layout";
 import { logDisplayAtom, messagesAtom } from "./GlobalState"
 import useAutoScroll from "./hooks/useAutoScroll";
 import DOMPurify from 'dompurify';
+import { animated, useSpring } from "@react-spring/three";
 
 export default function Chatbox({ 
   position=[0,0,0], 
@@ -24,7 +25,7 @@ export default function Chatbox({
   const logDisplay = useAtomValue(logDisplayAtom)
   const [message, setMessage] = useState('');
   const params = useParams();
-
+  const [inputFocus, setInputFocus] = useState(false);
   const messagesEndRef = useRef(null);
 
   const container = useRef()
@@ -55,55 +56,73 @@ export default function Chatbox({
     }
   }
 
-  return <Html   
-  position={position} 
-  rotation={rotation}
-  scale={scale}
-  transform>
-    <div style={{
-      position: 'absolute'
-    }}>
-      <form onSubmit={(e) => onMessageSubmit(e)}>
-      <div ref={container} style={{
-        borderRadius: borderRadius,
-        height: boxHeight,
-        width: boxWidth,
-        padding: padding,
-        fontSize: fontSize,
-        'background': 'rgba(128, 128, 128, 0.3)',
-        'overflowY': 'scroll',
-        'wordWrap': 'break-word',
-        'letterSpacing': '1.5px'
+  function handleInputFocus(e) {
+    console.log(e)
+    setInputFocus(true)
+  }
+
+  function handleInputBlur(e) {
+    console.log(e)
+    setInputFocus(false)
+  }
+
+  const { focusPosition } = useSpring({
+    focusPosition: inputFocus && device === 'portrait' ? [3.5, 0, -9] : [0, 0, 0],
+  })
+
+  return <animated.group position={focusPosition}>
+    <Html   
+    position={position} 
+    rotation={rotation}
+    scale={scale}
+    transform>
+      <div style={{
+        position: 'absolute'
       }}>
-        {messages.map((value, index) => <p style={{
-          color: 'white', 
-          fontFamily: 'Luckiest Guy',
-          margin: '5px'
-          }} 
-          key={index}
-          >
-          <span style={{color: getColorByTeam(value.team)}}>{value.name}: </span> 
-          {value.text}
-        </p>
-        )}
-        <div ref={messagesEndRef}/>
-        </div>
-        <input 
-          id='input-message'
-          style={{ 
-            height: layout[device].game.chat.input.height,
-            borderRadius: layout[device].game.chat.input.borderRadius,
-            padding: layout[device].game.chat.input.padding,
-            border: layout[device].game.chat.input.border,
-            width: boxWidth,
-            fontSize: layout[device].game.chat.input.fontSize,
-            fontFamily: 'Luckiest Guy'
-          }} 
-          onChange={e => { console.log('change'); setMessage(e.target.value)} }
-          value={message}
-          placeholder="say something..."
-        />
-      </form>
-    </div>
-  </Html>
+        <form onSubmit={(e) => onMessageSubmit(e)}>
+        <div ref={container} style={{
+          borderRadius: borderRadius,
+          height: boxHeight,
+          width: boxWidth,
+          padding: padding,
+          fontSize: fontSize,
+          'background': 'rgba(128, 128, 128, 0.3)',
+          'overflowY': 'scroll',
+          'wordWrap': 'break-word',
+          'letterSpacing': '1.5px'
+        }}>
+          {messages.map((value, index) => <p style={{
+            color: 'white', 
+            fontFamily: 'Luckiest Guy',
+            margin: '5px'
+            }} 
+            key={index}
+            >
+            <span style={{color: getColorByTeam(value.team)}}>{value.name}: </span> 
+            {value.text}
+          </p>
+          )}
+          <div ref={messagesEndRef}/>
+          </div>
+          <input 
+            id='input-message'
+            style={{ 
+              height: layout[device].game.chat.input.height,
+              borderRadius: layout[device].game.chat.input.borderRadius,
+              padding: layout[device].game.chat.input.padding,
+              border: layout[device].game.chat.input.border,
+              width: boxWidth,
+              fontSize: layout[device].game.chat.input.fontSize,
+              fontFamily: 'Luckiest Guy'
+            }} 
+            onChange={e => { setMessage(e.target.value)} }
+            onFocus={e => handleInputFocus(e)}
+            onBlur={e => handleInputBlur(e)}
+            value={message}
+            placeholder="say something..."
+          />
+        </form>
+      </div>
+    </Html>
+  </animated.group>
 }
