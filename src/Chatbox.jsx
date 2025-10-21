@@ -33,6 +33,46 @@ export default function Chatbox({
 
   useAutoScroll(container, [messages, logDisplay]);
 
+  // Prevent iOS Safari viewport shift when keyboard appears
+  useEffect(() => {
+    if (device === 'portrait') {
+      const preventScroll = (e) => {
+        if (inputFocus && e.target !== inputRef.current && e.target !== container.current) {
+          e.preventDefault();
+        }
+      };
+
+      // Store original viewport height
+      const originalHeight = window.visualViewport?.height || window.innerHeight;
+      
+      const handleViewportChange = () => {
+        if (inputFocus && window.visualViewport) {
+          // Lock the scroll position when keyboard appears
+          window.scrollTo(0, 0);
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      };
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleViewportChange);
+        window.visualViewport.addEventListener('scroll', handleViewportChange);
+      }
+      
+      window.addEventListener('scroll', preventScroll, { passive: false });
+
+      return () => {
+        if (window.visualViewport) {
+          window.visualViewport.removeEventListener('resize', handleViewportChange);
+          window.visualViewport.removeEventListener('scroll', handleViewportChange);
+        }
+        window.removeEventListener('scroll', preventScroll);
+        document.body.style.overflow = '';
+      };
+    }
+  }, [inputFocus, device]);
+
   // Update the transform, scale and font size when input focus changes
   useEffect(() => {
     const scale = inputFocus && device === 'portrait' ? 1.5 : 1;
@@ -111,8 +151,7 @@ export default function Chatbox({
     setInputFocus(false)
   }
 
-  return <group>
-    <Html   
+  return <Html   
     position={position} 
     rotation={rotation}
     scale={scale}
@@ -172,6 +211,5 @@ export default function Chatbox({
           />
         </form>
       </div>
-    </Html>
-  </group>
+  </Html>
 }
