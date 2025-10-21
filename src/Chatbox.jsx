@@ -27,19 +27,36 @@ export default function Chatbox({
   const [inputFocus, setInputFocus] = useState(false);
   const messagesEndRef = useRef(null);
   const wrapperRef = useRef(null);
+  const inputRef = useRef(null);
 
   const container = useRef()
 
   useAutoScroll(container, [messages, logDisplay]);
 
-  // Update the transform when input focus changes
+  // Update the transform, scale and font size when input focus changes
   useEffect(() => {
+    const scale = inputFocus && device === 'portrait' ? 1.5 : 1;
+    
     if (wrapperRef.current) {
-      const translateX = inputFocus && device === 'portrait' ? 280 : 0;
-      const translateY = inputFocus && device === 'portrait' ? -700 : 0;
-      wrapperRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+      const translateX = inputFocus && device === 'portrait' ? 220 : 0;
+      const translateY = inputFocus && device === 'portrait' ? -850 : 0;
+      wrapperRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
     }
-  }, [inputFocus, device]);
+    
+    // Update message container font size
+    if (container.current) {
+      const baseFontSize = parseFloat(fontSize);
+      const newFontSize = inputFocus && device === 'portrait' ? baseFontSize * 1.2 : baseFontSize;
+      container.current.style.fontSize = `${newFontSize}px`;
+    }
+    
+    // Update input font size
+    if (inputRef.current) {
+      const baseInputFontSize = parseFloat(layout[device].game.chat.input.fontSize);
+      const newInputFontSize = inputFocus && device === 'portrait' ? baseInputFontSize * 1.5 : baseInputFontSize;
+      inputRef.current.style.fontSize = `${newInputFontSize}px`;
+    }
+  }, [inputFocus, device, fontSize]);
   
   function onMessageSubmit(e) {
     e.preventDefault();
@@ -86,7 +103,8 @@ export default function Chatbox({
         style={{
           position: 'absolute',
           transition: 'transform 0.3s ease-out',
-          willChange: 'transform'
+          willChange: 'transform',
+          transformOrigin: 'top left'
         }}>
         <form onSubmit={(e) => onMessageSubmit(e)}>
         <div ref={container} style={{
@@ -98,7 +116,8 @@ export default function Chatbox({
           'background': 'rgba(128, 128, 128, 0.3)',
           'overflowY': 'scroll',
           'wordWrap': 'break-word',
-          'letterSpacing': '1.5px'
+          'letterSpacing': '1.5px',
+          'transition': 'font-size 0.3s ease-out'
         }}>
           {messages.map((value, index) => <p style={{
             color: 'white', 
@@ -115,6 +134,7 @@ export default function Chatbox({
           </div>
           <input 
             id='input-message'
+            ref={inputRef}
             style={{ 
               height: layout[device].game.chat.input.height,
               borderRadius: layout[device].game.chat.input.borderRadius,
@@ -122,7 +142,8 @@ export default function Chatbox({
               border: layout[device].game.chat.input.border,
               width: boxWidth,
               fontSize: layout[device].game.chat.input.fontSize,
-              fontFamily: 'Luckiest Guy'
+              fontFamily: 'Luckiest Guy',
+              transition: 'font-size 0.3s ease-out'
             }} 
             onChange={e => { setMessage(e.target.value)} }
             onFocus={e => handleInputFocus(e)}
