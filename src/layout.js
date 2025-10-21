@@ -2997,7 +2997,7 @@ export default {
         scale: [1.5, 1.5, 1.5]
       },
       chat: {
-        position: [-11, 0, 2.9],
+        position: [-11, 0, 2.5],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
