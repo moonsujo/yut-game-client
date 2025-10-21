@@ -8,7 +8,6 @@ import UfoAnimated from './meshes/UfoAnimated';
 import { useLocation } from 'wouter';
 import HowToPlay from './HowToPlay';
 import Title from './Title';
-import About from './About';
 import { socket } from './SocketManager';
 import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
 import Board from './Board';
@@ -26,6 +25,7 @@ import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
 import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
+import About from './About';
 
 export default function Home2() {
 
@@ -159,55 +159,6 @@ export default function Home2() {
         <UfoAnimated rotation={[-Math.PI/4,0,0]} position={[-3.3, 0.8, -4.3]} scale={0.5}/>
         <UfoAnimated rotation={[-Math.PI/4,0,0]} position={[-2.6, 0.8, -4.3]} scale={0.5}/>
       </Float>
-    </group>
-  }
-
-  function AboutButton({ position, rotation, scale }) {
-    const [hover, setHover] = useState(false)
-
-    function handlePointerEnter(e) {
-      e.stopPropagation();
-      setHover(true)
-    }
-
-    function handlePointerLeave(e) {
-      e.stopPropagation();
-      setHover(false)
-    }
-
-    function handlePointerDown(e) {
-      e.stopPropagation();
-      setDisplay('about')
-    }
-
-    return <group position={position} rotation={rotation} scale={scale}>
-      <mesh>
-        <boxGeometry args={[1.5, 0.03, 0.55]}/>
-        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
-      </mesh>
-      <mesh>
-        <boxGeometry args={[1.45, 0.04, 0.5]}/>
-        <meshStandardMaterial color='black'/>
-      </mesh>
-      <mesh 
-        name='wrapper' 
-        onPointerEnter={e => handlePointerEnter(e)}
-        onPointerLeave={e => handlePointerLeave(e)}
-        onPointerDown={e => handlePointerDown(e)}
-      >
-        <boxGeometry args={[1.5, 0.1, 0.55]}/>
-        <meshStandardMaterial transparent opacity={0}/>
-      </mesh>
-      <Text3D
-        font="fonts/Luckiest Guy_Regular.json"
-        position={[-0.65, 0.025, 0.15]}
-        rotation={[-Math.PI/2, 0, 0]}
-        size={0.3}
-        height={0.01}
-      >
-        About
-        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
-      </Text3D>
     </group>
   }
 
@@ -630,12 +581,55 @@ export default function Home2() {
     }
 
     return <group {...props}>
-      <mesh name='background-outer'>
-        <boxGeometry args={[1.5, 0.03, 1.35]}/>
+      {/* <mesh name='background-outer'>
+        <boxGeometry args={[2.5, 0.03, 2.1]}/>
         <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
       </mesh>
       <mesh name='background-inner'>
-        <boxGeometry args={[1.45, 0.04, 1.3]}/>
+        <boxGeometry args={[2.45, 0.04, 2.05]}/>
+        <meshStandardMaterial color='black'/>
+      </mesh> */}
+      <mesh 
+        name='wrapper' 
+        onPointerEnter={e => handlePointerEnter(e)}
+        onPointerLeave={e => handlePointerLeave(e)}
+        onPointerDown={e => handlePointerDown(e)}
+      >
+        <boxGeometry args={[2.5, 0.1, 2.1]}/>
+        <meshStandardMaterial transparent opacity={0}/>
+      </mesh>
+    </group>
+  }
+  function AboutButtonLandscape(props) {
+    const [hover, setHover] = useState(false)
+
+    function handlePointerEnter(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'pointer'
+      setHover(true)
+    }
+
+    function handlePointerLeave(e) {
+      e.stopPropagation();
+      document.body.style.cursor = 'default'
+      setHover(false)
+    }
+
+    function handlePointerDown(e) {
+      e.stopPropagation();
+
+      playSoundEffect('/sounds/effects/button-click.mp3', 1)
+      
+      setDisplay('about')
+    }
+
+    return <group {...props}>
+      <mesh name='background-outer'>
+        <boxGeometry args={[1.6, 0.03, 0.55]}/>
+        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+      </mesh>
+      <mesh name='background-inner'>
+        <boxGeometry args={[1.55, 0.04, 0.5]}/>
         <meshStandardMaterial color='black'/>
       </mesh>
       <mesh 
@@ -644,24 +638,24 @@ export default function Home2() {
         onPointerLeave={e => handlePointerLeave(e)}
         onPointerDown={e => handlePointerDown(e)}
       >
-        <boxGeometry args={[2.05, 0.1, 1.55]}/>
+        <boxGeometry args={[1.6, 0.1, 0.55]}/>
         <meshStandardMaterial transparent opacity={0}/>
       </mesh>
       <Text3D
         font="fonts/Luckiest Guy_Regular.json"
-        position={[-0.55, 0.025, -0.15]}
+        position={[-0.65, 0.025, 0.15]}
         rotation={[-Math.PI/2, 0, 0]}
         size={0.3}
         height={0.01}
       >
-        {`SHOW\nROOM`}
+        ABOUT
         <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
       </Text3D>
     </group>
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale, showroomButtonPortraitScale } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
@@ -672,6 +666,8 @@ export default function Home2() {
     navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-13,0,0] : [0,0,0],
     milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
     milkyWayScale: display !== 'showroom' ? 1 : 0,
+    aboutScale: display === 'about' ? 1 : 0,
+    showroomButtonPortraitScale: (device === 'portrait' && display === 'showroom') ? 0 : 1,
     config: {
       tension: 170,
       friction: 26
@@ -737,11 +733,17 @@ export default function Home2() {
         rotation={layout[device].title.showroom.rotation}
         scale={layout[device].title.showroom.scale}
       /> }
-      { device === 'portrait' && <ShowroomButtonPortrait
+      { device === 'portrait' && <animated.group scale={showroomButtonPortraitScale}>
+        <ShowroomButtonPortrait
         position={layout[device].title.showroom.position} 
         rotation={layout[device].title.showroom.rotation}
         scale={layout[device].title.showroom.scale}
-      /> }
+      /></animated.group> }
+      {/* { device === 'landscapeDesktop' && <AboutButtonLandscape
+        position={layout[device].title.about.position} 
+        rotation={layout[device].title.about.rotation}
+        scale={layout[device].title.about.scale}
+      /> } */}
     </animated.group>
     <group name='stats'>
       { device === 'landscape' && <PageVisits 
@@ -763,12 +765,6 @@ export default function Home2() {
           <Pieces/>
         </animated.group>
       </group>
-      {/* { display === 'about' && <About 
-        device={device}
-        position={layout[device].about.position}
-        rotation={layout[device].about.rotation}
-        scale={layout[device].about.scale}
-      />} */}
       { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
         <HowToPlay 
           device={device}
@@ -778,6 +774,13 @@ export default function Home2() {
           tabOrientation='right'
         />
       </animated.group> }
+      {/* { display === 'about' && <animated.group scale={aboutScale}>
+        <About
+          device={device}
+          position={[-4,0,-4.5]}
+          scale={layout[device].about.scale}
+        />
+      </animated.group> } */}
       <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}

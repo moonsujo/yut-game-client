@@ -54,6 +54,7 @@ import YootSet from "../meshes/YootSet.jsx";
 import PauseGame from "../PauseGame.jsx";
 import PauseGamePreview from "../PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
+import layout from "../layout.js";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -151,55 +152,6 @@ export default function Showroom(props) {
             </Text3D>
         </group>
     }
-    // enable adding a custom name
-    // play animation with button
-    function NewTurnButton(props) {
-        const [hover, setHover] = useState(false)
-        function onPointerEnter(e) {
-            e.stopPropagation()
-            setHover(true)
-            document.body.style.cursor = 'pointer';
-        }
-        function onPointerLeave(e) {
-            e.stopPropagation()
-            setHover(false)
-            document.body.style.cursor = 'default';
-        }
-        function onPointerDown(e) {
-            e.stopPropagation()
-            setDisplay('newTurn')
-            setHomeDisplay('showroom')
-        }
-        return <group {...props}>
-            <mesh>
-                <boxGeometry args={[2.3, 0.03, 0.55]}/>
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh>
-                <boxGeometry args={[2.25, 0.04, 0.5]}/>
-                <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-                name='wrapper' 
-                onPointerEnter={e => onPointerEnter(e)}
-                onPointerLeave={e => onPointerLeave(e)}
-                onPointerDown={e => onPointerDown(e)}
-            >
-                <boxGeometry args={[2.2, 0.04, 0.55]}/>
-                <meshStandardMaterial transparent opacity={0}/>
-            </mesh>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[-1.0, 0.02, 0.15]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                NEW TURN
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
     function CatchButton(props) {
         const [hover, setHover] = useState(false)
         function onPointerEnter(e) {
@@ -243,53 +195,6 @@ export default function Showroom(props) {
                 height={0.01}
             >
                 CATCH
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
-    function PiggybackButton(props) {
-        const [hover, setHover] = useState(false)
-        function onPointerEnter(e) {
-            e.stopPropagation()
-            setHover(true)
-            document.body.style.cursor = 'pointer';
-        }
-        function onPointerLeave(e) {
-            e.stopPropagation()
-            setHover(false)
-            document.body.style.cursor = 'default';
-        }
-        function onPointerDown(e) {
-            e.stopPropagation()
-            setDisplay('piggyback')
-            setHomeDisplay('showroom')
-        }
-        return <group {...props}>
-            <mesh>
-                <boxGeometry args={[2.5, 0.03, 0.55]}/>
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh>
-                <boxGeometry args={[2.45, 0.04, 0.5]}/>
-                <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-                name='wrapper' 
-                onPointerEnter={e => onPointerEnter(e)}
-                onPointerLeave={e => onPointerLeave(e)}
-                onPointerDown={e => onPointerDown(e)}
-            >
-                <boxGeometry args={[2.5, 0.04, 0.55]}/>
-                <meshStandardMaterial transparent opacity={0}/>
-            </mesh>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[-1.1, 0.05, 0.15]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                PIGGYBACK
                 <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
             </Text3D>
         </group>
@@ -388,15 +293,139 @@ export default function Showroom(props) {
             </Text3D>
         </group>
     }
-    // background dim
-    // on 'effect' button click
-    // fill opacity on curtain
-    // pop out alert
-    // play effects
-    // withdraw curtain and alert
-    // restore alert using "onStart" and "onRest" of react-spring
-    // make default alert render conditionally based on state
-    // add state
+    function EndScenesButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            setDisplay('endScenes')
+            // for ufos win preview preview
+            const newIntervalBeamDustSmallId = setInterval(() => {
+                const positionParticles = new THREE.Vector3(
+                    Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
+                    -7.5,
+                    Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
+                )
+                const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
+                const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
+                const position = new THREE.Vector3(
+                    -7,
+                    0,
+                    2.2,
+                )
+                CreateBeamDust({ position, positionParticles, size, speed });
+            }, 70)
+            setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
+        }
+        return <group {...props}>
+            <mesh>
+                <boxGeometry args={[2.5, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[2.45, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper' 
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[2.5, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={[-1.1, 0.04, 0.15]}
+                rotation={[-Math.PI/2, 0, 0]}
+                size={0.3}
+                height={0.01}
+            >
+                END SCENES
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </Text3D>
+        </group>
+    }
+    function BackButton(props) {
+        const [hover, setHover] = useState(false)
+        function onPointerEnter(e) {
+            e.stopPropagation()
+            setHover(true)
+            document.body.style.cursor = 'pointer';
+        }
+        function onPointerLeave(e) {
+            e.stopPropagation()
+            setHover(false)
+            document.body.style.cursor = 'default';
+        }
+        function onPointerDown(e) {
+            e.stopPropagation()
+            // make another button to return to the showroom from an end scene
+            if (display === 'rocketsWin' || display === 'ufosWin' || display === 'rocketsLose' || display === 'ufosLose') {
+                setDisplay('endScenes')
+                clearInterval(intervalFireworksId)
+                clearInterval(intervalBeamDustId)
+
+                // back to end scenes. start beam dust for ufo win preview preview
+                const newIntervalBeamDustSmallId = setInterval(() => {
+                    const positionParticles = new THREE.Vector3(
+                        Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
+                        -7.5,
+                        Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
+                    )
+                    const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
+                    const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
+                    const position = new THREE.Vector3(
+                        -7,
+                        0,
+                        2.2,
+                    )
+                    CreateBeamDust({ position, positionParticles, size, speed });
+                }, 70)
+                setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
+            } else {
+                setHomeDisplay('title')
+            }
+        }
+        return <animated.group name='back-button' {...props}>
+            <mesh>
+                <boxGeometry args={[0.9, 0.03, 0.55]}/>
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh>
+                <boxGeometry args={[0.85, 0.04, 0.5]}/>
+                <meshStandardMaterial color='black'/>
+            </mesh>
+            <mesh 
+                name='wrapper'
+                onPointerEnter={e => onPointerEnter(e)}
+                onPointerLeave={e => onPointerLeave(e)}
+                onPointerDown={e => onPointerDown(e)}
+            >
+                <boxGeometry args={[0.9, 0.04, 0.55]}/>
+                <meshStandardMaterial transparent opacity={0}/>
+            </mesh>
+            <mesh name='arrow-icon' rotation={[0, -Math.PI*2/4, 0]} scale={[0.15, 0.01, 0.15]} position={[-0.15, 0.05, 0]}>
+                <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+            <mesh name='arrow-icon' rotation={[0, -Math.PI*2/4, 0]} scale={[0.15, 0.01, 0.15]} position={[0.15, 0.05, 0]}>
+                <cylinderGeometry args={[1, 1, 1, 3, 1]} />
+                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+            </mesh>
+        </animated.group>
+    }
+    
     function YutOutcomes(props) {
         function YutEffectButton(props) {
             const [hover, setHover] = useState(false)
@@ -404,9 +433,9 @@ export default function Showroom(props) {
 
             useFrame((state) => {
                 const time = state.clock.elapsedTime
-                button.current.scale.x = Math.cos(time) * 0.1 + 0.9
-                button.current.scale.y = Math.cos(time) * 0.1 + 0.9
-                button.current.scale.z = Math.cos(time) * 0.1 + 0.9 
+                button.current.scale.x = (Math.cos(time) * 0.1 + 0.9) * props.scale
+                button.current.scale.y = (Math.cos(time) * 0.1 + 0.9) * props.scale
+                button.current.scale.z = (Math.cos(time) * 0.1 + 0.9) * props.scale
             })
             function onPointerEnter(e) {
                 e.stopPropagation()
@@ -538,9 +567,9 @@ export default function Showroom(props) {
 
             useFrame((state) => {   
                 const time = state.clock.elapsedTime
-                button.current.scale.x = Math.cos(time) * 0.1 + 0.9
-                button.current.scale.y = Math.cos(time) * 0.1 + 0.9
-                button.current.scale.z = Math.cos(time) * 0.1 + 0.9 
+                button.current.scale.x = (Math.cos(time) * 0.1 + 0.9) * props.scale
+                button.current.scale.y = (Math.cos(time) * 0.1 + 0.9) * props.scale
+                button.current.scale.z = (Math.cos(time) * 0.1 + 0.9) * props.scale
             })
             function onPointerEnter(e) {
                 e.stopPropagation()
@@ -690,7 +719,7 @@ export default function Showroom(props) {
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
             <group name='components' position={[6, 0, 0]}>
-                <group name='do-alert' position={[-20, 0, -3.5]} scale={0.9}>
+                { device === 'landscapeDesktop' && <group name='do-alert' position={[-20, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -706,8 +735,8 @@ export default function Showroom(props) {
                         position={[2, 0, -0.5]}
                     />
                     <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-                </group>
-                <group name='ge-alert' position={[-14, 0, -3.5]} scale={0.9}>
+                </group> }
+                { device === 'landscapeDesktop' && <group name='ge-alert' position={[-14, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -723,8 +752,8 @@ export default function Showroom(props) {
                         position={[2, 0, -0.5]}
                     />
                     <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-                </group>
-                <group name='gul-alert' position={[-8, 0, -3.5]} scale={0.9}>
+                </group> }
+                { device === 'landscapeDesktop' && <group name='gul-alert' position={[-8, 0, -3.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -740,12 +769,15 @@ export default function Showroom(props) {
                         position={[2, 0, -0.5]}
                     />
                     <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-                </group>
-                <group name='yut-alert' position={[-20, 0, 1]} scale={1.1}>
+                </group> }
+                <group name='yut-alert' 
+                position={layout[device].showroom.yutAlert.position} 
+                scale={layout[device].showroom.yutAlert.scale}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
+                        position={layout[device].showroom.yutAlert.yutTextPosition}
                         rotation={[-Math.PI/2, 0, 0]}
-                        size={0.5}
+                        size={layout[device].showroom.yutAlert.yutTextSize}
                         height={0.01}
                     >
                         YUT
@@ -753,17 +785,25 @@ export default function Showroom(props) {
                     </Text3D>
                     <YootSet 
                         points="yoot"
-                        scale={0.25}
-                        position={[2, 0, -0.5]}
+                        scale={layout[device].showroom.yutAlert.yutSetScale}
+                        position={layout[device].showroom.yutAlert.yutSetPosition}
                     />
-                    <YutEffectButton position={[4.3, 0, -0.21]}/>
-                    <YootAlert position={[2, 0, 2.4]} rotation={[0, Math.PI/2, 0]} scale={0.7}/>
+                    <YutEffectButton 
+                    position={layout[device].showroom.yutAlert.yutEffectButtonPosition}
+                    scale={layout[device].showroom.yutAlert.yutEffectButtonScale}/>
+                    <YootAlert 
+                    position={layout[device].showroom.yutAlert.yutAlertPosition} 
+                    rotation={layout[device].showroom.yutAlert.yutAlertRotation} 
+                    scale={layout[device].showroom.yutAlert.yutAlertScale}/>
                 </group>
-                <group name='mo-alert' position={[-13, 0, 1]} scale={1.1}>
+                <group name='mo-alert' 
+                position={layout[device].showroom.moAlert.position} 
+                scale={layout[device].showroom.moAlert.scale}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
+                        position={layout[device].showroom.moAlert.moTextPosition}
                         rotation={[-Math.PI/2, 0, 0]}
-                        size={0.5}
+                        size={layout[device].showroom.moAlert.moTextSize}
                         height={0.01}
                     >
                         MO
@@ -771,13 +811,18 @@ export default function Showroom(props) {
                     </Text3D>
                     <YootSet 
                         points="mo"
-                        scale={0.25}
-                        position={[2, 0, -0.5]}
+                        scale={layout[device].showroom.moAlert.yutSetScale}
+                        position={layout[device].showroom.moAlert.yutSetPosition}
                     />
-                    <MoEffectButton position={[4.3, 0, -0.21]}/>
-                    <MoAlert position={[2, 0, 2.4]} rotation={[0, Math.PI/2, 0]}  scale={0.7}/>
+                    <MoEffectButton 
+                    position={layout[device].showroom.moAlert.moEffectButtonPosition} 
+                    scale={layout[device].showroom.moAlert.moEffectButtonScale}/>
+                    <MoAlert 
+                    position={layout[device].showroom.moAlert.moAlertPosition} 
+                    rotation={layout[device].showroom.moAlert.moAlertRotation}
+                    scale={layout[device].showroom.moAlert.moAlertScale}/>
                 </group>
-                <group name='backdo-alert' position={[-5.5, 0, 0.5]} scale={0.9}>
+                { device === 'landscapeDesktop' && <group name='backdo-alert' position={[-5.5, 0, 0.5]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -794,8 +839,8 @@ export default function Showroom(props) {
                         position={[3, 0, -0.5]}
                     />
                     <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-                </group>
-                <group name='nak-alert' position={[-5.5, 0, 4]} scale={0.9}>
+                </group> }
+                { device === 'landscapeDesktop' && <group name='nak-alert' position={[-5.5, 0, 4]} scale={0.9}>
                     <Text3D
                         font="fonts/Luckiest Guy_Regular.json"
                         rotation={[-Math.PI/2, 0, 0]}
@@ -806,12 +851,12 @@ export default function Showroom(props) {
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
                     <OutAlert position={[1.8, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
-                </group>
+                </group> }
             </group>
         </group>
     }
     function Catch(props) {
-        function RocketsCatchUfo({ position }) {
+        function RocketsCatchUfo({ position, scale }) {
             const [ufoEnergyAlertSprings, ufoEnergyAlertSpringApi] = useSpring(() => ({
                 from: {
                     scale: 0
@@ -891,14 +936,17 @@ export default function Showroom(props) {
                     </mesh>
                 </group>
             }
-            return <group position={position}>
-                <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[-5.5, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
-                <PlayUfoEnergyAlertButton position={[-5.5, 0, 3.5]}/>
+            return <group position={position} scale={scale}>
+                <animated.group position={[0, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[0, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
+                <PlayUfoEnergyAlertButton 
+                position={layout[device].showroom.catch.rocketsCatchUfoButtonPosition}
+                scale={layout[device].showroom.catch.rocketsCatchUfoButtonScale}
+                />
             </group>
         }
         
-        function UfosCatchRocket({position}) {
+        function UfosCatchRocket({ position, scale }) {
             const [rocketMemeAlertSprings, rocketMemeAlertSpringApi] = useSpring(() => ({
                 from: {
                     scale: 0
@@ -979,10 +1027,13 @@ export default function Showroom(props) {
                 </group>
             }
 
-            return <group position={position}>
-                <animated.group position={[1.5, 0, 0]} scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !rocketMemeAlertPlaying && <CatchRocketMemeAlert position={[1.5, 0, 0]} rotation={[0, Math.PI/2, 0]}/> }
-                <PlayRocketMemeAlertButton position={[1.55, 0, 3.5]}/>
+            return <group position={position} scale={scale}>
+                <animated.group scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                { !rocketMemeAlertPlaying && <CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]}/> }
+                <PlayRocketMemeAlertButton 
+                position={layout[device].showroom.catch.ufosCatchRocketButtonPosition}
+                scale={layout[device].showroom.catch.ufosCatchRocketButtonScale}
+                />
             </group>
         }
 
@@ -997,8 +1048,14 @@ export default function Showroom(props) {
                 CATCH ALERTS
                 <meshStandardMaterial color='yellow'/>
             </Text3D>
-            <RocketsCatchUfo position={[-4, 0, 0]}/>
-            <UfosCatchRocket position={[-2, 0, 0]}/>
+            <RocketsCatchUfo 
+            position={layout[device].showroom.catch.rocketsCatchUfoPosition}
+            scale={layout[device].showroom.catch.rocketsCatchUfoScale}
+            />
+            <UfosCatchRocket 
+            position={layout[device].showroom.catch.ufosCatchRocketPosition}
+            scale={layout[device].showroom.catch.ufosCatchRocketScale}
+            />
         </group>
     }
     function Piggyback(props) {
@@ -1977,76 +2034,7 @@ export default function Showroom(props) {
         ufosLoseScale: display === 'ufosLose' ? 1 : 0,
         milkyWayScale: (display !== 'ufosLose' && display !== 'rocketsLose') ? 1 : 0
     })
-    function BackButton(props) {
-        const [hover, setHover] = useState(false)
-        function onPointerEnter(e) {
-            e.stopPropagation()
-            setHover(true)
-            document.body.style.cursor = 'pointer';
-        }
-        function onPointerLeave(e) {
-            e.stopPropagation()
-            setHover(false)
-            document.body.style.cursor = 'default';
-        }
-        function onPointerDown(e) {
-            e.stopPropagation()
-            // make another button to return to the showroom from an end scene
-            if (display === 'rocketsWin' || display === 'ufosWin' || display === 'rocketsLose' || display === 'ufosLose') {
-                setDisplay('endScenes')
-                clearInterval(intervalFireworksId)
-                clearInterval(intervalBeamDustId)
-
-                // back to end scenes. start beam dust for ufo win preview preview
-                const newIntervalBeamDustSmallId = setInterval(() => {
-                    const positionParticles = new THREE.Vector3(
-                        Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
-                        -7.5,
-                        Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
-                    )
-                    const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
-                    const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
-                    const position = new THREE.Vector3(
-                        -7,
-                        0,
-                        2.2,
-                    )
-                    CreateBeamDust({ position, positionParticles, size, speed });
-                }, 70)
-                setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
-            } else {
-                setHomeDisplay('title')
-            }
-        }
-        return <animated.group name='back-button' {...props}>
-            <mesh>
-                <boxGeometry args={[0.9, 0.03, 0.55]}/>
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh>
-                <boxGeometry args={[0.85, 0.04, 0.5]}/>
-                <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-                name='wrapper'
-                onPointerEnter={e => onPointerEnter(e)}
-                onPointerLeave={e => onPointerLeave(e)}
-                onPointerDown={e => onPointerDown(e)}
-            >
-                <boxGeometry args={[0.9, 0.04, 0.55]}/>
-                <meshStandardMaterial transparent opacity={0}/>
-            </mesh>
-            <mesh name='arrow-icon' rotation={[0, -Math.PI*2/4, 0]} scale={[0.15, 0.01, 0.15]} position={[-0.15, 0.05, 0]}>
-                <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh name='arrow-icon' rotation={[0, -Math.PI*2/4, 0]} scale={[0.15, 0.01, 0.15]} position={[0.15, 0.05, 0]}>
-                <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-        </animated.group>
-    }
-
+    
     function EndScenes(props) {
 
         useEffect(() => {
@@ -2444,75 +2432,17 @@ export default function Showroom(props) {
             <UfosLose position={[2.7, 0.5, 0.5]} scale={1.3}/>
         </group>
     }
-    function EndScenesButton(props) {
-        const [hover, setHover] = useState(false)
-        function onPointerEnter(e) {
-            e.stopPropagation()
-            setHover(true)
-            document.body.style.cursor = 'pointer';
-        }
-        function onPointerLeave(e) {
-            e.stopPropagation()
-            setHover(false)
-            document.body.style.cursor = 'default';
-        }
-        function onPointerDown(e) {
-            e.stopPropagation()
-            setDisplay('endScenes')
-            // for ufos win preview preview
-            const newIntervalBeamDustSmallId = setInterval(() => {
-                const positionParticles = new THREE.Vector3(
-                    Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
-                    -7.5,
-                    Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
-                )
-                const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
-                const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
-                const position = new THREE.Vector3(
-                    -7,
-                    0,
-                    2.2,
-                )
-                CreateBeamDust({ position, positionParticles, size, speed });
-            }, 70)
-            setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
-        }
-        return <group {...props}>
-            <mesh>
-                <boxGeometry args={[2.5, 0.03, 0.55]}/>
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </mesh>
-            <mesh>
-                <boxGeometry args={[2.45, 0.04, 0.5]}/>
-                <meshStandardMaterial color='black'/>
-            </mesh>
-            <mesh 
-                name='wrapper' 
-                onPointerEnter={e => onPointerEnter(e)}
-                onPointerLeave={e => onPointerLeave(e)}
-                onPointerDown={e => onPointerDown(e)}
-            >
-                <boxGeometry args={[2.5, 0.04, 0.55]}/>
-                <meshStandardMaterial transparent opacity={0}/>
-            </mesh>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[-1.1, 0.04, 0.15]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.3}
-                height={0.01}
-            >
-                END SCENES
-                <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-            </Text3D>
-        </group>
-    }
 
-    const { tabPosition } = useSpring({
-        tabPosition: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0, 0, 0] : [5, 0, 0]
+
+    const { tabPositionLandscapeDesktop } = useSpring({
+        tabPositionLandscapeDesktop: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0, 0, 0] : [5, 0, 0]
     })
+    const { tabPositionPortrait } = useSpring({
+        tabPositionPortrait: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0,0,0] : [5, 0, 0]
+    })
+    
     return <group {...props}>
-        <animated.group name='tab' position={tabPosition}>
+        { device === 'landscapeDesktop' && <animated.group name='tab' position={tabPositionLandscapeDesktop}>
             <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
             <GamePhasesButton position={[7.05, 0.02, -3.8]}/>
             <CatchButton position={[6.35, 0.02, -3.1]}/>
@@ -2520,7 +2450,15 @@ export default function Showroom(props) {
             <EndScenesButton position={[6.85, 0.02, -1.7]}/>
             <BackButton position={[6.05, 0.02, -1.0]}/>
             {/* <PiggybackButton position={[6.85, 0.02, -3.1]}/> */}
-        </animated.group>
+        </animated.group> }
+        { device === 'portrait' && <animated.group name='tab' position={tabPositionPortrait}>
+            <YutOutcomesButton position={[-0.9, 0, 4]}/>
+            <CatchButton position={[1.6, 0.02, 4]}/>
+            <ScoreButton position={[-1.9, 0.02, 4.7]}/>
+            <EndScenesButton position={[0.25, 0.02, 4.7]}/>
+            <BackButton position={[2.1, 0.02, 4.7]}/>
+            {/* <PiggybackButton position={[6.85, 0.02, -3.1]}/> */}
+        </animated.group> }
         {/* back button */}
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>

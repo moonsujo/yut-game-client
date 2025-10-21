@@ -120,7 +120,7 @@ export default {
         rotation: [0,0,0],
       },
       showroom: {
-        position: [5.5,0,10],
+        position: [2.2,0,-2.2],
         rotation: [0,0,0],
         scale: 1
       },
@@ -933,7 +933,43 @@ export default {
     showroom: {
       position: [0, 0, 0],
       rotation: [0, 0, 0],
-      scale: 1.3
+      scale: 1.3,
+      yutAlert: {
+        position: [-8, 0, -5],
+        scale: 1,
+        yutTextPosition: [5,0,1.5],
+        yutTextSize: 0,
+        yutSetScale: 0,
+        yutSetPosition: [5, 0, 2],
+        yutEffectButtonPosition: [5.5, 0, 2.5],
+        yutEffectButtonScale: 1.5,
+        yutAlertPosition: [2, 0, 2.4],
+        yutAlertRotation: [0, Math.PI/2, 0],
+        yutAlertScale: 0.7,
+      },
+      moAlert: {
+        position: [-8, 0, -1],
+        scale: 1,
+        moTextPosition: [5,0,1.5],
+        moTextSize: 0,
+        yutSetScale: 0,
+        yutSetPosition: [5, 0, 2],
+        moEffectButtonPosition: [5.5, 0, 2.5],
+        moEffectButtonScale: 1.5,
+        moAlertPosition: [2, 0, 2.4],
+        moAlertRotation: [0, Math.PI/2, 0],
+        moAlertScale: 0.7,
+      },
+      catch: {
+        rocketsCatchUfoPosition: [-0.7, 0, -2.8],
+        rocketsCatchUfoScale: 0.7,
+        rocketsCatchUfoButtonPosition: [4.5, 0, 0],
+        rocketsCatchUfoButtonScale: 1.3,
+        ufosCatchRocketPosition: [-0.7, 0, 1.5],
+        ufosCatchRocketScale: 0.7,
+        ufosCatchRocketButtonPosition: [4.5, 0, 0],
+        ufosCatchRocketButtonScale: 1.3
+      }
     },
     about: {
       position: [-4.9, 0, -4.2],
@@ -1760,9 +1796,9 @@ export default {
       },
       about: {
         show: true,
-        position: [-12.3, 0, 0.8],
+        position: [-9.4, 0, 5.0],
         rotation: [0,0,0],
-        scale: 2.2
+        scale: 1.3
       },
       howToPlay: {
         position: [-10.87, 0, 0.8],
@@ -2768,7 +2804,43 @@ export default {
     showroom: {
       position: [0,0,0],
       rotation: [0,0,0],
-      scale: 1
+      scale: 1,
+      yutAlert: {
+        position: [-20, 0, 1],
+        scale: 1.1,
+        yutTextPosition: [0,0,0],
+        yutTextSize: 0.5,
+        yutSetScale: 0.25,
+        yutSetPosition: [2, 0, -0.5],
+        yutEffectButtonPosition: [4.3, 0, -0.21],
+        yutEffectButtonScale: 1,
+        yutAlertPosition: [2, 0, 2.4],
+        yutAlertRotation: [0, Math.PI/2, 0],
+        yutAlertScale: 0.7,
+      },
+      moAlert: {
+        position: [-13, 0, 1],
+        scale: 1.1,
+        moTextPosition: [0,0,0],
+        moTextSize: 0.5,
+        yutSetScale: 0.25,
+        yutSetPosition: [1.8, 0, -0.5],
+        moEffectButtonPosition: [4.0, 0, -0.21],
+        moEffectButtonScale: 1,
+        moAlertPosition: [2, 0, 2.4],
+        moAlertRotation: [0, Math.PI/2, 0],
+        moAlertScale: 0.7,
+      },
+      catch: {
+        rocketsCatchUfoPosition: [-9.5, 0, 0],
+        rocketsCatchUfoScale: 1,
+        rocketsCatchUfoButtonPosition: [0, 0, 3.5],
+        rocketsCatchUfoButtonScale: 1,
+        ufosCatchRocketPosition: [-0.5, 0, 0],
+        ufosCatchRocketScale: 1,
+        ufosCatchRocketButtonPosition: [0.07, 0, 3.5],
+        ufosCatchRocketButtonScale: 1
+      }
     },
     lobby: {
       disconnectModal: {
