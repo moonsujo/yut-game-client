@@ -7,7 +7,6 @@ import layout from "./layout";
 import { logDisplayAtom, messagesAtom } from "./GlobalState"
 import useAutoScroll from "./hooks/useAutoScroll";
 import DOMPurify from 'dompurify';
-import { animated, useSpring } from "@react-spring/three";
 
 export default function Chatbox({ 
   position=[0,0,0], 
@@ -27,10 +26,20 @@ export default function Chatbox({
   const params = useParams();
   const [inputFocus, setInputFocus] = useState(false);
   const messagesEndRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const container = useRef()
 
   useAutoScroll(container, [messages, logDisplay]);
+
+  // Update the transform when input focus changes
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const translateX = inputFocus && device === 'portrait' ? 280 : 0;
+      const translateY = inputFocus && device === 'portrait' ? -700 : 0;
+      wrapperRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+    }
+  }, [inputFocus, device]);
   
   function onMessageSubmit(e) {
     e.preventDefault();
@@ -66,19 +75,19 @@ export default function Chatbox({
     setInputFocus(false)
   }
 
-  const { focusPosition } = useSpring({
-    focusPosition: inputFocus && device === 'portrait' ? [3.5, 0, -9] : [0, 0, 0],
-  })
-
-  return <animated.group position={focusPosition}>
+  return <group>
     <Html   
     position={position} 
     rotation={rotation}
     scale={scale}
     transform>
-      <div style={{
-        position: 'absolute'
-      }}>
+      <div 
+        ref={wrapperRef}
+        style={{
+          position: 'absolute',
+          transition: 'transform 0.3s ease-out',
+          willChange: 'transform'
+        }}>
         <form onSubmit={(e) => onMessageSubmit(e)}>
         <div ref={container} style={{
           borderRadius: borderRadius,
@@ -124,5 +133,5 @@ export default function Chatbox({
         </form>
       </div>
     </Html>
-  </animated.group>
+  </group>
 }

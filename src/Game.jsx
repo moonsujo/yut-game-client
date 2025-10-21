@@ -641,6 +641,7 @@ export default function Game() {
           scale={layout[device].game.chat.scale}
         /> } */}
         { connectedToServer && (gamePhase === 'pregame' || gamePhase === 'game') && logDisplay === 'chat' && <Chatbox
+          device={device}
           boxHeight={layout[device].game.chat.box.height}
           boxWidth={layout[device].game.chat.box.width}
           padding={layout[device].game.chat.box.padding}
