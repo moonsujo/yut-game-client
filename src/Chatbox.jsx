@@ -33,26 +33,6 @@ export default function Chatbox({
 
   useAutoScroll(container, [messages, logDisplay]);
 
-  // Prevent touch events from being captured by the canvas
-  useEffect(() => {
-    const containerEl = container.current;
-    if (containerEl) {
-      const preventPropagation = (e) => {
-        e.stopPropagation();
-      };
-      
-      containerEl.addEventListener('touchstart', preventPropagation, { passive: false });
-      containerEl.addEventListener('touchmove', preventPropagation, { passive: false });
-      containerEl.addEventListener('touchend', preventPropagation, { passive: false });
-      
-      return () => {
-        containerEl.removeEventListener('touchstart', preventPropagation);
-        containerEl.removeEventListener('touchmove', preventPropagation);
-        containerEl.removeEventListener('touchend', preventPropagation);
-      };
-    }
-  }, []);
-
   // Update the transform, scale and font size when input focus changes
   useEffect(() => {
     const scale = inputFocus && device === 'portrait' ? 1.5 : 1;
@@ -154,15 +134,9 @@ export default function Chatbox({
           fontSize: fontSize,
           'background': 'rgba(128, 128, 128, 0.3)',
           'overflowY': 'scroll',
-          'WebkitOverflowScrolling': 'touch',
           'wordWrap': 'break-word',
           'letterSpacing': '1.5px',
-          'transition': 'font-size 0.3s ease-out, width 0.3s ease-out',
-          'touchAction': 'pan-y',
-          'userSelect': 'text',
-          'pointerEvents': 'auto',
-          'position': 'relative',
-          'zIndex': 1000
+          'transition': 'font-size 0.3s ease-out, width 0.3s ease-out'
         }}>
           {messages.map((value, index) => <p style={{
             color: 'white', 
