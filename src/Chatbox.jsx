@@ -38,8 +38,8 @@ export default function Chatbox({
     const scale = inputFocus && device === 'portrait' ? 1.5 : 1;
     
     if (wrapperRef.current) {
-      const translateX = inputFocus && device === 'portrait' ? 220 : 0;
-      const translateY = inputFocus && device === 'portrait' ? -850 : 0;
+      const translateX = inputFocus && device === 'portrait' ? 185 : 0;
+      const translateY = inputFocus && device === 'portrait' ? -830 : 0;
       wrapperRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
     }
     
@@ -48,13 +48,31 @@ export default function Chatbox({
       const baseFontSize = parseFloat(fontSize);
       const newFontSize = inputFocus && device === 'portrait' ? baseFontSize * 1.2 : baseFontSize;
       container.current.style.fontSize = `${newFontSize}px`;
+      
+      // Update container width
+      const newWidth = inputFocus && device === 'portrait' ? parseFloat(boxWidth) * 1.2 : boxWidth;
+      container.current.style.width = typeof newWidth === 'number' ? `${newWidth}px` : newWidth;
     }
     
-    // Update input font size
+    // Update input font size and width
     if (inputRef.current) {
       const baseInputFontSize = parseFloat(layout[device].game.chat.input.fontSize);
       const newInputFontSize = inputFocus && device === 'portrait' ? baseInputFontSize * 1.5 : baseInputFontSize;
       inputRef.current.style.fontSize = `${newInputFontSize}px`;
+      
+      // Update input width
+      const newWidth = inputFocus && device === 'portrait' ? parseFloat(boxWidth) * 1.2 : boxWidth;
+      inputRef.current.style.width = typeof newWidth === 'number' ? `${newWidth}px` : newWidth;
+    }
+    
+    // Scroll to bottom when input is focused (portrait mode only)
+    if (inputFocus && device === 'portrait' && container.current) {
+      // Use setTimeout to wait for transform/font-size transitions to complete
+      setTimeout(() => {
+        if (container.current) {
+          container.current.scrollTop = container.current.scrollHeight;
+        }
+      }, 350); // Wait slightly longer than the 300ms transition
     }
   }, [inputFocus, device, fontSize]);
   
@@ -83,12 +101,13 @@ export default function Chatbox({
   }
 
   function handleInputFocus(e) {
-    console.log(e)
+    console.log('handleInputFocus called', e)
+    console.log('Current device:', device)
     setInputFocus(true)
   }
 
   function handleInputBlur(e) {
-    console.log(e)
+    console.log('handleInputBlur called', e)
     setInputFocus(false)
   }
 
@@ -117,7 +136,7 @@ export default function Chatbox({
           'overflowY': 'scroll',
           'wordWrap': 'break-word',
           'letterSpacing': '1.5px',
-          'transition': 'font-size 0.3s ease-out'
+          'transition': 'font-size 0.3s ease-out, width 0.3s ease-out'
         }}>
           {messages.map((value, index) => <p style={{
             color: 'white', 
@@ -143,7 +162,7 @@ export default function Chatbox({
               width: boxWidth,
               fontSize: layout[device].game.chat.input.fontSize,
               fontFamily: 'Luckiest Guy',
-              transition: 'font-size 0.3s ease-out'
+              transition: 'font-size 0.3s ease-out, width 0.3s ease-out'
             }} 
             onChange={e => { setMessage(e.target.value)} }
             onFocus={e => handleInputFocus(e)}
