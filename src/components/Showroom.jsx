@@ -55,6 +55,7 @@ import PauseGame from "../PauseGame.jsx";
 import PauseGamePreview from "../PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
 import layout from "../layout.js";
+// import { generateRandomNumberInRange } from "../helpers/helpers.js";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
@@ -318,9 +319,9 @@ export default function Showroom(props) {
                 const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
                 const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
                 const position = new THREE.Vector3(
-                    -7,
-                    0,
-                    2.2,
+                    layout[device].showroom.endScenes.ufosWin.beamDustPosition[0],
+                    layout[device].showroom.endScenes.ufosWin.beamDustPosition[1],
+                    layout[device].showroom.endScenes.ufosWin.beamDustPosition[2],
                 )
                 CreateBeamDust({ position, positionParticles, size, speed });
             }, 70)
@@ -708,7 +709,7 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
-            <Text3D
+            { device === 'landscapeDesktop' && <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
                 rotation={[-Math.PI/2, 0, 0]}
                 position={[-15, 0, -5.5]}
@@ -717,7 +718,7 @@ export default function Showroom(props) {
             >
                 YUT OUTCOME ALERTS
                 <meshStandardMaterial color='yellow'/>
-            </Text3D>
+            </Text3D> }
             <group name='components' position={[6, 0, 0]}>
                 { device === 'landscapeDesktop' && <group name='do-alert' position={[-20, 0, -3.5]} scale={0.9}>
                     <Text3D
@@ -1038,7 +1039,7 @@ export default function Showroom(props) {
         }
 
         return <group {...props}>
-            <Text3D
+            { device === 'landscapeDesktop' && <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
                 rotation={[-Math.PI/2, 0, 0]}
                 position={[-15, 0, -4.5]}
@@ -1047,7 +1048,7 @@ export default function Showroom(props) {
             >
                 CATCH ALERTS
                 <meshStandardMaterial color='yellow'/>
-            </Text3D>
+            </Text3D> }
             <RocketsCatchUfo 
             position={layout[device].showroom.catch.rocketsCatchUfoPosition}
             scale={layout[device].showroom.catch.rocketsCatchUfoScale}
@@ -1056,197 +1057,6 @@ export default function Showroom(props) {
             position={layout[device].showroom.catch.ufosCatchRocketPosition}
             scale={layout[device].showroom.catch.ufosCatchRocketScale}
             />
-        </group>
-    }
-    function Piggyback(props) {
-        function RocketsCatchUfo({ position }) {
-            const [ufoEnergyAlertSprings, ufoEnergyAlertSpringApi] = useSpring(() => ({
-                from: {
-                    scale: 0
-                }
-            }))
-            const [ufoEnergyAlertPlaying, setUfoEnergyAlertPlaying] = useState(false)
-            function PlayUfoEnergyAlertButton(props) {
-                const [hover, setHover] = useState(false)
-                function onPointerEnter(e) {
-                    e.stopPropagation()
-                    setHover(true)
-                    document.body.style.cursor = 'pointer';
-                }
-                function onPointerLeave(e) {
-                    e.stopPropagation()
-                    setHover(false)
-                    document.body.style.cursor = 'default';
-                }
-                function onPointerDown(e) {
-                    e.stopPropagation()
-                    // play sound effect
-                    playSoundEffect('/sounds/effects/capture.mp3', 1)
-                    ufoEnergyAlertSpringApi.start({
-                        from: {
-                            scale: 0
-                        },
-                        to: [
-                            {
-                                scale: 1,
-                                // if not set, animation plays quickly on the second time
-                                config: {
-                                    tension: 170,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                            },
-                            {
-                                scale: 0,
-                                config: {
-                                    tension: 300,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                                delay: 700
-                            }
-                        ],
-                        onStart: () => { setUfoEnergyAlertPlaying(true) },
-                        onRest: () => { 
-                            // if not set, alert restores immediately
-                            setTimeout(() => {
-                                setUfoEnergyAlertPlaying(false) 
-                            }, 500)
-                        }
-                    })
-                }
-                return <group {...props}>
-                    <mesh>
-                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                    <mesh>
-                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
-                        <meshStandardMaterial color='black'/>
-                    </mesh>
-                    <mesh 
-                        name='wrapper' 
-                        onPointerEnter={e => onPointerEnter(e)}
-                        onPointerLeave={e => onPointerLeave(e)}
-                        onPointerDown={e => onPointerDown(e)}
-                    >
-                        <boxGeometry args={[1.65, 0.04, 0.75]}/>
-                        <meshStandardMaterial transparent opacity={0}/>
-                    </mesh>
-                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
-                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                </group>
-            }
-            return <group position={position}>
-                <animated.group position={[-5.5, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[-5.5, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
-                <PlayUfoEnergyAlertButton position={[-5.5, 0, 3.5]}/>
-            </group>
-        }
-        
-        function UfosCatchRocket({position}) {
-            const [rocketMemeAlertSprings, rocketMemeAlertSpringApi] = useSpring(() => ({
-                from: {
-                    scale: 0
-                }
-            }))
-            const [rocketMemeAlertPlaying, setRocketMemeAlertPlaying] = useState(false)
-            function PlayRocketMemeAlertButton(props) {
-                const [hover, setHover] = useState(false)
-                function onPointerEnter(e) {
-                    e.stopPropagation()
-                    setHover(true)
-                    document.body.style.cursor = 'pointer';
-                }
-                function onPointerLeave(e) {
-                    e.stopPropagation()
-                    setHover(false)
-                    document.body.style.cursor = 'default';
-                }
-                function onPointerDown(e) {
-                    e.stopPropagation()
-                    // play sound effect
-                    playSoundEffect('/sounds/effects/capture.mp3', 1)
-                    rocketMemeAlertSpringApi.start({
-                        from: {
-                            scale: 0
-                        },
-                        to: [
-                            {
-                                scale: 1,
-                                // if not set, animation plays quickly on the second time
-                                config: {
-                                    tension: 170,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                            },
-                            {
-                                scale: 0,
-                                config: {
-                                    tension: 300,
-                                    friction: 26,
-                                    clamp: true
-                                },
-                                delay: 700
-                            }
-                        ],
-                        onStart: () => { setRocketMemeAlertPlaying(true) },
-                        onRest: () => { 
-                            // if not set, alert restores immediately
-                            setTimeout(() => {
-                                setRocketMemeAlertPlaying(false) 
-                            }, 500)
-                        }
-                    })
-                }
-                return <group {...props}>
-                    <mesh>
-                        <boxGeometry args={[1.2, 0.03, 0.75]}/>
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                    <mesh>
-                        <boxGeometry args={[1.15, 0.04, 0.7]}/>
-                        <meshStandardMaterial color='black'/>
-                    </mesh>
-                    <mesh 
-                        name='wrapper' 
-                        onPointerEnter={e => onPointerEnter(e)}
-                        onPointerLeave={e => onPointerLeave(e)}
-                        onPointerDown={e => onPointerDown(e)}
-                    >
-                        <boxGeometry args={[1.65, 0.04, 0.75]}/>
-                        <meshStandardMaterial transparent opacity={0}/>
-                    </mesh>
-                    <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
-                        <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                        <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
-                    </mesh>
-                </group>
-            }
-
-            return <group position={position}>
-                <animated.group position={[1.5, 0, 0]} scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !rocketMemeAlertPlaying && <CatchRocketMemeAlert position={[1.5, 0, 0]} rotation={[0, Math.PI/2, 0]}/> }
-                <PlayRocketMemeAlertButton position={[1.55, 0, 3.5]}/>
-            </group>
-        }
-
-        return <group {...props}>
-            <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                rotation={[-Math.PI/2, 0, 0]}
-                position={[-15, 0, -4.5]}
-                size={0.4}
-                height={0.01}
-            >
-                PIGGYBACK ALERTS
-                <meshStandardMaterial color='yellow'/>
-            </Text3D>
-            <RocketsCatchUfo position={[-4, 0, 0]}/>
-            <UfosCatchRocket position={[-2, 0, 0]}/>
         </group>
     }
     function GamePhases(props) {
@@ -1620,7 +1430,6 @@ export default function Showroom(props) {
             <PauseGameHostSection scale={0.8} position={[0, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
         </group>
     }
-
     function PlayAnimationButton({ position, scale, onPointerEnter, onPointerLeave, onPointerDown, hover }) {
         return <group position={position} scale={scale}>
             <mesh>
@@ -1642,7 +1451,6 @@ export default function Showroom(props) {
         </group>
     }
     function Score(props) {
-
         function shootFireworks(center, team) {
             
             const hue = team === 0 ? 0.01 : 0.5
@@ -1795,7 +1603,7 @@ export default function Showroom(props) {
                         onStart: () => {},
                         onRest: () => {}
                     })
-                    shootFireworks([-10, 0, 2], 0)
+                    shootFireworks(layout[device].showroom.score.fireworksPosition, 0)
                 }
 
                 return () => {
@@ -1894,7 +1702,7 @@ export default function Showroom(props) {
                         onStart: () => {},
                         onRest: () => {}
                     })
-                    shootFireworks([-10, 0, 2], 1)
+                    shootFireworks(layout[device].showroom.score.fireworksPosition, 1)
                 }
 
                 return () => {
@@ -1964,7 +1772,9 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
-            <group name='board-and-animation' scale={0.9} position={[-10, 0, -0.5]}>
+            <group name='board-and-animation' 
+            scale={layout[device].showroom.score.board.scale} 
+            position={layout[device].showroom.score.board.position}>
                 <Board/>
                 <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
                     <Rocket onBoard/>
@@ -1979,7 +1789,7 @@ export default function Showroom(props) {
                     <ScoreAlert scoringTeam={1}/>
                 </animated.group>
             </group>
-            <Text3D
+            { device === 'landscapeDesktop' && <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
                 position={[-3, 0.02, -4.5]}
                 rotation={[-Math.PI/2, 0, 0]}
@@ -1988,12 +1798,16 @@ export default function Showroom(props) {
             >
                 SCORE ANIMATION
                 <meshStandardMaterial color='yellow'/>
-            </Text3D>
-            <RocketButton scale={1} position={[-2, 0, -2]}/>
-            <UfoButton scale={1} position={[-2, 0, 1]}/>
+            </Text3D> }
+            <RocketButton 
+            scale={layout[device].showroom.score.rocketButton.scale} 
+            position={layout[device].showroom.score.rocketButton.position}/>
+            <UfoButton
+            scale={layout[device].showroom.score.ufoButton.scale} 
+            position={layout[device].showroom.score.ufoButton.position}/>
         </group>
     }
-    const positionStart = [-15, 0, 3]
+    const positionStart = device === 'landscapeDesktop' ? [-15, 0, 3] : [0,0,0]
     const positionEnd = [0, 0, 0]
     const {
         yutOutcomesScale, 
@@ -2110,13 +1924,20 @@ export default function Showroom(props) {
                     <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
                 </group>
                 <PlayAnimationButton 
-                    position={[0, 1, 3.0]} 
-                    scale={0.8} 
+                    position={layout[device].showroom.endScenes.rocketsWin.playAnimationButton.position} 
+                    scale={layout[device].showroom.endScenes.rocketsWin.playAnimationButton.scale} 
                     onPointerEnter={e=>onPointerEnter(e)}
                     onPointerLeave={e=>onPointerLeave(e)}
                     onPointerDown={e=>onPointerDown(e)}
                     hover={hover}
                 />
+                { device === 'portrait' && <mesh 
+                    name='wrapper' 
+                    onPointerDown={e => onPointerDown(e)}
+                >
+                    <boxGeometry args={[3.9, 0.04, 3.9]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh> }
             </group>
         }
 
@@ -2338,13 +2159,21 @@ export default function Showroom(props) {
                         </animated.group>
                 </group>
                 <PlayAnimationButton 
-                    position={[2, 0, 1.5]} 
-                    scale={0.8}
+                    position={layout[device].showroom.endScenes.ufosWin.playAnimationButton.position} 
+                    scale={layout[device].showroom.endScenes.ufosWin.playAnimationButton.scale}
                     onPointerEnter={e=>onPointerEnter(e)}
                     onPointerLeave={e=>onPointerLeave(e)}
                     onPointerDown={e=>onPointerDown(e)}
                     hover={hover}
                 />
+                { device === 'portrait' && <mesh 
+                    name='wrapper' 
+                    onPointerDown={e => onPointerDown(e)}
+                    position={[0, 0, -0.3]}
+                >
+                    <boxGeometry args={[3.5, 0.04, 3.5]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh> }
             </group>
         }
 
@@ -2372,13 +2201,21 @@ export default function Showroom(props) {
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton 
-                position={[0, 0, 1.5]} 
-                scale={0.7}
-                onPointerEnter={e=>onPointerEnter(e)}
-                onPointerLeave={e=>onPointerLeave(e)}
-                onPointerDown={e=>onPointerDown(e)}
-                hover={hover}
+                    position={layout[device].showroom.endScenes.rocketsLose.playAnimationButton.position} 
+                    scale={layout[device].showroom.endScenes.rocketsLose.playAnimationButton.scale}
+                    onPointerEnter={e=>onPointerEnter(e)}
+                    onPointerLeave={e=>onPointerLeave(e)}
+                    onPointerDown={e=>onPointerDown(e)}
+                    hover={hover}
                 />
+                { device === 'portrait' && <mesh 
+                    name='wrapper' 
+                    onPointerDown={e => onPointerDown(e)}
+                    position={[0.1, -0.5, -0.3]}
+                >
+                    <boxGeometry args={[2.5, 0.04, 3]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh> }
             </group>
         }
 
@@ -2406,17 +2243,25 @@ export default function Showroom(props) {
                     <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
                 </group>
                 <PlayAnimationButton 
-                position={[0, 0, 1.5]} 
-                scale={0.7}
-                onPointerEnter={e=>onPointerEnter(e)}
-                onPointerLeave={e=>onPointerLeave(e)}
-                onPointerDown={e=>onPointerDown(e)}
-                hover={hover}
+                    position={layout[device].showroom.endScenes.ufosLose.playAnimationButton.position} 
+                    scale={layout[device].showroom.endScenes.ufosLose.playAnimationButton.scale}
+                    onPointerEnter={e=>onPointerEnter(e)}
+                    onPointerLeave={e=>onPointerLeave(e)}
+                    onPointerDown={e=>onPointerDown(e)}
+                    hover={hover}
                 />
+                { device === 'portrait' && <mesh 
+                    name='wrapper' 
+                    onPointerDown={e => onPointerDown(e)}
+                    position={[0.3, -0.5, -0.3]}
+                >
+                    <boxGeometry args={[2.5, 0.04, 3]}/>
+                    <meshStandardMaterial transparent opacity={0}/>
+                </mesh> }
             </group>
         }
         return <group {...props}>
-            <Text3D name='title'
+            { device === 'landscapeDesktop' && <Text3D name='title'
                 font="fonts/Luckiest Guy_Regular.json"
                 position={[-15.1, 0.04, -4.5]}
                 rotation={[-Math.PI/2, 0, 0]}
@@ -2425,11 +2270,19 @@ export default function Showroom(props) {
             >
                 END SCENES
                 <meshStandardMaterial color='yellow'/>
-            </Text3D>
-            <RocketsWin position={[-12.5, 0, -0.5]} scale={1.4}/>
-            <UfosWin position={[-7, 2, 1.4]} scale={1.3}/>
-            <RocketsLose position={[-0.9, 0.5, 0]} scale={1.3}/>
-            <UfosLose position={[2.7, 0.5, 0.5]} scale={1.3}/>
+            </Text3D> }
+            <RocketsWin 
+            position={layout[device].showroom.endScenes.rocketsWin.position} 
+            scale={layout[device].showroom.endScenes.rocketsWin.scale}/>
+            <UfosWin 
+            position={layout[device].showroom.endScenes.ufosWin.position} 
+            scale={layout[device].showroom.endScenes.ufosWin.scale}/>
+            <RocketsLose
+            position={layout[device].showroom.endScenes.rocketsLose.position} 
+            scale={layout[device].showroom.endScenes.rocketsLose.scale}/>
+            <UfosLose
+            position={layout[device].showroom.endScenes.ufosLose.position} 
+            scale={layout[device].showroom.endScenes.ufosLose.scale}/>
         </group>
     }
 
@@ -2438,7 +2291,7 @@ export default function Showroom(props) {
         tabPositionLandscapeDesktop: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0, 0, 0] : [5, 0, 0]
     })
     const { tabPositionPortrait } = useSpring({
-        tabPositionPortrait: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0,0,0] : [5, 0, 0]
+        tabPositionPortrait: (display !== 'rocketsWin' && display !== 'ufosWin' && display !== 'rocketsLose' && display !== 'ufosLose') ? [0,0,0.5] : [0, 0, 10]
     })
     
     return <group {...props}>
@@ -2449,7 +2302,6 @@ export default function Showroom(props) {
             <ScoreButton position={[6.35, 0.02, -2.4]}/>
             <EndScenesButton position={[6.85, 0.02, -1.7]}/>
             <BackButton position={[6.05, 0.02, -1.0]}/>
-            {/* <PiggybackButton position={[6.85, 0.02, -3.1]}/> */}
         </animated.group> }
         { device === 'portrait' && <animated.group name='tab' position={tabPositionPortrait}>
             <YutOutcomesButton position={[-0.9, 0, 4]}/>
@@ -2457,12 +2309,9 @@ export default function Showroom(props) {
             <ScoreButton position={[-1.9, 0.02, 4.7]}/>
             <EndScenesButton position={[0.25, 0.02, 4.7]}/>
             <BackButton position={[2.1, 0.02, 4.7]}/>
-            {/* <PiggybackButton position={[6.85, 0.02, -3.1]}/> */}
         </animated.group> }
-        {/* back button */}
         <animated.group position={yutOutcomesPosition} scale={yutOutcomesScale}><YutOutcomes/></animated.group>
         <animated.group position={catchPosition} scale={catchScale}><Catch/></animated.group>
-        {/* <animated.group position={piggybackPosition} scale={piggybackScale}><Piggyback/></animated.group> */}
         <animated.group position={gamePhasesPosition} scale={gamePhasesScale}><GamePhases/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
@@ -2477,7 +2326,7 @@ export default function Showroom(props) {
         <animated.group scale={milkyWayScale}>
             <MilkyWayNew
                 rotation={[-Math.PI/2, 0, -35.0]} 
-                position={[-4,-1,0]} 
+                position={layout[device].showroom.milkyWay.position} 
                 scale={4}
                 brightness={0.5}
                 colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}

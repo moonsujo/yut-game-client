@@ -969,6 +969,59 @@ export default {
         ufosCatchRocketScale: 0.7,
         ufosCatchRocketButtonPosition: [4.5, 0, 0],
         ufosCatchRocketButtonScale: 1.3
+      },
+      score: {
+        board: {
+          position: [-0.5, 0, -0.7],
+          scale: 0.6
+        },
+        rocketButton: {
+          scale: 0.7,
+          position: [2.4, 0, 2]
+        },
+        ufoButton: {
+          scale: 0.7,
+          position: [2.4, 0, 3.3]
+        },
+        fireworksPosition: [0, 0, 1]
+      },
+      endScenes: {
+        rocketsWin: {
+          position: [-1.5, 0, -2.5],
+          scale: 1,
+          playAnimationButton: {
+            position: [1.5,1,2],
+            scale: 0.4
+          }
+        },
+        ufosWin: {
+          position: [-1.5, 1, 2.5],
+          scale: 1.2,
+          playAnimationButton: {
+            position: [1.3,1,1],
+            scale: 0.3
+          },
+          beamDustPosition: [-1.9, 0, 4.7]
+        },
+        rocketsLose: {
+          position: [2, 0.5, -2],
+          scale: 1.2,
+          playAnimationButton: {
+            position: [1,0,1],
+            scale: 0.3
+          }
+        },
+        ufosLose: {
+          position: [2, 0.5, 2],
+          scale: 1.2,
+          playAnimationButton: {
+            position: [1,0,1],
+            scale: 0.3
+          }
+        }
+      },
+      milkyWay: {
+        position: [0,-1,0]
       }
     },
     about: {
@@ -2840,6 +2893,59 @@ export default {
         ufosCatchRocketScale: 1,
         ufosCatchRocketButtonPosition: [0.07, 0, 3.5],
         ufosCatchRocketButtonScale: 1
+      },
+      score: {
+        board: {
+          position: [-10, 0, -0.5],
+          scale: 0.9
+        },
+        rocketButton: {
+          scale: 1,
+          position: [-2, 0, -2]
+        },
+        ufoButton: {
+          scale: 1,
+          position: [-2, 0, 1]
+        },
+        fireworksPosition: [-10, 0, 1]
+      },
+      endScenes: {
+        rocketsWin: {
+          position: [-12.5, 0, -0.5],
+          scale: 1.4,
+          playAnimationButton: {
+            position: [0,1,3],
+            scale: 0.8
+          }
+        },
+        ufosWin: {
+          position: [-7, 2, 1.4],
+          scale: 1.3,
+          playAnimationButton: {
+            position: [2, 0, 1.5],
+            scale: 0.8
+          },
+          beamDustPosition: [-7, 0, 2.2]
+        },
+        rocketsLose: {
+          position: [-0.9, 0.5, 0],
+          scale: 1.3,
+          playAnimationButton: {
+            position: [0,0,1.5],
+            scale: 0.7
+          }
+        },
+        ufosLose: {
+          position: [2.7, 0.5, 0.5],
+          scale: 1.3,
+          playAnimationButton: {
+            position: [0,0,1.5],
+            scale: 0.7
+          }
+        }
+      },
+      milkyWay: {
+        position: [-4,-1,0]
       }
     },
     lobby: {
