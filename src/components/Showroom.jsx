@@ -2075,7 +2075,7 @@ export default function Showroom(props) {
                 const newIntervalFireworksId = setInterval(() => {
                     const constellationChance = 0.07
                     const planetChance = 0.14
-                    const position = [-4, 8, 2]
+                    const position = layout[device].showroom.ufosWinPreview.fireworks.position
                     if (document.hasFocus()) {
                         const count = Math.round(300 + Math.random() * 100);
                         let positionShader;
@@ -2323,9 +2323,33 @@ export default function Showroom(props) {
             rotation={layout[device].showroom.rocketsWinPreview.backButton.rotation} 
             scale={layout[device].showroom.rocketsWinPreview.backButton.scale}/>}/>
         </animated.group>
-        <animated.group scale={ufosWinScale}><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
-        <animated.group scale={rocketsLoseScale}><RocketsLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
-        <animated.group scale={ufosLoseScale}><UfosLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
+        <animated.group scale={ufosWinScale}>
+            <UfosWin2NewPreview 
+            position={layout[device].showroom.ufosWinPreview.position}
+            scale={layout[device].showroom.ufosWinPreview.scale} 
+            backButton={<BackButton 
+            position={layout[device].showroom.ufosWinPreview.backButton.position} 
+            rotation={layout[device].showroom.ufosWinPreview.backButton.rotation} 
+            scale={layout[device].showroom.ufosWinPreview.backButton.scale}/>}/>
+        </animated.group>
+        <animated.group scale={rocketsLoseScale}>
+            <RocketsLosePreview 
+            position={layout[device].showroom.rocketsLosePreview.position} 
+            scale={layout[device].showroom.rocketsLosePreview.scale}
+            backButton={<BackButton 
+            position={layout[device].showroom.rocketsLosePreview.backButton.position} 
+            rotation={layout[device].showroom.rocketsLosePreview.backButton.rotation} 
+            scale={layout[device].showroom.rocketsLosePreview.backButton.scale}/>}/>
+        </animated.group>
+        <animated.group scale={ufosLoseScale}>
+            <UfosLosePreview 
+            position={layout[device].showroom.ufosLosePreview.position} 
+            scale={layout[device].showroom.ufosLosePreview.scale}
+            backButton={<BackButton 
+            position={layout[device].showroom.ufosLosePreview.backButton.position} 
+            rotation={layout[device].showroom.ufosLosePreview.backButton.rotation} 
+            scale={layout[device].showroom.ufosLosePreview.backButton.scale}/>}/>
+        </animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>

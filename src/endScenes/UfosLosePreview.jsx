@@ -18,7 +18,7 @@ import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { animated } from "@react-spring/three";
 import Blackhole from "../Blackhole";
 
-export default function UfosLosePreview({ position, backButton }) {
+export default function UfosLosePreview({ position, scale, backButton }) {
   
   // State
   useResponsiveSetting();
@@ -86,7 +86,7 @@ export default function UfosLosePreview({ position, backButton }) {
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position}>
+  return <animated.group position={position} scale={scale}>
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
       position={layout[device].ufoLoseScene.title.position}
@@ -207,6 +207,7 @@ export default function UfosLosePreview({ position, backButton }) {
           </group>
         })}
       </group>
+      <Blackhole scale={1.5} position={[0, 0, -1.1]}/>
     </group>
     {/* room id and buttons */}
     <group name='action-buttons' 
@@ -243,6 +244,5 @@ export default function UfosLosePreview({ position, backButton }) {
     <Asteroids position={[-10, -5, -20]} scale={1.5}/>
     <MeteorsRealShader color={meteorShaderColor}/>
     {backButton}
-    <Blackhole scale={1.5} position={[0, 0, -1.1]}/>
   </animated.group>
 }

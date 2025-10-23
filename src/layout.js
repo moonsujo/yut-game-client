@@ -1034,6 +1034,36 @@ export default {
         fireworks: {
           position: [0, 0, 0]
         }
+      },
+      ufosWinPreview: {
+        position: [0,0,0],
+        scale: 0.7,
+        backButton: {
+          position: [-4.85, 0, 5.6],
+          rotation: [0, 0, 0],
+          scale: 1.7
+        },
+        fireworks: {
+          position: [0, 0, 0]
+        }
+      },
+      rocketsLosePreview: {
+        position: [0,0,0],
+        scale: 0.7,
+        backButton: {
+          position: [-4.85, 0, 5.6],
+          rotation: [0, 0, 0],
+          scale: 1.7
+        },
+      },
+      ufosLosePreview: {
+        position: [0,0,0],
+        scale: 0.7,
+        backButton: {
+          position: [-4.85, 0, 5.6],
+          rotation: [0, 0, 0],
+          scale: 1.7
+        },
       }
     },
     about: {
@@ -1673,12 +1703,12 @@ export default {
     },
     ufoLoseScene: {
       title: {
-        position: [-5.4, 0, -9],
+        position: [-5.4, 3, -8],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 1.0
       },
       teams: {
-        position: [-5.4, 0, -7.5],
+        position: [-5.4, 3, -6.5],
         scale: 1.5
       },
       scene0: {
@@ -1686,22 +1716,22 @@ export default {
         scale: 1.5
       },
       scene1: {
-        position: [0, 0, 1],
+        position: [0, 0, 0],
         scale: 1.3
       },
       actionButtons: {
-        position: [0, 0, 5],
+        position: [0, 3, 6.5],
         scale: 1.1
       }
     },
     ufoWinScene: {
       title: {
-        position: [-5.4, 0, -9],
+        position: [-5.4, 3, -7.5],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 1.0
       },
       teams: {
-        position: [-5.4, 0, -7.5],
+        position: [-5.4, 3, -6],
         scale: 1.5
       },
       scene0: {
@@ -1835,7 +1865,7 @@ export default {
         rotation: [-Math.PI/2, 0, 0]
       },
       roomId: {
-        position: [0.5, 0, 0.5],
+        position: [0.5, 3, 1.8],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 0.5
       }
@@ -2966,6 +2996,39 @@ export default {
           position: [10.8, 0, 1.1],
           rotation: [0, Math.PI, 0],
           scale: 1.3
+        },
+        fireworks: {
+          position: [-4, 8, 2]
+        }
+      },
+      ufosWinPreview: {
+        position: [-4, 10, 4],
+        scale: 1,
+        backButton: {
+          position: [10.8, 0, 1.1],
+          rotation: [0, Math.PI, 0],
+          scale: 1.3
+        },
+        fireworks: {
+          position: [-4, 8, 2]
+        }
+      },
+      rocketsLosePreview: {
+        position: [-4, 10, 4],
+        scale: 1,
+        backButton: {
+          position: [10.8, 0, 1.1],
+          rotation: [0, Math.PI, 0],
+          scale: 1.3
+        }
+      },
+      ufosLosePreview: {
+        position: [-4, 10, 4],
+        scale: 1,
+        backButton: {
+          position: [10.8, 0, 1.1],
+          rotation: [0, Math.PI, 0],
+          scale: 1.3
         }
       }
     },
@@ -3634,7 +3697,7 @@ export default {
         scale: 1.5
       },
       scene1: {
-        position: [0, 0, -0.5],
+        position: [0, 0, 0],
         scale: 1.3
       },
       actionButtons: {

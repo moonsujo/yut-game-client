@@ -27,7 +27,7 @@ import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 
 // add falling rocket parts in the background
-export default function UfosWin2NewPreview({ position, backButton }) {
+export default function UfosWin2NewPreview({ position, scale, backButton }) {
 
   // State
   useResponsiveSetting();
@@ -43,7 +43,8 @@ export default function UfosWin2NewPreview({ position, backButton }) {
   const scene1 = useRef()
 
   // Hooks - particles
-  const [CreateBeamDust] = useBeamDustShader();
+  // taken care of in Showroom
+  // const [CreateBeamDust] = useBeamDustShader();
 
   // Animation - useEffect, gsap progress
   const progressRef = useRef({ value: 0 })
@@ -250,29 +251,9 @@ export default function UfosWin2NewPreview({ position, backButton }) {
     }
   })
 
-  const [ springs, api ] = useSpring(() => ({
-    from: {
-      scale: 0
-    }
-  }))
-  useEffect(() => {
-    api.start({
-      from: {
-        scale: 0
-      },
-      to: {
-        scale: 1
-      },
-      config: {
-        tension: 70, 
-        friction: 20,
-      }
-    })
-  }, [])
-
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position} scale={springs.scale}>
+  return <animated.group position={position} scale={scale}>
     {/* title */}
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
@@ -336,7 +317,7 @@ export default function UfosWin2NewPreview({ position, backButton }) {
             </Text3D>
           )}
         </group>
-        <group name='player-names-ufos' position={[4.2, 0, 0]}>
+        <group name='player-names-ufos' position={[4.05, 0, 0]}>
           { teamUfos.players.map((value, index) => 
             <Text3D
               font="/fonts/Luckiest Guy_Regular.json"
@@ -447,7 +428,7 @@ export default function UfosWin2NewPreview({ position, backButton }) {
     <group name='action-buttons' 
     position={layout[device].ufoWinScene.actionButtons.position} 
     scale={layout[device].ufoWinScene.actionButtons.scale}>
-      { device === 'landscapeDesktop' && <group name='room-id'>
+      <group name='room-id'>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -458,7 +439,7 @@ export default function UfosWin2NewPreview({ position, backButton }) {
           ROOM ID: {`9999`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group> }
+      </group>
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

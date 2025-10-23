@@ -22,7 +22,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import RedGalaxy from "../RedGalaxy";
 
-export default function RocketsLosePreview({ position, backButton }) {
+export default function RocketsLosePreview({ position, scale, backButton }) {
 
   // State
   useResponsiveSetting();
@@ -298,7 +298,7 @@ export default function RocketsLosePreview({ position, backButton }) {
   
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position}>
+  return <animated.group position={position} scale={scale}>
     {/* title */}
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
@@ -362,7 +362,7 @@ export default function RocketsLosePreview({ position, backButton }) {
             </Text3D>
           )}
         </group>
-        <group name='player-names-ufos' position={[3.9, 0, 0]}>
+        <group name='player-names-ufos' position={[4.05, 0, 0]}>
           { teamUfos.players.map((value, index) => 
             <Text3D
               font="/fonts/Luckiest Guy_Regular.json"
@@ -454,7 +454,7 @@ export default function RocketsLosePreview({ position, backButton }) {
     <group name='action-buttons' 
     position={layout[device].rocketsLoseScene.actionButtons.position} 
     scale={layout[device].rocketsLoseScene.actionButtons.scale}>
-      { device === 'landscapeDesktop' && <group name='room-id' >
+      <group name='room-id' >
         {/* text */}
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
@@ -466,7 +466,7 @@ export default function RocketsLosePreview({ position, backButton }) {
           ROOM ID: 9999
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group> }
+      </group>
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
