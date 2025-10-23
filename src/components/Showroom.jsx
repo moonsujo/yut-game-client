@@ -70,6 +70,7 @@ export default function Showroom(props) {
     const device = useAtomValue(deviceAtom)
     const [CreateFirework] = useFireworksShader();
     const [CreateBeamDust] = useBeamDustShader();
+    const [startRocketsLoseAnimation, setStartRocketsLoseAnimation] = useState(false)
 
     // helper function
     function CreateMoMeteor() {
@@ -372,6 +373,11 @@ export default function Showroom(props) {
             e.stopPropagation()
             // make another button to return to the showroom from an end scene
             if (display === 'rocketsWin' || display === 'ufosWin' || display === 'rocketsLose' || display === 'ufosLose') {
+                // Stop rockets lose animation if it's running
+                if (display === 'rocketsLose') {
+                    setStartRocketsLoseAnimation(false)
+                }
+                
                 setDisplay('endScenes')
                 clearInterval(intervalFireworksId)
                 clearInterval(intervalBeamDustId)
@@ -395,7 +401,7 @@ export default function Showroom(props) {
                 setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
             } else {
                 setHomeDisplay('title')
-            }
+            } 
         }
         return <animated.group name='back-button' {...props}>
             <mesh>
@@ -1920,7 +1926,9 @@ export default function Showroom(props) {
                     <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
                     <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
                     <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
-                    <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                    <group onPointerDown={e=>onPointerDown(e)}>
+                        <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                    </group>
                 </group>
                 <PlayAnimationButton 
                     position={layout[device].showroom.endScenes.rocketsWin.playAnimationButton.position} 
@@ -1930,13 +1938,6 @@ export default function Showroom(props) {
                     onPointerDown={e=>onPointerDown(e)}
                     hover={hover}
                 />
-                { device === 'portrait' && <mesh 
-                    name='wrapper' 
-                    onPointerDown={e => onPointerDown(e)}
-                >
-                    <boxGeometry args={[3.9, 0.04, 3.9]}/>
-                    <meshStandardMaterial transparent opacity={0}/>
-                </mesh> }
             </group>
         }
 
@@ -2135,27 +2136,29 @@ export default function Showroom(props) {
             }
             return <group name='ufos-win' position={position} scale={scale}>
                 <group name='picture'>
-                    <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
+                    <group onPointerDown={e=>onPointerDown(e)}>
+                        <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
+                    </group>
                     <mesh name='beam' rotation={[-Math.PI/2 + Math.PI/9, Math.PI, 0]} position={[0, -2.2, 2.0]} scale={0.45} material={shaderMaterialBeam2}>
                         <cylinderGeometry args={[1, 3, 13, 32]}/>
                     </mesh>
-                        <animated.group name='wolf' position={wolfPosition} scale={wolfScale}>
-                            <Wolf rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.5}/>
-                        </animated.group>
-                        <animated.group name='cybertruck' position={cybertruckPosition} scale={cybertruckScale}>
-                            <CyberTruck rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.4}/>
-                        </animated.group>
-                        <animated.group name='barn' position={barnPosition} scale={barnScale}>
-                            <Barn rotation={[-Math.PI/8, Math.PI/4, -Math.PI/4]} scale={0.5}/>
-                        </animated.group>
-                        <animated.group name='llama' position={llamaPosition} scale={llamaScale}>
-                            <Llama rotation={[-Math.PI/4, Math.PI/2, 0]} scale={0.5}/>
-                        </animated.group>
-                        <animated.group name='gem' position={gemPosition} scale={gemScale} rotation={[-Math.PI/16, 0, 0]}>
-                            <Ruby rotation={[-Math.PI/4, Math.PI/2, 0]} scale={1}/>
-                            <Ruby position={[1, 0, 0.5]} rotation={[-Math.PI/6, Math.PI, 0]} scale={0.5} color='#0055FF'/>
-                            <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
-                        </animated.group>
+                    <animated.group name='wolf' position={wolfPosition} scale={wolfScale}>
+                        <Wolf rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.5}/>
+                    </animated.group>
+                    <animated.group name='cybertruck' position={cybertruckPosition} scale={cybertruckScale}>
+                        <CyberTruck rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.4}/>
+                    </animated.group>
+                    <animated.group name='barn' position={barnPosition} scale={barnScale}>
+                        <Barn rotation={[-Math.PI/8, Math.PI/4, -Math.PI/4]} scale={0.5}/>
+                    </animated.group>
+                    <animated.group name='llama' position={llamaPosition} scale={llamaScale}>
+                        <Llama rotation={[-Math.PI/4, Math.PI/2, 0]} scale={0.5}/>
+                    </animated.group>
+                    <animated.group name='gem' position={gemPosition} scale={gemScale} rotation={[-Math.PI/16, 0, 0]}>
+                        <Ruby rotation={[-Math.PI/4, Math.PI/2, 0]} scale={1}/>
+                        <Ruby position={[1, 0, 0.5]} rotation={[-Math.PI/6, Math.PI, 0]} scale={0.5} color='#0055FF'/>
+                        <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
+                    </animated.group>
                 </group>
                 <PlayAnimationButton 
                     position={layout[device].showroom.endScenes.ufosWin.playAnimationButton.position} 
@@ -2165,14 +2168,6 @@ export default function Showroom(props) {
                     onPointerDown={e=>onPointerDown(e)}
                     hover={hover}
                 />
-                { device === 'portrait' && <mesh 
-                    name='wrapper' 
-                    onPointerDown={e => onPointerDown(e)}
-                    position={[0, 0, -0.3]}
-                >
-                    <boxGeometry args={[3.5, 0.04, 3.5]}/>
-                    <meshStandardMaterial transparent opacity={0}/>
-                </mesh> }
             </group>
         }
 
@@ -2191,8 +2186,9 @@ export default function Showroom(props) {
             function onPointerDown(e) {
                 e.stopPropagation()
                 setDisplay('rocketsLose')
+                setStartRocketsLoseAnimation(true)
             }
-            return <group name='rockets-lose' position={position} scale={scale}>
+            return <group name='rockets-lose' position={position} scale={scale} onPointerDown={e=>onPointerDown(e)}>
                 <group name='picture'>
                     <Float>
                         <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4 - Math.PI/8, 0]}/>
@@ -2204,17 +2200,9 @@ export default function Showroom(props) {
                     scale={layout[device].showroom.endScenes.rocketsLose.playAnimationButton.scale}
                     onPointerEnter={e=>onPointerEnter(e)}
                     onPointerLeave={e=>onPointerLeave(e)}
-                    onPointerDown={e=>onPointerDown(e)}
+                    // onPointerDown={e=>onPointerDown(e)} // assigned to the whole group
                     hover={hover}
                 />
-                { device === 'portrait' && <mesh 
-                    name='wrapper' 
-                    onPointerDown={e => onPointerDown(e)}
-                    position={[0.1, -0.5, -0.3]}
-                >
-                    <boxGeometry args={[2.5, 0.04, 3]}/>
-                    <meshStandardMaterial transparent opacity={0}/>
-                </mesh> }
             </group>
         }
 
@@ -2234,7 +2222,7 @@ export default function Showroom(props) {
                 e.stopPropagation()
                 setDisplay('ufosLose')
             }
-            return <group name='ufos-lose' position={position} scale={scale}>
+            return <group name='ufos-lose' position={position} scale={scale} onPointerDown={e=>onPointerDown(e)}>
                 <group name='picture'>
                     <Float>
                         <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
@@ -2246,17 +2234,9 @@ export default function Showroom(props) {
                     scale={layout[device].showroom.endScenes.ufosLose.playAnimationButton.scale}
                     onPointerEnter={e=>onPointerEnter(e)}
                     onPointerLeave={e=>onPointerLeave(e)}
-                    onPointerDown={e=>onPointerDown(e)}
+                    // onPointerDown={e=>onPointerDown(e)} // assigned to the whole group
                     hover={hover}
                 />
-                { device === 'portrait' && <mesh 
-                    name='wrapper' 
-                    onPointerDown={e => onPointerDown(e)}
-                    position={[0.3, -0.5, -0.3]}
-                >
-                    <boxGeometry args={[2.5, 0.04, 3]}/>
-                    <meshStandardMaterial transparent opacity={0}/>
-                </mesh> }
             </group>
         }
         return <group {...props}>
@@ -2336,6 +2316,8 @@ export default function Showroom(props) {
             <RocketsLosePreview 
             position={layout[device].showroom.rocketsLosePreview.position} 
             scale={layout[device].showroom.rocketsLosePreview.scale}
+            startAnimation={startRocketsLoseAnimation}
+            onStopAnimation={() => setStartRocketsLoseAnimation(false)}
             backButton={<BackButton 
             position={layout[device].showroom.rocketsLosePreview.backButton.position} 
             rotation={layout[device].showroom.rocketsLosePreview.backButton.rotation} 

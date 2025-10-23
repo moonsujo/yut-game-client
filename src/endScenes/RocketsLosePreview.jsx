@@ -22,7 +22,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import RedGalaxy from "../RedGalaxy";
 
-export default function RocketsLosePreview({ position, scale, backButton }) {
+export default function RocketsLosePreview({ position, scale, backButton, startAnimation=false, onStopAnimation }) {
 
   // State
   useResponsiveSetting();
@@ -94,131 +94,162 @@ export default function RocketsLosePreview({ position, scale, backButton }) {
   const pRightEyeCloseEnd = 0.94
   const pRightEyeOpenEnd = 0.96
 
+  const gsapAnimationRef = useRef(null)
+
   useEffect(() => {
-    gsap.to(progressRef.current, {
-      value: 1,
-      duration: 10,
-      ease: 'linear',
-      repeat: -1,
-      onUpdate: () => {
-        const p = progressRef.current.value
+    if (startAnimation) {
+      gsapAnimationRef.current = gsap.to(progressRef.current, {
+        value: 1,
+        duration: 10,
+        ease: 'linear',
+        repeat: -1,
+        onUpdate: () => {
+          const p = progressRef.current.value
 
-        // Interpolate position and scale manually
-        let rocketGroupPosition, 
-        rocketGroupScale, 
-        rocket0Pos, 
-        rocket0Scale,
-        rocket1Pos, 
-        rocket1Scale,
-        rocket2Pos, 
-        rocket2Scale,
-        glassOpacity,
-        rightEyeScale
-
-        if (p < pMax0) { // 0.0 - 0.2
-          rocketGroupPosition = [0, -4, 10]
-          rocketGroupScale = 1
-        } else if (p > pMax0 && p < pMax1) { // 0.2 - 0.4
-          const progress = (p - pMax0) / (pMax1 - pMax0)
-          rocketGroupPosition = [0, -4 + 3 * progress, 10 - 7 * progress]
-        } else if (p > pMax1 && p < pMax2) { // 0.4 - 0.8
-        } else if (p > pMax2 && p < pMax3) { // 0.8 - 1.0; 264 - 297
-          const progress = (p - pMax2) / (pMax3 - pMax2)
-          rocketGroupPosition = [0, -4 + 3, 10 - 7 - progress * 7]
-          rocketGroupScale = 1 - (p - pMax2) / (pMax3 - pMax2)
-        } else if (p > pMax3 && p < pMax4) {
-          rocketGroupScale = 0
-        }
-        // } else if (p > pMax4 && p < pMax5) {
-        //   const progress = (p - pMax4) / (pMax5 - pMax4)
-        //   rocket0Scale = [0.3, 0.3, 0.3]
-        //   rocket0Pos = [-1, 6 + 2 * progress, 0]
-        // }
-
-        function calculateProgress(value, start, finish) {
-          return (value - start) / (finish - start)
-        }
-        // rocket in glass 1
-        if (p > pRocketRise && p < pRocketCrashGlass) {
-          const progress = calculateProgress(p, pRocketRise, pRocketCrashGlass)
-          rocket0Scale = [0.3, 0.3, 0.3]
-          rocket0Pos = [-1, -1, -3 - 2 * progress]
-        } else if (p > pRocketCrashGlass && p < pRocketDisappear) {
-          const progress = calculateProgress(p, pRocketCrashGlass, pRocketDisappear)
-          // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
-        } else if (p > pRocketDisappear && p < pRocketDisappearEnd) {
-          const progress = calculateProgress(p, pRocketDisappear, pRocketDisappearEnd)
-          rocket0Scale = [0.3 - progress * 0.3, 0.3 - progress * 0.3, 0.3 - progress * 0.3]
-          rocket0Pos = [-1, -1, -3 - 2 + 2 * progress]
-        } else if (p > pRocketDisappearEnd && p < pRocketEnd) {
-          const progress = calculateProgress(p, pRocketDisappear, pRocketEnd)
-        }
-        // rocket in glass 2
-        if (p > pRocketRise2 && p < pRocketCrashGlass2) {
-          const progress = calculateProgress(p, pRocketRise2, pRocketCrashGlass2)
-          rocket1Scale = [0.25, 0.25, 0.25]
-          rocket1Pos = [1, -1, -3 - 1.6 * progress]
-        } else if (p > pRocketCrashGlass2 && p < pRocketDisappear2) {
-          const progress = calculateProgress(p, pRocketCrashGlass2, pRocketDisappear2)
-          // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
-        } else if (p > pRocketDisappear2 && p < pRocketDisappearEnd2) {
-          const progress = calculateProgress(p, pRocketDisappear2, pRocketDisappearEnd2)
-          rocket1Scale = [0.25 - progress * 0.25, 0.25 - progress * 0.25, 0.25 - progress * 0.25]
-          rocket1Pos = [1, -1, -3 - 1.6 + 2 * progress]
-        } else if (p > pRocketDisappearEnd2 && p < pRocketEnd2) {
-          const progress = calculateProgress(p, pRocketDisappear2, pRocketEnd2)
-        }
-        // rocket in glass 3
-        if (p > pRocketRise3 && p < pRocketCrashGlass3) {
-          const progress = calculateProgress(p, pRocketRise3, pRocketCrashGlass3)
-          rocket2Scale = [0.25, 0.25, 0.25]
-          rocket2Pos = [0.3, 1.5 * progress, -3 - 1 * progress]
-        } else if (p > pRocketCrashGlass3 && p < pRocketDisappear3) {
-          const progress = calculateProgress(p, pRocketCrashGlass3, pRocketDisappear3)
-          // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
-        } else if (p > pRocketDisappear3 && p < pRocketDisappearEnd3) {
-          const progress = calculateProgress(p, pRocketDisappear3, pRocketDisappearEnd3)
-          rocket2Scale = [0.25 - progress * 0.25, 0.25 - progress * 0.25, 0.25 - progress * 0.25]
-          rocket2Pos = [0.3, 1.5, -3 - 1 + 2 * progress]
-        } else if (p > pRocketDisappearEnd3 && p < pRocketEnd3) {
-          const progress = calculateProgress(p, pRocketDisappear3, pRocketEnd3)
-        }
-
-        // wink
-        if (p > pRightEyeCloseStart && p < pRightEyeCloseEnd) {
-          const progress = calculateProgress(p, pRightEyeCloseStart, pRightEyeCloseEnd)
-          rightEyeScale = [1, 1 - progress * 1, 1]
-        } else if (p > pRightEyeCloseEnd && p < pRightEyeOpenEnd) {
-          const progress = calculateProgress(p, pRightEyeCloseEnd, pRightEyeOpenEnd)
-          rightEyeScale = [1, progress * 1, 1]
-        }
-
-        // glass
-        if (p > pGlassShineStart && p < pGlassShineMax) {
-          const progress = calculateProgress(p, pGlassShineStart, pGlassShineMax)
-          glassOpacity = progress * glassOpacityMax + 0.1
-        } else if (p > pGlassShineMax && p < pGlassShineEnd) {
-          const progress = calculateProgress(p, pGlassShineMax, pGlassShineEnd)
-          glassOpacity = (glassOpacityMax - progress * glassOpacityMax) + 0.1
-        }
-
-        api.set({
-          rocketGroupPosition,
-          rocketGroupScale,
-          rocket0Pos,
+          // Interpolate position and scale manually
+          let rocketGroupPosition, 
+          rocketGroupScale, 
+          rocket0Pos, 
           rocket0Scale,
-          rocket1Pos,
+          rocket1Pos, 
           rocket1Scale,
-          rocket2Pos,
+          rocket2Pos, 
           rocket2Scale,
           glassOpacity,
           rightEyeScale
-        })
 
-        shaderMaterial.uniforms.uProgress.value = p
+          if (p < pMax0) { // 0.0 - 0.2
+            rocketGroupPosition = [0, -4, 10]
+            rocketGroupScale = 1
+          } else if (p > pMax0 && p < pMax1) { // 0.2 - 0.4
+            const progress = (p - pMax0) / (pMax1 - pMax0)
+            rocketGroupPosition = [0, -4 + 3 * progress, 10 - 7 * progress]
+          } else if (p > pMax1 && p < pMax2) { // 0.4 - 0.8
+          } else if (p > pMax2 && p < pMax3) { // 0.8 - 1.0; 264 - 297
+            const progress = (p - pMax2) / (pMax3 - pMax2)
+            rocketGroupPosition = [0, -4 + 3, 10 - 7 - progress * 7]
+            rocketGroupScale = 1 - (p - pMax2) / (pMax3 - pMax2)
+          } else if (p > pMax3 && p < pMax4) {
+            rocketGroupScale = 0
+          }
+          // } else if (p > pMax4 && p < pMax5) {
+          //   const progress = (p - pMax4) / (pMax5 - pMax4)
+          //   rocket0Scale = [0.3, 0.3, 0.3]
+          //   rocket0Pos = [-1, 6 + 2 * progress, 0]
+          // }
+
+          function calculateProgress(value, start, finish) {
+            return (value - start) / (finish - start)
+          }
+          // rocket in glass 1
+          if (p > pRocketRise && p < pRocketCrashGlass) {
+            const progress = calculateProgress(p, pRocketRise, pRocketCrashGlass)
+            rocket0Scale = [0.3, 0.3, 0.3]
+            rocket0Pos = [-1, -1, -3 - 2 * progress]
+          } else if (p > pRocketCrashGlass && p < pRocketDisappear) {
+            const progress = calculateProgress(p, pRocketCrashGlass, pRocketDisappear)
+            // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
+          } else if (p > pRocketDisappear && p < pRocketDisappearEnd) {
+            const progress = calculateProgress(p, pRocketDisappear, pRocketDisappearEnd)
+            rocket0Scale = [0.3 - progress * 0.3, 0.3 - progress * 0.3, 0.3 - progress * 0.3]
+            rocket0Pos = [-1, -1, -3 - 2 + 2 * progress]
+          } else if (p > pRocketDisappearEnd && p < pRocketEnd) {
+            const progress = calculateProgress(p, pRocketDisappear, pRocketEnd)
+          }
+          // rocket in glass 2
+          if (p > pRocketRise2 && p < pRocketCrashGlass2) {
+            const progress = calculateProgress(p, pRocketRise2, pRocketCrashGlass2)
+            rocket1Scale = [0.25, 0.25, 0.25]
+            rocket1Pos = [1, -1, -3 - 1.6 * progress]
+          } else if (p > pRocketCrashGlass2 && p < pRocketDisappear2) {
+            const progress = calculateProgress(p, pRocketCrashGlass2, pRocketDisappear2)
+            // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
+          } else if (p > pRocketDisappear2 && p < pRocketDisappearEnd2) {
+            const progress = calculateProgress(p, pRocketDisappear2, pRocketDisappearEnd2)
+            rocket1Scale = [0.25 - progress * 0.25, 0.25 - progress * 0.25, 0.25 - progress * 0.25]
+            rocket1Pos = [1, -1, -3 - 1.6 + 2 * progress]
+          } else if (p > pRocketDisappearEnd2 && p < pRocketEnd2) {
+            const progress = calculateProgress(p, pRocketDisappear2, pRocketEnd2)
+          }
+          // rocket in glass 3
+          if (p > pRocketRise3 && p < pRocketCrashGlass3) {
+            const progress = calculateProgress(p, pRocketRise3, pRocketCrashGlass3)
+            rocket2Scale = [0.25, 0.25, 0.25]
+            rocket2Pos = [0.3, 1.5 * progress, -3 - 1 * progress]
+          } else if (p > pRocketCrashGlass3 && p < pRocketDisappear3) {
+            const progress = calculateProgress(p, pRocketCrashGlass3, pRocketDisappear3)
+            // glassOpacity = Math.sin(Math.PI * progress) * 0.3 + 0.1
+          } else if (p > pRocketDisappear3 && p < pRocketDisappearEnd3) {
+            const progress = calculateProgress(p, pRocketDisappear3, pRocketDisappearEnd3)
+            rocket2Scale = [0.25 - progress * 0.25, 0.25 - progress * 0.25, 0.25 - progress * 0.25]
+            rocket2Pos = [0.3, 1.5, -3 - 1 + 2 * progress]
+          } else if (p > pRocketDisappearEnd3 && p < pRocketEnd3) {
+            const progress = calculateProgress(p, pRocketDisappear3, pRocketEnd3)
+          }
+
+          // wink
+          if (p > pRightEyeCloseStart && p < pRightEyeCloseEnd) {
+            const progress = calculateProgress(p, pRightEyeCloseStart, pRightEyeCloseEnd)
+            rightEyeScale = [1, 1 - progress * 1, 1]
+          } else if (p > pRightEyeCloseEnd && p < pRightEyeOpenEnd) {
+            const progress = calculateProgress(p, pRightEyeCloseEnd, pRightEyeOpenEnd)
+            rightEyeScale = [1, progress * 1, 1]
+          }
+
+          // glass
+          if (p > pGlassShineStart && p < pGlassShineMax) {
+            const progress = calculateProgress(p, pGlassShineStart, pGlassShineMax)
+            glassOpacity = progress * glassOpacityMax + 0.1
+          } else if (p > pGlassShineMax && p < pGlassShineEnd) {
+            const progress = calculateProgress(p, pGlassShineMax, pGlassShineEnd)
+            glassOpacity = (glassOpacityMax - progress * glassOpacityMax) + 0.1
+          }
+
+          api.set({
+            rocketGroupPosition,
+            rocketGroupScale,
+            rocket0Pos,
+            rocket0Scale,
+            rocket1Pos,
+            rocket1Scale,
+            rocket2Pos,
+            rocket2Scale,
+            glassOpacity,
+            rightEyeScale
+          })
+
+          shaderMaterial.uniforms.uProgress.value = p
+        }
+      })
+    } else {
+      // Kill animation and reset when stopped
+      if (gsapAnimationRef.current) {
+        gsapAnimationRef.current.kill()
+        gsapAnimationRef.current = null
       }
-    })
-  }, [])
+      progressRef.current.value = 0
+      api.set({
+        rocketGroupPosition: [0, -4, 10],
+        rocketGroupScale: 1,
+        rocket0Pos: [0,0,0],
+        rocket0Scale: [0,0,0],
+        rocket1Pos: [0,0,0],
+        rocket1Scale: [0,0,0],
+        rocket2Pos: [0,0,0],
+        rocket2Scale: [0,0,0],
+        glassOpacity: 0.1,
+        rightEyeScale: [1, 1, 1],
+      })
+      shaderMaterial.uniforms.uProgress.value = 0
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (gsapAnimationRef.current) {
+        gsapAnimationRef.current.kill()
+      }
+    }
+  }, [startAnimation])
   
   const turquoise = new THREE.Color('turquoise')
   // apply color
