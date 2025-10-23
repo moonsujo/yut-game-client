@@ -25,7 +25,7 @@ export default {
     },
     title: {
       camera: {
-        position: [0,25,7],
+        position: [0,17,7],
         lookAt: [0, 0, 0]
       },
       text: {
@@ -1022,6 +1022,18 @@ export default {
       },
       milkyWay: {
         position: [0,-1,0]
+      },
+      rocketsWinPreview: {
+        position: [0,0,0],
+        scale: 0.7,
+        backButton: {
+          position: [-4.85, 0, 5.6],
+          rotation: [0, 0, 0],
+          scale: 1.7
+        },
+        fireworks: {
+          position: [0, 0, 0]
+        }
       }
     },
     about: {
@@ -1737,13 +1749,13 @@ export default {
     },
     rocketsWinScene: {
       title: {
-        position: [-5.4, 0, -9.5],
+        position: [-5.4, 3, -8.1],
         rotation: [-Math.PI/2, 0, 0],
         fontSize: 1.0,
         text: 'MISSION\nACCOMPLISHED!'
       },
       teams: {
-        position: [-5.4, 0, -7.1],
+        position: [-5.4, 3, -5.5],
         scale: 1.5
       },
       scene0: {
@@ -2946,6 +2958,15 @@ export default {
       },
       milkyWay: {
         position: [-4,-1,0]
+      },
+      rocketsWinPreview: {
+        position: [-4, 10, 4],
+        scale: 1,
+        backButton: {
+          position: [10.8, 0, 1.1],
+          rotation: [0, Math.PI, 0],
+          scale: 1.3
+        }
       }
     },
     lobby: {

@@ -55,12 +55,11 @@ import PauseGame from "../PauseGame.jsx";
 import PauseGamePreview from "../PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
 import layout from "../layout.js";
-// import { generateRandomNumberInRange } from "../helpers/helpers.js";
+import { generateRandomNumberInRange } from "../helpers/helpers.js";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('yutOutcomes')
     const setHomeDisplay = props.setHomeDisplay
-    const homeDisplay = props.homeDisplay
     const [RollStar] = useStarRoll();
     const [CreateMeteor] = useMeteorsShader();
     const { playSoundEffect } = useSoundEffectsPlayer()
@@ -387,9 +386,9 @@ export default function Showroom(props) {
                     const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
                     const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
                     const position = new THREE.Vector3(
-                        -7,
-                        0,
-                        2.2,
+                        layout[device].showroom.endScenes.ufosWin.beamDustPosition[0],
+                        layout[device].showroom.endScenes.ufosWin.beamDustPosition[1],
+                        layout[device].showroom.endScenes.ufosWin.beamDustPosition[2],
                     )
                     CreateBeamDust({ position, positionParticles, size, speed });
                 }, 70)
@@ -1874,7 +1873,7 @@ export default function Showroom(props) {
                 const newIntervalFireworksId = setInterval(() => {
                     const constellationChance = 0.07
                     const planetChance = 0.14
-                    const position = [-4, 8, 2]
+                    const position = layout[device].showroom.rocketsWinPreview.fireworks.position
                     if (document.hasFocus()) {
                         const count = Math.round(300 + Math.random() * 100);
                         let positionShader;
@@ -2315,7 +2314,15 @@ export default function Showroom(props) {
         <animated.group position={gamePhasesPosition} scale={gamePhasesScale}><GamePhases/></animated.group>
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
-        <animated.group scale={rocketsWinScale}><RocketsWin2Preview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
+        <animated.group scale={rocketsWinScale}>
+            <RocketsWin2Preview 
+            position={layout[device].showroom.rocketsWinPreview.position} 
+            scale={layout[device].showroom.rocketsWinPreview.scale}
+            backButton={<BackButton 
+            position={layout[device].showroom.rocketsWinPreview.backButton.position} 
+            rotation={layout[device].showroom.rocketsWinPreview.backButton.rotation} 
+            scale={layout[device].showroom.rocketsWinPreview.backButton.scale}/>}/>
+        </animated.group>
         <animated.group scale={ufosWinScale}><UfosWin2NewPreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
         <animated.group scale={rocketsLoseScale}><RocketsLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>
         <animated.group scale={ufosLoseScale}><UfosLosePreview position={[-4, 10, 4]} backButton={<BackButton position={[10.9, 0, 1.3]} rotation={[0, Math.PI, 0]} scale={1.3}/>}/></animated.group>

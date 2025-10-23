@@ -16,7 +16,7 @@ import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useSpring, animated } from "@react-spring/three";
 import Blackhole2 from "../Blackhole2";
 
-export default function RocketsWin2Preview({ position, backButton }) {
+export default function RocketsWin2Preview({ position, scale, backButton }) {
 
   // Hooks
   useResponsiveSetting();
@@ -28,7 +28,6 @@ export default function RocketsWin2Preview({ position, backButton }) {
   let rocketsScore = 4
   let ufosScore = 0
   
-  const earth = useRef()
   const rocket0 = useRef()
   const rocket1 = useRef()
   const rocket2 = useRef()
@@ -48,7 +47,7 @@ export default function RocketsWin2Preview({ position, backButton }) {
     rocket0.current.position.y = Math.cos(time) * 0.05
     rocket1.current.position.y = Math.cos(time) * 0.05
     rocket2.current.position.y = Math.cos(time) * 0.05
-    rocket2.current.position.x = Math.sin(time) * 0.05
+    rocket2.current.position.x = Math.cos(time) * 0.05
     rocket3.current.position.y = Math.cos(time) * 0.05
 
     // Ufos
@@ -86,7 +85,7 @@ export default function RocketsWin2Preview({ position, backButton }) {
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <animated.group position={position}>
+  return <animated.group position={position} scale={scale}>
     <Text3D name='title'
       font="/fonts/Luckiest Guy_Regular.json"
       position={layout[device].rocketsWinScene.title.position}
@@ -151,7 +150,7 @@ export default function RocketsWin2Preview({ position, backButton }) {
             </Text3D>
           )}
         </group>
-        <group name='player-names-ufos' position={[3.9, 0, 0]}>
+        <group name='player-names-ufos' position={[4.1, 0, 0]}>
           { teamUfos.players.map((value, index) => 
             <Text3D
               key={index}
@@ -181,11 +180,12 @@ export default function RocketsWin2Preview({ position, backButton }) {
         })}
       </group>
     </group> }
+    { device === 'landscapeDesktop' && <Blackhole2 scale={1} position={[-9, -8, -1.5]}/> }
     {/* scene 1 in the middle */}
     <group name='scene-1' 
     position={layout[device].rocketsWinScene.scene1.position}
     scale={layout[device].rocketsWinScene.scene1.scale}>
-      <group name='earth-wrapper' rotation={[-Math.PI/2, 0, Math.PI/16]} ref={earth}>
+      <group name='earth-wrapper' rotation={[-Math.PI/2, 0, Math.PI/16]}>
         <Earth scale={2} rotation={[0, 0, 0]} position={[0, 0, 0]} showParticles={false}/>
       </group>
       <Float rotationIntensity={0.05} speed={5} floatIntensity={0.05}>
@@ -239,7 +239,6 @@ export default function RocketsWin2Preview({ position, backButton }) {
       rotation={layout[device].endSceneActionButtons.discordButton.rotation}
       device={device}/>
     </group>
-    <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
     {backButton}
   </animated.group>
 }

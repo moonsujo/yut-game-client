@@ -663,7 +663,7 @@ export default function Home2() {
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
     showroomScale: display === 'showroom' ? 1 : 0,
-    navigationPosition: (display === 'showroom' && device === 'landscapeDesktop') ? [-13,0,0] : [0,0,0],
+    navigationPosition: display === 'showroom' ? [-13,0,0] : [0,0,0],
     milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
     milkyWayScale: display !== 'showroom' ? 1 : 0,
     aboutScale: display === 'about' ? 1 : 0,
@@ -691,18 +691,18 @@ export default function Home2() {
         />
       </animated.group>}
       { device === 'landscapeDesktop' && <Title 
-          position={layout[device].title.text.position}
-          rotation={layout[device].title.text.rotation}
-          scale={layout[device].title.text.scale}
-          setDisplay={setDisplay}
-        />}
+        position={layout[device].title.text.position}
+        rotation={layout[device].title.text.rotation}
+        scale={layout[device].title.text.scale}
+        setDisplay={setDisplay}
+      />}
       { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
         <YootDisplay
           position={layout[device].title.yoots.position}
           rotation={layout[device].title.yoots.rotation}
           scale={layout[device].title.yoots.scale} 
         />
-      </animated.group>}
+      </animated.group> }
       { device === 'landscapeDesktop' && <YootDisplay
         position={layout[device].title.yoots.position}
         rotation={layout[device].title.yoots.rotation}
