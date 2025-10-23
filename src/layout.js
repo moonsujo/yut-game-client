@@ -1749,6 +1749,9 @@ export default {
       actionButtons: {
         position: [0, 3, 6.5],
         scale: 1.1
+      },
+      beamDust: {
+        position: [0, 0, 0]
       }
     },
     rocketsLoseScene: {
@@ -3726,6 +3729,9 @@ export default {
       actionButtons: {
         position: [7.5, 0, 2],
         scale: 0.9
+      },
+      beamDust: {
+        position: [-4, 0, -1]
       }
     },
     rocketsLoseScene: {

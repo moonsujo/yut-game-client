@@ -401,7 +401,7 @@ export default function UfosWin2NewPreview({ position, scale, backButton }) {
       </mesh>
       <Float floatIntensity={2} speed={5} >
         <EarthModified 
-          position={[0,-3.5,2]} 
+          position={[0,0,3]} 
           scale={1.1} 
           rotation={[-Math.PI/2,Math.PI/2,0]}
         />
