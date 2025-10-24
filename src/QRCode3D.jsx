@@ -13,12 +13,12 @@ export default function QrCode3d({ text, position, scale, rotation }) {
       data: text,
       image: './images/yoot.png',
       dotsOptions: {
-        color: "#000000",
+        color: "#000000ff",
         type: "dots",
         // gradient applies to dots like a background
       },
       backgroundOptions: {
-        color: "#ffffff",
+        color: "#86c082ff",
         // gradient: {
         //   type: 'radial',
         //   colorStops: [
