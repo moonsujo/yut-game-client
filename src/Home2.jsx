@@ -25,6 +25,7 @@ import useMusicPlayer from './soundPlayers/useMusicPlayer';
 import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 import { sendLog } from './api';
+import { IS_DEV } from './config/env';
 
 export default function Home2() {
 
@@ -729,7 +730,7 @@ export default function Home2() {
         scale={layout[device].title.about.scale}
       /> } */}
     </animated.group>
-    <group name='stats'>
+    { IS_DEV && <group name='stats'>
       { device === 'landscapeDesktop' && <PageVisits 
         position={layout[device].title.pageVisits.position} 
         rotation={layout[device].title.pageVisits.rotation}
@@ -738,7 +739,7 @@ export default function Home2() {
         position={layout[device].title.gamesPlayed.position} 
         rotation={layout[device].title.gamesPlayed.rotation}
       /> }
-    </group>
+    </group> }
     <group name='display'>
       <group position={layout[device].title.board.position} 
         scale={layout[device].title.board.scale}>

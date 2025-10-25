@@ -7,10 +7,8 @@ frontend:
     build:
       commands:
         - echo "Building for branch $AWS_BRANCH"
-        - cp .env.production .env
-        - '[ "$AWS_BRANCH" = "dev" ] && cp .env.dev .env || true'
-        - echo "Contents of .env file:"
-        - cat .env
+        - VITE_MODE=$( [ "$AWS_BRANCH" = "dev" ] && echo "development" || echo "production" )
+        - echo "VITE_MODE is set to $VITE_MODE"
         - npm run build
   artifacts:
     baseDirectory: dist

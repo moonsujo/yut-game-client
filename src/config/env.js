@@ -1,7 +1,13 @@
 // Environment configuration
 // This file determines which endpoint to use based on the build environment
 
-const ENV = import.meta.env.VITE_MODE || import.meta.env.MODE || 'development';
+// Check if running on localhost
+const isLocalhost = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+// import.meta.env.VITE_MODE is set in vite.config.js
+// Override to 'development' if on localhost
+const ENV = isLocalhost ? 'development' : (import.meta.env.VITE_MODE || 'production');
 
 const config = {
   development: {
