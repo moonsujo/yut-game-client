@@ -9,6 +9,8 @@ frontend:
         - echo "Building for branch $AWS_BRANCH"
         - cp .env.production .env
         - '[ "$AWS_BRANCH" = "dev" ] && cp .env.dev .env || true'
+        - echo "Contents of .env file:"
+        - cat .env
         - npm run build
   artifacts:
     baseDirectory: dist
