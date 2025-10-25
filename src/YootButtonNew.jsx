@@ -77,15 +77,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
         playSoundEffect('/sounds/effects/throw-heavenly-yut.mp3', audioVolume)
       }
             
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'buttonClick',
-        timestamp: new Date(),
-        payload: {
-          'button': 'throwYut',
-        }
-      })
-
-      console.log('[YootButton] post log response', response)
+      await sendLog('buttonClick', { button: 'throwYut' })
     }, DEBOUNCE_DELAY)
   }
 

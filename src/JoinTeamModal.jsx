@@ -3,7 +3,7 @@ import { Html } from '@react-three/drei';
 import { socket } from './SocketManager';
 import { useAtom, useAtomValue } from 'jotai';
 import { audioVolumeAtom, clientAtom, joinTeamAtom, teamsAtom } from './GlobalState';
-import axios from 'axios';
+import { sendLog } from './api';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 
 export default function JoinTeamModal({ position, rotation, scale }) {
@@ -55,14 +55,7 @@ export default function JoinTeamModal({ position, rotation, scale }) {
       
     playSoundEffect('/sounds/effects/door-chime.mp3', audioVolume)
 
-    await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'joinTeam',
-        'team': joinTeam
-      }
-    })
+    await sendLog('buttonClick', { button: 'joinTeam', team: joinTeam })
   }
 
   async function handleJoinSubmit(e) {

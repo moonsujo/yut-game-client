@@ -3,7 +3,7 @@ import { useRef } from "react"
 import * as THREE from 'three';
 import layout from "../layout";
 import DiscordLogo from "../meshes/DiscordLogo";
-import axios from "axios";
+import { sendLog } from "../api";
 
 export default function DiscordButton({ rotation, position, device='landscapeDesktop' }) {
 
@@ -30,13 +30,7 @@ export default function DiscordButton({ rotation, position, device='landscapeDes
     // open discord link
     window.open('https://discord.gg/RwbTfezXu7', "_blank", "noreferrer");
 
-    await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'restartGame'
-      }
-    })
+    await sendLog('buttonClick', { button: 'discord' })
   }
 
   return <group name='discord-button' position={position} rotation={rotation}>

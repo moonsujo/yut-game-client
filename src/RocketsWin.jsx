@@ -14,7 +14,7 @@ import { useParams } from 'wouter';
 import { useFireworksShader } from './shader/fireworks/FireworksShader';
 import GameCamera from './GameCamera';
 import layout from './layout';
-import axios from 'axios';
+import { sendLog } from './api';
 
 export default function RocketsWin() {
 
@@ -81,14 +81,7 @@ export default function RocketsWin() {
     e.stopPropagation()
     socket.emit('reset', { roomId: params.id.toUpperCase() })
 
-    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'restartGame'
-      }
-    })
-    console.log('[RestartGame][RocketsWin] post log response', response)
+    await sendLog('buttonClick', { button: 'restartGame' })
   }
 
   return <group>

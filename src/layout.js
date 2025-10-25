@@ -1937,11 +1937,11 @@ export default {
         scale: 2
       },
       pageVisits: {
-        position: [-13.9, 0, 5],
+        position: [-13.9, 0, 6],
         rotation: [-Math.PI/2, 0, 0],
       },
       gamesPlayed: {
-        position: [-11, 0, 5],
+        position: [-11, 0, 6],
         rotation: [-Math.PI/2, 0, 0],
       },
       pieces: {

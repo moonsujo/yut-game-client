@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - echo "Building for branch $AWS_BRANCH"
+        - cp .env.production .env
+        - '[ "$AWS_BRANCH" = "dev" ] && cp .env.dev .env || true'
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*

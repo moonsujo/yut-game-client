@@ -1,32 +1,37 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState, useMemo } from 'react';
+import { queryLogs } from '../api';
 
 export default function useQueryLogs({ eventName, payload }) {
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(false)
-
   
+  // Stringify payload to avoid re-running on object reference changes
+  const payloadString = useMemo(() => JSON.stringify(payload), [payload]);
+
   useEffect(() => {
-    const queryLogs = async () => {
+    const fetchLogs = async () => {
+      // Skip querying on localhost to avoid API errors
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocalhost) {
+        console.log('[useQueryLogs] Skipped on localhost');
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true)
       const now = new Date();
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-      axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/queryLogs', {
-        from: weekAgo,
-        to: now,
-        eventName,
-        payload
-      }).then((response) => {
+      
+      const response = await queryLogs(weekAgo, now, eventName, JSON.parse(payloadString));
+      
+      if (response && response.data && response.data.results) {
         setLogs(response.data.results);
-        setLoading(false);
-      }).catch((err) => {
-        console.log('[useQueryLogs] error', err)
-      })
+      }
+      setLoading(false);
     }
 
-    queryLogs()
-  }, [])
+    fetchLogs()
+  }, [eventName, payloadString])
 
   return [logs, loading]
 }
-

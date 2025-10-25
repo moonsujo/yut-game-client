@@ -18,14 +18,13 @@ import useResponsiveSetting from './hooks/useResponsiveSetting';
 import MeteorsRealShader from './shader/meteorsReal/MeteorsRealShader';
 import YootDisplay from './YootDisplay';
 import DisconnectModal from './DisconnectModal';
-import axios from 'axios';
 import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
 import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
-import About from './About';
+import { sendLog } from './api';
 
 export default function Home2() {
 
@@ -40,16 +39,7 @@ export default function Home2() {
   const { loopMusic } = useMusicPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
   useEffect(() => {
-    async function log() {
-      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'pageView',
-        timestamp: new Date(),
-        payload: {
-          'page': 'home'
-        }
-      })
-    }
-    log()
+    sendLog('pageView', { page: 'home' });
   }, [])
   
   // games played, page visits, yut thrown
@@ -73,6 +63,7 @@ export default function Home2() {
         color='limegreen'
       >
         {`Visits: ${ numVisits ? numVisits : '' }`}
+        <meshStandardMaterial color='yellow'/>
       </Text3D>
     </group>
   }
@@ -96,6 +87,7 @@ export default function Home2() {
         color='limegreen'
       >
         {`Games Played: ${ numGamesPlayed ? numGamesPlayed : '' }`}
+        <meshStandardMaterial color='yellow'/>
       </Text3D>
     </group>
   }
@@ -183,12 +175,8 @@ export default function Home2() {
 
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
 
-      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'buttonClick',
-        timestamp: new Date(),
-        payload: {
-          'button': 'howToPlayHome',
-        }
+      await sendLog('buttonClick', {
+        button: 'howToPlayHome',
       })
     }
 
@@ -261,12 +249,8 @@ export default function Home2() {
       
       setBlueMoonBrightness(null)
 
-      await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'buttonClick',
-        timestamp: new Date(),
-        payload: {
-          'button': 'createGame'
-        }
+      await sendLog('buttonClick', {
+        button: 'createGame'
       })
     }
 
@@ -746,11 +730,11 @@ export default function Home2() {
       /> } */}
     </animated.group>
     <group name='stats'>
-      { device === 'landscape' && <PageVisits 
+      { device === 'landscapeDesktop' && <PageVisits 
         position={layout[device].title.pageVisits.position} 
         rotation={layout[device].title.pageVisits.rotation}
       /> }
-      { device === 'landscape' && <GamesPlayed 
+      { device === 'landscapeDesktop' && <GamesPlayed 
         position={layout[device].title.gamesPlayed.position} 
         rotation={layout[device].title.gamesPlayed.rotation}
       /> }

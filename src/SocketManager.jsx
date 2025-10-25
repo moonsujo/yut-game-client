@@ -67,16 +67,10 @@ import useStarRoll from "./shader/starRoll/StarRoll.jsx";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import useMeteorsShader from "./shader/meteors/useMeteorsShader.jsx";
-
-// const ENDPOINT = 'localhost:5000';
-
-// prod endpoint
-// const ENDPOINT = 'https://yoot-game-6c96a9884664.herokuapp.com/';
-// dev endpoint
-const ENDPOINT = 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/';
+import { SOCKET_ENDPOINT } from "./config/env.js";
 
 export const socket = io(
-  ENDPOINT, { 
+  SOCKET_ENDPOINT, { 
     query: {
       client: localStorage.getItem('yootGame')
     },

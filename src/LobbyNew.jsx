@@ -52,13 +52,13 @@ import Rocket from "./meshes/Rocket.jsx";
 import Ufo from "./meshes/Ufo.jsx";
 import { formatName } from "./helpers/helpers.js";
 import GameRules from "./GameRules.jsx";
-import axios from "axios";
 import Chatbox from "./Chatbox.jsx";
 import Settings from "./Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import SeatStar from "./stars/SeatStar.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import YouStars from "./YouStars.jsx";
+import { sendLog } from './api';
 import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
 
 export default function LobbyNew() {
@@ -76,17 +76,7 @@ export default function LobbyNew() {
   }, [])
 
   useEffect(() => {
-    async function log() {
-      const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-        eventName: 'pageView',
-        timestamp: new Date(),
-        payload: {
-          'page': 'lobby'
-        }
-      })
-      console.log('[Lobby] post log response', response)
-    }
-    log()
+    sendLog('pageView', { page: 'lobby' });
   }, [])
 
   function PlayersParty({ position=[0,0,0], scale=0.7 }) {
@@ -1148,15 +1138,9 @@ export default function LobbyNew() {
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'random' })
         
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'addAIEZ'
-            }
+          await sendLog('buttonClick', {
+            button: 'addAIEZ'
           })
-
-
         }
     
         return <group position={position} rotation={rotation} scale={scale}>
@@ -1213,13 +1197,7 @@ export default function LobbyNew() {
           // must be host
           socket.emit('addAI', { roomId: params.id.toUpperCase(), clientId: client._id, team: seatChosen[0], level: 'smart' })
         
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'addAISmart'
-            }
-          })
+          await sendLog('buttonClick', { button: 'addAISmart' })
           
           playSoundEffect('/sounds/effects/add-ai-player.mp3', audioVolume)
         }
@@ -1389,13 +1367,7 @@ export default function LobbyNew() {
           setPressed(true)
           playSoundEffect('/sounds/effects/set-dul-hana.mp3', audioVolume)
 
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'startGame'
-            }
-          })
+          await sendLog('buttonClick', { button: 'startGame' })
 
           // Set value so the moon can respond
           // 3
@@ -2179,13 +2151,7 @@ export default function LobbyNew() {
               url: window.location.href,
             })
 
-            await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-              eventName: 'buttonClick',
-              timestamp: new Date(),
-              payload: {
-                'button': 'shareLobby'
-              }
-            })
+            await sendLog('buttonClick', { button: 'shareLobby' })
           } catch (err) {
             console.error('Error sharing:', err)
           }
@@ -2271,13 +2237,7 @@ export default function LobbyNew() {
           // audio.volume = 1;
           // audio.play();
 
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'startGame'
-            }
-          })
+          await sendLog('buttonClick', { button: 'startGame' })
         }
       }
       return <group name='start-game-button' position={position}>

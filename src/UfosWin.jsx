@@ -20,7 +20,7 @@ import { useBeamDustShader } from './shader/beamDust/BeamDustShader';
 import { generateRandomNumberInRange } from './helpers/helpers';
 import layout from './layout';
 import GameCamera from './GameCamera';
-import axios from 'axios';
+import { sendLog } from './api';
 
 export default function UfosWin({}) {
 
@@ -130,14 +130,7 @@ export default function UfosWin({}) {
     e.stopPropagation()
 
     socket.emit('reset', { roomId: params.id.toUpperCase() })
-    const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'restartGame'
-      }
-    })
-    console.log('[RestartGame][RocketsWin] post log response', response)
+    await sendLog('buttonClick', { button: 'restartGame' })
   }
 
   const textSize = 0.8

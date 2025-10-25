@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { useParams } from "wouter";
 import { clientAtom } from "../GlobalState";
 import { socket } from "../SocketManager";
-import axios from "axios";
+import { sendLog } from "../api";
 import layout from "../layout";
 
 export default function PlayAgainButton({ rotation, position, device='landscapeDesktop', preview=false }) {
@@ -31,13 +31,7 @@ export default function PlayAgainButton({ rotation, position, device='landscapeD
 
     if (preview) return
     socket.emit('reset', { roomId: params.id.toUpperCase(), clientId: client._id })
-    await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'restartGame'
-      }
-    })
+    await sendLog('buttonClick', { button: 'restartGame' })
   }
 
   return <group name='play-again-button' rotation={rotation} position={position}>

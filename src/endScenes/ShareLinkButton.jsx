@@ -3,7 +3,7 @@ import { useRef } from "react"
 import * as THREE from 'three'
 import { animated, useSpring } from "@react-spring/three"
 import { copyURLToClipboard } from "../helpers/helpers"
-import axios from 'axios'
+import { sendLog } from '../api'
 import layout from "../layout"
 
 export default function ShareLinkButton({ rotation, position, device='landscapeDesktop' }) {
@@ -39,14 +39,7 @@ export default function ShareLinkButton({ rotation, position, device='landscapeD
             url: window.location.href,
           })
 
-          const response = await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'shareLobby'
-            }
-          })
-          console.log('[ShareThisLobby] post log response', response)
+          await sendLog('buttonClick', { button: 'shareLobby' })
         } catch (err) {
           console.error('Error sharing:', err)
         }
@@ -73,15 +66,9 @@ export default function ShareLinkButton({ rotation, position, device='landscapeD
           }
         ]
       })
+      
+      await sendLog('buttonClick', { button: 'shareLink' })
     }
-
-    await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-      eventName: 'buttonClick',
-      timestamp: new Date(),
-      payload: {
-        'button': 'shareLink'
-      }
-    })
   }
 
   return <group name='share-link-button' rotation={rotation} position={position}>

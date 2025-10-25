@@ -107,7 +107,16 @@ export default function MeteorsRealShader({
     }
 
     // falling meteor background
-    useEffect(() => {       
+    useEffect(() => {
+        let isVisible = !document.hidden;
+        
+        // Listen for visibility changes
+        const handleVisibilityChange = () => {
+            isVisible = !document.hidden;
+        };
+        
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        
         const interval = setInterval(() => {
             const count = Math.round(400 + Math.random() * 1000);
             const positionParticle = new THREE.Vector3(
@@ -120,7 +129,9 @@ export default function MeteorsRealShader({
             const speedX = speedXBase + (Math.random() - 0.5) * speedXRandom;
             const speedY = speedYBase + (Math.random() - 0.5) * speedYRandom;
             const duration = durationBase + (Math.random() - 0.5) * durationRandom;
-            if (document.hasFocus()) {
+            
+            // Only create meteors if the page is visible
+            if (isVisible && !document.hidden) {
                 CreateMeteorReal({
                     count,
                     position: positionParticle,
@@ -133,8 +144,10 @@ export default function MeteorsRealShader({
                 })
             }
         }, intervalMs);
+        
         return (() => {
             clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
         })
     }, [])
 }

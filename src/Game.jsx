@@ -76,6 +76,7 @@ import Chatbox from "./Chatbox.jsx";
 import ChatboxScroll from "./Chatbox.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
+import { sendLog } from './api';
 
 // There should be no state
 export default function Game() {
@@ -333,25 +334,15 @@ export default function Game() {
         e.stopPropagation();
         if (showRulebook) {
           setShowRulebook(false)
-          
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'howToPlayGame',
-              'action': 'close'
-            }
+          await sendLog('buttonClick', {
+            button: 'howToPlayGame',
+            action: 'close'
           })
         } else {
           setShowRulebook(true)
-          
-          await axios.post('https://yqpd9l2hjh.execute-api.us-west-2.amazonaws.com/dev/sendLog', {
-            eventName: 'buttonClick',
-            timestamp: new Date(),
-            payload: {
-              'button': 'howToPlayGame',
-              'action': 'open'
-            }
+          await sendLog('buttonClick', {
+            button: 'howToPlayGame',
+            action: 'open'
           })
         }
       }
