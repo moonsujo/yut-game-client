@@ -730,7 +730,7 @@ export default function Home2() {
         scale={layout[device].title.about.scale}
       /> } */}
     </animated.group>
-    { IS_DEV && <group name='stats'>
+    { IS_DEV && display === 'title' && <group name='stats'>
       { device === 'landscapeDesktop' && <PageVisits 
         position={layout[device].title.pageVisits.position} 
         rotation={layout[device].title.pageVisits.rotation}
