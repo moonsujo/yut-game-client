@@ -1435,7 +1435,7 @@ export default function Showroom(props) {
             <PauseGameHostSection scale={0.8} position={[0, 0, 3]} rotation={[0, Math.PI/2, 0]}/>
         </group>
     }
-    function PlayAnimationButton({ position, scale, onPointerEnter, onPointerLeave, onPointerDown, hover }) {
+    function PlayAnimationButton({ position, scale, onPointerEnter, onPointerLeave, onPointerDown=() => {}, hover }) {
         return <group position={position} scale={scale}>
             <mesh>
                 <boxGeometry args={[1.2, 0.03, 0.75]}/>
