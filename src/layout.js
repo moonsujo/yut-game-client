@@ -2949,6 +2949,10 @@ export default {
         moAlertScale: 0.7,
       },
       catch: {
+        title: {
+          position: [-15, 0, -4.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
         rocketsCatchUfoPosition: [-9.5, 0, 0],
         rocketsCatchUfoScale: 1,
         rocketsCatchUfoButtonPosition: [0, 0, 3.5],
@@ -2980,12 +2984,6 @@ export default {
       yutOutcomes: {
         title: {
           position: [-15, 0, -5.5],
-          rotation: [-Math.PI/2, 0, 0]
-        },
-      },
-      catch: {
-        title: {
-          position: [-15, 0, -4.5],
           rotation: [-Math.PI/2, 0, 0]
         },
       },
