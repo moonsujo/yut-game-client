@@ -58,7 +58,7 @@ import layout from "../layout.js";
 import { generateRandomNumberInRange } from "../helpers/helpers.js";
 
 export default function Showroom(props) {
-    const [display, setDisplay] = useState('yutOutcomes')
+    const [display, setDisplay] = useState('endScenes')
     const setHomeDisplay = props.setHomeDisplay
     const [RollStar] = useStarRoll();
     const [CreateMeteor] = useMeteorsShader();
@@ -544,7 +544,7 @@ export default function Showroom(props) {
             return <group name='effect-button' {...props} ref={button}>
                 <mesh>
                     <boxGeometry args={[0.9, 0.03, 0.55]}/>
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    <meshStandardMaterial color={ hover ? 'green': 'green' }/>
                 </mesh>
                 <mesh>
                     <boxGeometry args={[0.85, 0.04, 0.5]}/>
@@ -561,7 +561,7 @@ export default function Showroom(props) {
                 </mesh>
                 <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
                     <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    <meshStandardMaterial color={ hover ? 'green': 'green' }/>
                 </mesh>
             </group>
         }
@@ -692,7 +692,7 @@ export default function Showroom(props) {
             return <group name='effect-button' ref={button} {...props}>
                 <mesh>
                     <boxGeometry args={[0.9, 0.03, 0.55]}/>
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    <meshStandardMaterial color={ hover ? 'green': 'green' }/>
                 </mesh>
                 <mesh>
                     <boxGeometry args={[0.85, 0.04, 0.5]}/>
@@ -709,21 +709,21 @@ export default function Showroom(props) {
                 </mesh>
                 <mesh rotation={[0, Math.PI*2/4, 0]} scale={[0.2, 0.01, 0.2]} position={[0, 0.05, 0]}>
                     <cylinderGeometry args={[1, 1, 1, 3, 1]} />
-                    <meshStandardMaterial color={ hover ? 'green': 'yellow' }/>
+                    <meshStandardMaterial color={ hover ? 'green': 'green' }/>
                 </mesh>
             </group>
         }
         return <group {...props}>
-            { device === 'landscapeDesktop' && <Text3D
+            <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
-                rotation={[-Math.PI/2, 0, 0]}
-                position={[-15, 0, -5.5]}
+                position={layout[device].showroom.yutOutcomes.title.position}
+                rotation={layout[device].showroom.yutOutcomes.title.rotation}
                 size={0.4}
                 height={0.01}
             >
                 YUT OUTCOME ALERTS
                 <meshStandardMaterial color='yellow'/>
-            </Text3D> }
+            </Text3D>
             <group name='components' position={[6, 0, 0]}>
                 { device === 'landscapeDesktop' && <group name='do-alert' position={[-20, 0, -3.5]} scale={0.9}>
                     <Text3D
@@ -1044,16 +1044,16 @@ export default function Showroom(props) {
         }
 
         return <group {...props}>
-            { device === 'landscapeDesktop' && <Text3D
+            <Text3D
                 font="fonts/Luckiest Guy_Regular.json"
-                rotation={[-Math.PI/2, 0, 0]}
-                position={[-15, 0, -4.5]}
+                position={layout[device].showroom.catch.title.position}
+                rotation={layout[device].showroom.catch.title.rotation}
                 size={0.4}
                 height={0.01}
             >
                 CATCH ALERTS
                 <meshStandardMaterial color='yellow'/>
-            </Text3D> }
+            </Text3D>
             <RocketsCatchUfo 
             position={layout[device].showroom.catch.rocketsCatchUfoPosition}
             scale={layout[device].showroom.catch.rocketsCatchUfoScale}
@@ -1777,6 +1777,16 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
+            <Text3D
+                font="fonts/Luckiest Guy_Regular.json"
+                position={layout[device].showroom.score.title.position}
+                rotation={layout[device].showroom.score.title.rotation}
+                size={0.4}
+                height={0.01}
+            >
+                SCORE ANIMATION
+                <meshStandardMaterial color='yellow'/>
+            </Text3D>
             <group name='board-and-animation' 
             scale={layout[device].showroom.score.board.scale} 
             position={layout[device].showroom.score.board.position}>
@@ -1794,16 +1804,6 @@ export default function Showroom(props) {
                     <ScoreAlert scoringTeam={1}/>
                 </animated.group>
             </group>
-            { device === 'landscapeDesktop' && <Text3D
-                font="fonts/Luckiest Guy_Regular.json"
-                position={[-3, 0.02, -4.5]}
-                rotation={[-Math.PI/2, 0, 0]}
-                size={0.4}
-                height={0.01}
-            >
-                SCORE ANIMATION
-                <meshStandardMaterial color='yellow'/>
-            </Text3D> }
             <RocketButton 
             scale={layout[device].showroom.score.rocketButton.scale} 
             position={layout[device].showroom.score.rocketButton.position}/>
@@ -1921,7 +1921,7 @@ export default function Showroom(props) {
                 setIntervalFireworksId(newIntervalFireworksId)
             }
             return <group name='rockets-win' position={position} scale={scale}>
-                <group name='picture' position={[0, 0, 0.5]}>
+                <group name='picture'>
                     <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
                     <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
                     <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
@@ -2240,16 +2240,16 @@ export default function Showroom(props) {
             </group>
         }
         return <group {...props}>
-            { device === 'landscapeDesktop' && <Text3D name='title'
+            <Text3D name='title'
                 font="fonts/Luckiest Guy_Regular.json"
-                position={[-15.1, 0.04, -4.5]}
-                rotation={[-Math.PI/2, 0, 0]}
+                position={layout[device].showroom.endScenes.title.position}
+                rotation={layout[device].showroom.endScenes.title.rotation}
                 size={0.4}
                 height={0.01}
             >
                 END SCENES
                 <meshStandardMaterial color='yellow'/>
-            </Text3D> }
+            </Text3D>
             <RocketsWin 
             position={layout[device].showroom.endScenes.rocketsWin.position} 
             scale={layout[device].showroom.endScenes.rocketsWin.scale}/>
@@ -2275,11 +2275,11 @@ export default function Showroom(props) {
     
     return <group {...props}>
         { device === 'landscapeDesktop' && <animated.group name='tab' position={tabPositionLandscapeDesktop}>
-            <YutOutcomesButton position={[7.2, 0.02, -4.5]}/>
-            <GamePhasesButton position={[7.05, 0.02, -3.8]}/>
-            <CatchButton position={[6.35, 0.02, -3.1]}/>
-            <ScoreButton position={[6.35, 0.02, -2.4]}/>
-            <EndScenesButton position={[6.85, 0.02, -1.7]}/>
+            <EndScenesButton position={[6.85, 0.02, -4.5]}/>
+            <CatchButton position={[6.35, 0.02, -3.8]}/>
+            <ScoreButton position={[6.35, 0.02, -3.1]}/>
+            <GamePhasesButton position={[7.05, 0.02, -2.4]}/>
+            <YutOutcomesButton position={[7.2, 0.02, -1.7]}/>
             <BackButton position={[6.05, 0.02, -1.0]}/>
         </animated.group> }
         { device === 'portrait' && <animated.group name='tab' position={tabPositionPortrait}>

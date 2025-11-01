@@ -961,6 +961,10 @@ export default {
         moAlertScale: 0.7,
       },
       catch: {
+        title: {
+          position: [-3, 0, -5.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
         rocketsCatchUfoPosition: [-0.7, 0, -2.8],
         rocketsCatchUfoScale: 0.7,
         rocketsCatchUfoButtonPosition: [4.5, 0, 0],
@@ -971,6 +975,10 @@ export default {
         ufosCatchRocketButtonScale: 1.3
       },
       score: {
+        title: {
+          position: [-3, 0, -5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
         board: {
           position: [-0.5, 0, -0.7],
           scale: 0.6
@@ -985,7 +993,18 @@ export default {
         },
         fireworksPosition: [0, 0, 1]
       },
+      yutOutcomes: {
+        title: {
+          position: [-2, 0.04, -5.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
+      },
+      // turn buttons yellow in portrait
       endScenes: {
+        title: {
+          position: [-3, 0.04, -5.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
         rocketsWin: {
           position: [-1.5, 0, -2.5],
           scale: 1,
@@ -2940,6 +2959,10 @@ export default {
         ufosCatchRocketButtonScale: 1
       },
       score: {
+        title: {
+          position: [-3, 0, -5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
         board: {
           position: [-10, 0, -0.5],
           scale: 0.9
@@ -2954,38 +2977,54 @@ export default {
         },
         fireworksPosition: [-10, 0, 1]
       },
-      endScenes: {
-        rocketsWin: {
-          position: [-12.5, 0, -0.5],
-          scale: 1.4,
-          playAnimationButton: {
-            position: [0,1,3],
-            scale: 0.8
-          }
+      yutOutcomes: {
+        title: {
+          position: [-15, 0, -5.5],
+          rotation: [-Math.PI/2, 0, 0]
         },
-        ufosWin: {
-          position: [-7, 2, 1.4],
+      },
+      catch: {
+        title: {
+          position: [-15, 0, -4.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
+      },
+      endScenes: {
+        title: {
+          position: [-15.1, 0.04, -4.5],
+          rotation: [-Math.PI/2, 0, 0]
+        },
+        rocketsWin: {
+          position: [-12.5, 2, 2.5],
           scale: 1.3,
           playAnimationButton: {
-            position: [2, 0, 1.5],
-            scale: 0.8
+            position: [0, 0, -3],
+            scale: 0.6
+          },
+        },
+        ufosWin: {
+          position: [-7, 2, 2.5],
+          scale: 1.3,
+          playAnimationButton: {
+            position: [0, 0, -3],
+            scale: 0.6
           },
           beamDustPosition: [-7, 0, 2.2]
         },
         rocketsLose: {
-          position: [-0.9, 0.5, 0],
+          position: [-1.8, 2, 1.5],
           scale: 1.3,
           playAnimationButton: {
-            position: [0,0,1.5],
-            scale: 0.7
+            position: [0, 0, -2.235],
+            scale: 0.6
           }
         },
         ufosLose: {
-          position: [2.7, 0.5, 0.5],
+          position: [2.4, 2, 1.5],
           scale: 1.3,
           playAnimationButton: {
-            position: [0,0,1.5],
-            scale: 0.7
+            position: [0, 0, -2.235],
+            scale: 0.6
           }
         }
       },
