@@ -14,6 +14,7 @@ import useShakeDetector from './hooks/useShakeDetector';
 import axios from 'axios';
 import YutBonus from './YutBonus';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
+import { canThrowYut } from '../../gameLogic/rules';
 
 export default function YootButtonNew({ position, rotation, scale }) {
   const { nodes } = useGLTF("/models/rounded-rectangle.glb");
@@ -26,13 +27,12 @@ export default function YootButtonNew({ position, rotation, scale }) {
   const paused = useAtomValue(pauseGameAtom)
   const client = useAtomValue(clientAtom);
   const turn = useAtomValue(turnAtom);
-  const throwCount = useAtomValue(throwCountAtom)
-  const hasThrow = client.team === turn.team && throwCount > 0
+  const throwCount = useAtomValue(throwCountAtom);
   const { playSoundEffect } = useSoundEffectsPlayer()
   const audioVolume = useAtomValue(audioVolumeAtom)
 
   const animationPlaying = useAnimationPlaying()
-  const enabled = !animationPlaying && hasTurn && hasThrow
+  const enabled = !animationPlaying && canThrowYut(hasTurn, throwCount)
 
   const scaleOuter = [1.4, -0.079, 1]
   const scaleInner = [scaleOuter[0] - 0.1, scaleOuter[1]+0.2, scaleOuter[2]-0.1]
