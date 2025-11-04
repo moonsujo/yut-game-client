@@ -16,7 +16,7 @@ export default function About(props) {
         font="/fonts/Luckiest Guy_Regular.json"
         position={[0,0,0]}
         rotation={[-Math.PI/2,0,0]}
-        size={layout[props.device].about.mainDescription.size}
+        size={layout[props.device].about.title.size}
         height={0.01}
     >
       {`ABOUT THE APP`}
@@ -26,41 +26,41 @@ export default function About(props) {
         font="/fonts/Luckiest Guy_Regular.json"
         position={[0, 0, 1]}
         rotation={[-Math.PI/2,0,0]}
-        size={layout[props.device].about.mainDescription.size}
+        size={layout[props.device].about.description.size}
         height={0.01}
     >
-      {`I USED TO PLAY THIS GAME WITH MY FAMILY\nWHEN I WAS GROWING UP IN KOREA.`}
-      <meshStandardMaterial color='yellow'/>
+      {`YUTNORI IS A GAME PLAYED WITH FAMILIES\nDURING THE HOLIDAYS IN KOREA.`}
+      <meshStandardMaterial color='limegreen'/>
     </Text3D>
     <Text3D 
         font="/fonts/Luckiest Guy_Regular.json"
         position={[0, 0, 4]}
         rotation={[-Math.PI/2,0,0]}
-        size={layout[props.device].about.mainDescription.size}
+        size={layout[props.device].about.description.size}
         height={0.01}
     >
-      {`I WANTED TO CREATE A VIRTUAL SPACE\nWHERE PEOPLE CAN ENJOY THIS GAME\nAND LEARN ABOUT ITS CULTURE.`}
-      <meshStandardMaterial color='yellow'/>
+      {`I CREATED A VIRTUAL SPACE WHERE\nPEOPLE CAN ENJOY THIS GAME\nTO PRESERVE IT.`}
+      <meshStandardMaterial color='limegreen'/>
     </Text3D>
     <Text3D 
         font="/fonts/Luckiest Guy_Regular.json"
         position={[0, 0, 8.5]}
         rotation={[-Math.PI/2,0,0]}
-        size={layout[props.device].about.mainDescription.size}
+        size={layout[props.device].about.description.size}
         height={0.01}
     >
-      {`I DESIGNED THE UI AND PROGRAMMED THE GAME.\nHOPE YOU ENJOY IT!`}
-      <meshStandardMaterial color='yellow'/>
+      {`I DESIGNED THE UI AND PROGRAMMED\nTHE GAME WITH THE HELP OF ARTISTS\nFROM AROUND THE WORLD. HOPE YOU ENJOY IT!`}
+      <meshStandardMaterial color='limegreen'/>
     </Text3D>
     <Text3D 
       font="/fonts/Luckiest Guy_Regular.json"
       position={[0, 0, 15]}
       rotation={[-Math.PI/2,0,0]}
-      size={layout[props.device].about.mainDescription.size}
+      size={layout[props.device].about.description.size}
       height={0.01}
     >
       {`beatrhino@gmail.com\nbeat rhino studio © 2025`}
-      <meshStandardMaterial color='yellow'/>
+      <meshStandardMaterial color='limegreen'/>
     </Text3D>
   </group>
 }

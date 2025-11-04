@@ -3,7 +3,6 @@ import Experience from './Experience';
 import { Canvas } from '@react-three/fiber';
 import { SocketManager } from './SocketManager';
 import { Route } from "wouter"
-import Home2Experience from './Home2Experience';
 import { Loader } from '@react-three/drei';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import * as THREE from 'three';
@@ -11,7 +10,7 @@ import Alert from './Alert';
 import AssetLoader from './AssetLoader';
 import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
-import MilkyWayNew from './shader/milkyway/MilkyWayNew';
+import Home2 from './Home2';
 
 export default function App () {
 
@@ -41,7 +40,13 @@ export default function App () {
         <SocketManager/>
         <AssetLoader/>
         <Route path="/">
-          <Home2Experience/>
+          <Home2/>
+        </Route>
+        <Route path="/how-to-play">
+          <Home2 showRulebookDefault={true}/>
+        </Route>
+        <Route path="/about">
+          <Home2 showAboutDefault={true}/>
         </Route>
         <Route path="/:id">
           <Experience/>

@@ -2015,9 +2015,12 @@ export default {
       position: [-3, 0, -4],
       rotation: [-Math.PI/2,0,0],
       scale: 0.6,
-      mainDescription: {
-        size: 0.6,
+      title: {
+        size: 0.7,
         line0Position: [-1,0.5,0],
+      },
+      description: {
+        size: 0.6
       },
       board: {
         position: [5.5, -7, 0],

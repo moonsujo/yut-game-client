@@ -14,7 +14,7 @@ import useShakeDetector from './hooks/useShakeDetector';
 import axios from 'axios';
 import YutBonus from './YutBonus';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
-import { canThrowYut } from '../../gameLogic/rules';
+import { canThrowYut } from '../gameLogic/rules';
 
 export default function YootButtonNew({ position, rotation, scale }) {
   const { nodes } = useGLTF("/models/rounded-rectangle.glb");

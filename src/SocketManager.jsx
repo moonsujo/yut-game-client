@@ -529,6 +529,8 @@ export const SocketManager = () => {
         }
       } else if (gamePhaseUpdate === 'game') {
         let yootOutcomeAlertName = `yootOutcome${yootOutcome}`
+        // yootOutcome === -1 doesn't need to check for backdoLaunch rule
+        // because turn must have passed with backdoLaunch off if -1 is thrown
         if ((yootOutcome === 0 || yootOutcome === -1) && teams[turnPrev.team].throws === 0 && movesIsEmpty(teams[turnPrev.team].moves)) {
           let alerts = [yootOutcomeAlertName] // add 'no available moves' alert
           teams[turnUpdate.team].players.length > 0 && alerts.push('turn')

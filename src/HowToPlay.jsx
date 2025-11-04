@@ -1931,6 +1931,16 @@ export default function HowToPlay({
       </group>
     } else {
       return <group name='tabs' position={position} scale={scale}>
+        <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          rotation={[-Math.PI/2, 0, 0]}
+          size={0.4}
+          height={0.01}
+          position={[-0.1, 0.5, -0.5]}
+        >
+          CONTENTS
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>
         <group name='tab-0' position={[0,0,0]} scale={0.8}>
           <mesh position={[1.55, -0.1, -0.2]}>
             <boxGeometry args={[3.4, 0.05, 0.75]}/>
@@ -2076,7 +2086,7 @@ export default function HowToPlay({
             <meshStandardMaterial color={piggybackHover || page === 4 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-5' position={[0,0,4]} scale={0.8}>
+        <group name='tab-5' position={[-0.025,0,4]} scale={0.8}>
           <mesh position={[1.1, -0.1, -0.2]}>
             <boxGeometry args={[2.45, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
@@ -3036,7 +3046,7 @@ export default function HowToPlay({
   const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>, <ShortcutPage/>]
 
   return <group position={position} rotation={rotation} scale={scale}>
-    {pages[page]}
+    { pages[page] }
     { device === 'portrait' && <Pagination 
       position={layout[device].howToPlay.pagination.position}
       scale={layout[device].howToPlay.pagination.scale}

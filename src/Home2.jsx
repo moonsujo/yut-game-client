@@ -26,12 +26,15 @@ import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 import { sendLog } from './api';
 import { IS_DEV } from './config/env';
+import About from './About';
+import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
+import Constellation from './shader/constellation/Constellation';
 
-export default function Home2() {
+export default function Home2({ showRulebookDefault = false, showAboutDefault = false }) {
 
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
-  const [display, setDisplay] = useState('title')
+  const [display, setDisplay] = useState(showRulebookDefault ? 'howToPlay' : showAboutDefault ? 'about' : 'title')
   const client = useAtomValue(clientAtom)
   const connectedToServer = useAtomValue(connectedToServerAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
@@ -184,7 +187,7 @@ export default function Home2() {
     return <group position={position} rotation={rotation} scale={scale}>
       <mesh>
         <boxGeometry args={[2.8, 0.03, 0.55]}/>
-        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+        <meshStandardMaterial color={ hover || display === 'howToPlay' ? 'green': [0.8, 0.8, 0]}/>
       </mesh>
       <mesh>
         <boxGeometry args={[2.75, 0.04, 0.5]}/>
@@ -207,7 +210,7 @@ export default function Home2() {
         height={0.01}
       >
         How To Play
-        <meshStandardMaterial color={ hover ? 'green': [0.8, 0.8, 0]}/>
+        <meshStandardMaterial color={ hover || display === 'howToPlay' ? 'green': [0.8, 0.8, 0]}/>
       </Text3D>
     </group>
   }
@@ -640,7 +643,7 @@ export default function Home2() {
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale, showroomButtonPortraitScale } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale, showroomButtonPortraitScale, aboutScale } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
@@ -724,11 +727,11 @@ export default function Home2() {
         rotation={layout[device].title.showroom.rotation}
         scale={layout[device].title.showroom.scale}
       /></animated.group> }
-      {/* { device === 'landscapeDesktop' && <AboutButtonLandscape
+      { device === 'landscapeDesktop' && <AboutButtonLandscape
         position={layout[device].title.about.position} 
         rotation={layout[device].title.about.rotation}
         scale={layout[device].title.about.scale}
-      /> } */}
+      /> }
     </animated.group>
     { IS_DEV && display === 'title' && <group name='stats'>
       { device === 'landscapeDesktop' && <PageVisits 
@@ -759,13 +762,13 @@ export default function Home2() {
           tabOrientation='right'
         />
       </animated.group> }
-      {/* { display === 'about' && <animated.group scale={aboutScale}>
+      { display === 'about' && <animated.group scale={aboutScale}>
         <About
           device={device}
           position={[-4,0,-4.5]}
           scale={layout[device].about.scale}
         />
-      </animated.group> } */}
+      </animated.group> }
       <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
@@ -792,5 +795,13 @@ export default function Home2() {
         colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
       />
     </animated.group>
+    <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
+    <StarsPatterns2Shader count={15000} texturePath={'/textures/particles/6.png'} size={2}/>
+    <Constellation omitFactor={2} position={[-15.5,-1,-6.5]} rotation={[-Math.PI/2, 0, Math.PI/16]} scale={1.3} modelPath={'/models/star.glb'}/>
+    <Constellation omitFactor={4} position={[-8.7,-1,-7.1]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={0.9} modelPath={'/models/star.glb'}/>
+    <Constellation omitFactor={2} position={[-15.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/6]} scale={1.2} modelPath={'/models/star.glb'}/>
+    <Constellation omitFactor={2} position={[-8.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>
+    {/* top right */}
+    <Constellation omitFactor={2} position={[4.4,-1,-6.3]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>
   </>
 }
