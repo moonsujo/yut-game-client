@@ -8,7 +8,7 @@ import { roundNum, pieceSelected, caughtCheck, startCheck, calculateCatchDelay }
 import layout from './layout';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useCatchPosition from './hooks/useCatchPosition';
-import { hasValidMoveBoard } from '../gameLogic/rules';
+import { hasValidMoveBoard } from './gameLogic/rules';
 
 export default function PiecesOnBoard({ boardOffset }) {
     const teams = useAtomValue(teamsAtom)

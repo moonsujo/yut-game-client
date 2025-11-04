@@ -24,6 +24,22 @@ export function canThrowYut(hasTurn, throwCount) {
 
 // pregame win check
 
+
+/**
+ * 
+ * @param {number} tile: the location of the token on the board
+ * @returns {string} 'home', 'onBoard', or 'scored' depending on tile value
+ */
+export function tileType(tile) {
+  if (tile === -1) {
+    return 'home'
+  } else if (tile === 29) {
+    return 'scored'
+  } else {
+    return 'onBoard'
+  }
+}
+
 /**
  * 
  * @param {Array<Object>} pieces: the pieces of the team

@@ -29,7 +29,7 @@ export default function About(props) {
         size={layout[props.device].about.description.size}
         height={0.01}
     >
-      {`YUTNORI IS A GAME PLAYED WITH FAMILIES\nDURING THE HOLIDAYS IN KOREA.`}
+      {`YUTNORI IS A GAME I PLAYED WITH MY FAMILY\nDURING THE HOLIDAYS IN KOREA.`}
       <meshStandardMaterial color='limegreen'/>
     </Text3D>
     <Text3D 

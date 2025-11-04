@@ -1,3 +1,5 @@
+import { tileType } from "../gameLogic/rules";
+
 export function getCurrentPlayerSocketId (turn, teams) {
   if (teams[turn.team].players[turn.players[turn.team]] != undefined) {
     return teams[turn.team].players[turn.players[turn.team]].id
@@ -46,16 +48,6 @@ export function isMyTurn (turn, teams, socketId) {
     return true
   } else {
     return false
-  }
-}
-
-export function tileType(tile) {
-  if (tile === -1) {
-    return 'home'
-  } else if (tile === 29) {
-    return 'scored'
-  } else {
-    return 'onBoard'
   }
 }
 

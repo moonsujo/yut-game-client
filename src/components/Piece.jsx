@@ -7,7 +7,7 @@ import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
 import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom, showFinishMovesAtom, helperTilesAtom, audioVolumeAtom } from "../GlobalState.jsx";
 import { useParams } from "wouter";
-import { tileType } from "../helpers/helpers.js";
+import { tileType } from "../gameLogic/rules.js";
 import { animated } from "@react-spring/three";
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying.jsx";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer.jsx";

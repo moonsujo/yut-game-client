@@ -11,6 +11,7 @@ import AssetLoader from './AssetLoader';
 import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
 import Home2 from './Home2';
+import RulebookText from './RulebookText';
 
 export default function App () {
 
@@ -50,8 +51,6 @@ export default function App () {
         </Route>
         <Route path="/:id">
           <Experience/>
-          <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
-          <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/6.png'} size={2}/>
           <Alert position={[0,2,0.5]} rotation={[0,0,0]}/>
         </Route>
       </Suspense>
@@ -59,5 +58,6 @@ export default function App () {
       <MusicController/>
     </Canvas>
     <Loader/>
+    <RulebookText/>
   </>)
 }

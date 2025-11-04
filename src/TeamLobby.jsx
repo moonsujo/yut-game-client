@@ -3,7 +3,7 @@ import layout from './layout';
 import { useAtom, useAtomValue } from 'jotai';
 import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom } from './GlobalState';
 import { Text3D } from '@react-three/drei';
-import { formatName, tileType } from './helpers/helpers';
+import { formatName } from './helpers/helpers';
 import { MeshStandardMaterial } from 'three';
 import YootMesh from './meshes/YootMesh';
 import { useFrame } from '@react-three/fiber';

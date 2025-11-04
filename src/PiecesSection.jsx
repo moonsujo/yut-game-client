@@ -3,10 +3,10 @@ import { useAtom, useAtomValue } from 'jotai';
 import { backdoLaunchAtom, clientAtom, hasTurnAtom, selectionAtom, teamsAtom } from './GlobalState';
 import layout from './layout';
 import Piece from './components/Piece';
-import { pieceSelected, tileType } from './helpers/helpers';
+import { pieceSelected } from './helpers/helpers';
 import MeshColors from './MeshColors';
 import Star from './meshes/Star';
-import { hasValidMoveHome } from '../gameLogic/rules';
+import { hasValidMoveHome, tileType } from './gameLogic/rules';
 
 export default function PiecesSection({ 
   position=[0,0,0], 

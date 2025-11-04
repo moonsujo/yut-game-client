@@ -11,6 +11,7 @@ import RocketsLose from "./endScenes/RocketsLose.jsx";
 import UfosWin2New from "./endScenes/UfosWin2New.jsx";
 import UfosLose from "./endScenes/UfosLose.jsx";
 import LobbyNew from "./LobbyNew.jsx";
+import StarsPatterns2Shader from "./shader/starsPatterns2/StarsPatterns2Shader.jsx";
 
 export default function Experience() {
 
@@ -47,5 +48,7 @@ export default function Experience() {
     { gamePhase === 'finished' && client.team === 1 && winner === 0 && <UfosLose/> }
     { gamePhase === 'finished' && client.team === -1 && winner === 0 && <RocketsWin2/> }
     { gamePhase === 'finished' && client.team === -1 && winner === 1 && <UfosWin2New/> }
+    <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
+    <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/6.png'} size={2}/>
   </>
 }

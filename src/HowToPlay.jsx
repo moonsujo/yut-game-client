@@ -251,8 +251,18 @@ export default function HowToPlay({
     const [CreateFirework] = useFireworksShader();
 
     useEffect(() => {
+        let isVisible = !document.hidden;
+        
+        // Listen for visibility changes
+        const handleVisibilityChange = () => {
+            isVisible = !document.hidden;
+        };
+
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+
       // When 'welcome home!' displays
       const fireworkTimeout0 = setTimeout(() => {
+        if (document.hidden) return
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
@@ -272,6 +282,7 @@ export default function HowToPlay({
         CreateFirework({ count, position, size, radius, color });
       }, 4500) 
       const fireworkTimeout1 = setTimeout(() => {
+        if (document.hidden) return
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
@@ -292,6 +303,7 @@ export default function HowToPlay({
         CreateFirework({ count, position, size, radius, color });
       }, 4700) // When 'welcome home!' displays
       const fireworkTimeout2 = setTimeout(() => {
+        if (document.hidden) return
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
@@ -312,6 +324,7 @@ export default function HowToPlay({
         CreateFirework({ count, position, size, radius, color });
       }, 4900) // When 'welcome home!' displays
       const fireworkTimeout3 = setTimeout(() => {
+        if (document.hidden) return
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
@@ -332,6 +345,7 @@ export default function HowToPlay({
         CreateFirework({ count, position, size, radius, color });
       }, 5100) // When 'welcome home!' displays
       return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange)
         clearTimeout(fireworkTimeout0)
         clearTimeout(fireworkTimeout1)
         clearTimeout(fireworkTimeout2)
@@ -1622,6 +1636,7 @@ export default function HowToPlay({
     const [scoreHover, setScoreHover] = useState(false)
     const [readTheDiceHover, setReadTheDiceHover] = useState(false)
     const [shortcutHover, setShortcutHover] = useState(false)
+    const [bookletHover, setBookletHover] = useState(false)
 
     function handleOverviewClick() {
       setPage(0)
@@ -1722,6 +1737,20 @@ export default function HowToPlay({
       document.body.style.cursor = 'default'
       setShortcutHover(false)
     }
+    function handleBookletPointerEnter() {
+      document.body.style.cursor = 'pointer'
+      setBookletHover(true)
+    }
+    function handleBookletPointerLeave() {
+      document.body.style.cursor = 'default'
+      setBookletHover(false)
+    }
+    function handleBookletClick() {
+      setPage(7)
+      setBookletHover(false)
+      setTabClicked(true)
+      clearTimeout(pageTimeoutRef.current)
+    }
 
     if (orientation === 'bottom') {
       return <group name='tabs' position={position} scale={scale}>
@@ -1750,7 +1779,7 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            1. OVERVIEW
+            1. GOAL
             <meshStandardMaterial color={overviewHover || page === 0 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
@@ -1942,22 +1971,22 @@ export default function HowToPlay({
           <meshStandardMaterial color='yellow'/>
         </Text3D>
         <group name='tab-0' position={[0,0,0]} scale={0.8}>
-          <mesh position={[1.55, -0.1, -0.2]}>
-            <boxGeometry args={[3.4, 0.05, 0.75]}/>
+          <mesh position={[0.9, -0.1, -0.2]}>
+            <boxGeometry args={[2.1, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.55, -0.1, -0.2]}>
-            <boxGeometry args={[3.5, 0.04, 0.85]}/>
+          <mesh position={[0.9, -0.1, -0.2]}>
+            <boxGeometry args={[2.2, 0.04, 0.85]}/>
             <meshStandardMaterial color={overviewHover || page === 0 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
             name='tab-0-wrapper' 
-            position={[1.55, -0.1, -0.2]}
+            position={[0.9, -0.1, -0.2]}
             onClick={handleOverviewClick}
             onPointerEnter={handleOverviewPointerEnter}
             onPointerLeave={handleOverviewPointerLeave}
           >
-            <boxGeometry args={[3.5, 0.1, 0.85]}/>
+            <boxGeometry args={[2.2, 0.1, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -1966,7 +1995,7 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            1. OVERVIEW
+            1. GOAL
             <meshStandardMaterial color={overviewHover || page === 0 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
@@ -2142,6 +2171,35 @@ export default function HowToPlay({
           >
             7. SHORTCUT
             <meshStandardMaterial color={shortcutHover || page === 6 ? 'green' : 'yellow'}/>
+          </Text3D>
+        </group>
+        <group name='tab-7' position={[0,0,5.6]} scale={0.8}>
+          <mesh position={[1.1, -0.1, -0.2]}>
+            <boxGeometry args={[2.5, 0.05, 0.75]}/>
+            <meshStandardMaterial color='black'/>
+          </mesh>
+          <mesh position={[1.1, -0.1, -0.2]}>
+            <boxGeometry args={[2.6, 0.04, 0.85]}/>
+            <meshStandardMaterial color={bookletHover || page === 7 ? 'green' : 'yellow'}/>
+          </mesh>
+          <mesh 
+            name='tab-7-wrapper' 
+            position={[1.1, -0.1, -0.2]}
+            onClick={handleBookletClick}
+            onPointerEnter={handleBookletPointerEnter}
+            onPointerLeave={handleBookletPointerLeave}
+          >
+            <boxGeometry args={[2.6, 0.1, 0.85]}/>
+            <meshStandardMaterial transparent opacity={0}/>
+          </mesh>
+          <Text3D
+            font="/fonts/Luckiest Guy_Regular.json"
+            rotation={[-Math.PI/2, 0, 0]}
+            size={0.4}
+            height={0.01}
+          >
+            BOOKLET
+            <meshStandardMaterial color={bookletHover || page === 7 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
       </group>

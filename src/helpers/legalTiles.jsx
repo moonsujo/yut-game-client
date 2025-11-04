@@ -1,5 +1,5 @@
 import edgeList from "./edgeList.js";
-import { tileType } from "./helpers.js";
+import { tileType } from "../gameLogic/rules.js";
 
 // schema
 // legalTiles: {

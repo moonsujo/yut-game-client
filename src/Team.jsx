@@ -4,7 +4,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom, deviceAtom, showGalaxyBackgroundAtom } from './GlobalState';
 import { Center, Html, MeshDistortMaterial, Text3D } from '@react-three/drei';
 import Piece from './components/Piece';
-import { formatName, tileType } from './helpers/helpers';
+import { formatName } from './helpers/helpers';
 import { MeshStandardMaterial } from 'three';
 import YootMesh from './meshes/YootMesh';
 import { useFrame } from '@react-three/fiber';
@@ -12,6 +12,7 @@ import { useParams } from 'wouter';
 import Star from './meshes/Star';
 import YouStars from "./YouStars.jsx";
 import * as THREE from 'three';
+import { tileType } from './gameLogic/rules.js';
 
 export default function Team({ position=[0,0,0], scale=1, team }) {
   const device = useAtomValue(deviceAtom)
