@@ -129,6 +129,17 @@ export default {
       position: [-2.5,0,-2.2],
       rotation: [0,0,0],
       scale: 0.9,
+      overviewPage: {
+        scene: {
+          position: [0, 0, -0.3]
+        },
+        text: {
+          position: [-3.5,0,7],
+          rotation: [-Math.PI/2,0,0],
+          size: 0.4,
+          height: 0.01
+        }
+      },
       pickingTheTeamsPage: {
         cursorPos: [
           [4,0,0],
@@ -333,14 +344,20 @@ export default {
             },
             line1: {
               position: [-0.2,0,-1.7],
-              rotation: [-Math.PI/4, 0, 0],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.5,
+              height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.7],
+              rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
               height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.3],
+            scale: 0.45
           }
         },
         ge: {
@@ -354,15 +371,21 @@ export default {
               height: 0.01,
             },
             line1: {
-              position: [-0.2,0,-1.8],
+              position: [-0.2,0,-1.7],
+              rotation: [-Math.PI/4, 0, 0],
+              size: 0.5,
+              height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.7],
               rotation: [-Math.PI/4, 0, 0],
               size: 0.5,
               height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.3],
+            scale: 0.45
           }
         },
         gul: {
@@ -376,15 +399,21 @@ export default {
               height: 0.01,
             },
             line1: {
-              position: [-0.2,0,-1.8],
+              position: [-0.2,0,-1.7],
+              rotation: [-Math.PI/4, 0, 0],
+              size: 0.5,
+              height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.7],
               rotation: [-Math.PI/4, 0, 0],
               size: 0.5,
               height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.3],
+            scale: 0.45
           }
         },
         yoot: {
@@ -2061,6 +2090,17 @@ export default {
       position: [-1.9,0,-1],
       rotation: [0,Math.PI/32,Math.PI/64],
       scale: 0.8,
+      overviewPage: {
+        scene: {
+          position: [0, 0, 0]
+        },
+        text: {
+          position: [-2.5,0,7.5],
+          rotation: [-Math.PI/2,0,0],
+          size: 0.4,
+          height: 0.01
+        }
+      },
       pickingTheTeamsPage: {
         cursorPos: [
           [4,0,0],
@@ -2750,7 +2790,7 @@ export default {
       },
       readingTheDicePage: {
         text: {
-          position: [-2.4,0,7.7],
+          position: [-2.6,0,7.4],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
@@ -2762,7 +2802,7 @@ export default {
             line0: {
               position: [-0.2,0,-2.7],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {
@@ -2770,11 +2810,17 @@ export default {
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
               height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.9],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.5,
+              height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.4],
+            scale: 0.5
           }
         },
         ge: {
@@ -2784,7 +2830,7 @@ export default {
             line0: {
               position: [-0.2,0,-2.7],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {
@@ -2792,11 +2838,17 @@ export default {
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
               height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.9],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.5,
+              height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.4],
+            scale: 0.5
           }
         },
         gul: {
@@ -2806,7 +2858,7 @@ export default {
             line0: {
               position: [-0.2,0,-2.7],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {
@@ -2814,11 +2866,17 @@ export default {
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
               height: 0.01,
+            },
+            line2: {
+              position: [-0.2,0,-0.9],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.5,
+              height: 0.01,
             }
           },
           yootSet: {
-            position: [0, 0, 0.5],
-            scale: 0.55
+            position: [0, 0, 1.4],
+            scale: 0.5
           }
         },
         yoot: {
@@ -2828,7 +2886,7 @@ export default {
             line0: {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {
@@ -2856,7 +2914,7 @@ export default {
             line0: {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {
@@ -2884,7 +2942,7 @@ export default {
             line0: {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/2, 0, 0],
-              size: 0.7,
+              size: 0.5,
               height: 0.01,
             },
             line1: {

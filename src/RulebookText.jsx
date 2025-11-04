@@ -63,7 +63,9 @@ export default function RulebookText() {
     <ul>
       <li>Try to capture pieces — extra turns are powerful.</li>
       <li>Use the diagonal shortcut when possible.</li>
-      <li>Stack your pieces to move faster, but don’t get both captured at once.</li>
+      <li>Stack your pieces to move faster, but don't get both captured at once.</li>
+      <li>Use your bonus throws before making a move.</li>
+      <li>A token on the first space can move to the finish with a roll of Backdo.</li>
     </ul>
 
     <h2>Play Online</h2>

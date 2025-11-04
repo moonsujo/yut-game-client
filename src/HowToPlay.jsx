@@ -190,7 +190,7 @@ export default function HowToPlay({
         size={layout[device].howToPlay.throwingTheDicePage.text.size}
         height={layout[device].howToPlay.throwingTheDicePage.text.height}
       >
-        {`THROW THE YUT TO DETERMINE HOW MANY\nSTARS TO JUMP. EACH FLAT SIDE COUNTS\nAS ONE.`}
+        {`Throw the 4 sticks. The way they land\ndetermines how many spaces you move.`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
       <animated.group
@@ -1386,7 +1386,7 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.text.size}
           height={layout[device].howToPlay.readingTheDicePage.text.height}
         >
-          {'IF YOU THROW A YUT OR MO, YOU GET\nANOTHER TURN!'}
+          {'EACH FLAT SIDE COUNTS AS ONE SPACE. IF\nYOU THROW OUT OF BOUNDS, YOU GET NONE.'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </group>
@@ -1403,9 +1403,6 @@ export default function HowToPlay({
           {'DO'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
-        <group name='stars'>
-          <Star scale={0.2} position={[1.4, 0, -3]}/>
-        </group>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.do.text.line1.position}
@@ -1413,7 +1410,17 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.do.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.do.text.line1.height}
         >
-          {'JUMP 1'}
+          {'ONE STICK FLAT'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>       
+        <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={layout[device].howToPlay.readingTheDicePage.do.text.line2.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.do.text.line2.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.do.text.line2.size}
+          height={layout[device].howToPlay.readingTheDicePage.do.text.line2.height}
+        >
+          {'1 SPACE'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>   
         <Float rotationIntensity={0.1}>
@@ -1436,10 +1443,6 @@ export default function HowToPlay({
           {'GE'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
-        <group name='stars'>
-          <Star scale={0.2} position={[1.3, 0, -3]}/>
-          <Star scale={0.2} position={[1.7, 0, -3]}/>
-        </group>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.ge.text.line1.position}
@@ -1447,7 +1450,17 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.ge.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.ge.text.line1.height}
         >
-          {'JUMP 2'}
+          {'TWO FLAT'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>       
+        <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={layout[device].howToPlay.readingTheDicePage.ge.text.line2.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.ge.text.line2.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.ge.text.line2.size}
+          height={layout[device].howToPlay.readingTheDicePage.ge.text.line2.height}
+        >
+          {'2 SPACES'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>   
         <Float rotationIntensity={0.1}>
@@ -1470,11 +1483,6 @@ export default function HowToPlay({
           {'GUL'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
-        <group name='stars'>
-          <Star scale={0.2} position={[1.8, 0, -3]}/>
-          <Star scale={0.2} position={[2.2, 0, -3]}/>
-          <Star scale={0.2} position={[2.6, 0, -3]}/>
-        </group>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.gul.text.line1.position}
@@ -1482,7 +1490,17 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.gul.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.gul.text.line1.height}
         >
-          {'JUMP 3'}
+          {'THREE FLAT'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>   
+        <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={layout[device].howToPlay.readingTheDicePage.gul.text.line2.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.gul.text.line2.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.gul.text.line2.size}
+          height={layout[device].howToPlay.readingTheDicePage.gul.text.line2.height}
+        >
+          {'3 SPACES'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>   
         <Float rotationIntensity={0.1}>
@@ -1502,15 +1520,9 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.yoot.text.line0.size}
           height={layout[device].howToPlay.readingTheDicePage.yoot.text.line0.height}
         >
-          {'YUT'}
+          {'YUT: ALL FLAT'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
-        <group name='stars'>
-          <Star scale={0.2} position={[1.9, 0, -3.8]}/>
-          <Star scale={0.2} position={[2.3, 0, -3.8]}/>
-          <Star scale={0.2} position={[2.7, 0, -3.8]}/>
-          <Star scale={0.2} position={[3.1, 0, -3.8]}/>
-        </group>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.yoot.text.line1.position}
@@ -1518,7 +1530,7 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.yoot.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.yoot.text.line1.height}
         >
-          {'JUMP 4'}
+          {'4 SPACES'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>   
         <Text3D
@@ -1548,16 +1560,9 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.mo.text.line0.size}
           height={layout[device].howToPlay.readingTheDicePage.mo.text.line0.height}
         >
-          {'MO'}
+          {'MO: NO FLAT'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>      
-        <group name='stars'>
-          <Star scale={0.2} position={[1.6, 0, -3.8]}/>
-          <Star scale={0.2} position={[2.0, 0, -3.8]}/>
-          <Star scale={0.2} position={[2.4, 0, -3.8]}/>
-          <Star scale={0.2} position={[2.8, 0, -3.8]}/>
-          <Star scale={0.2} position={[3.2, 0, -3.8]}/>
-        </group>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.mo.text.line1.position}
@@ -1565,7 +1570,7 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.mo.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.mo.text.line1.height}
         >
-          {'JUMP 5'}
+          {'5 SPACES'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>      
         <Text3D
@@ -1605,7 +1610,7 @@ export default function HowToPlay({
           size={layout[device].howToPlay.readingTheDicePage.backdo.text.line1.size}
           height={layout[device].howToPlay.readingTheDicePage.backdo.text.line1.height}
         >
-          {'JUMP -1'}
+          {'-1 SPACE'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>      
         <Text3D
@@ -1636,7 +1641,7 @@ export default function HowToPlay({
     const [scoreHover, setScoreHover] = useState(false)
     const [readTheDiceHover, setReadTheDiceHover] = useState(false)
     const [shortcutHover, setShortcutHover] = useState(false)
-    const [bookletHover, setBookletHover] = useState(false)
+    const [tipsHover, setTipsHover] = useState(false)
 
     function handleOverviewClick() {
       setPage(0)
@@ -1737,17 +1742,17 @@ export default function HowToPlay({
       document.body.style.cursor = 'default'
       setShortcutHover(false)
     }
-    function handleBookletPointerEnter() {
+    function handleTipsPointerEnter() {
       document.body.style.cursor = 'pointer'
-      setBookletHover(true)
+      setTipsHover(true)
     }
-    function handleBookletPointerLeave() {
+    function handleTipsPointerLeave() {
       document.body.style.cursor = 'default'
-      setBookletHover(false)
+      setTipsHover(false)
     }
-    function handleBookletClick() {
+    function handleTipsClick() {
       setPage(7)
-      setBookletHover(false)
+      setTipsHover(false)
       setTabClicked(true)
       clearTimeout(pageTimeoutRef.current)
     }
@@ -1755,22 +1760,22 @@ export default function HowToPlay({
     if (orientation === 'bottom') {
       return <group name='tabs' position={position} scale={scale}>
         <group name='tab-0' position={[0,0,0]} scale={0.8}>
-          <mesh position={[1.55, -0.1, -0.2]}>
-            <boxGeometry args={[3.4, 0.05, 0.75]}/>
+          <mesh position={[0.9, -0.1, -0.2]}>
+            <boxGeometry args={[2.2, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.55, -0.1, -0.2]}>
-            <boxGeometry args={[3.5, 0.04, 0.85]}/>
+          <mesh position={[0.9, -0.1, -0.2]}>
+            <boxGeometry args={[2.3, 0.04, 0.85]}/>
             <meshStandardMaterial color={overviewHover || page === 0 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
             name='tab-0-wrapper' 
-            position={[1.55, -0.1, -0.2]}
+            position={[0.9, -0.1, -0.2]}
             onClick={handleOverviewClick}
             onPointerEnter={handleOverviewPointerEnter}
             onPointerLeave={handleOverviewPointerLeave}
           >
-            <boxGeometry args={[3.5, 0.1, 0.85]}/>
+            <boxGeometry args={[2.3, 0.1, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -1783,7 +1788,7 @@ export default function HowToPlay({
             <meshStandardMaterial color={overviewHover || page === 0 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-1' position={[2.9,0,0]} scale={0.8}>
+        <group name='tab-1' position={[1.9,0,0]} scale={0.8}>
           <mesh position={[2.3, -0.1, -0.2]}>
             <boxGeometry args={[4.9, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
@@ -1812,7 +1817,7 @@ export default function HowToPlay({
             <meshStandardMaterial color={throwTheYutHover || page === 1 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-2' position={[7,0,0]} scale={0.8}>
+        <group name='tab-2' position={[6,0,0]} scale={0.8}>
           <mesh position={[2.05, -0.1, -0.2]}>
             <boxGeometry args={[4.4, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
@@ -2174,22 +2179,22 @@ export default function HowToPlay({
           </Text3D>
         </group>
         <group name='tab-7' position={[0,0,5.6]} scale={0.8}>
-          <mesh position={[1.1, -0.1, -0.2]}>
-            <boxGeometry args={[2.5, 0.05, 0.75]}/>
+          <mesh position={[0.8, -0.1, -0.2]}>
+            <boxGeometry args={[1.9, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.1, -0.1, -0.2]}>
-            <boxGeometry args={[2.6, 0.04, 0.85]}/>
-            <meshStandardMaterial color={bookletHover || page === 7 ? 'green' : 'yellow'}/>
+          <mesh position={[0.8, -0.1, -0.2]}>
+            <boxGeometry args={[2.0, 0.04, 0.85]}/>
+            <meshStandardMaterial color={tipsHover || page === 7 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
             name='tab-7-wrapper' 
-            position={[1.1, -0.1, -0.2]}
-            onClick={handleBookletClick}
-            onPointerEnter={handleBookletPointerEnter}
-            onPointerLeave={handleBookletPointerLeave}
+            position={[0.8, -0.1, -0.2]}
+            onClick={handleTipsClick}
+            onPointerEnter={handleTipsPointerEnter}
+            onPointerLeave={handleTipsPointerLeave}
           >
-            <boxGeometry args={[2.6, 0.1, 0.85]}/>
+            <boxGeometry args={[2.0, 0.05, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -2198,8 +2203,8 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            BOOKLET
-            <meshStandardMaterial color={bookletHover || page === 7 ? 'green' : 'yellow'}/>
+            8.TIPS
+            <meshStandardMaterial color={tipsHover || page === 7 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
       </group>
@@ -3031,71 +3036,73 @@ export default function HowToPlay({
       <CatchAlert position={[7.5, 1, -5]} scale={springs.catchAlertScale}/>
       <PiggybackAlert position={[-1.5, 1, -5]} scale={springs.piggybackAlertScale}/>
       <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
-      <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
-        <Board showConstellations={false} showStart/>
-        {/* Catch token */}
-        <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
-          <Ufo onBoard/>
-        </animated.group>
-        {/* Piggyback token */}
-        <animated.group scale={springs.piggybackTokenScale} position={springs.piggybackTokenPosition}>
-          <Rocket onBoard/>
-        </animated.group>
-        {/* Moving token */}
-        <animated.group scale={springs.movingTokenScale} position={springs.movingTokenPosition}>
-          <Rocket onBoard/>
-        </animated.group>
-      </group>
-      <group name='ufo-home' position={[7, 0, 5]}>
-        <mesh position={[0, -0.5, -0.2]}>
-          <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
-          <meshStandardMaterial color='turquoise' transparent opacity={0.05}/>
-        </mesh>
-        <Ufo position={[-0.5,0,-0.4]}/>
-        <Ufo position={[0.5,0,-0.4]}/>
-        <Ufo position={[-0.5,0,0.4]}/>
-        <animated.group scale={springs.catchTokenHomeScale}>
-          <Ufo position={[0.5,0,0.4]}/>
-        </animated.group>
-        {/* Add hologram Ufo */}
-      </group>
-      <group name='rocket-home' position={[-1.5, 0, 5]}>
-        <mesh position={[0, -0.5, -0.2]}>
-          <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
-          <meshStandardMaterial color='red' transparent opacity={0.1}/>
-        </mesh>
-        <Rocket position={[-0.6,0,-0.5]}/>
-        <Rocket position={[0.4,0,-0.5]}/>
-        {/* Moving token */}
-        {/* Add hologram Rocket */}
-        <animated.group name='scored-indicator-0' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator0Scale}>
-          <Star color='red'/>
-        </animated.group>
-        <animated.group name='scored-indicator-1' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator1Scale}>
-          <Star color='red'/>
-        </animated.group>
-      </group>
-      <group name='yoot-display' position={[4.2, 0, 1.4]}>
-        <Text3D 
-        name='goal'
-        font="/fonts/Luckiest Guy_Regular.json"
-        position={[1,0,-0.5]}
-        rotation={layout[device].game.whoGoesFirst.title.rotation}
-        size={0.3}
-        height={layout[device].game.whoGoesFirst.title.height}>
-          {`YUT\n(DICE)`}
-          <meshStandardMaterial color='yellow'/>
-        </Text3D>
-        <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
+      <group name='scene' position={layout[device].howToPlay.overviewPage.scene.position}>
+        <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
+          <Board showConstellations={false} showStart/>
+          {/* Catch token */}
+          <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
+            <Ufo onBoard/>
+          </animated.group>
+          {/* Piggyback token */}
+          <animated.group scale={springs.piggybackTokenScale} position={springs.piggybackTokenPosition}>
+            <Rocket onBoard/>
+          </animated.group>
+          {/* Moving token */}
+          <animated.group scale={springs.movingTokenScale} position={springs.movingTokenPosition}>
+            <Rocket onBoard/>
+          </animated.group>
+        </group>
+        <group name='ufo-home' position={[7, 0, 5]}>
+          <mesh position={[0, -0.5, -0.2]}>
+            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
+            <meshStandardMaterial color='turquoise' transparent opacity={0.05}/>
+          </mesh>
+          <Ufo position={[-0.5,0,-0.4]}/>
+          <Ufo position={[0.5,0,-0.4]}/>
+          <Ufo position={[-0.5,0,0.4]}/>
+          <animated.group scale={springs.catchTokenHomeScale}>
+            <Ufo position={[0.5,0,0.4]}/>
+          </animated.group>
+          {/* Add hologram Ufo */}
+        </group>
+        <group name='rocket-home' position={[-1.5, 0, 5]}>
+          <mesh position={[0, -0.5, -0.2]}>
+            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
+            <meshStandardMaterial color='red' transparent opacity={0.1}/>
+          </mesh>
+          <Rocket position={[-0.6,0,-0.5]}/>
+          <Rocket position={[0.4,0,-0.5]}/>
+          {/* Moving token */}
+          {/* Add hologram Rocket */}
+          <animated.group name='scored-indicator-0' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator0Scale}>
+            <Star color='red'/>
+          </animated.group>
+          <animated.group name='scored-indicator-1' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator1Scale}>
+            <Star color='red'/>
+          </animated.group>
+        </group>
+        <group name='yoot-display' position={[4.2, 0, 1.4]}>
+          <Text3D 
+          name='goal'
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={[1,0,-0.5]}
+          rotation={layout[device].game.whoGoesFirst.title.rotation}
+          size={0.3}
+          height={layout[device].game.whoGoesFirst.title.height}>
+            {`YUT\n(DICE)`}
+            <meshStandardMaterial color='yellow'/>
+          </Text3D>
+          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
+        </group>
       </group>
       <Text3D 
       name='goal'
       font="/fonts/Luckiest Guy_Regular.json"
-      position={[-2.5, 0, 7.5]}
-      rotation={layout[device].game.whoGoesFirst.title.rotation}
-      size={0.4}
-      height={layout[device].game.whoGoesFirst.title.height}>
-        {`TWO TEAMS MOVE THEIR SHIPS FROM START\nTO FINISH. FINISH 4 SHIPS FIRST TO WIN!`}
+      position={layout[device].howToPlay.overviewPage.text.position}
+      rotation={layout[device].howToPlay.overviewPage.text.rotation}
+      size={layout[device].howToPlay.overviewPage.text.size}
+      height={layout[device].howToPlay.overviewPage.text.height}>
+        {`YUT NORI IS A BOARD GAME PLAYED WITH FOUR\nSTICKS CALLED YUT. THE GOAL IS TO MOVE ALL YOUR\nTOKENS AROUND THE BOARD BEFORE THE OTHER TEAM.`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
     </group>
