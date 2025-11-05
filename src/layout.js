@@ -135,10 +135,24 @@ export default {
           position: [0, 0, -0.7]
         },
         text: {
-          position: [-2.7,0,6],
-          rotation: [-Math.PI/2,0,0],
-          size: 0.4,
-          height: 0.01
+          part0: {
+            position: [-2.7,0,6],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          },
+          part1: {
+            position: [-2.7,0,6],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          },
+          part2: {
+            position: [-2.7,0,6],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          }
         }
       },
       pickingTheTeamsPage: {
@@ -343,6 +357,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [0.8,0,-2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-1.7],
               rotation: [-Math.PI/2, 0, 0],
@@ -369,6 +389,12 @@ export default {
               position: [-0.2,0,-2.7],
               rotation: [-Math.PI/4, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [0.8,0,-2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {
@@ -399,6 +425,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [1.2, 0, -2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-1.7],
               rotation: [-Math.PI/4, 0, 0],
@@ -425,6 +457,12 @@ export default {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/4, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [2.8, 0, -2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {
@@ -455,6 +493,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [2.8, 0, -2.55],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-2.6],
               rotation: [-Math.PI/4, 0, 0],
@@ -481,6 +525,12 @@ export default {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/4, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [2.5, 0, -3.5],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {
@@ -2102,13 +2152,28 @@ export default {
       scale: 0.8,
       overviewPage: {
         scene: {
+          scale: 1,
           position: [0, 0, -0.5]
         },
         text: {
-          position: [-2.5,0,6.8],
-          rotation: [-Math.PI/2,0,0],
-          size: 0.4,
-          height: 0.01
+          part0: {
+            position: [-2.5,0,6.8],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          },
+          part1: {
+            position: [-2.5,0,6.8],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          },
+          part2: {
+            position: [-2.5,0,6.8],
+            rotation: [-Math.PI/2,0,0],
+            size: 0.4,
+            height: 0.01
+          }
         }
       },
       pickingTheTeamsPage: {
@@ -2824,6 +2889,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [0.8,0,-2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-1.8],
               rotation: [-Math.PI/2, 0, 0],
@@ -2850,6 +2921,12 @@ export default {
               position: [-0.2,0,-2.7],
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [0.8,0,-2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {
@@ -2880,6 +2957,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [1.2, 0, -2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-1.8],
               rotation: [-Math.PI/2, 0, 0],
@@ -2906,6 +2989,12 @@ export default {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [2.8, 0, -2.65],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {
@@ -2936,6 +3025,12 @@ export default {
               size: 0.5,
               height: 0.01,
             },
+            korean: {
+              position: [2.8, 0, -2.55],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
+              height: 0.01,
+            },
             line1: {
               position: [-0.2,0,-2.6],
               rotation: [-Math.PI/2, 0, 0],
@@ -2962,6 +3057,12 @@ export default {
               position: [-0.2,0,-3.5],
               rotation: [-Math.PI/2, 0, 0],
               size: 0.5,
+              height: 0.01,
+            },
+            korean: {
+              position: [2.5, 0, -3.5],
+              rotation: [-Math.PI/2, 0, 0],
+              size: 0.6,
               height: 0.01,
             },
             line1: {

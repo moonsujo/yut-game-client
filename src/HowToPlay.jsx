@@ -70,9 +70,14 @@ export default function HowToPlay({
         pageTimeoutRef.current = page6Timeout
       } else if (page === 6) { // Shortcut
         const page7Timeout = setTimeout(() => {
+          setPage(7)
+        }, 11000)
+        pageTimeoutRef.current = page7Timeout
+      } else if (page === 7) { // Shortcut
+        const page8Timeout = setTimeout(() => {
           setPage(0)
         }, 12000)
-        pageTimeoutRef.current = page7Timeout
+        pageTimeoutRef.current = page8Timeout
       }
     }
   }, [page])
@@ -685,24 +690,44 @@ export default function HowToPlay({
           <Text3D 
           name='goal'
           font="/fonts/Luckiest Guy_Regular.json"
-          position={[1,0,-0.5]}
+          position={[1.2,0,-0.5]}
           rotation={layout[device].game.whoGoesFirst.title.rotation}
           size={0.3}
           height={layout[device].game.whoGoesFirst.title.height}>
             {`YUT\n(DICE)`}
             <meshStandardMaterial color='yellow'/>
           </Text3D>
-          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
+          <YootDisplay position={[-0.1, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={0.2}/>
         </group>
       </group>
       <Text3D 
       name='goal'
       font="/fonts/Luckiest Guy_Regular.json"
-      position={layout[device].howToPlay.overviewPage.text.position}
-      rotation={layout[device].howToPlay.overviewPage.text.rotation}
-      size={layout[device].howToPlay.overviewPage.text.size}
-      height={layout[device].howToPlay.overviewPage.text.height}>
-        {`YUT NORI IS A BOARD GAME PLAYED WITH FOUR\nWOODEN STICKS CALLED YUT. THE GOAL IS TO\nMOVE ALL YOUR TOKENS AROUND THE BOARD\nBEFORE THE OTHER TEAM DOES.`}
+      position={layout[device].howToPlay.overviewPage.text.part0.position}
+      rotation={layout[device].howToPlay.overviewPage.text.part0.rotation}
+      size={layout[device].howToPlay.overviewPage.text.part0.size}
+      height={layout[device].howToPlay.overviewPage.text.part0.height}>
+        {`YUT NORI (`}
+        <meshStandardMaterial color='yellow'/>
+      </Text3D>
+      <Text3D 
+      name='goal-korean-text'
+      font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+      position={layout[device].howToPlay.overviewPage.text.part1.position}
+      rotation={layout[device].howToPlay.overviewPage.text.part1.rotation}
+      size={layout[device].howToPlay.overviewPage.text.part1.size}
+      height={layout[device].howToPlay.overviewPage.text.part1.height}>
+        {`                     윷놀이`}
+        <meshStandardMaterial color='yellow'/>
+      </Text3D>
+      <Text3D 
+      name='goal'
+      font="/fonts/Luckiest Guy_Regular.json"
+      position={layout[device].howToPlay.overviewPage.text.part2.position}
+      rotation={layout[device].howToPlay.overviewPage.text.part2.rotation}
+      size={layout[device].howToPlay.overviewPage.text.part2.size}
+      height={layout[device].howToPlay.overviewPage.text.part2.height}>
+        {`                                   ) IS A BOARD GAME PLAYED\nWITH FOUR WOODEN STICKS CALLED YUT. THE\nGOAL IS TO MOVE ALL YOUR TOKENS AROUND\nTHE BOARD BEFORE THE OTHER TEAM DOES.`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
     </group>
@@ -820,7 +845,7 @@ export default function HowToPlay({
         size={layout[device].howToPlay.throwingTheDicePage.text.size}
         height={layout[device].howToPlay.throwingTheDicePage.text.height}
       >
-        {`Throw the 4 sticks. The way they land\ndetermines how many spaces you move.`}
+        {`Throw the yut. The way they land\ndetermines how many spaces you move.`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
       <animated.group
@@ -2091,7 +2116,33 @@ export default function HowToPlay({
           height={layout[device].howToPlay.movementPage.text.height}
           lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
         >
-          {`Your pieces follow the path around the\nboard. There are shortcuts at the corners\n(planets) — if you land on one, you can\ntake the faster diagonal path.`}
+          {`Your pieces follow the path around the\nboard (`}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>
+        <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={[
+            layout[device].howToPlay.movementPage.text.position[0],
+            layout[device].howToPlay.movementPage.text.position[1],
+            layout[device].howToPlay.movementPage.text.position[2]-0.1,
+          ]} 
+          rotation={layout[device].howToPlay.movementPage.text.rotation}
+          size={layout[device].howToPlay.movementPage.text.size}
+          height={layout[device].howToPlay.movementPage.text.height}
+          lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
+        >
+          {`\n                말판`}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>
+        <Text3D
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={layout[device].howToPlay.movementPage.text.position} 
+          rotation={layout[device].howToPlay.movementPage.text.rotation}
+          size={layout[device].howToPlay.movementPage.text.size}
+          height={layout[device].howToPlay.movementPage.text.height}
+          lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
+        >
+          {`\n                           ). There are shortcuts at the\ncorners (planets) — if you land on one,\nyou can take the faster diagonal path.`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </animated.group>
@@ -2217,6 +2268,16 @@ export default function HowToPlay({
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
         <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.do.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.do.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.do.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.do.text.korean.height}
+        >
+          {'도'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>       
+        <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.do.text.line1.position}
           rotation={layout[device].howToPlay.readingTheDicePage.do.text.line1.rotation}
@@ -2254,6 +2315,16 @@ export default function HowToPlay({
           height={layout[device].howToPlay.readingTheDicePage.ge.text.line0.height}
         >
           {'GE'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>           
+        <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.ge.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.ge.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.ge.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.ge.text.korean.height}
+        >
+          {'개'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
         <Text3D
@@ -2297,6 +2368,16 @@ export default function HowToPlay({
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
         <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.gul.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.gul.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.gul.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.gul.text.korean.height}
+        >
+          {'걸'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>       
+        <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.gul.text.line1.position}
           rotation={layout[device].howToPlay.readingTheDicePage.gul.text.line1.rotation}
@@ -2334,6 +2415,16 @@ export default function HowToPlay({
           height={layout[device].howToPlay.readingTheDicePage.yoot.text.line0.height}
         >
           {'YUT: ALL FLAT'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>              
+        <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.yoot.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.yoot.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.yoot.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.yoot.text.korean.height}
+        >
+          {'윷'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>       
         <Text3D
@@ -2377,6 +2468,16 @@ export default function HowToPlay({
           <meshStandardMaterial color='yellow'/>
         </Text3D>      
         <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.mo.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.mo.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.mo.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.mo.text.korean.height}
+        >
+          {'모'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>      
+        <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           position={layout[device].howToPlay.readingTheDicePage.mo.text.line1.position}
           rotation={layout[device].howToPlay.readingTheDicePage.mo.text.line1.rotation}
@@ -2414,6 +2515,16 @@ export default function HowToPlay({
           height={layout[device].howToPlay.readingTheDicePage.backdo.text.line0.height}
         >
           {'backdo'}
+          <meshStandardMaterial color='yellow'/>
+        </Text3D>           
+        <Text3D
+          font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+          position={layout[device].howToPlay.readingTheDicePage.backdo.text.korean.position}
+          rotation={layout[device].howToPlay.readingTheDicePage.backdo.text.korean.rotation}
+          size={layout[device].howToPlay.readingTheDicePage.backdo.text.korean.size}
+          height={layout[device].howToPlay.readingTheDicePage.backdo.text.korean.height}
+        >
+          {'뒷도'}
           <meshStandardMaterial color='yellow'/>
         </Text3D>         
         <Text3D
