@@ -944,13 +944,18 @@ export default {
           rotation: [0, Math.PI/2, 0]
         }
       },
+      tipsPage: {
+        tipsForBeginners: {
+          position: [0.8, 0, 0]
+        }
+      },
       pagination: {
         pageRadius: 0.5,
         arrowRadius: 0.8,
         arrowHeight: 1,
         elementSpace: 1.5,
         startX: -6,
-        position: [2.8, 0, 4.7],
+        position: [2.3, 0, 4.7],
         scale: 0.8
       },
       tileRadius: {
@@ -2795,6 +2800,11 @@ export default {
         tileHelper: {
           position: [2.7, 0, -2.7],
           rotation: [0, Math.PI/2, 0]
+        }
+      },
+      tipsPage: {
+        tipsForBeginners: {
+          position: [1, 0, 0]
         }
       },
       readingTheDicePage: {

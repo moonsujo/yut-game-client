@@ -3057,7 +3057,7 @@ export default function HowToPlay({
     function handlePageLeft() {
       setPage(page => {
         if (page === 0) {
-          return 6
+          return 7
         } else {
           return page-1
         }
@@ -3066,7 +3066,7 @@ export default function HowToPlay({
 
     function handlePageRight() {
       setPage(page => {
-        if (page === 6) {
+        if (page === 7) {
           return 0
         } else {
           return page+1
@@ -3104,9 +3104,14 @@ export default function HowToPlay({
       setPage(5)
       setTabClicked(true)
     }
-    function handlePage6(e) {
+    function handlePage6(e) {7
       e.stopPropagation()
       setPage(6)
+      setTabClicked(true)
+    }
+    function handlePage7(e) {
+      e.stopPropagation()
+      setPage(7)
       setTabClicked(true)
     }
 
@@ -3264,7 +3269,28 @@ export default function HowToPlay({
           <meshStandardMaterial color={ page === 6 ? "green" : "yellow" }/>
         </mesh>
       </group>
-      <mesh position={[startX + space*8, 0, 6]} rotation={[0, 0, -Math.PI/2]} onPointerUp={handlePageRight}>
+      <group name='page-7-button'>
+        <mesh 
+        position={[startX + space*8, 0, 6]} 
+        onPointerUp={e=>handlePage7(e)}
+        scale={[0.6, 0.01, 0.6]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color={ page === 7 ? "green" : "yellow" }/>
+        </mesh>
+        <mesh 
+        position={[startX + space*8, 0, 6]} 
+        scale={[0.5, 0.02, 0.5]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color='black' transparent opacity={1}/>
+        </mesh>
+        <mesh 
+        position={[startX + space*8, 0, 6]} 
+        scale={[0.2, 0.03, 0.2]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color={ page === 7 ? "green" : "yellow" }/>
+        </mesh>
+      </group>
+      <mesh position={[startX + space*9, 0, 6]} rotation={[0, 0, -Math.PI/2]} onPointerUp={handlePageRight}>
         <coneGeometry args={[layout[device].howToPlay.pagination.arrowRadius, layout[device].howToPlay.pagination.arrowHeight, 3]}/>
         <meshStandardMaterial color="yellow"/>
       </mesh>
@@ -3321,7 +3347,32 @@ export default function HowToPlay({
   }
 
   function TipsPage() {
-    return <></>
+    return <group name='tips-for-beginners'
+      position={layout[device].howToPlay.tipsPage.tipsForBeginners.position}>
+      <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-3.5, 0, -3]}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={0.4}
+        height={0.01}
+      >
+        TIPS FOR BEGINNERS
+        <meshStandardMaterial color='yellow'/>
+      </Text3D>
+      <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-3.5, 0, -2]}
+        rotation={[-Math.PI/2, 0, 0]}
+        size={0.4}
+        height={0.01}
+      >
+        {`Try to capture pieces — extra turns\nare powerful.\n`}
+        {`\nUse the diagonal shortcut when\npossible.\n`}
+        {`\nStack your pieces to move faster,\nbut don't get both captured at once.\n`}
+        {`\nUse your bonus throws before making\na move.`}
+        <meshStandardMaterial color='limegreen'/>
+      </Text3D>
+    </group>
   }
 
   const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <MovementPage/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>,  <TipsPage/>]
