@@ -78,6 +78,636 @@ export default function HowToPlay({
   }, [page])
   
   const ANIMATION = 17
+  
+  function Overview() {
+    const TILE_RADIUS = 5
+    const scorePositionShift = [-4.5, 0, 1]
+    const springs = useSpring({
+      from: {
+        catchTokenPosition: [
+          -Math.cos(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          1.5,
+          Math.sin(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+        ],
+        catchTokenScale: 1.5,
+        piggybackTokenPosition: [-4.1,1,-3.1],
+        movingTokenPosition: [-4.3,0,6.5],
+        movingTokenScale: 1,
+        catchAlertScale: 0,
+        catchTokenHomeScale: 0,
+        piggybackAlertScale: 0,
+        piggybackTokenScale: 1.5,
+        welcomeHomeAlertScale: 0,
+        scoredIndicator0Scale: 0,
+        scoredIndicator1Scale: 0,
+      },
+      to: [
+        {
+          movingTokenPosition: [
+            -Math.cos(((5) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            2.5,
+            Math.sin(((5) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          movingTokenScale: 1.4,
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((6) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((6) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((7) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((7) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((8) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((8) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((9) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((9) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((10) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((10) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((11) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((11) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          catchAlertScale: 0.7,
+        },
+        {
+          catchTokenPosition: [4.5, 0, 5.5],
+          catchTokenScale: 0,
+          delay: 500
+        },
+        {
+          catchTokenHomeScale: 1,
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((13) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((13) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          catchAlertScale: 0
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((14) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((14) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((15) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((15) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((16) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((16) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((17) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((17) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+            1.5,
+            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackAlertScale: 0.7
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenScale: 1.4,
+          delay: 500
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackAlertScale: 0
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS,
+          ],
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
+            1.5,
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
+            1.5,
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
+          ],
+          welcomeHomeAlertScale: 1
+        },
+        {
+          movingTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5 + scorePositionShift[0],
+            1.5 + scorePositionShift[1],
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + scorePositionShift[2],
+          ],
+          piggybackTokenPosition: [
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5 + scorePositionShift[0],
+            1.5 + scorePositionShift[1],
+            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + scorePositionShift[2],
+          ],
+          movingTokenScale: 0,
+          piggybackTokenScale: 0,
+          welcomeHomeAlertScale: 0,
+          delay: 500
+        },
+        {
+          scoredIndicator0Scale: 0.4,
+          scoredIndicator1Scale: 0.4,
+        }
+      ],
+      delay: 1000,
+      config: {
+        tension: 170,
+        friction: 26
+      }
+    })
+
+    function CatchAlert({ position, scale }) {
+      
+      const borderMesh0Ref = useRef();
+      const borderMesh1Ref = useRef();
+      const borderMesh2Ref = useRef();
+      const borderMesh3Ref = useRef();
+      const borderMesh4Ref = useRef();
+      const borderMesh5Ref = useRef();
+      const borderMesh6Ref = useRef();
+      const borderMeshRefs = [
+        borderMesh0Ref,
+        borderMesh1Ref,
+        borderMesh2Ref,
+        borderMesh3Ref,
+        borderMesh4Ref,
+        borderMesh5Ref,
+        borderMesh6Ref
+      ]
+
+      const height = 1
+      const width = 2
+      const starScale = 0.1
+      useFrame((state) => {
+        const time = state.clock.elapsedTime 
+        for (let i = 0; i < borderMeshRefs.length; i++) {      
+          if (borderMeshRefs[i].current) {
+            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
+            borderMeshRefs[i].current.position.y = 0.05
+            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
+          }
+        }
+      })
+
+      return <animated.group position={position} scale={scale}>
+        <mesh scale={[width, 0.01, height]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color='black' transparent opacity={0.3}/>
+        </mesh>
+        <Text3D
+        name='main-text'
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-1.29,0,0.25]}
+        rotation={[-Math.PI/2,0,0]}
+        size={0.6}
+        height={0.01}>
+          CATCH!
+          <meshStandardMaterial color='limegreen'/>
+        </Text3D>
+        <group ref={borderMesh0Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh1Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh2Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh3Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh4Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh5Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh6Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+      </animated.group>
+    }
+
+    function PiggybackAlert({ position, scale }) {
+      
+      const borderMesh0Ref = useRef();
+      const borderMesh1Ref = useRef();
+      const borderMesh2Ref = useRef();
+      const borderMesh3Ref = useRef();
+      const borderMesh4Ref = useRef();
+      const borderMesh5Ref = useRef();
+      const borderMesh6Ref = useRef();
+      const borderMeshRefs = [
+        borderMesh0Ref,
+        borderMesh1Ref,
+        borderMesh2Ref,
+        borderMesh3Ref,
+        borderMesh4Ref,
+        borderMesh5Ref,
+        borderMesh6Ref
+      ]
+
+      const height = 1
+      const width = 2.5
+      const starScale = 0.1
+      useFrame((state) => {
+        const time = state.clock.elapsedTime 
+        for (let i = 0; i < borderMeshRefs.length; i++) {      
+          if (borderMeshRefs[i].current) {
+            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
+            borderMeshRefs[i].current.position.y = 0.05
+            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
+          }
+        }
+      })
+
+      return <animated.group position={position} scale={scale}>
+        <mesh scale={[width, 0.01, height]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color='black' transparent opacity={0.3}/>
+        </mesh>
+        <Text3D
+        name='main-text'
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-1.8,0,0.2]}
+        rotation={layout[device].game.whoGoesFirst.title.rotation}
+        size={0.5}
+        height={layout[device].game.whoGoesFirst.title.height}>
+          PIGGYBACK!
+          <meshStandardMaterial color='limegreen'/>
+        </Text3D>
+        <group ref={borderMesh0Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh1Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh2Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh3Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh4Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh5Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh6Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+      </animated.group>
+    }
+
+    function WelcomeHomeAlert({ position, scale }) {
+      
+      const borderMesh0Ref = useRef();
+      const borderMesh1Ref = useRef();
+      const borderMesh2Ref = useRef();
+      const borderMesh3Ref = useRef();
+      const borderMesh4Ref = useRef();
+      const borderMesh5Ref = useRef();
+      const borderMesh6Ref = useRef();
+      const borderMeshRefs = [
+        borderMesh0Ref,
+        borderMesh1Ref,
+        borderMesh2Ref,
+        borderMesh3Ref,
+        borderMesh4Ref,
+        borderMesh5Ref,
+        borderMesh6Ref
+      ]
+
+      const height = 1.3
+      const width = 2.4
+      const starScale = 0.12
+      useFrame((state) => {
+        const time = state.clock.elapsedTime 
+        for (let i = 0; i < borderMeshRefs.length; i++) {      
+          if (borderMeshRefs[i].current) {
+            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
+            borderMeshRefs[i].current.position.y = 0.05
+            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
+          }
+        }
+      })
+
+      return <animated.group position={position} scale={scale}>
+        <mesh scale={[width, 0.01, height]}>
+          <cylinderGeometry args={[1, 1, 1, 32]}/>
+          <meshStandardMaterial color='black' transparent opacity={0.8}/>
+        </mesh>
+        <Text3D
+        name='main-text'
+        font="/fonts/Luckiest Guy_Regular.json"
+        position={[-1.45,0,-0.1]}
+        rotation={layout[device].game.whoGoesFirst.title.rotation}
+        size={0.5}
+        height={layout[device].game.whoGoesFirst.title.height}
+        lineHeight={0.8}>
+          {`WELCOME\n    HOME!`}
+          <meshStandardMaterial color='limegreen'/>
+        </Text3D>
+        <group ref={borderMesh0Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh1Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh2Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh3Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh4Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh5Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+        <group ref={borderMesh6Ref}>
+          <Star 
+            scale={starScale}
+            color='limegreen'
+          />
+        </group>
+      </animated.group>
+    }
+
+    return <group>
+      <CatchAlert position={[7.5, 1, -5]} scale={springs.catchAlertScale}/>
+      <PiggybackAlert position={[-1.5, 1, -5]} scale={springs.piggybackAlertScale}/>
+      <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
+      <group name='scene' position={layout[device].howToPlay.overviewPage.scene.position}>
+        <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
+          <Board showConstellations={false} showStart/>
+          {/* Catch token */}
+          <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
+            <Ufo onBoard/>
+          </animated.group>
+          {/* Piggyback token */}
+          <animated.group scale={springs.piggybackTokenScale} position={springs.piggybackTokenPosition}>
+            <Rocket onBoard/>
+          </animated.group>
+          {/* Moving token */}
+          <animated.group scale={springs.movingTokenScale} position={springs.movingTokenPosition}>
+            <Rocket onBoard/>
+          </animated.group>
+        </group>
+        <group name='ufo-home' position={[7, 0, 5]}>
+          <mesh position={[0, -0.5, -0.2]}>
+            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
+            <meshStandardMaterial color='turquoise' transparent opacity={0.05}/>
+          </mesh>
+          <Ufo position={[-0.5,0,-0.4]}/>
+          <Ufo position={[0.5,0,-0.4]}/>
+          <Ufo position={[-0.5,0,0.4]}/>
+          <animated.group scale={springs.catchTokenHomeScale}>
+            <Ufo position={[0.5,0,0.4]}/>
+          </animated.group>
+          {/* Add hologram Ufo */}
+        </group>
+        <group name='rocket-home' position={[-1.5, 0, 5]}>
+          <mesh position={[0, -0.5, -0.2]}>
+            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
+            <meshStandardMaterial color='red' transparent opacity={0.1}/>
+          </mesh>
+          <Rocket position={[-0.6,0,-0.5]}/>
+          <Rocket position={[0.4,0,-0.5]}/>
+          {/* Moving token */}
+          {/* Add hologram Rocket */}
+          <animated.group name='scored-indicator-0' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator0Scale}>
+            <Star color='red'/>
+          </animated.group>
+          <animated.group name='scored-indicator-1' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator1Scale}>
+            <Star color='red'/>
+          </animated.group>
+        </group>
+        <group name='yoot-display' position={[4.2, 0, 1.4]}>
+          <Text3D 
+          name='goal'
+          font="/fonts/Luckiest Guy_Regular.json"
+          position={[1,0,-0.5]}
+          rotation={layout[device].game.whoGoesFirst.title.rotation}
+          size={0.3}
+          height={layout[device].game.whoGoesFirst.title.height}>
+            {`YUT\n(DICE)`}
+            <meshStandardMaterial color='yellow'/>
+          </Text3D>
+          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
+        </group>
+      </group>
+      <Text3D 
+      name='goal'
+      font="/fonts/Luckiest Guy_Regular.json"
+      position={layout[device].howToPlay.overviewPage.text.position}
+      rotation={layout[device].howToPlay.overviewPage.text.rotation}
+      size={layout[device].howToPlay.overviewPage.text.size}
+      height={layout[device].howToPlay.overviewPage.text.height}>
+        {`YUT NORI IS A BOARD GAME PLAYED WITH FOUR\nWOODEN STICKS CALLED YUT. THE GOAL IS TO\nMOVE ALL YOUR TOKENS AROUND THE BOARD\nBEFORE THE OTHER TEAM DOES.`}
+        <meshStandardMaterial color='yellow'/>
+      </Text3D>
+    </group>
+  }
+
   function ThrowTheYutPage() {
 
     const [yootButtonTurnedOn, setYootButtonTurnedOn] = useState(true)
@@ -1094,7 +1724,7 @@ export default function HowToPlay({
     </group>
   }
   
-  function ShortcutPage() {
+  function MovementPage() {
     // #region Springs
     const arrowFriction = 10
     const arrowTension = 180
@@ -1159,11 +1789,68 @@ export default function HowToPlay({
         }
       ],
     })
-    const life = 500
-    const startDelay = 600
-    const numDotSpringsMiddle = 19
-    const dotSpringsMiddle = []
+    const life = 300
+    const startDelay = 500
     const frictionWobbly = 15
+    const delay = 50
+    // Path 0
+    const dotSpringsCircle = []
+    const numDotSpringsCircle = 70
+    for (let i = 0; i < numDotSpringsCircle; i++) {
+      dotSpringsCircle.push(useSpring({
+        from: {
+          scale: 0
+        },
+        to: [
+          {
+            scale: 0.1,
+            config: {
+              tension: 180,
+              friction: frictionWobbly
+            },
+            delay: startDelay + i * delay
+          },
+          {
+            scale: 0,
+            config: {
+              tension: 170,
+              friction: 26
+            },
+            delay: life
+          }
+        ],
+      }))
+    }
+    // Path 1
+    const dotSpringsFirstCorner = []
+    const numDotSpringsFirstCorner = 16
+    for (let i = 0; i < numDotSpringsFirstCorner; i++) {
+      dotSpringsFirstCorner.push(useSpring({
+        from: {
+          scale: 0
+        },
+        to: [
+          {
+            scale: 0.1,
+            config: {
+              tension: 180,
+              friction: frictionWobbly
+            },
+            delay: startDelay + delay * numDotSpringsCircle + i * delay
+          },
+          {
+            scale: 0,
+            config: {
+              tension: 170,
+              friction: 26
+            },
+            delay: life
+          }
+        ],
+      }))
+    }
+    const dotSpringsMiddle = []
+    const numDotSpringsMiddle = 24
     for (let i = 0; i < numDotSpringsMiddle; i++) {
       dotSpringsMiddle.push(useSpring({
         from: {
@@ -1176,7 +1863,7 @@ export default function HowToPlay({
               tension: 180,
               friction: frictionWobbly
             },
-            delay: startDelay + i * 100
+            delay: startDelay + delay * numDotSpringsCircle + delay * numDotSpringsFirstCorner + i * delay
           },
           {
             scale: 0,
@@ -1203,7 +1890,39 @@ export default function HowToPlay({
               tension: 180,
               friction: frictionWobbly
             },
-            delay: startDelay + 100 * numDotSpringsMiddle + i * 100
+            delay: startDelay + delay * numDotSpringsCircle + delay * numDotSpringsFirstCorner + delay * numDotSpringsMiddle + i * delay
+          },
+          {
+            scale: 0,
+            config: {
+              tension: 170,
+              friction: 26
+            },
+            delay: life
+          }
+        ],
+      }))
+    }
+    // Path 2
+    const dotSpringsHalfCircle = []
+    const numDotSpringsHalfCircle = 35
+    for (let i = 0; i < numDotSpringsHalfCircle; i++) {
+      dotSpringsHalfCircle.push(useSpring({
+        from: {
+          scale: 0
+        },
+        to: [
+          {
+            scale: 0.1,
+            config: {
+              tension: 180,
+              friction: frictionWobbly
+            },
+            delay: startDelay + 
+            delay * numDotSpringsCircle + 
+            delay * numDotSpringsFirstCorner + 
+            delay * numDotSpringsMiddle + 
+            delay * numDotSpringsCorner + i * delay
           },
           {
             scale: 0,
@@ -1230,7 +1949,48 @@ export default function HowToPlay({
               tension: 180,
               friction: frictionWobbly
             },
-            delay: startDelay + 100 * numDotSpringsMiddle + 100 * numDotSpringsCorner + i * 100
+            delay: startDelay + 
+            delay * numDotSpringsCircle + 
+            delay * numDotSpringsFirstCorner + 
+            delay * numDotSpringsMiddle + 
+            delay * numDotSpringsCorner + 
+            delay * numDotSpringsHalfCircle + 
+            i * delay
+          },
+          {
+            scale: 0,
+            config: {
+              tension: 170,
+              friction: 26
+            },
+            delay: life
+          }
+        ],
+      }))
+    }
+    // Path 3
+    const dotSpringsFirstCornerPath3 = []
+    const numDotSpringsFirstCornerPath3 = 16
+    for (let i = 0; i < numDotSpringsFirstCornerPath3; i++) {
+      dotSpringsFirstCornerPath3.push(useSpring({
+        from: {
+          scale: 0
+        },
+        to: [
+          {
+            scale: 0.1,
+            config: {
+              tension: 180,
+              friction: frictionWobbly
+            },
+            delay: startDelay + 
+            delay * numDotSpringsCircle + 
+            delay * numDotSpringsFirstCorner + 
+            delay * numDotSpringsMiddle + 
+            delay * numDotSpringsCorner + 
+            delay * numDotSpringsHalfCircle + 
+            delay * numDotSpringsVertical + 
+            i * delay
           },
           {
             scale: 0,
@@ -1244,7 +2004,7 @@ export default function HowToPlay({
       }))
     }
     const dotSpringsMiddleHalf = []
-    const numDotSpringsMiddleHalf = 7
+    const numDotSpringsMiddleHalf = 10
     for (let i = 0; i < numDotSpringsMiddleHalf; i++) {
       dotSpringsMiddleHalf.push(useSpring({
         from: {
@@ -1257,7 +2017,15 @@ export default function HowToPlay({
               tension: 180,
               friction: frictionWobbly
             },
-            delay: startDelay + 100 * numDotSpringsMiddle + 100 * numDotSpringsCorner + 100 * numDotSpringsVertical + i * 100
+            delay: startDelay + 
+            delay * numDotSpringsCircle +
+            delay * numDotSpringsFirstCorner + 
+            delay * numDotSpringsMiddle + 
+            delay * numDotSpringsCorner + 
+            delay * numDotSpringsHalfCircle + 
+            delay * numDotSpringsVertical + 
+            delay * numDotSpringsFirstCornerPath3 + 
+            i * delay
           },
           {
             scale: 0,
@@ -1284,8 +2052,17 @@ export default function HowToPlay({
               tension: 180,
               friction: frictionWobbly
             },
-            // Extra 100 to highlight moving from the Moon
-            delay: startDelay + 100 * numDotSpringsMiddle + 100 * numDotSpringsCorner + 100 * numDotSpringsVertical + 100 * numDotSpringsMiddleHalf + i * 100 + 300
+            // Extra delay to highlight moving from the Moon
+            delay: startDelay + 
+            delay * numDotSpringsCircle +
+            delay * numDotSpringsFirstCorner + 
+            delay * numDotSpringsMiddle + 
+            delay * numDotSpringsCorner + 
+            delay * numDotSpringsHalfCircle + 
+            delay * numDotSpringsVertical + 
+            delay * numDotSpringsFirstCornerPath3 + 
+            delay * numDotSpringsMiddleHalf +
+            i * delay
           },
           {
             scale: 0,
@@ -1300,55 +2077,87 @@ export default function HowToPlay({
     }
     // #endregion
 
-    return <group name='shortcut-page'>
+    return <group name='movement-page'>
       <animated.group name='text'>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
-          position={layout[device].howToPlay.shortcutsPage.text.position} 
-          rotation={layout[device].howToPlay.shortcutsPage.text.rotation}
-          size={layout[device].howToPlay.shortcutsPage.text.size}
-          height={layout[device].howToPlay.shortcutsPage.text.height}
-          lineHeight={layout[device].howToPlay.shortcutsPage.text.lineHeight}
+          position={layout[device].howToPlay.movementPage.text.position} 
+          rotation={layout[device].howToPlay.movementPage.text.rotation}
+          size={layout[device].howToPlay.movementPage.text.size}
+          height={layout[device].howToPlay.movementPage.text.height}
+          lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
         >
-          {`TAKE A SHORTCUT BY STARTING A JUMP\nFROM A PLANET. YOU CANNOT BEND IN\nTHE MIDDLE OF A JUMP.`}
+          {`Your pieces follow the path around the\nboard. There are shortcuts at the corners\n(planets) — if you land on one, you can\ntake the faster diagonal path.`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </animated.group>
       <group 
-      position={layout[device].howToPlay.shortcutsPage.board.position} 
-      scale={layout[device].howToPlay.shortcutsPage.board.scale}>
+      position={layout[device].howToPlay.movementPage.board.position} 
+      scale={layout[device].howToPlay.movementPage.board.scale}>
         <Board showArrows={false} starColor={'#7a7a21'} highlightShortcuts/>
-        {dotSpringsMiddle.map((value, index) => {
-          return <animated.mesh key={index} scale={value.scale} position={[3 - 0.4*index, 0.5, 0.2]}>
-            <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#33ff00'/>
-          </animated.mesh>
-        })}
-        {dotSpringsCorner.map((value, index) => {
-          return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
-            <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#33ff00'/>
-          </animated.mesh>
-        })}
-        {dotSpringsVertical.map((value, index) => {
-          return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
-            <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#33ff00'/>
-          </animated.mesh>
-        })}
-        {dotSpringsMiddleHalf.map((value, index) => {
-          return <animated.mesh key={index} scale={value.scale} position={[3.5 - 0.4*index, 0.5, 0.2]}>
-            <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#33ff00'/>
-          </animated.mesh>
-        })}
-        {dotSpringsVerticalHalf.map((value, index) => {
-          return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
-            <sphereGeometry args={[1, 32, 16]}/>
-            <meshBasicMaterial color='#33ff00'/>
-          </animated.mesh>
-        })}
-        <group name='mars-left-arrow' position={[-0.4, 0.5, 0.2]}>
+        <group name='path-0'>
+          {dotSpringsCircle.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#33ff00'/>
+            </animated.mesh>
+          })}
+        </group>
+        <group name='path-1'>
+          {dotSpringsFirstCorner.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#7300ff'/>
+            </animated.mesh>
+          })}
+          {dotSpringsMiddle.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#7300ff'/>
+            </animated.mesh>
+          })}
+          {dotSpringsCorner.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#7300ff'/>
+            </animated.mesh>
+          })}
+        </group>
+        <group name='path-2'>
+          {dotSpringsHalfCircle.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#00f7ff'/>
+            </animated.mesh>
+          })}
+          {dotSpringsVertical.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#00f7ff'/>
+            </animated.mesh>
+          })}
+        </group>
+        <group name='path-3'>
+          {dotSpringsFirstCornerPath3.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#ff006f'/>
+            </animated.mesh>
+          })}
+          {dotSpringsMiddleHalf.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#ff006f'/>
+            </animated.mesh>
+          })}
+          {dotSpringsVerticalHalf.map((value, index) => {
+            return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
+              <sphereGeometry args={[1, 32, 16]}/>
+              <meshBasicMaterial color='#ff006f'/>
+            </animated.mesh>
+          })}
+        </group>
+        {/* <group name='mars-left-arrow' position={[-0.4, 0.5, 0.2]}>
           <animated.mesh scale={springsArrow0.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
             <coneGeometry args={[0.15, 0.4, 32]}/>
             <meshBasicMaterial color='#33ff00'/>
@@ -1371,7 +2180,7 @@ export default function HowToPlay({
             <coneGeometry args={[0.15, 0.4, 32]}/>
             <meshBasicMaterial color='#33ff00'/>
           </animated.mesh>
-        </group>
+        </group> */}
       </group>
     </group>
   }
@@ -1685,9 +2494,22 @@ export default function HowToPlay({
       document.body.style.cursor = 'default'
       setReadTheDiceHover(false)
     }
-    
-    function handleCatchEnemiesClick() {
+    function handleShortcutClick() {
       setPage(3)
+      setShortcutHover(false)
+      setTabClicked(true)
+      clearTimeout(pageTimeoutRef.current)
+    }
+    function handleShortcutPointerEnter() {
+      document.body.style.cursor = 'pointer'
+      setShortcutHover(true)
+    }
+    function handleShortcutPointerLeave() {
+      document.body.style.cursor = 'default'
+      setShortcutHover(false)
+    }
+    function handleCatchEnemiesClick() {
+      setPage(4)
       setCatchEnemiesHover(false)
       setTabClicked(true)
       clearTimeout(pageTimeoutRef.current)
@@ -1701,7 +2523,7 @@ export default function HowToPlay({
       setCatchEnemiesHover(false)
     }
     function handlePiggybackClick() {
-      setPage(4)
+      setPage(5)
       setPiggybackHover(false)
       setTabClicked(true)
       clearTimeout(pageTimeoutRef.current)
@@ -1715,7 +2537,7 @@ export default function HowToPlay({
       setPiggybackHover(false)
     }
     function handleScoreClick() {
-      setPage(5)
+      setPage(6)
       setScoreHover(false)
       setTabClicked(true)
       clearTimeout(pageTimeoutRef.current)
@@ -1727,20 +2549,6 @@ export default function HowToPlay({
     function handleScorePointerLeave() {
       document.body.style.cursor = 'default'
       setScoreHover(false)
-    }
-    function handleShortcutClick() {
-      setPage(6)
-      setShortcutHover(false)
-      setTabClicked(true)
-      clearTimeout(pageTimeoutRef.current)
-    }
-    function handleShortcutPointerEnter() {
-      document.body.style.cursor = 'pointer'
-      setShortcutHover(true)
-    }
-    function handleShortcutPointerLeave() {
-      document.body.style.cursor = 'default'
-      setShortcutHover(false)
     }
     function handleTipsPointerEnter() {
       document.body.style.cursor = 'pointer'
@@ -1847,16 +2655,45 @@ export default function HowToPlay({
           </Text3D>
         </group>
         <group name='tab-3' position={[0,0,0.8]} scale={0.8}>
+          <mesh position={[1.65, -0.1, -0.2]}>
+            <boxGeometry args={[3.7, 0.05, 0.75]}/>
+            <meshStandardMaterial color='black'/>
+          </mesh>
+          <mesh position={[1.65, -0.1, -0.2]}>
+            <boxGeometry args={[3.8, 0.04, 0.85]}/>
+            <meshStandardMaterial color={shortcutHover || page === 3 ? 'green' : 'yellow'}/>
+          </mesh>
+          <mesh 
+            name='tab-3-wrapper' 
+            position={[1.65, -0.1, -0.2]}
+            onClick={handleShortcutClick}
+            onPointerEnter={handleShortcutPointerEnter}
+            onPointerLeave={handleShortcutPointerLeave}
+          >
+            <boxGeometry args={[3.8, 0.1, 0.85]}/>
+            <meshStandardMaterial transparent opacity={0}/>
+          </mesh>
+          <Text3D
+            font="/fonts/Luckiest Guy_Regular.json"
+            rotation={[-Math.PI/2, 0, 0]}
+            size={0.4}
+            height={0.01}
+          >
+            4. MOVEMENT
+            <meshStandardMaterial color={shortcutHover || page === 3 ? 'green' : 'yellow'}/>
+          </Text3D>
+        </group>
+        <group name='tab-4' position={[3.1, 0, 0.8]} scale={0.8}>
           <mesh position={[2.15, -0.1, -0.2]}>
             <boxGeometry args={[4.6, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <mesh position={[2.15, -0.1, -0.2]}>
             <boxGeometry args={[4.7, 0.04, 0.85]}/>
-            <meshStandardMaterial color={catchEnemiesHover || page === 3 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={catchEnemiesHover || page === 4 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-3-wrapper' 
+            name='tab-4-wrapper' 
             position={[2.15, -0.1, -0.2]}
             onClick={handleCatchEnemiesClick}
             onPointerEnter={handleCatchEnemiesPointerEnter}
@@ -1871,22 +2708,22 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            4. CATCH ENEMIES
-            <meshStandardMaterial color={catchEnemiesHover || page === 3 ? 'green' : 'yellow'}/>
+            5. CATCH ENEMIES
+            <meshStandardMaterial color={catchEnemiesHover || page === 4 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-4' position={[3.85,0,0.8]} scale={0.8}>
+        <group name='tab-5' position={[6.95,0,0.8]} scale={0.8}>
           <mesh position={[1.75, -0.1, -0.2]}>
             <boxGeometry args={[3.8, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <mesh position={[1.75, -0.1, -0.2]}>
             <boxGeometry args={[3.9, 0.04, 0.85]}/>
-            <meshStandardMaterial color={piggybackHover || page === 4 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={piggybackHover || page === 5 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-4-wrapper' 
-            position={[1.7, -0.1, -0.2]}
+            name='tab-5-wrapper' 
+            position={[1.75, -0.1, -0.2]}
             onClick={handlePiggybackClick}
             onPointerEnter={handlePiggybackPointerEnter}
             onPointerLeave={handlePiggybackPointerLeave}
@@ -1900,22 +2737,22 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            5. PIGGYBACK
-            <meshStandardMaterial color={piggybackHover || page === 4 ? 'green' : 'yellow'}/>
+            6. PIGGYBACK
+            <meshStandardMaterial color={piggybackHover || page === 5 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-5' position={[7.05,0,0.8]} scale={0.8}>
-          <mesh position={[1.1, -0.1, -0.2]}>
+        <group name='tab-6' position={[0,0,1.6]} scale={0.8}>
+          <mesh position={[1.05, -0.1, -0.2]}>
             <boxGeometry args={[2.45, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.1, -0.1, -0.2]}>
+          <mesh position={[1.05, -0.1, -0.2]}>
             <boxGeometry args={[2.55, 0.04, 0.85]}/>
-            <meshStandardMaterial color={scoreHover || page === 5 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-5-wrapper' 
-            position={[1.1, -0.1, -0.2]} 
+            name='tab-6-wrapper' 
+            position={[1.05, -0.1, -0.2]} 
             onClick={handleScoreClick}
             onPointerEnter={handleScorePointerEnter}
             onPointerLeave={handleScorePointerLeave}
@@ -1929,27 +2766,27 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            6. SCORE
-            <meshStandardMaterial color={scoreHover || page === 5 ? 'green' : 'yellow'}/>
+            7. SCORE
+            <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-6' position={[0,0,1.6]} scale={0.8}>
-          <mesh position={[1.6, -0.1, -0.2]}>
-            <boxGeometry args={[3.5, 0.05, 0.75]}/>
+        <group name='tab-7' position={[2.15,0,1.6]} scale={0.8}>
+          <mesh position={[0.8, -0.1, -0.2]}>
+            <boxGeometry args={[2.0, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.6, -0.1, -0.2]}>
-            <boxGeometry args={[3.6, 0.04, 0.85]}/>
-            <meshStandardMaterial color={shortcutHover || page === 6 ? 'green' : 'yellow'}/>
+          <mesh position={[0.8, -0.1, -0.2]}>
+            <boxGeometry args={[2.1, 0.04, 0.85]}/>
+            <meshStandardMaterial color={tipsHover || page === 7 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-6-wrapper' 
-            position={[1.6, -0.1, -0.2]}
-            onClick={handleShortcutClick}
-            onPointerEnter={handleShortcutPointerEnter}
-            onPointerLeave={handleShortcutPointerLeave}
+            name='tab-7-wrapper' 
+            position={[0.8, -0.1, -0.2]} 
+            onClick={handleTipsClick}
+            onPointerEnter={handleTipsPointerEnter}
+            onPointerLeave={handleTipsPointerLeave}
           >
-            <boxGeometry args={[3.6, 0.1, 0.85]}/>
+            <boxGeometry args={[2.1, 0.1, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -1958,8 +2795,8 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            7. SHORTCUT
-            <meshStandardMaterial color={shortcutHover || page === 6 ? 'green' : 'yellow'}/>
+            8. TIPS
+            <meshStandardMaterial color={tipsHover || page === 7 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
       </group>
@@ -2063,16 +2900,45 @@ export default function HowToPlay({
           </Text3D>
         </group>
         <group name='tab-3' position={[0,0,2.4]} scale={0.8}>
+          <mesh position={[1.7, -0.1, -0.2]}>
+            <boxGeometry args={[3.7, 0.05, 0.75]}/>
+            <meshStandardMaterial color='black'/>
+          </mesh>
+          <mesh position={[1.7, -0.1, -0.2]}>
+            <boxGeometry args={[3.8, 0.04, 0.85]}/>
+            <meshStandardMaterial color={shortcutHover || page === 3 ? 'green' : 'yellow'}/>
+          </mesh>
+          <mesh 
+            name='tab-3-wrapper' 
+            position={[1.7, -0.1, -0.2]}
+            onClick={handleShortcutClick}
+            onPointerEnter={handleShortcutPointerEnter}
+            onPointerLeave={handleShortcutPointerLeave}
+          >
+            <boxGeometry args={[3.8, 0.1, 0.85]}/>
+            <meshStandardMaterial transparent opacity={0}/>
+          </mesh>
+          <Text3D
+            font="/fonts/Luckiest Guy_Regular.json"
+            rotation={[-Math.PI/2, 0, 0]}
+            size={0.4}
+            height={0.01}
+          >
+            4. MOVEMENT
+            <meshStandardMaterial color={shortcutHover || page === 3 ? 'green' : 'yellow'}/>
+          </Text3D>
+        </group>
+        <group name='tab-4' position={[0,0,3.2]} scale={0.8}>
           <mesh position={[2.15, -0.1, -0.2]}>
             <boxGeometry args={[4.6, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <mesh position={[2.15, -0.1, -0.2]}>
             <boxGeometry args={[4.7, 0.04, 0.85]}/>
-            <meshStandardMaterial color={catchEnemiesHover || page === 3 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={catchEnemiesHover || page === 4 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-3-wrapper' 
+            name='tab-4-wrapper' 
             position={[2.15, -0.1, -0.2]}
             onClick={handleCatchEnemiesClick}
             onPointerEnter={handleCatchEnemiesPointerEnter}
@@ -2087,21 +2953,21 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            4. CATCH ENEMIES
-            <meshStandardMaterial color={catchEnemiesHover || page === 3 ? 'green' : 'yellow'}/>
+            5. CATCH ENEMIES
+            <meshStandardMaterial color={catchEnemiesHover || page === 4 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-4' position={[0,0,3.2]} scale={0.8}>
+        <group name='tab-5' position={[0,0,4]} scale={0.8}>
           <mesh position={[1.75, -0.1, -0.2]}>
             <boxGeometry args={[3.8, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <mesh position={[1.75, -0.1, -0.2]}>
             <boxGeometry args={[3.9, 0.04, 0.85]}/>
-            <meshStandardMaterial color={piggybackHover || page === 4 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={piggybackHover || page === 5 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-4-wrapper' 
+            name='tab-5-wrapper' 
             position={[1.7, -0.1, -0.2]}
             onClick={handlePiggybackClick}
             onPointerEnter={handlePiggybackPointerEnter}
@@ -2116,21 +2982,21 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            5. PIGGYBACK
-            <meshStandardMaterial color={piggybackHover || page === 4 ? 'green' : 'yellow'}/>
+            6. PIGGYBACK
+            <meshStandardMaterial color={piggybackHover || page === 5 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-5' position={[-0.025,0,4]} scale={0.8}>
+        <group name='tab-6' position={[-0.025, 0, 4.8]} scale={0.8}>
           <mesh position={[1.1, -0.1, -0.2]}>
             <boxGeometry args={[2.45, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
           <mesh position={[1.1, -0.1, -0.2]}>
             <boxGeometry args={[2.55, 0.04, 0.85]}/>
-            <meshStandardMaterial color={scoreHover || page === 5 ? 'green' : 'yellow'}/>
+            <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
-            name='tab-5-wrapper' 
+            name='tab-6-wrapper' 
             position={[1.1, -0.1, -0.2]} 
             onClick={handleScoreClick}
             onPointerEnter={handleScorePointerEnter}
@@ -2145,37 +3011,8 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            6. SCORE
-            <meshStandardMaterial color={scoreHover || page === 5 ? 'green' : 'yellow'}/>
-          </Text3D>
-        </group>
-        <group name='tab-6' position={[0,0,4.8]} scale={0.8}>
-          <mesh position={[1.6, -0.1, -0.2]}>
-            <boxGeometry args={[3.5, 0.05, 0.75]}/>
-            <meshStandardMaterial color='black'/>
-          </mesh>
-          <mesh position={[1.6, -0.1, -0.2]}>
-            <boxGeometry args={[3.6, 0.04, 0.85]}/>
-            <meshStandardMaterial color={shortcutHover || page === 6 ? 'green' : 'yellow'}/>
-          </mesh>
-          <mesh 
-            name='tab-6-wrapper' 
-            position={[1.6, -0.1, -0.2]}
-            onClick={handleShortcutClick}
-            onPointerEnter={handleShortcutPointerEnter}
-            onPointerLeave={handleShortcutPointerLeave}
-          >
-            <boxGeometry args={[3.6, 0.1, 0.85]}/>
-            <meshStandardMaterial transparent opacity={0}/>
-          </mesh>
-          <Text3D
-            font="/fonts/Luckiest Guy_Regular.json"
-            rotation={[-Math.PI/2, 0, 0]}
-            size={0.4}
-            height={0.01}
-          >
-            7. SHORTCUT
-            <meshStandardMaterial color={shortcutHover || page === 6 ? 'green' : 'yellow'}/>
+            7. SCORE
+            <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
         <group name='tab-7' position={[0,0,5.6]} scale={0.8}>
@@ -2479,636 +3316,11 @@ export default function HowToPlay({
     </group>
   }
 
-  function Overview() {
-    const TILE_RADIUS = 5
-    const scorePositionShift = [-4.5, 0, 1]
-    const springs = useSpring({
-      from: {
-        catchTokenPosition: [
-          -Math.cos(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          1.5,
-          Math.sin(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-        ],
-        catchTokenScale: 1.5,
-        piggybackTokenPosition: [-4.1,1,-3.1],
-        movingTokenPosition: [-4.3,0,6.5],
-        movingTokenScale: 1,
-        catchAlertScale: 0,
-        catchTokenHomeScale: 0,
-        piggybackAlertScale: 0,
-        piggybackTokenScale: 1.5,
-        welcomeHomeAlertScale: 0,
-        scoredIndicator0Scale: 0,
-        scoredIndicator1Scale: 0,
-      },
-      to: [
-        {
-          movingTokenPosition: [
-            -Math.cos(((5) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            2.5,
-            Math.sin(((5) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          movingTokenScale: 1.4,
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((6) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((6) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((7) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((7) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((8) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((8) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((9) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((9) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((10) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((10) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((11) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((11) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((12) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          catchAlertScale: 0.7,
-        },
-        {
-          catchTokenPosition: [4.5, 0, 5.5],
-          catchTokenScale: 0,
-          delay: 500
-        },
-        {
-          catchTokenHomeScale: 1,
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((13) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((13) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          catchAlertScale: 0
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((14) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((14) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((15) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((15) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((16) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((16) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((17) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((17) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-            1.5,
-            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackAlertScale: 0.7
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((18) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenScale: 1.4,
-          delay: 500
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((19) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackAlertScale: 0
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((20) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((21) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((22) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((23) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((24) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS,
-          ],
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
-          ],
-          welcomeHomeAlertScale: 1
-        },
-        {
-          movingTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5 + scorePositionShift[0],
-            1.5 + scorePositionShift[1],
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + scorePositionShift[2],
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5 + scorePositionShift[0],
-            1.5 + scorePositionShift[1],
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + scorePositionShift[2],
-          ],
-          movingTokenScale: 0,
-          piggybackTokenScale: 0,
-          welcomeHomeAlertScale: 0,
-          delay: 500
-        },
-        {
-          scoredIndicator0Scale: 0.4,
-          scoredIndicator1Scale: 0.4,
-        }
-      ],
-      delay: 1000,
-      config: {
-        tension: 170,
-        friction: 26
-      }
-    })
-
-    function CatchAlert({ position, scale }) {
-      
-      const borderMesh0Ref = useRef();
-      const borderMesh1Ref = useRef();
-      const borderMesh2Ref = useRef();
-      const borderMesh3Ref = useRef();
-      const borderMesh4Ref = useRef();
-      const borderMesh5Ref = useRef();
-      const borderMesh6Ref = useRef();
-      const borderMeshRefs = [
-        borderMesh0Ref,
-        borderMesh1Ref,
-        borderMesh2Ref,
-        borderMesh3Ref,
-        borderMesh4Ref,
-        borderMesh5Ref,
-        borderMesh6Ref
-      ]
-
-      const height = 1
-      const width = 2
-      const starScale = 0.1
-      useFrame((state) => {
-        const time = state.clock.elapsedTime 
-        for (let i = 0; i < borderMeshRefs.length; i++) {      
-          if (borderMeshRefs[i].current) {
-            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
-            borderMeshRefs[i].current.position.y = 0.05
-            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
-          }
-        }
-      })
-
-      return <animated.group position={position} scale={scale}>
-        <mesh scale={[width, 0.01, height]}>
-          <cylinderGeometry args={[1, 1, 1, 32]}/>
-          <meshStandardMaterial color='black' transparent opacity={0.3}/>
-        </mesh>
-        <Text3D
-        name='main-text'
-        font="/fonts/Luckiest Guy_Regular.json"
-        position={[-1.29,0,0.25]}
-        rotation={[-Math.PI/2,0,0]}
-        size={0.6}
-        height={0.01}>
-          CATCH!
-          <meshStandardMaterial color='limegreen'/>
-        </Text3D>
-        <group ref={borderMesh0Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh1Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh2Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh3Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh4Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh5Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh6Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-      </animated.group>
-    }
-
-    function PiggybackAlert({ position, scale }) {
-      
-      const borderMesh0Ref = useRef();
-      const borderMesh1Ref = useRef();
-      const borderMesh2Ref = useRef();
-      const borderMesh3Ref = useRef();
-      const borderMesh4Ref = useRef();
-      const borderMesh5Ref = useRef();
-      const borderMesh6Ref = useRef();
-      const borderMeshRefs = [
-        borderMesh0Ref,
-        borderMesh1Ref,
-        borderMesh2Ref,
-        borderMesh3Ref,
-        borderMesh4Ref,
-        borderMesh5Ref,
-        borderMesh6Ref
-      ]
-
-      const height = 1
-      const width = 2.5
-      const starScale = 0.1
-      useFrame((state) => {
-        const time = state.clock.elapsedTime 
-        for (let i = 0; i < borderMeshRefs.length; i++) {      
-          if (borderMeshRefs[i].current) {
-            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
-            borderMeshRefs[i].current.position.y = 0.05
-            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
-          }
-        }
-      })
-
-      return <animated.group position={position} scale={scale}>
-        <mesh scale={[width, 0.01, height]}>
-          <cylinderGeometry args={[1, 1, 1, 32]}/>
-          <meshStandardMaterial color='black' transparent opacity={0.3}/>
-        </mesh>
-        <Text3D
-        name='main-text'
-        font="/fonts/Luckiest Guy_Regular.json"
-        position={[-1.8,0,0.2]}
-        rotation={layout[device].game.whoGoesFirst.title.rotation}
-        size={0.5}
-        height={layout[device].game.whoGoesFirst.title.height}>
-          PIGGYBACK!
-          <meshStandardMaterial color='limegreen'/>
-        </Text3D>
-        <group ref={borderMesh0Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh1Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh2Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh3Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh4Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh5Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh6Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-      </animated.group>
-    }
-
-    function WelcomeHomeAlert({ position, scale }) {
-      
-      const borderMesh0Ref = useRef();
-      const borderMesh1Ref = useRef();
-      const borderMesh2Ref = useRef();
-      const borderMesh3Ref = useRef();
-      const borderMesh4Ref = useRef();
-      const borderMesh5Ref = useRef();
-      const borderMesh6Ref = useRef();
-      const borderMeshRefs = [
-        borderMesh0Ref,
-        borderMesh1Ref,
-        borderMesh2Ref,
-        borderMesh3Ref,
-        borderMesh4Ref,
-        borderMesh5Ref,
-        borderMesh6Ref
-      ]
-
-      const height = 1.3
-      const width = 2.4
-      const starScale = 0.12
-      useFrame((state) => {
-        const time = state.clock.elapsedTime 
-        for (let i = 0; i < borderMeshRefs.length; i++) {      
-          if (borderMeshRefs[i].current) {
-            borderMeshRefs[i].current.position.x = Math.cos(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * width
-            borderMeshRefs[i].current.position.y = 0.05
-            borderMeshRefs[i].current.position.z = Math.sin(time / 2 + 2 * Math.PI/borderMeshRefs.length * i) * height
-          }
-        }
-      })
-
-      return <animated.group position={position} scale={scale}>
-        <mesh scale={[width, 0.01, height]}>
-          <cylinderGeometry args={[1, 1, 1, 32]}/>
-          <meshStandardMaterial color='black' transparent opacity={0.8}/>
-        </mesh>
-        <Text3D
-        name='main-text'
-        font="/fonts/Luckiest Guy_Regular.json"
-        position={[-1.45,0,-0.1]}
-        rotation={layout[device].game.whoGoesFirst.title.rotation}
-        size={0.5}
-        height={layout[device].game.whoGoesFirst.title.height}
-        lineHeight={0.8}>
-          {`WELCOME\n    HOME!`}
-          <meshStandardMaterial color='limegreen'/>
-        </Text3D>
-        <group ref={borderMesh0Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh1Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh2Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh3Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh4Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh5Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-        <group ref={borderMesh6Ref}>
-          <Star 
-            scale={starScale}
-            color='limegreen'
-          />
-        </group>
-      </animated.group>
-    }
-
-    return <group>
-      <CatchAlert position={[7.5, 1, -5]} scale={springs.catchAlertScale}/>
-      <PiggybackAlert position={[-1.5, 1, -5]} scale={springs.piggybackAlertScale}/>
-      <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
-      <group name='scene' position={layout[device].howToPlay.overviewPage.scene.position}>
-        <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
-          <Board showConstellations={false} showStart/>
-          {/* Catch token */}
-          <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
-            <Ufo onBoard/>
-          </animated.group>
-          {/* Piggyback token */}
-          <animated.group scale={springs.piggybackTokenScale} position={springs.piggybackTokenPosition}>
-            <Rocket onBoard/>
-          </animated.group>
-          {/* Moving token */}
-          <animated.group scale={springs.movingTokenScale} position={springs.movingTokenPosition}>
-            <Rocket onBoard/>
-          </animated.group>
-        </group>
-        <group name='ufo-home' position={[7, 0, 5]}>
-          <mesh position={[0, -0.5, -0.2]}>
-            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
-            <meshStandardMaterial color='turquoise' transparent opacity={0.05}/>
-          </mesh>
-          <Ufo position={[-0.5,0,-0.4]}/>
-          <Ufo position={[0.5,0,-0.4]}/>
-          <Ufo position={[-0.5,0,0.4]}/>
-          <animated.group scale={springs.catchTokenHomeScale}>
-            <Ufo position={[0.5,0,0.4]}/>
-          </animated.group>
-          {/* Add hologram Ufo */}
-        </group>
-        <group name='rocket-home' position={[-1.5, 0, 5]}>
-          <mesh position={[0, -0.5, -0.2]}>
-            <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
-            <meshStandardMaterial color='red' transparent opacity={0.1}/>
-          </mesh>
-          <Rocket position={[-0.6,0,-0.5]}/>
-          <Rocket position={[0.4,0,-0.5]}/>
-          {/* Moving token */}
-          {/* Add hologram Rocket */}
-          <animated.group name='scored-indicator-0' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator0Scale}>
-            <Star color='red'/>
-          </animated.group>
-          <animated.group name='scored-indicator-1' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator1Scale}>
-            <Star color='red'/>
-          </animated.group>
-        </group>
-        <group name='yoot-display' position={[4.2, 0, 1.4]}>
-          <Text3D 
-          name='goal'
-          font="/fonts/Luckiest Guy_Regular.json"
-          position={[1,0,-0.5]}
-          rotation={layout[device].game.whoGoesFirst.title.rotation}
-          size={0.3}
-          height={layout[device].game.whoGoesFirst.title.height}>
-            {`YUT\n(DICE)`}
-            <meshStandardMaterial color='yellow'/>
-          </Text3D>
-          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
-        </group>
-      </group>
-      <Text3D 
-      name='goal'
-      font="/fonts/Luckiest Guy_Regular.json"
-      position={layout[device].howToPlay.overviewPage.text.position}
-      rotation={layout[device].howToPlay.overviewPage.text.rotation}
-      size={layout[device].howToPlay.overviewPage.text.size}
-      height={layout[device].howToPlay.overviewPage.text.height}>
-        {`YUT NORI IS A BOARD GAME PLAYED WITH FOUR\nSTICKS CALLED YUT. THE GOAL IS TO MOVE ALL YOUR\nTOKENS AROUND THE BOARD BEFORE THE OTHER TEAM.`}
-        <meshStandardMaterial color='yellow'/>
-      </Text3D>
-    </group>
+  function TipsPage() {
+    return <></>
   }
 
-  const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>, <ShortcutPage/>]
+  const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <MovementPage/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>,  <TipsPage/>]
 
   return <group position={position} rotation={rotation} scale={scale}>
     { pages[page] }

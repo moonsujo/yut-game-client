@@ -717,7 +717,7 @@ export default {
           rotation: [0, Math.PI/2, 0]
         }
       },
-      shortcutsPage: {
+      movementPage: {
         text: {
           position: [-2.1,0,6.5],
           rotation: [-Math.PI/2, 0, 0],
@@ -2092,10 +2092,10 @@ export default {
       scale: 0.8,
       overviewPage: {
         scene: {
-          position: [0, 0, 0]
+          position: [0, 0, -0.5]
         },
         text: {
-          position: [-2.5,0,7.5],
+          position: [-2.5,0,6.8],
           rotation: [-Math.PI/2,0,0],
           size: 0.4,
           height: 0.01
@@ -2558,9 +2558,9 @@ export default {
           rotation: [0, Math.PI/2, 0]
         }
       },
-      shortcutsPage: {
+      movementPage: {
         text: {
-          position: [-2.2,0,7],
+          position: [-2.4,0,7],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
