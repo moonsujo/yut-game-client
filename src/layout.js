@@ -131,10 +131,11 @@ export default {
       scale: 0.9,
       overviewPage: {
         scene: {
-          position: [0, 0, -0.3]
+          scale: 0.9,
+          position: [0, 0, -0.7]
         },
         text: {
-          position: [-3.5,0,7],
+          position: [-2.7,0,6],
           rotation: [-Math.PI/2,0,0],
           size: 0.4,
           height: 0.01
@@ -510,6 +511,10 @@ export default {
           position: [-0.5, 0, 3],
           scale: 1.3
         },
+        ufoHome: {
+          position: [-0.5, 0, 2.5],
+          scale: 1.2
+        },
         text: {
           position: [-3,0,6.5],
           rotation: [-Math.PI/2, 0, 0],
@@ -719,7 +724,7 @@ export default {
       },
       movementPage: {
         text: {
-          position: [-2.1,0,6.5],
+          position: [-2.7,0,6.1],
           rotation: [-Math.PI/2, 0, 0],
           size: 0.4,
           height: 0.01,
@@ -727,7 +732,7 @@ export default {
           scales: [1, 0] 
         },
         board: {
-          position: [2.8, 0, -0.5],
+          position: [2.8, 0, -0.9],
           scale: 0.83
         },
         scoreText: {
@@ -2332,6 +2337,10 @@ export default {
           scale: 1.2,
         },
         rocketHome: {
+          position: [-0.5, 0, 2.5],
+          scale: 1.2
+        },
+        ufoHome: {
           position: [-0.5, 0, 2.5],
           scale: 1.2
         },

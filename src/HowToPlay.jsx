@@ -636,7 +636,7 @@ export default function HowToPlay({
       <CatchAlert position={[7.5, 1, -5]} scale={springs.catchAlertScale}/>
       <PiggybackAlert position={[-1.5, 1, -5]} scale={springs.piggybackAlertScale}/>
       <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
-      <group name='scene' position={layout[device].howToPlay.overviewPage.scene.position}>
+      <group name='scene' scale={layout[device].howToPlay.overviewPage.scene.scale} position={layout[device].howToPlay.overviewPage.scene.position}>
         <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
           <Board showConstellations={false} showStart/>
           {/* Catch token */}
@@ -906,8 +906,8 @@ export default function HowToPlay({
           radius = 0.6 + Math.random() * 0.1
         }
         const color = new THREE.Color();
-        const hue = 140/360
-        color.setHSL(hue, 1, 0.6)
+        const hue = 0.01
+        color.setHSL(hue, 0.7, 0.5)
         
         CreateFirework({ count, position, size, radius, color });
       }, 4500) 
@@ -927,8 +927,8 @@ export default function HowToPlay({
         }
 
         const color = new THREE.Color();
-        const hue = 140/360
-        color.setHSL(hue, 1, 0.6)
+        const hue = 0.01
+        color.setHSL(hue, 0.7, 0.5)
         
         CreateFirework({ count, position, size, radius, color });
       }, 4700) // When 'welcome home!' displays
@@ -948,8 +948,8 @@ export default function HowToPlay({
         }
 
         const color = new THREE.Color();
-        const hue = 140/360
-        color.setHSL(hue, 1, 0.6)
+        const hue = 0.01
+        color.setHSL(hue, 0.7, 0.5)
         
         CreateFirework({ count, position, size, radius, color });
       }, 4900) // When 'welcome home!' displays
@@ -969,8 +969,8 @@ export default function HowToPlay({
         }
 
         const color = new THREE.Color();
-        const hue = 140/360
-        color.setHSL(hue, 1, 0.6)
+        const hue = 0.01
+        color.setHSL(hue, 0.7, 0.5)
         
         CreateFirework({ count, position, size, radius, color });
       }, 5100) // When 'welcome home!' displays
@@ -1000,8 +1000,8 @@ export default function HowToPlay({
         movingTokenScale: 1.4,
         piggybackTokenScale: 1.4,
         welcomeHomeAlertScale: 0,
-        scoredIndicator0Scale: 0,
-        scoredIndicator1Scale: 0,
+        scoredIndicator2Scale: 0,
+        scoredIndicator3Scale: 0,
       },
       to: [
         {
@@ -1066,37 +1066,37 @@ export default function HowToPlay({
         },
         {
           movingTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5,
-            1.5,
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.8,
+            2,
             Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
           ],
           piggybackTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5,
-            1.5,
+            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.8,
+            2,
             Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5,
           ],
+          movingTokenScale: 2.5,
+          piggybackTokenScale: 2.5,
+          scoredIndicator2Scale: 0.4,
+          scoredIndicator3Scale: 0.4,
           welcomeHomeAlertScale: 1
         },
-        {
-          movingTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5 + homeTokenShift[0],
-            1.5 + homeTokenShift[1],
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + homeTokenShift[2],
-          ],
-          piggybackTokenPosition: [
-            -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5 + homeTokenShift[0],
-            1.5 + homeTokenShift[1],
-            Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + homeTokenShift[2],
-          ],
-          movingTokenScale: 0,
-          piggybackTokenScale: 0,
-          welcomeHomeAlertScale: 0,
-          delay: 2200
-        },
-        {
-          scoredIndicator0Scale: 0.4,
-          scoredIndicator1Scale: 0.4,
-        }
+        // {
+        //   movingTokenPosition: [
+        //     -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 0.5 + homeTokenShift[0],
+        //     1.5 + homeTokenShift[1],
+        //     Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + homeTokenShift[2],
+        //   ],
+        //   piggybackTokenPosition: [
+        //     -Math.cos(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS - 0.5 + homeTokenShift[0],
+        //     1.5 + homeTokenShift[1],
+        //     Math.sin(((25) * (Math.PI * 2)) / 20) * TILE_RADIUS + 1.5 + homeTokenShift[2],
+        //   ],
+        //   movingTokenScale: 0,
+        //   piggybackTokenScale: 0,
+        //   welcomeHomeAlertScale: 0,
+        //   delay: 2200
+        // },
       ],
       config: {
         tension: 170,
@@ -1138,63 +1138,63 @@ export default function HowToPlay({
       })
 
       return <animated.group position={position} scale={scale}>
-        <mesh scale={[width, 0.01, height]}>
+        {/* <mesh scale={[width, 0.01, height]}>
           <cylinderGeometry args={[1, 1, 1, 32]}/>
           <meshStandardMaterial color='black' transparent opacity={0.8}/>
-        </mesh>
+        </mesh> */}
         <Text3D
         name='main-text'
         font="/fonts/Luckiest Guy_Regular.json"
-        position={[-1.45,0,-0.1]}
+        position={[-2.5,0,-0.1]}
         rotation={layout[device].game.whoGoesFirst.title.rotation}
-        size={0.5}
+        size={0.6}
         height={layout[device].game.whoGoesFirst.title.height}
         lineHeight={0.8}>
-          {`WELCOME\n    HOME!`}
-          <meshStandardMaterial color='limegreen'/>
+          {`MISSION\nACCOMPLISHED!`}
+          <meshStandardMaterial color='red'/>
         </Text3D>
-        <group ref={borderMesh0Ref}>
+        {/* <group ref={borderMesh0Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh1Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh2Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh3Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh4Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh5Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
         </group>
         <group ref={borderMesh6Ref}>
           <Star 
             scale={starScale}
-            color='limegreen'
+            color='red'
           />
-        </group>
+        </group> */}
       </animated.group>
     }
 
@@ -1223,12 +1223,16 @@ export default function HowToPlay({
           <cylinderGeometry args={[1.4, 1.4, 0.01, 32]}/>
           <meshStandardMaterial color='red' transparent opacity={0.1}/>
         </mesh>
-        <Rocket position={[-0.6,0,-0.5]}/>
-        <Rocket position={[0.4,0,-0.5]}/>
-        <animated.group name='scored-indicator-0' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator0Scale}>
+        <animated.group name='scored-indicator-0' position={[-0.5, 0, -0.5]} scale={0.4}>
           <Star color='red'/>
         </animated.group>
-        <animated.group name='scored-indicator-1' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator1Scale}>
+        <animated.group name='scored-indicator-1' position={[0.5, 0, -0.5]} scale={0.4}>
+          <Star color='red'/>
+        </animated.group>
+        <animated.group name='scored-indicator-2' position={[-0.5, 0, 0.5]} scale={springs.scoredIndicator2Scale}>
+          <Star color='red'/>
+        </animated.group>
+        <animated.group name='scored-indicator-3' position={[0.5, 0, 0.5]} scale={springs.scoredIndicator3Scale}>
           <Star color='red'/>
         </animated.group>
       </group>
@@ -1241,7 +1245,7 @@ export default function HowToPlay({
         height={layout[device].howToPlay.scoringPage.text.height}
         lineHeight={layout[device].howToPlay.scoringPage.text.lineHeight}
       >
-        {`SCORE THE TOKEN BY BRINGING IT TO THE\nFINISH STAR. IT HAS TO PASS EARTH.`}
+        {`Be the first team to move all of your\npieces around the board and off the\nfinish point.`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
     </group>
@@ -2742,22 +2746,22 @@ export default function HowToPlay({
           </Text3D>
         </group>
         <group name='tab-6' position={[0,0,1.6]} scale={0.8}>
-          <mesh position={[1.05, -0.1, -0.2]}>
-            <boxGeometry args={[2.45, 0.05, 0.75]}/>
+          <mesh position={[1.45, -0.1, -0.2]}>
+            <boxGeometry args={[3.25, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.05, -0.1, -0.2]}>
-            <boxGeometry args={[2.55, 0.04, 0.85]}/>
+          <mesh position={[1.45, -0.1, -0.2]}>
+            <boxGeometry args={[3.35, 0.04, 0.85]}/>
             <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
             name='tab-6-wrapper' 
-            position={[1.05, -0.1, -0.2]} 
+            position={[1.45, -0.1, -0.2]} 
             onClick={handleScoreClick}
             onPointerEnter={handleScorePointerEnter}
             onPointerLeave={handleScorePointerLeave}
           >
-            <boxGeometry args={[2.5, 0.1, 0.85]}/>
+            <boxGeometry args={[3.35, 0.05, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -2766,11 +2770,11 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            7. SCORE
+            7. WINNING
             <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
-        <group name='tab-7' position={[2.15,0,1.6]} scale={0.8}>
+        <group name='tab-7' position={[2.8,0,1.6]} scale={0.8}>
           <mesh position={[0.8, -0.1, -0.2]}>
             <boxGeometry args={[2.0, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
@@ -2987,22 +2991,22 @@ export default function HowToPlay({
           </Text3D>
         </group>
         <group name='tab-6' position={[-0.025, 0, 4.8]} scale={0.8}>
-          <mesh position={[1.1, -0.1, -0.2]}>
-            <boxGeometry args={[2.45, 0.05, 0.75]}/>
+          <mesh position={[1.5, -0.1, -0.2]}>
+            <boxGeometry args={[3.25, 0.05, 0.75]}/>
             <meshStandardMaterial color='black'/>
           </mesh>
-          <mesh position={[1.1, -0.1, -0.2]}>
-            <boxGeometry args={[2.55, 0.04, 0.85]}/>
+          <mesh position={[1.5, -0.1, -0.2]}>
+            <boxGeometry args={[3.35, 0.04, 0.85]}/>
             <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </mesh>
           <mesh 
             name='tab-6-wrapper' 
-            position={[1.1, -0.1, -0.2]} 
+            position={[1.5, -0.1, -0.2]} 
             onClick={handleScoreClick}
             onPointerEnter={handleScorePointerEnter}
             onPointerLeave={handleScorePointerLeave}
           >
-            <boxGeometry args={[2.5, 0.1, 0.85]}/>
+            <boxGeometry args={[3.35, 0.1, 0.85]}/>
             <meshStandardMaterial transparent opacity={0}/>
           </mesh>
           <Text3D
@@ -3011,7 +3015,7 @@ export default function HowToPlay({
             size={0.4}
             height={0.01}
           >
-            7. SCORE
+            7. WINNING
             <meshStandardMaterial color={scoreHover || page === 6 ? 'green' : 'yellow'}/>
           </Text3D>
         </group>
