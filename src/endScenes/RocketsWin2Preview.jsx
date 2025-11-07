@@ -15,6 +15,7 @@ import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useSpring, animated } from "@react-spring/three";
 import Blackhole2 from "../Blackhole2";
+import GoldenMoon from "../meshes/GoldenMoon";
 
 export default function RocketsWin2Preview({ position, scale, backButton }) {
 
@@ -209,6 +210,7 @@ export default function RocketsWin2Preview({ position, scale, backButton }) {
         </group>
       </Float>
     </group>
+    {/* <GoldenMoon position={[7, 0, -4]} scale={0.3} rotation={[0, 0, 0]} rotationSpeed={0.3}/> */}
     {/* room id and buttons */}
     <group name='action-buttons' 
     position={layout[device].rocketsWinScene.actionButtons.position} 
