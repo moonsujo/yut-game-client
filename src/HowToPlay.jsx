@@ -1406,7 +1406,7 @@ export default function HowToPlay({
         <animated.group name='ufo' position={springs.ufoPos} scale={springs.ufoScale} >
           <Ufo onBoard/>
         </animated.group>
-          <GulToken position={[5,0,4]} rotation={[0, Math.PI/2, 0]} scale={springs.moveToken1Scale}/>
+        <GulToken position={[5,0,4]} rotation={[0, Math.PI/2, 0]} scale={springs.moveToken1Scale}/>
       </animated.group>;
     }
 
@@ -1753,7 +1753,499 @@ export default function HowToPlay({
     </group>
   }
   
-  function MovementPage() {
+  // function MovementPage() {
+  //   // #region Springs
+  //   const arrowFriction = 10
+  //   const arrowTension = 180
+  //   const arrowDelay = 100
+  //   const springsArrow0 = useSpring({
+  //     from: {
+  //       scale: 0
+  //     },
+  //     to: [
+  //       {
+  //         scale: 1.5,
+  //         config: {
+  //           tension: arrowTension,
+  //           friction: arrowFriction
+  //         },
+  //         delay: arrowDelay
+  //       }
+  //     ],
+  //   })
+  //   const springsArrow1 = useSpring({
+  //     from: {
+  //       scale: 0
+  //     },
+  //     to: [
+  //       {
+  //         scale: 1.5,
+  //         config: {
+  //           tension: arrowTension,
+  //           friction: arrowFriction
+  //         },
+  //         delay: arrowDelay + 100
+  //       }
+  //     ],
+  //   })
+  //   const springsArrow2 = useSpring({
+  //     from: {
+  //       scale: 0
+  //     },
+  //     to: [
+  //       {
+  //         scale: 1.5,
+  //         config: {
+  //           tension: arrowTension,
+  //           friction: arrowFriction
+  //         },
+  //         delay: arrowDelay + 200
+  //       }
+  //     ],
+  //   })
+  //   const springsArrow3 = useSpring({
+  //     from: {
+  //       scale: 0
+  //     },
+  //     to: [
+  //       {
+  //         scale: 1.5,
+  //         config: {
+  //           tension: arrowTension,
+  //           friction: arrowFriction
+  //         },
+  //         delay: arrowDelay + 300
+  //       }
+  //     ],
+  //   })
+  //   const life = 300
+  //   const startDelay = 500
+  //   const frictionWobbly = 15
+  //   const delay = 50
+  //   // Path 0
+  //   const dotSpringsCircle = []
+  //   const numDotSpringsCircle = 70
+  //   for (let i = 0; i < numDotSpringsCircle; i++) {
+  //     dotSpringsCircle.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   // Path 1
+  //   const dotSpringsFirstCorner = []
+  //   const numDotSpringsFirstCorner = 16
+  //   for (let i = 0; i < numDotSpringsFirstCorner; i++) {
+  //     dotSpringsFirstCorner.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + delay * numDotSpringsCircle + i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   const dotSpringsMiddle = []
+  //   const numDotSpringsMiddle = 24
+  //   for (let i = 0; i < numDotSpringsMiddle; i++) {
+  //     dotSpringsMiddle.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + delay * numDotSpringsCircle + delay * numDotSpringsFirstCorner + i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   const dotSpringsCorner = []
+  //   const numDotSpringsCorner = 16
+  //   for (let i = 0; i < numDotSpringsCorner; i++) {
+  //     dotSpringsCorner.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + delay * numDotSpringsCircle + delay * numDotSpringsFirstCorner + delay * numDotSpringsMiddle + i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   // Path 2
+  //   const dotSpringsHalfCircle = []
+  //   const numDotSpringsHalfCircle = 35
+  //   for (let i = 0; i < numDotSpringsHalfCircle; i++) {
+  //     dotSpringsHalfCircle.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + 
+  //           delay * numDotSpringsCircle + 
+  //           delay * numDotSpringsFirstCorner + 
+  //           delay * numDotSpringsMiddle + 
+  //           delay * numDotSpringsCorner + i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   const dotSpringsVertical = []
+  //   const numDotSpringsVertical = 25
+  //   for (let i = 0; i < numDotSpringsVertical; i++) {
+  //     dotSpringsVertical.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + 
+  //           delay * numDotSpringsCircle + 
+  //           delay * numDotSpringsFirstCorner + 
+  //           delay * numDotSpringsMiddle + 
+  //           delay * numDotSpringsCorner + 
+  //           delay * numDotSpringsHalfCircle + 
+  //           i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   // Path 3
+  //   const dotSpringsFirstCornerPath3 = []
+  //   const numDotSpringsFirstCornerPath3 = 16
+  //   for (let i = 0; i < numDotSpringsFirstCornerPath3; i++) {
+  //     dotSpringsFirstCornerPath3.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + 
+  //           delay * numDotSpringsCircle + 
+  //           delay * numDotSpringsFirstCorner + 
+  //           delay * numDotSpringsMiddle + 
+  //           delay * numDotSpringsCorner + 
+  //           delay * numDotSpringsHalfCircle + 
+  //           delay * numDotSpringsVertical + 
+  //           i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   const dotSpringsMiddleHalf = []
+  //   const numDotSpringsMiddleHalf = 10
+  //   for (let i = 0; i < numDotSpringsMiddleHalf; i++) {
+  //     dotSpringsMiddleHalf.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           delay: startDelay + 
+  //           delay * numDotSpringsCircle +
+  //           delay * numDotSpringsFirstCorner + 
+  //           delay * numDotSpringsMiddle + 
+  //           delay * numDotSpringsCorner + 
+  //           delay * numDotSpringsHalfCircle + 
+  //           delay * numDotSpringsVertical + 
+  //           delay * numDotSpringsFirstCornerPath3 + 
+  //           i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   const dotSpringsVerticalHalf = []
+  //   const numDotSpringsVerticalHalf = 10
+  //   for (let i = 0; i < numDotSpringsVerticalHalf; i++) {
+  //     dotSpringsVerticalHalf.push(useSpring({
+  //       from: {
+  //         scale: 0
+  //       },
+  //       to: [
+  //         {
+  //           scale: 0.1,
+  //           config: {
+  //             tension: 180,
+  //             friction: frictionWobbly
+  //           },
+  //           // Extra delay to highlight moving from the Moon
+  //           delay: startDelay + 
+  //           delay * numDotSpringsCircle +
+  //           delay * numDotSpringsFirstCorner + 
+  //           delay * numDotSpringsMiddle + 
+  //           delay * numDotSpringsCorner + 
+  //           delay * numDotSpringsHalfCircle + 
+  //           delay * numDotSpringsVertical + 
+  //           delay * numDotSpringsFirstCornerPath3 + 
+  //           delay * numDotSpringsMiddleHalf +
+  //           i * delay
+  //         },
+  //         {
+  //           scale: 0,
+  //           config: {
+  //             tension: 170,
+  //             friction: 26
+  //           },
+  //           delay: life
+  //         }
+  //       ],
+  //     }))
+  //   }
+  //   // #endregion
+
+  //   return <group name='movement-page'>
+  //     <animated.group name='text'>
+  //       <Text3D
+  //         font="/fonts/Luckiest Guy_Regular.json"
+  //         position={layout[device].howToPlay.movementPage.text.position} 
+  //         rotation={layout[device].howToPlay.movementPage.text.rotation}
+  //         size={layout[device].howToPlay.movementPage.text.size}
+  //         height={layout[device].howToPlay.movementPage.text.height}
+  //         lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
+  //       >
+  //         {`Your pieces follow the path around the\nboard (`}
+  //         <meshStandardMaterial color='yellow'/>
+  //       </Text3D>
+  //       <Text3D
+  //         font="/fonts/Pinkfong_Baby_Shark_Bold_Regular_Selection.json"
+  //         position={[
+  //           layout[device].howToPlay.movementPage.text.position[0],
+  //           layout[device].howToPlay.movementPage.text.position[1],
+  //           layout[device].howToPlay.movementPage.text.position[2]-0.1,
+  //         ]} 
+  //         rotation={layout[device].howToPlay.movementPage.text.rotation}
+  //         size={layout[device].howToPlay.movementPage.text.size}
+  //         height={layout[device].howToPlay.movementPage.text.height}
+  //         lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
+  //       >
+  //         {`\n                말판`}
+  //         <meshStandardMaterial color='yellow'/>
+  //       </Text3D>
+  //       <Text3D
+  //         font="/fonts/Luckiest Guy_Regular.json"
+  //         position={layout[device].howToPlay.movementPage.text.position} 
+  //         rotation={layout[device].howToPlay.movementPage.text.rotation}
+  //         size={layout[device].howToPlay.movementPage.text.size}
+  //         height={layout[device].howToPlay.movementPage.text.height}
+  //         lineHeight={layout[device].howToPlay.movementPage.text.lineHeight}
+  //       >
+  //         {`\n                           ). There are shortcuts at the\ncorners (planets) — if you land on one,\nyou can take the faster diagonal path.`}
+  //         <meshStandardMaterial color='yellow'/>
+  //       </Text3D>
+  //     </animated.group>
+  //     <group 
+  //     position={layout[device].howToPlay.movementPage.board.position} 
+  //     scale={layout[device].howToPlay.movementPage.board.scale}>
+  //       <Board showArrows={false} starColor={'#7a7a21'} highlightShortcuts/>
+  //       <group name='path-0'>
+  //         {dotSpringsCircle.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#33ff00'/>
+  //           </animated.mesh>
+  //         })}
+  //       </group>
+  //       <group name='path-1'>
+  //         {dotSpringsFirstCorner.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#7300ff'/>
+  //           </animated.mesh>
+  //         })}
+  //         {dotSpringsMiddle.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#7300ff'/>
+  //           </animated.mesh>
+  //         })}
+  //         {dotSpringsCorner.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#7300ff'/>
+  //           </animated.mesh>
+  //         })}
+  //       </group>
+  //       <group name='path-2'>
+  //         {dotSpringsHalfCircle.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#00f7ff'/>
+  //           </animated.mesh>
+  //         })}
+  //         {dotSpringsVertical.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#00f7ff'/>
+  //           </animated.mesh>
+  //         })}
+  //       </group>
+  //       <group name='path-3'>
+  //         {dotSpringsFirstCornerPath3.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#ff006f'/>
+  //           </animated.mesh>
+  //         })}
+  //         {dotSpringsMiddleHalf.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#ff006f'/>
+  //           </animated.mesh>
+  //         })}
+  //         {dotSpringsVerticalHalf.map((value, index) => {
+  //           return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
+  //             <sphereGeometry args={[1, 32, 16]}/>
+  //             <meshBasicMaterial color='#ff006f'/>
+  //           </animated.mesh>
+  //         })}
+  //       </group>
+  //       {/* <group name='mars-left-arrow' position={[-0.4, 0.5, 0.2]}>
+  //         <animated.mesh scale={springsArrow0.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
+  //           <coneGeometry args={[0.15, 0.4, 32]}/>
+  //           <meshBasicMaterial color='#33ff00'/>
+  //         </animated.mesh>
+  //       </group>
+  //       <group name='moon-left-arrow' position={[-5.45, 0.5, 0.2]}>
+  //         <animated.mesh scale={springsArrow1.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, Math.PI/2]}>
+  //           <coneGeometry args={[0.15, 0.4, 32]}/>
+  //           <meshBasicMaterial color='#33ff00'/>
+  //         </animated.mesh>
+  //       </group>
+  //       <group name='saturn-bottom-arrow' position={[-4, 0.5, -3.3]}>
+  //         <animated.mesh scale={springsArrow2.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, 0]}>
+  //           <coneGeometry args={[0.15, 0.4, 32]}/>
+  //           <meshBasicMaterial color='#33ff00'/>
+  //         </animated.mesh>
+  //       </group>
+  //       <group name='moon-bottom-arrow' position={[-4, 0.5, 1.8]}>
+  //         <animated.mesh scale={springsArrow3.scale} position={[4, 0, 0]} rotation={[Math.PI/2, 0, 0]}>
+  //           <coneGeometry args={[0.15, 0.4, 32]}/>
+  //           <meshBasicMaterial color='#33ff00'/>
+  //         </animated.mesh>
+  //       </group> */}
+  //     </group>
+  //   </group>
+  // }
+
+  // pseudocode
+  // useSpring with meshes
+  // add meshes to scene 
+  // apply spring values to meshes
+  // reuse board stars, or use dots
+  function MovementPageReuseMesh() {
     // #region Springs
     const arrowFriction = 10
     const arrowTension = 180
@@ -3486,7 +3978,7 @@ export default function HowToPlay({
     </group>
   }
 
-  const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <MovementPage/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>,  <TipsPage/>]
+  const pages = [<Overview/>, <ThrowTheYutPage/>, <ReadTheYutPage/>, <MovementPageReuseMesh/>, <CatchEnemiesPage/>, <PiggybackPage/>, <ScorePage/>,  <TipsPage/>]
 
   return <group position={position} rotation={rotation} scale={scale}>
     { pages[page] }
