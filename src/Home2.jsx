@@ -753,7 +753,8 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           <Pieces/>
         </animated.group>
       </group>
-      <animated.group scale={howToPlayScale}>
+      {/* have to display conditionally in order for it to not play the fireworks */}
+      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
         <HowToPlay 
           device={device}
           position={layout[device].howToPlay.position}
@@ -761,7 +762,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           scale={layout[device].howToPlay.scale}
           tabOrientation='right'
         />
-      </animated.group>
+      </animated.group> }
       <animated.group scale={aboutScale}>
         <About
           device={device}
