@@ -2104,12 +2104,12 @@ export default function HowToPlay({
       <group 
       position={layout[device].howToPlay.movementPage.board.position} 
       scale={layout[device].howToPlay.movementPage.board.scale}>
-        <Board showArrows={false} starColor={'#7a7a21'} highlightShortcuts/>
+        <Board showArrows={false} highlightShortcuts/>
         <group name='path-0'>
           {dotSpringsCircle.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#33ff00'/>
+              <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
           })}
         </group>
@@ -2117,19 +2117,19 @@ export default function HowToPlay({
           {dotSpringsFirstCorner.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#7300ff'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsMiddle.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#7300ff'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsCorner.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#7300ff'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
         </group>
@@ -2137,13 +2137,13 @@ export default function HowToPlay({
           {dotSpringsHalfCircle.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#00f7ff'/>
+              <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
           })}
           {dotSpringsVertical.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#00f7ff'/>
+              <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
           })}
         </group>
@@ -2151,19 +2151,19 @@ export default function HowToPlay({
           {dotSpringsFirstCornerPath3.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#ff006f'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsMiddleHalf.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#ff006f'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsVerticalHalf.map((value, index) => {
             return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
               <sphereGeometry args={[1, 32, 16]}/>
-              <meshBasicMaterial color='#ff006f'/>
+              <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
         </group>
