@@ -135,24 +135,10 @@ export default {
           position: [0, 0, -0.7]
         },
         text: {
-          part0: {
-            position: [-2.7,0,6],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          },
-          part1: {
-            position: [-2.7,0,6],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          },
-          part2: {
-            position: [-2.7,0,6],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          }
+          position: [-2.7,0,6],
+          rotation: [-Math.PI/2,0,0],
+          size: 0.4,
+          height: 0.01
         }
       },
       pickingTheTeamsPage: {
@@ -2156,24 +2142,10 @@ export default {
           position: [0, 0, -0.5]
         },
         text: {
-          part0: {
-            position: [-2.5,0,6.8],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          },
-          part1: {
-            position: [-2.5,0,6.8],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          },
-          part2: {
-            position: [-2.5,0,6.8],
-            rotation: [-Math.PI/2,0,0],
-            size: 0.4,
-            height: 0.01
-          }
+          position: [-2.5,0,6.8],
+          rotation: [-Math.PI/2,0,0],
+          size: 0.4,
+          height: 0.01
         }
       },
       pickingTheTeamsPage: {
