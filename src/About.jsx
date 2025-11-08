@@ -1,12 +1,5 @@
-import React from 'react';
-import Board from './Board';
-import Rocket from './meshes/Rocket';
-import Ufo from './meshes/Ufo';
-import YootMesh from './meshes/YootMesh';
-import { Float, Text3D } from '@react-three/drei';
-import { animated, useSpring } from '@react-spring/three';
+import { Text3D } from '@react-three/drei';
 import layout from './layout';
-import YootRhino from './meshes/YootRhino';
 
 export default function About(props) {
 
