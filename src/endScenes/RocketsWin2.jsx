@@ -17,8 +17,8 @@ import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
-import Blackhole2 from "../Blackhole2";
 import MilkyWayNew from "../shader/milkyway/MilkyWayNew";
+import Blackhole from "../meshes/Blackhole";
 
 export default function RocketsWin2() {
 
@@ -247,7 +247,7 @@ export default function RocketsWin2() {
       device={device}/>
     </group>
     <MeteorsRealShader color={meteorShaderColor}/>
-    <Blackhole2 scale={1} position={[-9, -8, -1.5]}/>
+    <Blackhole scale={1} position={[-9, -8, -1.5]}/>
     <MilkyWayNew // will not show without a camera
       rotation={[-Math.PI/2, 0, -35.0]} 
       position={[0, -10, -4]}

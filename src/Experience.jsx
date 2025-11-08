@@ -4,8 +4,6 @@ import { useAtom, useAtomValue } from "jotai";
 import { socket } from "./SocketManager.jsx";
 import { useParams } from "wouter";
 import Game from "./Game.jsx";
-import RocketsWin from "./RocketsWin.jsx";
-import UfosWin from "./UfosWin.jsx";
 import RocketsWin2 from "./endScenes/RocketsWin2.jsx";
 import RocketsLose from "./endScenes/RocketsLose.jsx";
 import UfosWin2New from "./endScenes/UfosWin2New.jsx";
@@ -15,7 +13,6 @@ import StarsPatterns2Shader from "./shader/starsPatterns2/StarsPatterns2Shader.j
 
 export default function Experience() {
 
-  console.log('[Experience]')
   const gamePhase = useAtomValue(gamePhaseAtom)
   const winner = useAtomValue(winnerAtom)
   const client = useAtomValue(clientAtom)

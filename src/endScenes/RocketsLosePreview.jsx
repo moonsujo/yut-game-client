@@ -20,7 +20,7 @@ import DiscordButton from "./DiscordButton";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
-import RedGalaxy from "../RedGalaxy";
+import RedGalaxy from "../meshes/RedGalaxy";
 
 export default function RocketsLosePreview({ position, scale, backButton, startAnimation=false, onStopAnimation }) {
 

@@ -50,7 +50,7 @@ import RocketsLosePreview from "../endScenes/RocketsLosePreview.jsx";
 import UfosLosePreview from "../endScenes/UfosLosePreview.jsx";
 import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
 import YootSet from "../meshes/YootSet.jsx";
-import PauseGamePreview from "../PauseGamePreview.jsx";
+import PauseGamePreview from "../alerts/PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
 import layout from "../layout.js";
 import { generateRandomNumberInRange } from "../helpers/helpers.js";

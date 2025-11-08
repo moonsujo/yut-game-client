@@ -17,7 +17,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import { useParams } from "wouter";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
-import Blackhole from "../Blackhole";
+import Blackhole from "../meshes/Blackhole";
 
 export default function UfosLose() {
   

@@ -16,7 +16,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { animated } from "@react-spring/three";
-import Blackhole from "../Blackhole";
+import Blackhole from "../meshes/Blackhole";
 
 export default function UfosLosePreview({ position, scale, backButton }) {
   

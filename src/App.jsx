@@ -11,7 +11,7 @@ import AssetLoader from './AssetLoader';
 import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
 import Home2 from './Home2';
-import RulebookText from './RulebookText';
+import RulebookText from './text/RulebookText';
 
 export default function App () {
 

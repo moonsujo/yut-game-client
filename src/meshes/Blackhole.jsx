@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import Portal from "./Portal";
-import MilkyWayNew from './shader/milkyway/MilkyWayNew';
+import Portal from "../shader/portal/Portal";
+import MilkyWayNew from '../shader/milkyway/MilkyWayNew';
 
 export default function Blackhole({scale, position}) {
 

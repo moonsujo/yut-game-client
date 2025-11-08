@@ -6,6 +6,7 @@ import { folder, Leva, useControls } from 'leva'
 import { useState } from "react";
 
 export default function YootDisplay({position, rotation, scale}) {
+  // Leva controls for debugging
   // const { yut0RotX, yut0RotY, yut0RotZ,
   //   yut0PosX, yut0PosY, yut0PosZ, yut0Scale,
   //   yut1RotX, yut1RotY, yut1RotZ,
@@ -243,6 +244,7 @@ export default function YootDisplay({position, rotation, scale}) {
       <meshStandardMaterial transparent opacity={0} />
     </mesh>
     <Float floatIntensity={0.5} floatingRange={[0.1, 0.1]} speed={2} rotationIntensity={1}>
+      {/* for Leva debugging */}
       {/* <YootMesh scale={yut0Scale} position={[yut0PosX, yut0PosY, yut0PosZ]} rotation={[yut0RotX, yut0RotY, yut0RotZ]}/>
       <YootMesh scale={yut1Scale} position={[yut1PosX, yut1PosY, yut1PosZ]} rotation={[yut1RotX, yut1RotY, yut1RotZ]} />
       <YootMesh scale={yut2Scale} position={[yut2PosX, yut2PosY, yut2PosZ]} rotation={[yut2RotX, yut2RotY, yut2RotZ]} />

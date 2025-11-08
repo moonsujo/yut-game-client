@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import MilkyWayNew from './shader/milkyway/MilkyWayNew';
+import MilkyWayNew from '../shader/milkyway/MilkyWayNew';
 
 export default function RedGalaxy() {
 

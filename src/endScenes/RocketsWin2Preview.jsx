@@ -14,8 +14,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useSpring, animated } from "@react-spring/three";
-import Blackhole2 from "../Blackhole2";
-import GoldenMoon from "../meshes/GoldenMoon";
+import Blackhole from "../meshes/Blackhole";
 
 export default function RocketsWin2Preview({ position, scale, backButton }) {
 
@@ -181,7 +180,7 @@ export default function RocketsWin2Preview({ position, scale, backButton }) {
         })}
       </group>
     </group> }
-    { device === 'landscapeDesktop' && <Blackhole2 scale={1} position={[-9, -8, -1.5]}/> }
+    { device === 'landscapeDesktop' && <Blackhole scale={1} position={[-9, -8, -1.5]}/> }
     {/* scene 1 in the middle */}
     <group name='scene-1' 
     position={layout[device].rocketsWinScene.scene1.position}
@@ -210,7 +209,6 @@ export default function RocketsWin2Preview({ position, scale, backButton }) {
         </group>
       </Float>
     </group>
-    {/* <GoldenMoon position={[7, 0, -4]} scale={0.3} rotation={[0, 0, 0]} rotationSpeed={0.3}/> */}
     {/* room id and buttons */}
     <group name='action-buttons' 
     position={layout[device].rocketsWinScene.actionButtons.position} 

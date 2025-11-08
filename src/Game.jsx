@@ -10,7 +10,6 @@ import PiecesSection from "./PiecesSection.jsx";
 import Team from "./Team.jsx";
 import GameCamera from "./GameCamera.jsx";
 import DisconnectModal from "./DisconnectModal.jsx";
-import JoinTeamModal from "./JoinTeamModal.jsx";
 
 // three js
 // import { Leva, useControls } from "leva"
@@ -54,8 +53,6 @@ import {
 import MoveList from "./MoveList.jsx";
 import PiecesOnBoard from "./PiecesOnBoard.jsx";
 import ScoreButtons from "./ScoreButtons.jsx";
-import RocketsWin from "./RocketsWin.jsx";
-import UfosWin from "./UfosWin.jsx";
 import { Float, Text3D, useGLTF } from "@react-three/drei";
 import { Color, MeshStandardMaterial } from "three";
 import { useFrame } from "@react-three/fiber";
@@ -444,14 +441,6 @@ export default function Game() {
       </group> }
     </group>
   }
-  function WinScreen() {
-    const winner = useAtomValue(winnerAtom)
-    const { winScreenScale } = useSpring({ winScreenScale: gamePhase === 'finished' ? 1 : 0 })
-    return <animated.group scale={winScreenScale}>
-      { winner === 0 && <RocketsWin/>}
-      { winner === 1 && <UfosWin/>}
-    </animated.group>
-  }
   const yutAnimation = useAtomValue(yootAnimationAtom)
 
   // game log button
@@ -688,7 +677,6 @@ export default function Game() {
           heightMultiplier={layout[device].game.timer.heightMultiplier}
         />
       </animated.group> }
-      { gamePhase === 'finished' && <WinScreen/> }
       <MeteorsRealShader color={meteorShaderColor}/>
       <MilkyWayNew // will not show without a camera
         rotation={[-Math.PI/2, 0, -35.0]} 

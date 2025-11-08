@@ -1,13 +1,13 @@
 import { Html } from "@react-three/drei";
 import { useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { backdoLaunchAtom, clientAtom, deviceAtom, gamePhaseAtom, hostAtom, languageAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "./GlobalState";
+import { backdoLaunchAtom, clientAtom, deviceAtom, gamePhaseAtom, hostAtom, languageAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "../GlobalState";
 import HtmlColors from "./HtmlColors";
-import layout from './layout'
-import { socket } from "./SocketManager";
+import layout from '../layout'
+import { socket } from "../SocketManager";
 import { useParams } from "wouter";
 import { useFrame } from "@react-three/fiber";
-import translations from "./translations";
+import translations from "../translations";
 import './style.css';
 
 // global state
