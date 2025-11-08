@@ -753,7 +753,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           <Pieces/>
         </animated.group>
       </group>
-      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
+      <animated.group scale={howToPlayScale}>
         <HowToPlay 
           device={device}
           position={layout[device].howToPlay.position}
@@ -761,14 +761,14 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           scale={layout[device].howToPlay.scale}
           tabOrientation='right'
         />
-      </animated.group> }
-      { display === 'about' && <animated.group scale={aboutScale}>
+      </animated.group>
+      <animated.group scale={aboutScale}>
         <About
           device={device}
           position={[-4,0,-4.5]}
           scale={layout[device].about.scale}
         />
-      </animated.group> }
+      </animated.group>
       <animated.group scale={showroomScale}>
         <Showroom
           position={layout[device].showroom.position}
