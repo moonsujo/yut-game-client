@@ -53,27 +53,33 @@ export default function HowToPlay({
           setPage(3)
         }, 11500)
         pageTimeoutRef.current = page3Timeout
-      } else if (page === 3) { // Catch enemies 
+      } else if (page === 3) { // Movement 
         const page4Timeout = setTimeout(() => {
           setPage(4)
-        }, 8500)
+        }, 14000)
         pageTimeoutRef.current = page4Timeout
-      } else if (page === 4) { // Piggyback
+      } else if (page === 4) { // Catch enemies 
         const page5Timeout = setTimeout(() => {
           setPage(5)
-        }, 5700)
+        }, 8500)
         pageTimeoutRef.current = page5Timeout
-      } else if (page === 5) { // Score
+      } else if (page === 5) { // Piggyback
         const page6Timeout = setTimeout(() => {
           setPage(6)
-        }, 9000)
+        }, 5700)
         pageTimeoutRef.current = page6Timeout
-      } else if (page === 6) { // Shortcut
+      } else if (page === 6) { // Winning
         const page7Timeout = setTimeout(() => {
+          setPage(7)
+        }, 9000)
+        pageTimeoutRef.current = page7Timeout
+      } else if (page === 7) { // Tips
+        const page8Timeout = setTimeout(() => {
           setPage(0)
         }, 12000)
-        pageTimeoutRef.current = page7Timeout
+        pageTimeoutRef.current = page8Timeout
       }
+      
     }
   }, [page])
   
