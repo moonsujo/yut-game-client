@@ -44,6 +44,11 @@ export default function PiecesOnBoard({ boardOffset }) {
         [-0.3, 0, 0.25],
         [0.3, 0, 0.25],
     ]
+    
+        // [-0.4, 0, -0.5],
+        // [0.4, 0, -0.5],
+        // [-0.4, 1, 0.5],
+        // [0.4, 1, 0.5],
     const heightOffset = 0.9 * layout[device].game.board.game.scale
 
     function getPositionByTile(tile, pieceId) {

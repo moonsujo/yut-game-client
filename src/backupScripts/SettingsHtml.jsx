@@ -7,7 +7,7 @@ import layout from '../dictionaries/layout'
 import { socket } from "../SocketManager";
 import { useParams } from "wouter";
 import { useFrame } from "@react-three/fiber";
-import translations from "../dictionaries/translations";
+import translations from "../components/translations";
 import './style.css';
 
 // global state
