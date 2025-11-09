@@ -3573,7 +3573,7 @@ export default {
         },
         pregame: {
           scale: 0.7,
-          position: [0, -13, -3.5]
+          position: [0, -13, -4]
         },
         game: {
           scale: 0.9,

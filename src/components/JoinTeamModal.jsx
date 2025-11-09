@@ -69,7 +69,10 @@ export default function JoinTeamModal({ position, rotation, scale }) {
         await joinTeamHandler(joinTeam, name)
       } else if (!isUniqueName(name, teams[0]) || !isUniqueName(name, teams[1])) {
         setAlert('Another player has the same name.')
+      } else {
+        await joinTeamHandler(joinTeam, name)
       }
+      // case: clicked an open seat to switch names
     } else if (name.length > 15) {
       setAlert('Must be shorter than 16 characters.')
     } else if (!isAlphaNumeric(name)) { // prevent user from imitating host by adding '(host)'

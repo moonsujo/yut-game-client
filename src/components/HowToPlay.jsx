@@ -727,7 +727,7 @@ export default function HowToPlay({
         setYutPosition(layout[device].howToPlay.throwingTheDicePage.yut.animationYutPosition)
         setYutRotation(layout[device].howToPlay.throwingTheDicePage.yut.animationYutRotation)
         setAnimation(ANIMATION)
-      }, 1500)
+      }, 1000)
 
       return () => {
         clearTimeout(animationTimeout)
@@ -745,7 +745,7 @@ export default function HowToPlay({
             tension: 180,
             friction: 15
           },
-          delay: 6500
+          delay: 5300
         }
       ],
     })
@@ -777,7 +777,7 @@ export default function HowToPlay({
             tension: 180,
             friction: 15
           },
-          delay: 5000
+          delay: 3800
         }
       ],
     })
@@ -795,7 +795,7 @@ export default function HowToPlay({
             tension: 180,
             friction: 15
           },
-          delay: 5500
+          delay: 4300
         }
       ],
     })
@@ -813,7 +813,7 @@ export default function HowToPlay({
             tension: 180,
             friction: 15
           },
-          delay: 6000
+          delay: 4800
         }
       ],
     })

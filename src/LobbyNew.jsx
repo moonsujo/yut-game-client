@@ -244,7 +244,7 @@ export default function LobbyNew() {
         if (client.socketId === host.socketId) {
           if (client.team !== team && !teams[team].players[seatIndex]) {
             setSeatChosen([team, seatIndex])
-          } else if (teams[team].players[seatIndex].socketId !== client.socketId) {
+          } else if (teams[team].players[seatIndex] && teams[team].players[seatIndex].socketId !== client.socketId) {
             const player = teams[team].players[seatIndex]
             setGuestBeingEditted({
               name: player.name,
@@ -256,6 +256,8 @@ export default function LobbyNew() {
               type: player.type,
               _id: player._id,
             })
+          } else {
+            setSeatChosen([team, seatIndex])
           }
         } else if (client.team !== team) {
           setJoinTeam(team)
@@ -276,7 +278,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[0] && host.socketId === teams[0].players[0].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[0] && client.socketId === teams[0].players[0].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[0] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
+          { !teams[0].players[0] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.6 : 0.3}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -328,7 +330,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[1] && host.socketId === teams[0].players[1].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[1] && client.socketId === teams[0].players[1].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3} /> }
+          { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.6 : 0.3} /> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -380,7 +382,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[2] && host.socketId === teams[0].players[2].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[2] && client.socketId === teams[0].players[2].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3}/> }
+          { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.6 : 0.3}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -432,7 +434,7 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[3] && host.socketId === teams[0].players[3].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[3] && client.socketId === teams[0].players[3].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3}/> }
+          { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.6 : 0.3}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
@@ -484,7 +486,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[0] && host.socketId === teams[1].players[0].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[0] && client.socketId === teams[1].players[0].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/> }
-          { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.6 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -536,7 +538,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[1] && host.socketId === teams[1].players[1].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[1] && client.socketId === teams[1].players[1].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.6 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -588,7 +590,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[2] && host.socketId === teams[1].players[2].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[2] && client.socketId === teams[1].players[2].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.6 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
@@ -640,7 +642,7 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[3] && host.socketId === teams[1].players[3].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[3] && client.socketId === teams[1].players[3].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.6 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
