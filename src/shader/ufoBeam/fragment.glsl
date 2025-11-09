@@ -2,6 +2,11 @@ precision mediump float;
 uniform float uOpacity;
 uniform vec3 uColor;
 uniform float uProgress;
+uniform float uOpeningStart;
+uniform float uOpeningEnd;
+uniform float uClosingStart;
+uniform float uClosingEnd;
+
 varying vec2 vUv;
 varying vec3 vPosition;
 
@@ -12,8 +17,8 @@ float remap(float value, float xMin, float xMax, float yMin, float yMax) {
 void main()
 {
     float progress = uProgress;
-    float strengthOpeningProgress = remap(progress, 0.0, 0.1, 0.0, 1.0);
-    float strengthClosingProgress = remap(progress, 0.5, 0.6, 1.0, 0.0);
+    float strengthOpeningProgress = remap(progress, uOpeningStart, uOpeningEnd, 0.0, 1.0);
+    float strengthClosingProgress = remap(progress, uClosingStart, uClosingEnd, 1.0, 0.0);
     float strengthProgress = min(strengthOpeningProgress, strengthClosingProgress);
     float strengthProgressHeight = 1.0 - strengthProgress;
     float strengthProgressWidth = strengthProgress / 4.0;

@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 import MilkyWayNew from '../shader/milkyway/MilkyWayNew';
 
-export default function RedGalaxy() {
+export default function RedGalaxy({ position=[0, -2, -1] }) {
 
     return <MilkyWayNew // will not show without a camera
         rotation={[-Math.PI/2, 0, 0]} 
-        position={[0, -2, -1]}
+        position={position}
         scale={4}
         brightness={0.7}
 
