@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { clientAtom, deviceAtom } from "../GlobalState";
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 
 export default function useCatchPosition() {
     const client = useAtomValue(clientAtom)

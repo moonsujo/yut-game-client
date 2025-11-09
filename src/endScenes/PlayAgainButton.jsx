@@ -6,7 +6,7 @@ import { useParams } from "wouter";
 import { clientAtom } from "../GlobalState";
 import { socket } from "../SocketManager";
 import { sendLog } from "../api";
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 
 export default function PlayAgainButton({ rotation, position, device='landscapeDesktop', preview=false }) {
   

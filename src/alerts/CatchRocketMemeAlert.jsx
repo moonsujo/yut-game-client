@@ -1,6 +1,6 @@
 import { useGLTF, Text3D } from "@react-three/drei"
 import { useEffect, useRef, useState } from "react";
-import Star from "../meshes/Star"
+import Star from "../meshes/Stars/Star"
 import Ufo from "../meshes/Ufo"
 import Rocket from "../meshes/Rocket"
 import { useFrame } from "@react-three/fiber";

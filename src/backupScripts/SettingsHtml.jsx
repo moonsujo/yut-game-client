@@ -3,11 +3,11 @@ import { useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { backdoLaunchAtom, clientAtom, deviceAtom, gamePhaseAtom, hostAtom, languageAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "../GlobalState";
 import HtmlColors from "./HtmlColors";
-import layout from '../layout'
+import layout from '../dictionaries/layout'
 import { socket } from "../SocketManager";
 import { useParams } from "wouter";
 import { useFrame } from "@react-three/fiber";
-import translations from "../translations";
+import translations from "../dictionaries/translations";
 import './style.css';
 
 // global state

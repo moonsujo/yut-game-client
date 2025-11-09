@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
-import Star from "../meshes/Star";
-import MeshColors from "../MeshColors";
+import Star from "../meshes/Stars/Star";
+import MeshColors from "../components/MeshColors";
 
 export default function PauseGamePreview({ position, scale=1, isHost=false }) {
   const [hover, setHover] = useState(false);

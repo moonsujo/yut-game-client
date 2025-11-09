@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei"
 import { useEffect, useRef } from "react";
-import Star from "../meshes/Star"
+import Star from "../meshes/Stars/Star"
 import { useFrame } from "@react-three/fiber";
 import YootMesh from "../meshes/YootMesh";
 import { animated } from "@react-spring/three";

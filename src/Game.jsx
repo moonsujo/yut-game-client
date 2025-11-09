@@ -1,15 +1,15 @@
 // js
 import React, { useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import layout from "./layout.js";
+import layout from "./dictionaries/layout.js";
 import { useSpring, animated } from '@react-spring/three';
 import * as THREE from 'three';
 
-import Board from "./Board.jsx";
-import PiecesSection from "./PiecesSection.jsx";
-import Team from "./Team.jsx";
-import GameCamera from "./GameCamera.jsx";
-import DisconnectModal from "./DisconnectModal.jsx";
+import Board from "./components/Board.jsx";
+import PiecesSection from "./components/PiecesSection.jsx";
+import Team from "./components/Team.jsx";
+import GameCamera from "./sceneSetUp/GameCamera.jsx";
+import DisconnectModal from "./components/DisconnectModal.jsx";
 
 // three js
 // import { Leva, useControls } from "leva"
@@ -50,27 +50,26 @@ import {
   showGalaxyBackgroundAtom,
   logDisplayAtom,
 } from "./GlobalState.jsx";
-import MoveList from "./MoveList.jsx";
-import PiecesOnBoard from "./PiecesOnBoard.jsx";
-import ScoreButtons from "./ScoreButtons.jsx";
+import MoveList from "./components/MoveList.jsx";
+import PiecesOnBoard from "./components/PiecesOnBoard.jsx";
+import ScoreButtons from "./components/ScoreButtons.jsx";
 import { Float, Text3D, useGLTF } from "@react-three/drei";
 import { Color, MeshStandardMaterial } from "three";
 import { useFrame } from "@react-three/fiber";
-import GameLog from "./GameLog.jsx";
-import HowToPlay from "./HowToPlay.jsx";
+import GameLog from "./components/GameLog.jsx";
+import HowToPlay from "./components/HowToPlay.jsx";
 
 // react spring
-import YootNew from "./YootNew.jsx";
-import YootButtonNew from "./YootButtonNew.jsx";
+import YootNew from "./components/YootNew.jsx";
+import YootButtonNew from "./components/YootButtonNew.jsx";
 import useResponsiveSetting from "./hooks/useResponsiveSetting.jsx";
 import MeteorsRealShader from "./shader/meteorsReal/MeteorsRealShader.jsx";
-import PauseGame from "./PauseGame.jsx";
-import Timer from "./Timer.jsx";
+import PauseGame from "./components/PauseGame.jsx";
+import Timer from "./components/Timer.jsx";
 import { useAnimationPlaying } from "./hooks/useAnimationPlaying.jsx";
-import Settings from "./Settings.jsx";
-import YutBonus from "./YutBonus.jsx";
-import Chatbox from "./Chatbox.jsx";
-import ChatboxScroll from "./Chatbox.jsx";
+import Settings from "./components/Settings.jsx";
+import YutBonus from "./components/YutBonus.jsx";
+import Chatbox from "./components/Chatbox.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
 import { sendLog } from './api';

@@ -1,13 +1,12 @@
-import { Float, MeshDistortMaterial, OrthographicCamera, Text3D } from "@react-three/drei";
-import GameCamera from "../GameCamera";
-import layout from "../layout";
-import { useAtomValue, useSetAtom } from "jotai";
-import { clientAtom, deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
-import { formatName, getScore } from "../helpers/helpers";
+import { Float, Text3D } from "@react-three/drei";
+import layout from "../dictionaries/layout";
+import { useAtomValue } from "jotai";
+import { deviceAtom } from "../GlobalState";
+import { formatName, getScore } from "../logicHelpers/helpers";
 import UfoNew from "../meshes/UfoNew";
 import Earth from "../meshes/Earth";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from 'three';
 import { animated, useSpring } from "@react-spring/three";
 import Rocket from "../meshes/Rocket";
@@ -15,7 +14,7 @@ import FragmentShader from '../shader/ufoBeam/fragment.glsl'
 import VertexShader from '../shader/ufoBeam/vertex.glsl'
 import gsap from "gsap";
 import UfoNewBoss from "../meshes/UfoNewBoss";
-import Asteroids from "../Asteroids";
+import Asteroids from "../components/Asteroids";
 import DiscordButton from "./DiscordButton";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";

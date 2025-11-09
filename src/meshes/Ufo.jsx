@@ -6,7 +6,7 @@ import { useFrame } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import React from "react";
 import * as THREE from 'three';
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 import { deviceAtom } from "../GlobalState";
 import { useAtom } from "jotai";
 

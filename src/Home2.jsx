@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import layout from './layout';
+import { useAtomValue, useSetAtom } from "jotai";
+import layout from './dictionaries/layout';
 import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
 import { useLocation } from 'wouter';
-import HowToPlay from './HowToPlay';
-import Title from './Title';
+import HowToPlay from './components/HowToPlay';
 import { socket } from './SocketManager';
 import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
-import Board from './Board';
-import GameCamera from './GameCamera';
+import Board from './components/Board';
+import GameCamera from './sceneSetUp/GameCamera';
 import Rocket from './meshes/Rocket';
 import Ufo from './meshes/Ufo';
 import useResponsiveSetting from './hooks/useResponsiveSetting';
 import MeteorsRealShader from './shader/meteorsReal/MeteorsRealShader';
-import YootDisplay from './YootDisplay';
-import DisconnectModal from './DisconnectModal';
+import YootDisplay from './components/YootDisplay';
+import DisconnectModal from './components/DisconnectModal';
 import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
@@ -26,7 +25,7 @@ import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 import { sendLog } from './api';
 import { IS_DEV } from './config/env';
-import About from './About';
+import About from './components/About';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import Constellation from './shader/constellation/Constellation';
 
@@ -93,6 +92,58 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         {`Games Played: ${ numGamesPlayed ? numGamesPlayed : '' }`}
         <meshStandardMaterial color='yellow'/>
       </Text3D>
+    </group>
+  }
+
+  function Title({ position, rotation, scale }) {
+
+    const [hover, setHover] = useState(false);
+    const { playSoundEffect } = useSoundEffectsPlayer()
+    function handlePointerEnter() {
+        setHover(true)
+    }
+    function handlePointerLeave() {
+        setHover(false)
+    }
+    function handlePointerDown(e) {
+      e.stopPropagation()
+      setDisplay('title')
+      playSoundEffect('/sounds/effects/button-click.mp3', 1)
+    }
+
+    return <group scale={scale} position={position} rotation={rotation}>
+      {/* line 1 */}
+      {/* line 2 */}
+      {/* wrapper */}
+      <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        size={0.4}
+        height={0.01}
+        position={[0, -0.5, 0]}
+        letterSpacing={0.04}
+      >
+        YUT
+        <meshStandardMaterial color={hover ? "green": [0.8, 0.8, 0]} />
+      </Text3D>
+      <Text3D
+        font="/fonts/Luckiest Guy_Regular.json"
+        size={0.4}
+        height={0.01}
+        position={[0, -1, 0]}
+        letterSpacing={0.03}
+      >
+        NORI
+        <meshStandardMaterial color={hover ? "green": [0.8, 0.8, 0]} />
+      </Text3D>
+      <mesh 
+        position={[0.7, -0.5, 0]} 
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={e=>handlePointerDown(e)}
+      >
+        <boxGeometry args={[1.5, 1, 0.1]}/>
+        <meshStandardMaterial color="grey" transparent opacity={0}/>
+      </mesh>
     </group>
   }
 

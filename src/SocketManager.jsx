@@ -59,7 +59,7 @@ import {
   blueMoonBrightnessAtom,
   audioVolumeAtom
 } from "./GlobalState.jsx";
-import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./helpers/helpers.js";
+import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./logicHelpers/helpers.js";
 import * as THREE from 'three';
 import initialState from "../initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
@@ -78,9 +78,6 @@ export const socket = io(
   },
 )
 
-// http://192.168.1.181:3000 //http://192.168.86.158:3000
-// export const socket = io("http://192.168.86.158:3000"); // http://192.168.1.181:3000 //http://192.168.86.158:3000
-// doesn't work when another app is running on the same port
 export const SocketManager = () => {
   const [client, setClient] = useAtom(clientAtom);
   const [teams, setTeams] = useAtom(teamsAtom)

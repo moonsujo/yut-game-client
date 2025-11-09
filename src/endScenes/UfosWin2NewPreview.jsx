@@ -1,8 +1,8 @@
 import { Float, Text3D } from "@react-three/drei";
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 import { useAtomValue, useSetAtom } from "jotai";
 import { deviceAtom, teamsAtom } from "../GlobalState";
-import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
+import { formatName, generateRandomNumberInRange, getScore } from "../logicHelpers/helpers";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from 'three';

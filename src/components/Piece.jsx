@@ -2,7 +2,7 @@
 import { socket } from "../SocketManager";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { useRef } from "react";
-import { getLegalTiles } from "../helpers/legalTiles";
+import { getLegalTiles } from "../logicHelpers/legalTiles.jsx";
 import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
 import { teamsAtom, gamePhaseAtom, selectionAtom, tilesAtom, legalTilesAtom, hasTurnAtom, clientAtom, pauseGameAtom, backdoLaunchAtom, shortcutOptionsAtom, showFinishMovesAtom, helperTilesAtom, audioVolumeAtom } from "../GlobalState.jsx";

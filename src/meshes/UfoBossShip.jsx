@@ -5,7 +5,7 @@ import { useGraph } from "@react-three/fiber";
 import { useFrame } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import * as THREE from 'three';
-import Star from "./Star";
+import Star from "./Stars/Star";
 
 const AnimatedMeshDistortMaterial = animated(MeshDistortMaterial)
 

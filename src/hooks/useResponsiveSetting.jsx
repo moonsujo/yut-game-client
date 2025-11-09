@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import mediaValues from "../mediaValues";
+import mediaValues from "../dictionaries/mediaValues";
 import { useEffect } from "react";
 import { deviceAtom } from "../GlobalState";
 

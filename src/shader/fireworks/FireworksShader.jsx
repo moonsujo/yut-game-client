@@ -7,7 +7,7 @@ import { useLoader, useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useGLTF } from '@react-three/drei';
-import { generateRandomNumberInRange } from '../../helpers/helpers';
+import { generateRandomNumberInRange } from '../../logicHelpers/helpers';
 
 // radius: how far the particles spread
 export function useFireworksShader() {

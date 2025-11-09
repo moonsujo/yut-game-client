@@ -1,9 +1,9 @@
 import { Float, Text3D } from "@react-three/drei";
-import GameCamera from "../GameCamera";
-import layout from "../layout";
+import GameCamera from "../sceneSetUp/GameCamera";
+import layout from "../dictionaries/layout";
 import { useAtomValue, useSetAtom } from "jotai";
 import { deviceAtom, teamsAtom } from "../GlobalState";
-import { formatName, getScore } from "../helpers/helpers";
+import { formatName, getScore } from "../logicHelpers/helpers";
 import UfoNew from "../meshes/UfoNew";
 import Earth from "../meshes/Earth";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +15,7 @@ import FragmentShader from '../shader/ufoBeam/fragment.glsl'
 import VertexShader from '../shader/ufoBeam/vertex.glsl'
 import gsap from "gsap";
 import UfoNewBoss from "../meshes/UfoNewBoss";
-import Asteroids from "../Asteroids";
+import Asteroids from "../components/Asteroids";
 import { socket } from "../SocketManager";
 import { useParams } from "wouter";
 import DiscordButton from "./DiscordButton";

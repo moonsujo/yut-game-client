@@ -1,11 +1,9 @@
 import { Float, Text3D } from "@react-three/drei"
 import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
-import { useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial } from '@react-three/drei'
 import { animated, useSpring } from '@react-spring/three'
-import { useControls } from "leva"
 
 import DoAlert from "../alerts/DoAlert"
 import GeAlert from "../alerts/GeAlert"
@@ -17,21 +15,19 @@ import OutAlert from "../alerts/OutAlert"
 import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
-import { pickRandomElement } from "../helpers/helpers.js";
+import { pickRandomElement } from "../logicHelpers/helpers.js";
 import { deviceAtom, meteorTexturesAtom } from "../GlobalState.jsx";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import TurnAlert from "../alerts/TurnAlert.jsx";
 import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
 import CatchRocketMemeAlert from "../alerts/CatchRocketMemeAlert.jsx";
 import PregameTieAlert from "../alerts/PregameTieAlert.jsx";
 import PregameUfosWinAlert from "../alerts/PregameUfosWinAlert.jsx";
 import PregameRocketsWinAlert from "../alerts/PregameRocketsWinAlert.jsx";
-import Board from "../Board.jsx";
-import Moon from "../meshes/Moon.jsx";
+import Board from "./Board.jsx";
 import Rocket from "../meshes/Rocket.jsx";
 import Ufo from "../meshes/Ufo.jsx";
-import Star from "../meshes/Star.jsx";
-import Constellation from "../shader/constellation/Constellation.jsx";
+import Star from "../meshes/Stars/Star.jsx";
 import ScoreAlert from "../alerts/ScoreAlert.jsx";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader.jsx";
 import Earth from "../meshes/Earth.jsx";
@@ -52,8 +48,8 @@ import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
 import YootSet from "../meshes/YootSet.jsx";
 import PauseGamePreview from "../alerts/PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
-import layout from "../layout.js";
-import { generateRandomNumberInRange } from "../helpers/helpers.js";
+import layout from "../dictionaries/layout.js";
+import { generateRandomNumberInRange } from "../logicHelpers/helpers.js";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('endScenes')

@@ -4,10 +4,10 @@ import { Center, Text3D } from "@react-three/drei";
 import Rocket from "../meshes/Rocket";
 import Ufo from "../meshes/Ufo";
 import { animated, useSpring } from "@react-spring/three";
-import Star from "../meshes/Star";
+import Star from "../meshes/Stars/Star";
 import { useAtomValue } from "jotai";
 import { currentPlayerNameAtom, turnAtom } from "../GlobalState";
-import { formatName } from "../helpers/helpers";
+import { formatName } from "../logicHelpers/helpers";
 
 export default function TurnAlert({position=[0,0,0], scale=1, rotation=[0,0,0], name=''}) {
   const turn = useAtomValue(turnAtom)

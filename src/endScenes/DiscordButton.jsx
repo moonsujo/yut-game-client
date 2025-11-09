@@ -1,7 +1,7 @@
 import { Image, Text3D } from "@react-three/drei"
 import { useRef } from "react"
 import * as THREE from 'three';
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 import DiscordLogo from "../meshes/DiscordLogo";
 import { sendLog } from "../api";
 

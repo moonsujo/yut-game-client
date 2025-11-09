@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import initialState from "../initialState";
-import mediaValues from "./mediaValues";
+import mediaValues from "./dictionaries/mediaValues";
 
 import { atomWithReducer } from 'jotai/utils'
 

@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { animated } from "@react-spring/three";
 import { Text3D } from "@react-three/drei";
-import Star from "../meshes/Star";
+import Star from "../meshes/Stars/Star";
 
 export default function PregameTieAlert({ scale=1, rotation}) {
   const borderMesh0Ref = useRef();

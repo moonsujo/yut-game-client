@@ -1,14 +1,14 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
 import { deviceAtom } from "../GlobalState";
-import { formatName, generateRandomNumberInRange } from "../helpers/helpers";
+import { formatName, generateRandomNumberInRange } from "../logicHelpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Ufo from "../meshes/Ufo";
 import * as THREE from 'three';
-import layout from "../layout";
+import layout from "../dictionaries/layout";
 import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";

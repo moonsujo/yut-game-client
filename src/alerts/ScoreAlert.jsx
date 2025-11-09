@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { animated } from "@react-spring/three";
 import { Center, Text3D } from "@react-three/drei";
-import Star from "../meshes/Star";
+import Star from "../meshes/Stars/Star";
 
 export default function ScoreAlert({ scale, rotation, scoringTeam }) {
   const borderMesh0Ref = useRef();

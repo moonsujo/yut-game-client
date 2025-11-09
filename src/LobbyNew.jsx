@@ -1,12 +1,12 @@
 // js
 import { useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import layout from "./layout.js";
+import layout from "./dictionaries/layout.js";
 import { useSpring, animated } from '@react-spring/three';
 
-import GameCamera from "./GameCamera.jsx";
-import DisconnectModal from "./DisconnectModal.jsx";
-import JoinTeamModal from "./JoinTeamModal.jsx";
+import GameCamera from "./sceneSetUp/GameCamera.jsx";
+import DisconnectModal from "./components/DisconnectModal.jsx";
+import JoinTeamModal from "./components/JoinTeamModal.jsx";
 import * as THREE from 'three';
 
 // three js
@@ -37,27 +37,27 @@ import {
 } from "./GlobalState.jsx";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import HowToPlay from "./HowToPlay.jsx";
+import HowToPlay from "./components/HowToPlay.jsx";
 
 // react spring
 import { MeshDistortMaterial } from '@react-three/drei'
 import useResponsiveSetting from "./hooks/useResponsiveSetting.jsx";
 import MeteorsRealShader from "./shader/meteorsReal/MeteorsRealShader.jsx";
-import MeshColors from "./MeshColors.jsx";
-import QrCode3d from "./QRCode3D.jsx";
+import MeshColors from "./components/MeshColors.jsx";
+import QrCode3d from "./components/QRCode3D.jsx";
 import BlueMoon from "./meshes/BlueMoon.jsx";
-import YootDisplay from "./YootDisplay.jsx";
-import Star from "./meshes/Star.jsx";
+import YootDisplay from "./components/YootDisplay.jsx";
+import Star from "./meshes/Stars/Star.jsx";
 import Rocket from "./meshes/Rocket.jsx";
 import Ufo from "./meshes/Ufo.jsx";
-import { formatName } from "./helpers/helpers.js";
-import GameRules from "./GameRules.jsx";
-import Chatbox from "./Chatbox.jsx";
-import Settings from "./Settings.jsx";
+import { formatName } from "./logicHelpers/helpers.js";
+import GameRules from "./components/GameRules.jsx";
+import Chatbox from "./components/Chatbox.jsx";
+import Settings from "./components/Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
-import SeatStar from "./stars/SeatStar.jsx";
+import SeatStar from "./meshes/Stars/SeatStar.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
-import YouStars from "./YouStars.jsx";
+import YouStars from "./components/YouStars.jsx";
 import { sendLog } from './api';
 import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
 

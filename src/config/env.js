@@ -25,7 +25,3 @@ export const SOCKET_ENDPOINT = config[ENV]?.SOCKET_ENDPOINT || config.developmen
 export const ENABLE_LOGGING = config[ENV]?.ENABLE_LOGGING || config.development.ENABLE_LOGGING;
 export const IS_PRODUCTION = ENV === 'production';
 export const IS_DEV = ENV === 'development';
-
-console.log(`[ENV] Mode: ${ENV}`);
-console.log(`[ENV] Socket: ${SOCKET_ENDPOINT}`);
-console.log(`[ENV] Logging: ${ENABLE_LOGGING ? 'enabled' : 'disabled'}`);

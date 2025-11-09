@@ -6,8 +6,8 @@ import { Route } from "wouter"
 import { Loader } from '@react-three/drei';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import * as THREE from 'three';
-import Alert from './Alert';
-import AssetLoader from './AssetLoader';
+import Alert from './components/Alert';
+import AssetLoader from './sceneSetUp/AssetLoader';
 import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
 import Home2 from './Home2';

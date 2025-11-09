@@ -5,7 +5,7 @@ import React from "react";
 import { useFrame, useGraph } from "@react-three/fiber";
 import { audioVolumeAtom, backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";
 import { useParams } from "wouter";
-import { getLegalTiles } from "../helpers/legalTiles";
+import { getLegalTiles } from "../logicHelpers/legalTiles";
 import * as THREE from 'three';
 import BackdoToken from "../moveTokens/BackdoToken";
 import MoToken from "../moveTokens/MoToken";

@@ -1,15 +1,15 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
 import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
-import { formatName, generateRandomNumberInRange, getScore } from "../helpers/helpers";
+import { formatName, generateRandomNumberInRange, getScore } from "../logicHelpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Ufo from "../meshes/Ufo";
 import * as THREE from 'three';
-import GameCamera from "../GameCamera";
-import layout from "../layout";
+import GameCamera from "../sceneSetUp/GameCamera";
+import layout from "../dictionaries/layout";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader";
 import MeteorsRealShader from "../shader/meteorsReal/MeteorsRealShader";
 import ShareLinkButton from "./ShareLinkButton";

@@ -2,9 +2,9 @@ import { Text3D, MeshDistortMaterial } from "@react-three/drei"
 import { useRef } from "react"
 import * as THREE from 'three'
 import { animated, useSpring } from "@react-spring/three"
-import { copyURLToClipboard } from "../helpers/helpers"
+import { copyURLToClipboard } from "../logicHelpers/helpers"
 import { sendLog } from '../api'
-import layout from "../layout"
+import layout from "../dictionaries/layout"
 
 export default function ShareLinkButton({ rotation, position, device='landscapeDesktop' }) {
 

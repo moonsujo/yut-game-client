@@ -2,7 +2,7 @@ import { Text3D, useGLTF } from "@react-three/drei";
 import YootMesh from "../meshes/YootMesh";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import Star from "../meshes/Star";
+import Star from "../meshes/Stars/Star";
 import { animated, useSpring } from "@react-spring/three";
 
 export default function MoAlert({ position, rotation, scale=1 }) {
