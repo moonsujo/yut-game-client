@@ -25,14 +25,10 @@ import {
   teamsAtom,
   guestBeingEdittedAtom,
   seatChosenAtom,
-  showGalaxyBackgroundAtom,
-  settingsOpenAtom,
   portraitLobbySelectionAtom,
   landscapeLobbyThirdSectionSelectionAtom,
   blueMoonBrightnessAtom,
   audioVolumeAtom,
-  musicAtom,
-  listenerAtom,
 } from "./GlobalState.jsx";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -51,8 +47,6 @@ import Rocket from "./meshes/Rocket.jsx";
 import Ufo from "./meshes/Ufo.jsx";
 import { formatName } from "./logicHelpers/helpers.js";
 import GameRules from "./components/GameRules.jsx";
-import Chatbox from "./components/Chatbox.jsx";
-import Settings from "./components/Settings.jsx";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import SeatStar from "./meshes/Stars/SeatStar.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
@@ -65,13 +59,8 @@ export default function LobbyNew() {
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
   const params = useParams();
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const { playSoundEffect } = useSoundEffectsPlayer()
-
-  useEffect(() => {
-    setShowGalaxy(true)
-  }, [])
 
   useEffect(() => {
     sendLog('pageView', { page: 'lobby' });
@@ -143,6 +132,19 @@ export default function LobbyNew() {
 
     function Seats({ position, scale }) {
       const teams = useAtomValue(teamsAtom)
+      
+      // Helper function to determine seat font size
+      const getSeatFontSize = (seatTeam, seatIndex) => {
+        
+        // 2. If the seat is occupied by another player, size should be 0.7
+        if (teams[seatTeam].players[seatIndex]) {
+          return 0.7;
+        }
+        
+        // 4. Otherwise (empty seat on opposite team), size should be 0.5
+        return 0.5;
+      };
+      
       // #region Seat hover
       const [seat1Team0Hover, setSeat1Team0Hover] = useState(false)
       const [seat2Team0Hover, setSeat2Team0Hover] = useState(false)
@@ -279,7 +281,7 @@ export default function LobbyNew() {
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(0, 0)}
             height={0.01}
             lineHeight={0.7}
           >
@@ -326,16 +328,16 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[1] && host.socketId === teams[0].players[1].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[1] && client.socketId === teams[0].players[1].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
+          { !teams[0].players[1] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3} /> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(0, 1)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[0].players[1] ? formatName(teams[0].players[1].name, 15) : `CLICK TO SIT`}
+            {teams[0].players[1] ? formatName(teams[0].players[1].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[0].players[1] && !teams[0].players[1].connectedToRoom) ? 'grey' : seat2Team0Hover ? 'orange' : 'red' }/>
           </Text3D>
           <group name='background'>
@@ -378,16 +380,16 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[2] && host.socketId === teams[0].players[2].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[2] && client.socketId === teams[0].players[2].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.7}/> }
+          { !teams[0].players[2] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(0, 2)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[0].players[2] ? formatName(teams[0].players[2].name, 15) : `CLICK TO SIT`}
+            {teams[0].players[2] ? formatName(teams[0].players[2].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[0].players[2] && !teams[0].players[2].connectedToRoom) ? 'grey' : seat3Team0Hover ? 'orange' : 'red' }/>
           </Text3D>
           <group name='background'>
@@ -430,16 +432,16 @@ export default function LobbyNew() {
         ]}>
           { teams[0].players[3] && host.socketId === teams[0].players[3].socketId && <Star scale={0.45} position={[0, 0, 0]} color='yellow'/> }
           { teams[0].players[3] && client.socketId === teams[0].players[3].socketId && <YouStars team={0} position={[-7, 0, -0.5]}/> }
-          { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={0.8}/> }
+          { !teams[0].players[3] && <SeatStar colorStart='#ffff00' colorFinish='#bc7a00' scale={client.team === -1 ? 0.7 : 0.3}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -6.7, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(0, 3)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[0].players[3] ? formatName(teams[0].players[3].name, 15) : `CLICK TO SIT`}
+            {teams[0].players[3] ? formatName(teams[0].players[3].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[0].players[3] && !teams[0].players[3].connectedToRoom) ? 'grey' : seat4Team0Hover ? 'orange' : 'red' }/>
           </Text3D>
           <group name='background'>
@@ -482,16 +484,16 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[0] && host.socketId === teams[1].players[0].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[0] && client.socketId === teams[1].players[0].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/> }
-          { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[0] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(1, 0)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[1].players[0] ? formatName(teams[1].players[0].name, 12) : `CLICK TO SIT`}
+            {teams[1].players[0] ? formatName(teams[1].players[0].name, 12) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[1].players[0] && !teams[1].players[0].connectedToRoom) ? 'grey' : seat1Team1Hover ? 'green' : 'turquoise' }/>
           </Text3D>
           <group name='background'>
@@ -534,16 +536,16 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[1] && host.socketId === teams[1].players[1].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[1] && client.socketId === teams[1].players[1].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[1] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(1, 1)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[1].players[1] ? formatName(teams[1].players[1].name, 15) : `CLICK TO SIT`}
+            {teams[1].players[1] ? formatName(teams[1].players[1].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[1].players[1] && !teams[1].players[1].connectedToRoom) ? 'grey' : seat2Team1Hover ? 'green' : 'turquoise' }/>
           </Text3D>
           <group name='background'>
@@ -586,16 +588,16 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[2] && host.socketId === teams[1].players[2].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[2] && client.socketId === teams[1].players[2].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[2] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(1, 2)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[1].players[2] ? formatName(teams[1].players[2].name, 15) : `CLICK TO SIT`}
+            {teams[1].players[2] ? formatName(teams[1].players[2].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[1].players[2] && !teams[1].players[2].connectedToRoom) ? 'grey' : seat3Team1Hover ? 'green' : 'turquoise' }/>
           </Text3D>
           <group name='background'>
@@ -638,16 +640,16 @@ export default function LobbyNew() {
         ]}>
           { teams[1].players[3] && host.socketId === teams[1].players[3].socketId && <Star scale={0.45} position={[6.4, 0, 0]} color='yellow'/> }
           { teams[1].players[3] && client.socketId === teams[1].players[3].socketId && <YouStars team={1} position={[-0.5, 0, -0.5]}/>}
-          { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={0.7} position={[6.4, 0, 0]}/> }
+          { !teams[1].players[3] && <SeatStar colorStart='#ffff00' colorFinish='turquoise' scale={client.team === -1 ? 0.7 : 0.3} position={[6.4, 0, 0]}/> }
           <Text3D
             font="/fonts/Luckiest Guy_Regular.json"
             position={[ -0.3, 0.02, 0.3]}
             rotation={[-Math.PI/2, 0, 0]}
-            size={0.7}
+            size={getSeatFontSize(1, 3)}
             height={0.01}
             lineHeight={0.7}
           >
-            {teams[1].players[3] ? formatName(teams[1].players[3].name, 15) : `CLICK TO SIT`}
+            {teams[1].players[3] ? formatName(teams[1].players[3].name, 15) : client.team === -1 ? `CLICK TO SIT` : `OPEN SEAT`}
             <meshStandardMaterial color={ (teams[1].players[3] && !teams[1].players[3].connectedToRoom) ? 'grey' : seat4Team1Hover ? 'green' : 'turquoise' }/>
           </Text3D>
           <group name='background'>
@@ -1308,7 +1310,6 @@ export default function LobbyNew() {
         </Text3D>
         <Ufo position={[2.3,5,-2.3]}/>
         <YootDisplay scale={0.2} position={[-0.15, 5, 1.1]} rotation={[0, Math.PI/2, 0]}/>
-        {/* <YootDisplay scale={spring.boomScaleYut} position={[-0.15, 5, 0]} rotation={[0, Math.PI/2, 0]}/> */}
         <Seats position={[0, 0, 1]} scale={1}/>
       </group>
       { device === 'portrait' && shipRefs.map((value, index) => {

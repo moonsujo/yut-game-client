@@ -46,7 +46,6 @@ import {
   showFinishMovesAtom,
   showBonusAtom,
   musicAtom,
-  showGalaxyBackgroundAtom,
   logDisplayAtom,
 } from "./GlobalState.jsx";
 import MoveList from "./components/MoveList.jsx";
@@ -80,16 +79,11 @@ export default function Game() {
   const device = useAtomValue(deviceAtom)
   const gamePhase = useAtomValue(gamePhaseAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
-  const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const logDisplay = useAtomValue(logDisplayAtom)
-
-  useEffect(() => {
-    setShowGalaxy(true)
-  }, [])
 
   // Animations
   const { gameScale } = useSpring({
-    gameScale: (gamePhase === 'pregame' || gamePhase === 'game') ? 1 : 0,
+    gameScale: (gamePhase === 'pregame' || gamePhase === 'game') ? device === 'landscapeDesktop' ? 1.1 : 1 : 0,
     config: {
       tension: 170,
       friction: 26
@@ -193,7 +187,7 @@ export default function Game() {
         size={layout[device].game.spectating.size}
         height={layout[device].game.spectating.height}
       >
-        {`SPECTATING`}
+        {`VIEWER`}
         <meshStandardMaterial color='grey'/>
       </Text3D>
     }
@@ -209,18 +203,19 @@ export default function Game() {
           size={layout[device].game.spectatingAndHosting.size}
           height={layout[device].game.spectatingAndHosting.height}
         >
-          {`SPECTATING`}
+          {`VIEWER`}
           <meshStandardMaterial color='grey'/>
         </Text3D>
         <Text3D 
           name='host-text'
           font="/fonts/Luckiest Guy_Regular.json"
-          position={layout[device].game.spectatingAndHosting.line1Pos}
+          position={layout[device].game.spectatingAndHosting.line0Pos}
+          // position={layout[device].game.spectatingAndHosting.line1Pos}
           rotation={layout[device].game.spectatingAndHosting.rotation}
           size={layout[device].game.spectatingAndHosting.size}
           height={layout[device].game.spectatingAndHosting.height}
         >
-          {`HOST`}
+          {`                    HOST`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </group>
@@ -640,7 +635,10 @@ export default function Game() {
           rotation={layout[device].game.yootButton.rotation}
           scale={layout[device].game.yootButton.scale}
         /> }
-        { yutAnimation && <YootNew scale={0.22} position={[0, 2, 0]} animation={yutAnimation}/> }
+        { yutAnimation && <YootNew 
+        scale={layout[device].game.yootNew.scale} 
+        position={layout[device].game.yootNew.position} 
+        animation={yutAnimation}/> }
         <YutBonus position={layout[device].game.yutBonus.position} scale={layout[device].game.yutBonus.scale}/>
         <SettingsButton 
           position={layout[device].game.settings.mainButton.position}

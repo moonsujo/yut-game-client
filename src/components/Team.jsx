@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import layout from '../dictionaries/layout.js';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom, deviceAtom, showGalaxyBackgroundAtom } from '../GlobalState.jsx';
+import { joinTeamAtom, clientAtom, teamsAtom, gamePhaseAtom, hostAtom, turnAtom, deviceAtom } from '../GlobalState.jsx';
 import { Center, Html, MeshDistortMaterial, Text3D } from '@react-three/drei';
 import Piece from './Piece.jsx';
 import { formatName } from '../logicHelpers/helpers.js';

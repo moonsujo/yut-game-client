@@ -203,7 +203,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
     scale={scale}
     ref={buttonRef}
   >
-    { !enabled && <group scale={0.9}>
+    { !enabled && <group scale={0.8} position={layout[device].game.yootButton.inactive.position}>
       <mesh
         castShadow
         receiveShadow
@@ -270,7 +270,7 @@ export default function YootButtonNew({ position, rotation, scale }) {
     </group> }
     { enabled && <YutBonus 
       alwaysShow={true} 
-      position={[0, 0, -0.4]} 
+      position={layout[device].game.yootButton.active.position}
       rotation={[0, -Math.PI/2, 0]}
     />}
     { client.team === turn.team && <ThrowCount 

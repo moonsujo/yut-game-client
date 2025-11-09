@@ -24,6 +24,8 @@ export default {
       zoomMax: 55,
     },
     title: {
+      position: [0, 0, 0],
+      scale: 1.0,
       camera: {
         position: [0,17,7],
         lookAt: [0, 0, 0]
@@ -1629,18 +1631,28 @@ export default {
         scale: 1.2
       },
       yootButton: {
-        position: [4, 0, 9.2],
+        position: [4, 0, 9],
         rotation: [0, Math.PI/2, 0],
-        scale: 1.4
+        scale: 1.7,
+        active: {
+          position: [0.1, 0, -0.5]
+        },
+        inactive: {
+          position: [0.1, 0, 0]
+        }
+      },
+      yootNew: {
+        scale: 0.27,
+        position: [0, 3, 0]
       },
       timer: {
-        position: [5.6,0,10],
+        position: [5.8, 0, 9.8],
         scaleX: 1,
         heightMultiplier: 0.5,
         boxArgs: [0.25, 0.03, 4],
       },
       throwCount: {
-        position: [-1.2, 0, -0.82],
+        position: [-0.9, 0, -1],
         // position: [1.7, 0, -0.8],
         orientation: 'downUp'
         // orientation: 'leftRight'
@@ -1984,6 +1996,8 @@ export default {
       lookAtOffset: [0, 0, 0]
     },
     title: {
+      position: [0.6, 0, 0],
+      scale: 1.05,
       camera: {
         position: [-4,17,7],
         lookAt: [-4, 0, 0]
@@ -3459,13 +3473,13 @@ export default {
         scale: [1.5, 1.5, 1.5]
       },
       chat: {
-        position: [-11, 0, 2.5],
+        position: [-11, 0, 2.8],
         rotation: [-Math.PI/2, 0, 0],
         scale: [0.5, 0.5, 0.5],
         box: {
           borderRadius: '5px',
-          height: '240px',
-          width: '420px',
+          height: '200px',
+          width: '380px',
           padding: '10px',
           fontSize: '24px',
         },
@@ -3668,7 +3682,7 @@ export default {
         }
       },
       piecesSection: {
-        position: [7.8, 0, 0.7],
+        position: [7.5, 0, 0.2],
         emptyPieces: {
           positions: [
             [0.5, 0, -0.5],
@@ -3689,7 +3703,7 @@ export default {
         }
       },
       moveList: {
-        position: [7.8, 0, -1.6],
+        position: [7.6, 0, -2],
         rotation: [-Math.PI/2, 0, 0],
         tokenScale: 0.9,
         tokenPosition: [0.6, 0, 0.6],
@@ -3711,12 +3725,22 @@ export default {
         position: [9, 0, 3],
       },
       yootButton: {
-        position: [9.1, 0, 4.6],
+        position: [8.6, 0, 4.3],
         rotation: [0, Math.PI/2, 0],
-        scale: 1.2
+        scale: 1.4,
+        active: {
+          position: [0, 0, -0.5]
+        },
+        inactive: {
+          position: [0,0,0]
+        }
+      },
+      yootNew: {
+        scale: 0.3,
+        position: [0, 3, 0.5]
       },
       timer: {
-        position: [10.7,0,5.1],
+        position: [10.2, 0, 4.9],
         scaleX: 1,
         heightMultiplier: 0.5,
         boxArgs: [0.3, 0.03, 4],

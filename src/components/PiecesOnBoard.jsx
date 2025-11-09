@@ -37,45 +37,53 @@ export default function PiecesOnBoard({ boardOffset }) {
     const setPieceTeam1Id1AnimationPlaying = useSetAtom(pieceTeam1Id1AnimationPlayingAtom)
     const setPieceTeam1Id2AnimationPlaying = useSetAtom(pieceTeam1Id2AnimationPlayingAtom)
     const setPieceTeam1Id3AnimationPlaying = useSetAtom(pieceTeam1Id3AnimationPlayingAtom)
+    // const responsiveScale = 1
     const responsiveScale = layout[device].game.board.game.scale
-    const idOffsets = [
-        [-0.3, 0, -0.25],
-        [0.3, 0, -0.25],
-        [-0.3, 0, 0.25],
-        [0.3, 0, 0.25],
-    ]
-    
-        // [-0.4, 0, -0.5],
-        // [0.4, 0, -0.5],
-        // [-0.4, 1, 0.5],
-        // [0.4, 1, 0.5],
+    const idOffsets = {
+        team0: [
+            [-0.3, 0, -0.25],
+            [0.3, 0, -0.25],
+            [-0.3, 0, 0.25],
+            [0.3, 0, 0.25],
+        ],
+        team1: [
+            [-0.35, 0, -0.25],
+            [0.35, 0, -0.25],
+            [-0.35, 1, 0.75],
+            [0.35, 1, 0.75],
+        ],
+    }
+
     const heightOffset = 0.9 * layout[device].game.board.game.scale
 
-    function getPositionByTile(tile, pieceId) {
+    function getPositionByTile(tile, pieceId, teamId=0) {
+        const teamIdKey = 'team' + teamId
         if (tile === -1 || tile === 29) {
             return [0,0,0]
         } else {
             return [
-                roundNum(tilePositions[tile][0] + idOffsets[pieceId][0], 1) * responsiveScale,
-                roundNum(tilePositions[tile][1] + heightOffset + idOffsets[pieceId][1], 1) * responsiveScale,
-                roundNum(tilePositions[tile][2] + idOffsets[pieceId][2], 1) * responsiveScale,
+                roundNum(tilePositions[tile][0] + idOffsets[teamIdKey][pieceId][0], 1) * responsiveScale,
+                roundNum(tilePositions[tile][1] + heightOffset + idOffsets[teamIdKey][pieceId][1], 1) * responsiveScale,
+                roundNum(tilePositions[tile][2] + idOffsets[teamIdKey][pieceId][2], 1) * responsiveScale,
             ]
         }
     }
     const SCORE_POS_SCALE = 1.4
     const SCORE_SCALE = 2.0
-    function getScorePosition0(pieceId) {
+    function getScorePosition0(pieceId, teamId=0) {
+        const teamIdKey = 'team' + teamId
         return [
-            roundNum(0 + idOffsets[pieceId][0]*2, 1) * responsiveScale * SCORE_POS_SCALE,
-            roundNum(7 + heightOffset + idOffsets[pieceId][1]*2, 1) * responsiveScale * SCORE_POS_SCALE,
-            roundNum(4.5 + idOffsets[pieceId][2]*2, 1) * responsiveScale * SCORE_POS_SCALE,
+            roundNum(0 + idOffsets[teamIdKey][pieceId][0]*2, 1) * responsiveScale * SCORE_POS_SCALE,
+            roundNum(7 + heightOffset + idOffsets[teamIdKey][pieceId][1]*2, 1) * responsiveScale * SCORE_POS_SCALE,
+            roundNum(4.5 + idOffsets[teamIdKey][pieceId][2]*2, 1) * responsiveScale * SCORE_POS_SCALE,
         ]
     }
-    function getScorePosition1(pieceId) {
+    function getScorePosition1(pieceId, teamId=0) {
+        const teamIdKey = 'team' + teamId
         return [
-            roundNum(0 + idOffsets[pieceId][0]*1, 1) * responsiveScale,
-            roundNum(0 + heightOffset + idOffsets[pieceId][1]*1, 1) * responsiveScale,
-            roundNum(5 + idOffsets[pieceId][2]*1, 1) * responsiveScale,
+            roundNum(0 + idOffsets[teamIdKey][pieceId][0]*1, 1) * responsiveScale,
+            roundNum(0 + heightOffset + idOffsets[teamIdKey][pieceId][1]*1, 1) * responsiveScale,
+            roundNum(5 + idOffsets[teamIdKey][pieceId][2]*1, 1) * responsiveScale,
         ]
     }
     function getScaleByTile(tile) {
@@ -88,49 +96,49 @@ export default function PiecesOnBoard({ boardOffset }) {
 
     const [springs0_0, api0_0] = useSpring(() => ({
         from: {
-            position: getPositionByTile(pieceTeam0Id0.tile, 0), 
+            position: getPositionByTile(pieceTeam0Id0.tile, 0, 0), 
             scale: getScaleByTile(pieceTeam0Id0.tile),
         }
     }))
     const [springs0_1, api0_1] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam0Id1.tile, 1), 
+            position: getPositionByTile(pieceTeam0Id1.tile, 1, 0), 
             scale: getScaleByTile(pieceTeam0Id1.tile),
         }
     }))
     const [springs0_2, api0_2] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam0Id2.tile, 2), 
+            position: getPositionByTile(pieceTeam0Id2.tile, 2, 0), 
             scale: getScaleByTile(pieceTeam0Id2.tile),
         }
     }))
     const [springs0_3, api0_3] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam0Id3.tile, 3), 
+            position: getPositionByTile(pieceTeam0Id3.tile, 3, 0), 
             scale: getScaleByTile(pieceTeam0Id3.tile),
         }
     }))
     const [springs1_0, api1_0] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam1Id0.tile, 0), 
+            position: getPositionByTile(pieceTeam1Id0.tile, 0, 1), 
             scale: getScaleByTile(pieceTeam1Id0.tile),
         }
     }))
     const [springs1_1, api1_1] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam1Id1.tile, 1), 
+            position: getPositionByTile(pieceTeam1Id1.tile, 1, 1), 
             scale: getScaleByTile(pieceTeam1Id1.tile),
         }
     }))
     const [springs1_2, api1_2] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam1Id2.tile, 2), 
+            position: getPositionByTile(pieceTeam1Id2.tile, 2, 1), 
             scale: getScaleByTile(pieceTeam1Id2.tile),
         }
     }))
     const [springs1_3, api1_3] = useSpring(() => ({        
         from: {
-            position: getPositionByTile(pieceTeam1Id3.tile, 3), 
+            position: getPositionByTile(pieceTeam1Id3.tile, 3, 1), 
             scale: getScaleByTile(pieceTeam1Id3.tile),
         }
     }))
@@ -142,7 +150,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 0),
                         config: {
                             tension: 170,
                             friction: 26
@@ -151,7 +159,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(0),
+                        position: getScorePosition0(0, 0),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -159,7 +167,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(0),
+                        position: getScorePosition1(0, 0),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -215,7 +223,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 0),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -225,7 +233,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api0_0.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -242,7 +250,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 0),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -268,7 +276,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api0_0.start({
                 from: {
-                    position: getPositionByTile(pieceTeam0Id0.tile, 0),
+                    position: getPositionByTile(pieceTeam0Id0.tile, 0, 0),
                     scale: getScaleByTile(pieceTeam0Id0.tile),
                 },
                 to: [],
@@ -290,7 +298,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 0),
                         config: {
                             tension: 170,
                             friction: 26
@@ -299,7 +307,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(1),
+                        position: getScorePosition0(1, 0),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -307,7 +315,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(1),
+                        position: getScorePosition1(1, 0),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -363,7 +371,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 0),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -373,7 +381,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api0_1.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -389,7 +397,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 0),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -415,7 +423,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api0_1.start({
                 from: {
-                    position: getPositionByTile(pieceTeam0Id1.tile, 1),
+                    position: getPositionByTile(pieceTeam0Id1.tile, 1, 0),
                     scale: getScaleByTile(pieceTeam0Id1.tile),
                 },
                 to: [],
@@ -437,7 +445,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 0),
                         config: {
                             tension: 170,
                             friction: 26
@@ -446,7 +454,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(2),
+                        position: getScorePosition0(2, 0),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -454,7 +462,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(2),
+                        position: getScorePosition1(2, 0),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -510,7 +518,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 0),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -520,7 +528,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api0_2.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -536,7 +544,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => (
                     // on score, move to Earth and add an additional animation
                     {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 0),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -562,7 +570,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api0_2.start({
                 from: {
-                    position: getPositionByTile(pieceTeam0Id2.tile, 2),
+                    position: getPositionByTile(pieceTeam0Id2.tile, 2, 0),
                     scale: getScaleByTile(pieceTeam0Id2.tile),
                 },
                 to: [],
@@ -584,7 +592,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 0),
                         config: {
                             tension: 170,
                             friction: 26
@@ -593,7 +601,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(3),
+                        position: getScorePosition0(3, 0),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -601,7 +609,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(3),
+                        position: getScorePosition1(3, 0),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -657,7 +665,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 0),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -667,7 +675,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api0_3.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -683,7 +691,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 0),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -709,7 +717,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api0_3.start({
                 from: {
-                    position: getPositionByTile(pieceTeam0Id3.tile, 3),
+                    position: getPositionByTile(pieceTeam0Id3.tile, 3, 0),
                     scale: getScaleByTile(pieceTeam0Id3.tile),
                 },
                 to: [],
@@ -731,7 +739,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 1),
                         config: {
                             tension: 170,
                             friction: 26
@@ -740,7 +748,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(0),
+                        position: getScorePosition0(0, 1),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -748,7 +756,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(0),
+                        position: getScorePosition1(0, 1),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -804,7 +812,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 1),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -814,7 +822,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api1_0.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -831,7 +839,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 0),
+                        position: getPositionByTile(value, 0, 1),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -857,7 +865,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api1_0.start({
                 from: {
-                    position: getPositionByTile(pieceTeam1Id0.tile, 0),
+                    position: getPositionByTile(pieceTeam1Id0.tile, 0, 1),
                     scale: getScaleByTile(pieceTeam1Id0.tile),
                 },
                 to: [],
@@ -879,7 +887,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 1),
                         config: {
                             tension: 170,
                             friction: 26
@@ -888,7 +896,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(1),
+                        position: getScorePosition0(1, 1),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -896,7 +904,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(1),
+                        position: getScorePosition1(1, 1),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -952,7 +960,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 1),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -962,7 +970,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api1_1.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -979,7 +987,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 1),
+                        position: getPositionByTile(value, 1, 1),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -1005,7 +1013,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api1_1.start({
                 from: {
-                    position: getPositionByTile(pieceTeam1Id1.tile, 1),
+                    position: getPositionByTile(pieceTeam1Id1.tile, 1, 1),
                     scale: getScaleByTile(pieceTeam1Id1.tile),
                 },
                 to: [],
@@ -1027,7 +1035,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 1),
                         config: {
                             tension: 170,
                             friction: 26
@@ -1036,7 +1044,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(2),
+                        position: getScorePosition0(2, 1),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -1044,7 +1052,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(2),
+                        position: getScorePosition1(2, 1),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -1100,7 +1108,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 1),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -1110,7 +1118,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api1_2.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -1126,7 +1134,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 2),
+                        position: getPositionByTile(value, 2, 1),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -1152,7 +1160,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api1_2.start({
                 from: {
-                    position: getPositionByTile(pieceTeam1Id2.tile, 2),
+                    position: getPositionByTile(pieceTeam1Id2.tile, 2, 1),
                     scale: getScaleByTile(pieceTeam1Id2.tile),
                 },
                 to: [],
@@ -1174,7 +1182,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const pathToEarth = path.slice(0, path.length-1)
                 const toAnimations = pathToEarth.map((value) => {
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 1),
                         config: {
                             tension: 170,
                             friction: 26
@@ -1183,7 +1191,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 const scoreAnimation = [
                     {
-                        position: getScorePosition0(3),
+                        position: getScorePosition0(3, 1),
                         scale: SCORE_SCALE,
                         config: {
                             tension: 170,
@@ -1191,7 +1199,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                         }
                     },
                     {
-                        position: getScorePosition1(3),
+                        position: getScorePosition1(3, 1),
                         scale: 0,
                         config: {
                             tension: 170,
@@ -1247,7 +1255,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 1),
                         scale: responsiveScale,
                         config: {
                             tension: 170,
@@ -1257,7 +1265,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 })
                 api1_3.start({
                     from: {
-                        position: toAnimations[0].position,
+                        position: [toAnimations[0].position[0], toAnimations[0].position[1] + 2.0, toAnimations[0].position[2]],
                         scale: 0,
                     },
                     to: toAnimations,
@@ -1273,7 +1281,7 @@ export default function PiecesOnBoard({ boardOffset }) {
                 const toAnimations13 = path.map((value) => {
                     // on score, move to Earth and add an additional animation
                     return {
-                        position: getPositionByTile(value, 3),
+                        position: getPositionByTile(value, 3, 1),
                         scale: responsiveScale, // fix bug where piece disappears on refresh
                         config: {
                             tension: 170,
@@ -1299,7 +1307,7 @@ export default function PiecesOnBoard({ boardOffset }) {
         } else {
             api1_3.start({
                 from: {
-                    position: getPositionByTile(pieceTeam1Id3.tile, 3),
+                    position: getPositionByTile(pieceTeam1Id3.tile, 3, 1),
                     scale: getScaleByTile(pieceTeam1Id3.tile),
                 },
                 to: [],

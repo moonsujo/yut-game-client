@@ -1,6 +1,6 @@
 import { Float, Text3D } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
-import { deviceAtom, showGalaxyBackgroundAtom, teamsAtom } from "../GlobalState";
+import { deviceAtom, teamsAtom } from "../GlobalState";
 import { formatName, generateRandomNumberInRange, getScore } from "../logicHelpers/helpers";
 import Rocket from "../meshes/Rocket";
 import Earth from "../meshes/Earth";

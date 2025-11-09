@@ -698,7 +698,7 @@ export default function HowToPlay({
             {`YUT\n(DICE)`}
             <meshStandardMaterial color='yellow'/>
           </Text3D>
-          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15}/>
+          <YootDisplay rotation={[0, Math.PI/2, 0]} scale={0.15} enableHoverEffect={true}/>
         </group>
       </group>
       <Text3D 

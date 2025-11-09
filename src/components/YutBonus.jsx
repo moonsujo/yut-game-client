@@ -97,7 +97,7 @@ export default function YutBonus({ position, scale, rotation=[0,0,0], alwaysShow
       <group name='label' position={[0.55, 0.5, 0.8]}> 
         <mesh scale={[0.9, 0.01, 0.3]}>
           <cylinderGeometry args={[1, 1, 1]}/>
-          <meshStandardMaterial color={ hover ? 'green' : '#EE9E26' }/>
+          <meshStandardMaterial color={ hover ? 'green' : showBonus ? 'limegreen' : '#EE9E26' }/>
         </mesh>
         <mesh scale={[0.85, 0.02, 0.25]}>
           <cylinderGeometry args={[1, 1, 1]}/>
@@ -110,8 +110,8 @@ export default function YutBonus({ position, scale, rotation=[0,0,0], alwaysShow
           size={0.24}
           height={0.01}
         >
-          { alwaysShow ? `THROW` : `BONUS` }
-          <meshStandardMaterial color={ hover ? 'green' : '#EE9E26' }/>
+          { showBonus ? `BONUS` : `THROW` }
+          <meshStandardMaterial color={ hover ? 'green' : showBonus ? 'limegreen' : '#EE9E26' }/>
         </Text3D>
       </group>
       <mesh 
@@ -134,7 +134,7 @@ export default function YutBonus({ position, scale, rotation=[0,0,0], alwaysShow
         <YootMesh scale={0.2} position={yutSprings.yut1Position} rotation={yutSprings.yut1Rotation}/>
         <YootMesh scale={0.2} position={yutSprings.yut2Position} rotation={yutSprings.yut2Rotation}/>
         <YootRhino scale={0.2} position={yutSprings.yut3Position} rotation={yutSprings.yut3Rotation}/>
-        { !alwaysShow && <SparkleYutShader texturePath={'./textures/particles/8.png'}/> }
+        { showBonus && <SparkleYutShader texturePath={'./textures/particles/8.png'}/> }
         <Label/>
       </group>
     </Float>

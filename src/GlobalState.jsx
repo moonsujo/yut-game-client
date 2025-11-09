@@ -133,7 +133,6 @@ export const viewGameRulesOpenAtom = atom(false)
 export const languageOpenAtom = atom(false)
 export const lastYutAtom = atom(null)
 export const seatChosenAtom = atom(null) // [team, seatIndex]
-export const showGalaxyBackgroundAtom = atom(true)
 export const hasAIAtom = atom(false)
 
 // display

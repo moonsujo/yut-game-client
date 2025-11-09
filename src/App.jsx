@@ -51,7 +51,7 @@ export default function App () {
         </Route>
         <Route path="/:id">
           <Experience/>
-          <Alert position={[0,2,0.5]} rotation={[0,0,0]}/>
+          <Alert position={[0, 3, 0.5]} rotation={[0,0,0]}/>
         </Route>
       </Suspense>
       <AudioController/>

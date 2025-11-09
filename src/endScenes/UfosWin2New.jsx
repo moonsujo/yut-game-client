@@ -245,7 +245,6 @@ export default function UfosWin2New() {
       CreateBeamDust({ position, size, speed });
     }, 70)
 
-    setShowGalaxy(true)
     return (() => {
       clearInterval(intervalFireworks);
       clearInterval(intervalBeamDust);

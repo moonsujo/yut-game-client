@@ -746,140 +746,144 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
       position={layout[device].title.camera.position}
       lookAt={layout[device].title.camera.lookAt}
     />
-    <animated.group name='navigation' position={navigationPosition}>
-      { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
-        <Title 
+    <group scale={layout[device].title.scale} position={layout[device].title.position}>
+      <animated.group name='navigation' position={navigationPosition}>
+        { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
+          <Title 
+            position={layout[device].title.text.position}
+            rotation={layout[device].title.text.rotation}
+            scale={layout[device].title.text.scale}
+            setDisplay={setDisplay}
+          />
+        </animated.group>}
+        { device === 'landscapeDesktop' && <Title 
           position={layout[device].title.text.position}
           rotation={layout[device].title.text.rotation}
           scale={layout[device].title.text.scale}
           setDisplay={setDisplay}
-        />
-      </animated.group>}
-      { device === 'landscapeDesktop' && <Title 
-        position={layout[device].title.text.position}
-        rotation={layout[device].title.text.rotation}
-        scale={layout[device].title.text.scale}
-        setDisplay={setDisplay}
-      />}
-      { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
-        <YootDisplay
+        />}
+        { device === 'portrait' && <animated.group scale={titleScale} position={titlePosition}>
+          <YootDisplay
+            position={layout[device].title.yoots.position}
+            rotation={layout[device].title.yoots.rotation}
+            scale={layout[device].title.yoots.scale} 
+            enableHoverEffect={true}
+          />
+        </animated.group> }
+        { device === 'landscapeDesktop' && <YootDisplay
           position={layout[device].title.yoots.position}
           rotation={layout[device].title.yoots.rotation}
           scale={layout[device].title.yoots.scale} 
+          enableHoverEffect={true}
+        />}
+        <HowToPlayButton
+          position={layout[device].title.howToPlay.position} 
+          rotation={layout[device].title.howToPlay.rotation}
+          scale={layout[device].title.howToPlay.scale}
         />
-      </animated.group> }
-      { device === 'landscapeDesktop' && <YootDisplay
-        position={layout[device].title.yoots.position}
-        rotation={layout[device].title.yoots.rotation}
-        scale={layout[device].title.yoots.scale} 
-      />}
-      <HowToPlayButton
-        position={layout[device].title.howToPlay.position} 
-        rotation={layout[device].title.howToPlay.rotation}
-        scale={layout[device].title.howToPlay.scale}
-      />
-      <JoinGameButton
-        position={layout[device].title.joinGame.position} 
-        rotation={layout[device].title.joinGame.rotation}
-        scale={layout[device].title.joinGame.scale}
-      />
-      { joinGameModalDisplay && <JoinGameModal
-        position={layout[device].title.joinGameModal.position} 
-        rotation={layout[device].title.joinGameModal.rotation}
-        scale={layout[device].title.joinGameModal.scale}
-      /> }
-      <LetsPlayButton
-        position={layout[device].title.letsPlay.position} 
-        rotation={layout[device].title.letsPlay.rotation}
-        scale={layout[device].title.letsPlay.scale}
-      />
-      { device === 'landscapeDesktop' && <ShowroomButtonLandscape
-        position={layout[device].title.showroom.position} 
-        rotation={layout[device].title.showroom.rotation}
-        scale={layout[device].title.showroom.scale}
-      /> }
-      { device === 'portrait' && <animated.group scale={showroomButtonPortraitScale}>
-        <ShowroomButtonPortrait
-        position={layout[device].title.showroom.position} 
-        rotation={layout[device].title.showroom.rotation}
-        scale={layout[device].title.showroom.scale}
-      /></animated.group> }
-      { device === 'landscapeDesktop' && <AboutButtonLandscape
-        position={layout[device].title.about.position} 
-        rotation={layout[device].title.about.rotation}
-        scale={layout[device].title.about.scale}
-      /> }
-    </animated.group>
-    { IS_DEV && display === 'title' && <group name='stats'>
-      { device === 'landscapeDesktop' && <PageVisits 
-        position={layout[device].title.pageVisits.position} 
-        rotation={layout[device].title.pageVisits.rotation}
-      /> }
-      { device === 'landscapeDesktop' && <GamesPlayed 
-        position={layout[device].title.gamesPlayed.position} 
-        rotation={layout[device].title.gamesPlayed.rotation}
-      /> }
-    </group> }
-    <group name='display'>
-      <group position={layout[device].title.board.position} 
-        scale={layout[device].title.board.scale}>
-        <animated.group scale={titleBoardScale}>
-          <Board 
-            showStart={true} 
-            interactive={false}/>
-          <Pieces/>
+        <JoinGameButton
+          position={layout[device].title.joinGame.position} 
+          rotation={layout[device].title.joinGame.rotation}
+          scale={layout[device].title.joinGame.scale}
+        />
+        { joinGameModalDisplay && <JoinGameModal
+          position={layout[device].title.joinGameModal.position} 
+          rotation={layout[device].title.joinGameModal.rotation}
+          scale={layout[device].title.joinGameModal.scale}
+        /> }
+        <LetsPlayButton
+          position={layout[device].title.letsPlay.position} 
+          rotation={layout[device].title.letsPlay.rotation}
+          scale={layout[device].title.letsPlay.scale}
+        />
+        { device === 'landscapeDesktop' && <ShowroomButtonLandscape
+          position={layout[device].title.showroom.position} 
+          rotation={layout[device].title.showroom.rotation}
+          scale={layout[device].title.showroom.scale}
+        /> }
+        { device === 'portrait' && <animated.group scale={showroomButtonPortraitScale}>
+          <ShowroomButtonPortrait
+          position={layout[device].title.showroom.position} 
+          rotation={layout[device].title.showroom.rotation}
+          scale={layout[device].title.showroom.scale}
+        /></animated.group> }
+        { device === 'landscapeDesktop' && <AboutButtonLandscape
+          position={layout[device].title.about.position} 
+          rotation={layout[device].title.about.rotation}
+          scale={layout[device].title.about.scale}
+        /> }
+      </animated.group>
+      { IS_DEV && display === 'title' && <group name='stats'>
+        { device === 'landscapeDesktop' && <PageVisits 
+          position={layout[device].title.pageVisits.position} 
+          rotation={layout[device].title.pageVisits.rotation}
+        /> }
+        { device === 'landscapeDesktop' && <GamesPlayed 
+          position={layout[device].title.gamesPlayed.position} 
+          rotation={layout[device].title.gamesPlayed.rotation}
+        /> }
+      </group> }
+      <group name='display'>
+        <group position={layout[device].title.board.position} 
+          scale={layout[device].title.board.scale}>
+          <animated.group scale={titleBoardScale}>
+            <Board 
+              showStart={true} 
+              interactive={false}/>
+            <Pieces/>
+          </animated.group>
+        </group>
+        {/* have to display conditionally in order for it to not play the fireworks */}
+        { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
+          <HowToPlay 
+            device={device}
+            position={layout[device].howToPlay.position}
+            rotation={[0,0,0]}
+            scale={layout[device].howToPlay.scale}
+            tabOrientation='right'
+          />
+        </animated.group> }
+        <animated.group scale={aboutScale}>
+          <About
+            device={device}
+            position={[-4,0,-4.5]}
+            scale={layout[device].about.scale}
+          />
+        </animated.group>
+        <animated.group scale={showroomScale}>
+          <Showroom
+            position={layout[device].showroom.position}
+            rotation={layout[device].showroom.rotation}
+            scale={layout[device].showroom.scale}
+            setHomeDisplay={setDisplay}
+            homeDisplay={display}
+          />  
         </animated.group>
       </group>
-      {/* have to display conditionally in order for it to not play the fireworks */}
-      { display === 'howToPlay' && <animated.group scale={howToPlayScale}>
-        <HowToPlay 
-          device={device}
-          position={layout[device].howToPlay.position}
-          rotation={[0,0,0]}
-          scale={layout[device].howToPlay.scale}
-          tabOrientation='right'
-        />
-      </animated.group> }
-      <animated.group scale={aboutScale}>
-        <About
-          device={device}
-          position={[-4,0,-4.5]}
-          scale={layout[device].about.scale}
+      {/* { !connectedToServer && <DisconnectModal
+        position={layout[device].title.disconnectModal.position}
+        rotation={layout[device].title.disconnectModal.rotation}
+      /> } */}
+      <MeteorsRealShader color={meteorShaderColor}/>
+      <animated.group position={milkyWayPosition} scale={milkyWayScale}>
+        <MilkyWayNew
+          rotation={[-Math.PI/2, 0, -35.0]} 
+          position={[0,-1,0]} 
+          scale={4}
+          brightness={0.5}
+          colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+          colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+          colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
         />
       </animated.group>
-      <animated.group scale={showroomScale}>
-        <Showroom
-          position={layout[device].showroom.position}
-          rotation={layout[device].showroom.rotation}
-          scale={layout[device].showroom.scale}
-          setHomeDisplay={setDisplay}
-          homeDisplay={display}
-        />  
-      </animated.group>
+      <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
+      <StarsPatterns2Shader count={15000} texturePath={'/textures/particles/6.png'} size={2}/>
+      <Constellation omitFactor={2} position={[-15.5,-1,-6.5]} rotation={[-Math.PI/2, 0, Math.PI/16]} scale={1.3} modelPath={'/models/star.glb'}/>
+      <Constellation omitFactor={4} position={[-8.7,-1,-7.1]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={0.9} modelPath={'/models/star.glb'}/>
+      <Constellation omitFactor={2} position={[-15.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/6]} scale={1.2} modelPath={'/models/star.glb'}/>
+      <Constellation omitFactor={2} position={[-8.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>
+      {/* top right */}
+      <Constellation omitFactor={2} position={[4.4,-1,-6.3]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>  
     </group>
-    {/* { !connectedToServer && <DisconnectModal
-      position={layout[device].title.disconnectModal.position}
-      rotation={layout[device].title.disconnectModal.rotation}
-    /> } */}
-    <MeteorsRealShader color={meteorShaderColor}/>
-    <animated.group position={milkyWayPosition} scale={milkyWayScale}>
-      <MilkyWayNew
-        rotation={[-Math.PI/2, 0, -35.0]} 
-        position={[0,-1,0]} 
-        scale={4}
-        brightness={0.5}
-        colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-        colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-        colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-      />
-    </animated.group>
-    <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
-    <StarsPatterns2Shader count={15000} texturePath={'/textures/particles/6.png'} size={2}/>
-    <Constellation omitFactor={2} position={[-15.5,-1,-6.5]} rotation={[-Math.PI/2, 0, Math.PI/16]} scale={1.3} modelPath={'/models/star.glb'}/>
-    <Constellation omitFactor={4} position={[-8.7,-1,-7.1]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={0.9} modelPath={'/models/star.glb'}/>
-    <Constellation omitFactor={2} position={[-15.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/6]} scale={1.2} modelPath={'/models/star.glb'}/>
-    <Constellation omitFactor={2} position={[-8.5,-1,3.5]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>
-    {/* top right */}
-    <Constellation omitFactor={2} position={[4.4,-1,-6.3]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>
   </>
 }

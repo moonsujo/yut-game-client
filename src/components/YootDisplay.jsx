@@ -5,7 +5,7 @@ import YootRhino from "../meshes/YootRhino";
 import { folder, Leva, useControls } from 'leva'
 import { useState } from "react";
 
-export default function YootDisplay({position, rotation, scale}) {
+export default function YootDisplay({position, rotation, scale, enableHoverEffect=false}) {
   // Leva controls for debugging
   // const { yut0RotX, yut0RotY, yut0RotZ,
   //   yut0PosX, yut0PosY, yut0PosZ, yut0Scale,
@@ -201,18 +201,18 @@ export default function YootDisplay({position, rotation, scale}) {
     yut2Rot, yut2Pos, yut2Scale,
     yut3Rot, yut3Pos, yut3Scale,
   } = useSpring({
-    yut0Rot: hover ? [0.78, 0.39, 1.57] : [0.49, 0.29, 1.57],
-    yut0Pos: hover ? [2.1, 0.5, -3.0] : [-0.1, -0.5, -1.4],
-    yut0Scale: hover ? 1.05 : 0.9,
-    yut1Rot: hover ? [2.05, 0.3, 1.37] : [0.68, 0.20, 1.66],
-    yut1Pos: hover ? [1.7, 3.0, -0.4] : [0.4, 1.3, -0.1],
-    yut1Scale: hover ? 1.05 : 0.9,
-    yut2Rot: hover ? [5.6, 3.15, 1.58] : [5.60, 2.95, 1.48],
-    yut2Pos: hover ? [2.6, 3.0, 1.9] : [0.5, 0.0, 1.9],
-    yut2Scale: hover ? 1.05 : 0.9,
-    yut3Rot: hover ? [5.1, 2.65, 1.57] : [5.59, 2.75, 1.57],
-    yut3Pos: hover ? [2.2, 1.8, 4.2] : [-1.2, 2.1, 3.4],
-    yut3Scale: hover ? 1.05 : 0.9,
+    yut0Rot: enableHoverEffect && hover ? [0.78, 0.39, 1.57] : [0.49, 0.29, 1.57],
+    yut0Pos: enableHoverEffect && hover ? [2.1, 0.5, -3.0] : [-0.1, -0.5, -1.4],
+    yut0Scale: enableHoverEffect && hover ? 1.05 : 0.9,
+    yut1Rot: enableHoverEffect && hover ? [2.05, 0.3, 1.37] : [0.68, 0.20, 1.66],
+    yut1Pos: enableHoverEffect && hover ? [1.7, 3.0, -0.4] : [0.4, 1.3, -0.1],
+    yut1Scale: enableHoverEffect && hover ? 1.05 : 0.9,
+    yut2Rot: enableHoverEffect && hover ? [5.6, 3.15, 1.58] : [5.60, 2.95, 1.48],
+    yut2Pos: enableHoverEffect && hover ? [2.6, 3.0, 1.9] : [0.5, 0.0, 1.9],
+    yut2Scale: enableHoverEffect && hover ? 1.05 : 0.9,
+    yut3Rot: enableHoverEffect && hover ? [5.1, 2.65, 1.57] : [5.59, 2.75, 1.57],
+    yut3Pos: enableHoverEffect && hover ? [2.2, 1.8, 4.2] : [-1.2, 2.1, 3.4],
+    yut3Scale: enableHoverEffect && hover ? 1.05 : 0.9,
   })
 
   const handlePointerEnter = (e) => {
@@ -228,7 +228,6 @@ export default function YootDisplay({position, rotation, scale}) {
     setHover(false);
   }
   
-
   return <animated.group
     position={position}
     rotation={rotation}
