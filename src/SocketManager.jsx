@@ -61,7 +61,7 @@ import {
 } from "./GlobalState.jsx";
 import { clientHasTurn, movesIsEmpty, pickRandomElement } from "./logicHelpers/helpers.js";
 import * as THREE from 'three';
-import initialState from "../initialState.js";
+import initialState from "./dictionaries/initialState.js";
 import useSoundEffectsPlayer from "./soundPlayers/useSoundEffectsPlayer.jsx";
 import useStarRoll from "./shader/starRoll/StarRoll.jsx";
 import { useLoader } from "@react-three/fiber";
