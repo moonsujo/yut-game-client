@@ -8,7 +8,7 @@ import UfoAnimated from './meshes/UfoAnimated';
 import { useLocation } from 'wouter';
 import HowToPlay from './components/HowToPlay';
 import { socket } from './SocketManager';
-import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, connectedToServerAtom, deviceAtom } from './GlobalState';
+import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, deviceAtom } from './GlobalState';
 import Board from './components/Board';
 import GameCamera from './sceneSetUp/GameCamera';
 import Rocket from './meshes/Rocket';
@@ -35,7 +35,6 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
   const device = useAtomValue(deviceAtom)
   const [display, setDisplay] = useState(showRulebookDefault ? 'howToPlay' : showAboutDefault ? 'about' : 'title')
   const client = useAtomValue(clientAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
   const [_location, setLocation] = useLocation();
   const { playSoundEffect } = useSoundEffectsPlayer()
@@ -292,17 +291,31 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         setIsThrottled(false)
       }, 1000)
 
-      socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
-        setLocation(`/${shortId}`)
-      })
+      // Connect to socket if not already connected
+      if (!socket.connected) {
+        socket.connect()
+      }
 
-      // this doesn't play
-      // music doesn't play either
-      playSoundEffect('/sounds/effects/create-game.mp3', 1)
-      loopMusic(1, true)
-      setAudioVolume(1) // use this in the next music play
-      
-      setBlueMoonBrightness(null)
+      // Wait for connection before creating room
+      const createRoom = () => {
+        socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
+          setLocation(`/${shortId}`)
+        })
+
+        // this doesn't play
+        // music doesn't play either
+        playSoundEffect('/sounds/effects/create-game.mp3', 1)
+        loopMusic(1, true)
+        setAudioVolume(1) // use this in the next music play
+        
+        setBlueMoonBrightness(null)
+      }
+
+      if (socket.connected) {
+        createRoom()
+      } else {
+        socket.once('connect', createRoom)
+      }
 
       await sendLog('buttonClick', {
         button: 'createGame'
@@ -418,13 +431,26 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
     function handleJoinSubmit(e) {
       e.preventDefault();
       if (isAlphaNumeric(roomId)) {
-        socket.emit('checkRoomExists', { roomId: roomId.toUpperCase() }, ({ exists }) => {
-          if (exists) {
-            setLocation(`/${roomId.toUpperCase()}`)
-          } else {
-            setAlert("Room with that ID doesn't exist")
-          }
-        })
+        // Connect to socket if not already connected
+        if (!socket.connected) {
+          socket.connect()
+        }
+
+        const checkAndJoin = () => {
+          socket.emit('checkRoomExists', { roomId: roomId.toUpperCase() }, ({ exists }) => {
+            if (exists) {
+              setLocation(`/${roomId.toUpperCase()}`)
+            } else {
+              setAlert("Room with that ID doesn't exist")
+            }
+          })
+        }
+
+        if (socket.connected) {
+          checkAndJoin()
+        } else {
+          socket.once('connect', checkAndJoin)
+        }
       } else {
         setAlert("ID can only contain letters and numbers")
       }
@@ -831,10 +857,10 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         />  
       </animated.group>
     </group>
-    { !connectedToServer && <DisconnectModal
+    {/* { !connectedToServer && <DisconnectModal
       position={layout[device].title.disconnectModal.position}
       rotation={layout[device].title.disconnectModal.rotation}
-    /> }
+    /> } */}
     <MeteorsRealShader color={meteorShaderColor}/>
     <animated.group position={milkyWayPosition} scale={milkyWayScale}>
       <MilkyWayNew

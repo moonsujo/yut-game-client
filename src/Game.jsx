@@ -35,7 +35,6 @@ import {
   hasTurnAtom,
   settingsOpenAtom,
   mainMenuOpenAtom,
-  connectedToServerAtom,
   pauseGameAtom,
   timerAtom,
   backdoLaunchAtom,
@@ -79,7 +78,6 @@ export default function Game() {
   
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
   const gamePhase = useAtomValue(gamePhaseAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
@@ -609,7 +607,7 @@ export default function Game() {
           position={layout[device].game.logs.button.position} 
           rotation={layout[device].game.logs.button.rotation}
           scale={layout[device].game.logs.button.scale}/> */}
-        {/* { connectedToServer && (gamePhase === 'pregame' || gamePhase === 'game') && logDisplay === 'logs' && <GameLog
+        {/* { socket.connected && (gamePhase === 'pregame' || gamePhase === 'game') && logDisplay === 'logs' && <GameLog
           boxHeight={layout[device].game.logs.box.height}
           boxWidth={layout[device].game.logs.box.width}
           padding={layout[device].game.logs.box.padding}
@@ -619,7 +617,7 @@ export default function Game() {
           rotation={layout[device].game.chat.rotation}
           scale={layout[device].game.chat.scale}
         /> } */}
-        { connectedToServer && (gamePhase === 'pregame' || gamePhase === 'game') && logDisplay === 'chat' && <Chatbox
+        { socket.connected && (gamePhase === 'pregame' || gamePhase === 'game') && logDisplay === 'chat' && <Chatbox
           device={device}
           boxHeight={layout[device].game.chat.box.height}
           boxWidth={layout[device].game.chat.box.width}
@@ -630,7 +628,7 @@ export default function Game() {
           rotation={layout[device].game.chat.rotation}
           scale={layout[device].game.chat.scale}
         /> }
-        { !connectedToServer && <DisconnectModal
+        { !socket.connected && <DisconnectModal
           position={layout[device].game.disconnectModal.position}
           rotation={layout[device].game.disconnectModal.rotation}
         /> }

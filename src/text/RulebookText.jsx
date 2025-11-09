@@ -19,14 +19,18 @@ export default function RulebookText() {
     <p>Throw the 4 sticks. The way they land determines how many spaces you move:</p>
 
     <table>
-      <tr><th>Throw Name</th><th>Move</th><th>Description</th></tr>
-      <tr><td><strong>Do</strong> (도)</td><td>1 space</td><td>One stick flat</td></tr>
-      <tr><td><strong>Gae</strong> (개)</td><td>2 spaces</td><td>Two flat</td></tr>
-      <tr><td><strong>Geol</strong> (걸)</td><td>3 spaces</td><td>Three flat</td></tr>
-      <tr><td><strong>Yut</strong> (윷)</td><td>4 spaces</td><td>All four flat — throw again!</td></tr>
-      <tr><td><strong>Mo</strong> (모)</td><td>5 spaces</td><td>All four round — throw again!</td></tr>
-      <tr><td><strong>Backdo</strong> (뒷도)</td><td>-1 space</td><td>One marked stick flat - move backward</td></tr>
-      <tr><td><strong>Nak</strong> (낙)</td><td>0 space</td><td>No movement when sticks go out of bounds</td></tr>
+      <thead>
+        <tr><th>Throw Name</th><th>Move</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Do</strong> (도)</td><td>1 space</td><td>One stick flat</td></tr>
+        <tr><td><strong>Gae</strong> (개)</td><td>2 spaces</td><td>Two flat</td></tr>
+        <tr><td><strong>Geol</strong> (걸)</td><td>3 spaces</td><td>Three flat</td></tr>
+        <tr><td><strong>Yut</strong> (윷)</td><td>4 spaces</td><td>All four flat — throw again!</td></tr>
+        <tr><td><strong>Mo</strong> (모)</td><td>5 spaces</td><td>All four round — throw again!</td></tr>
+        <tr><td><strong>Backdo</strong> (뒷도)</td><td>-1 space</td><td>One marked stick flat - move backward</td></tr>
+        <tr><td><strong>Nak</strong> (낙)</td><td>0 space</td><td>No movement when sticks go out of bounds</td></tr>
+      </tbody>
     </table>
 
     <p>

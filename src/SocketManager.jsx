@@ -30,7 +30,6 @@ import {
   alertsAtom,
   catchOutcomeAtom,
   catchPathAtom,
-  connectedToServerAtom,
   settingsOpenAtom,
   pauseGameAtom,
   backdoLaunchAtom,
@@ -138,7 +137,6 @@ export const SocketManager = () => {
   const setYootAnimationPlaying = useSetAtom(yootAnimationPlayingAtom)
   const [_catchPath, setCatchPath] = useAtom(catchPathAtom);
 
-  const setConnectedToServer = useSetAtom(connectedToServerAtom)
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
   const setPauseGame = useSetAtom(pauseGameAtom);
   // Game rules
@@ -165,17 +163,15 @@ export const SocketManager = () => {
   const [CreateMeteor] = useMeteorsShader();
 
   useEffect(() => {
-
-    socket.connect();
+    // Socket event listeners setup - connection is managed by Experience.jsx
+    // Note: Do not call socket.connect() here. Connection is initiated when joining a room.
 
     socket.on('connect', () => {
-      // joinRoom sent first
-      console.log('[SocketManager] connect') // runs on complete
-      setConnectedToServer(true)
+      console.log('[SocketManager] connect')
     })
     
     socket.on('connect_error', err => { 
-      setConnectedToServer(false) 
+      console.log('connect_error', err)
     })
 
     // Set client info in global store and local storage
@@ -1372,7 +1368,6 @@ export const SocketManager = () => {
 
     socket.on('kicked', () => {
       setSettingsOpen(false)
-      setConnectedToServer(false)
       socket.disconnect()
       localStorage.removeItem('yootGame')
     })
@@ -1407,12 +1402,10 @@ export const SocketManager = () => {
     socket.on('disconnect', () => {
       console.log('[SocketManager][disconnect]') // runs on component unmount
       setSettingsOpen(false)
-      setConnectedToServer(false);
     })
 
     return () => {
       socket.disconnect()
-      setConnectedToServer(false)
       socket.off();
     }
   }, [])

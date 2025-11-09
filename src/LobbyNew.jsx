@@ -23,7 +23,6 @@ import {
   clientAtom,
   joinTeamAtom,
   teamsAtom,
-  connectedToServerAtom,
   guestBeingEdittedAtom,
   seatChosenAtom,
   showGalaxyBackgroundAtom,
@@ -65,7 +64,6 @@ export default function LobbyNew() {
 
   useResponsiveSetting();
   const device = useAtomValue(deviceAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
   const params = useParams();
   const setShowGalaxy = useSetAtom(showGalaxyBackgroundAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
@@ -2141,7 +2139,7 @@ export default function LobbyNew() {
       <BodySection position={[0, 0, 0]}/>
       <ActionSection position={[0, 0, 7]}/>
     </group>}
-    { !connectedToServer && <DisconnectModal
+    { !socket.connected && <DisconnectModal
       position={layout[device].lobby.disconnectModal.position}
       rotation={layout[device].lobby.disconnectModal.rotation}
     /> }

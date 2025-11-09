@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { clientAtom, connectedToServerAtom, gamePhaseAtom, winnerAtom } from "./GlobalState.jsx";
+import { clientAtom, gamePhaseAtom, winnerAtom } from "./GlobalState.jsx";
 import { useAtom, useAtomValue } from "jotai";
 import { socket } from "./SocketManager.jsx";
 import { useParams } from "wouter";
@@ -16,15 +16,26 @@ export default function Experience() {
   const gamePhase = useAtomValue(gamePhaseAtom)
   const winner = useAtomValue(winnerAtom)
   const client = useAtomValue(clientAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
   const params = useParams()
   // test
   // const client = { team: 0 }
   // const gamePhase = 'finished'
   // const winner = 1
 
+  // Connect to socket when entering a room
   useEffect(() => {
-    if (connectedToServer) {
+    if (!socket.connected) {
+      socket.connect()
+    }
+
+    return () => {
+      // Optionally disconnect when leaving the room
+      // socket.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (socket.connected) {
       socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
         if (response === 'success') {
           socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
@@ -32,8 +43,24 @@ export default function Experience() {
           // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
         }
       })
+    } else {
+      // Wait for connection before joining
+      const handleConnect = () => {
+        socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
+          if (response === 'success') {
+            socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+          } else {
+            // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
+          }
+        })
+      }
+      socket.once('connect', handleConnect)
+      
+      return () => {
+        socket.off('connect', handleConnect)
+      }
     }
-  }, [connectedToServer])
+  }, [params.id])
 
   return <>
     { gamePhase === 'lobby' && <LobbyNew/> }

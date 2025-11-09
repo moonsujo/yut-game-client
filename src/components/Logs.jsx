@@ -1,16 +1,16 @@
 
 import { useAtom, useAtomValue } from "jotai"
-import { connectedToServerAtom, gameLogsAtom, gamePhaseAtom } from "../GlobalState"
+import { gameLogsAtom, gamePhaseAtom } from "../GlobalState"
 import { messagesAtom } from "../GlobalState"
 import { logDisplayAtom } from "../GlobalState"
 import { Html } from "@react-three/drei"
 import layout from "../layout"
+import { socket } from "../SocketManager"
 
 export default function Logs({ position, rotation, scale, device }) {
   const gameLogs = useAtomValue(gameLogsAtom)
   const messages = useAtomValue(messagesAtom)
   const gamePhase = useAtomValue(gamePhaseAtom)
-  const connectedToServer = useAtomValue(connectedToServerAtom)
   const [logDisplay, setLogDisplay] = useAtom(logDisplayAtom)
 
   function ChatButton({ position, rotation, scale }) {
@@ -145,7 +145,7 @@ export default function Logs({ position, rotation, scale, device }) {
     </group>
   }
 
-  return connectedToServer && (gamePhase === 'pregame' || gamePhase === 'game') && <group 
+  return socket.connected && (gamePhase === 'pregame' || gamePhase === 'game') && <group 
     name='logs'
     position={layout[device].game.chat.position}
     rotation={layout[device].game.chat.rotation}>
