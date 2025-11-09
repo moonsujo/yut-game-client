@@ -66,9 +66,9 @@ export default function Rocket({
       flame.current.scale.y = 4 + Math.sin(state.clock.elapsedTime * 10 + offset) * 0.7;
       rocket.current.position.z = position[2] + Math.cos(state.clock.elapsedTime * 2) * 0.05
     } else {
-      flame.current.scale.x = 0
-      flame.current.scale.y = 0
-      flame.current.scale.z = 0
+      // flame.current.scale.x = 0
+      // flame.current.scale.y = 0
+      // flame.current.scale.z = 0
     }
   });
 

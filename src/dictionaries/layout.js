@@ -92,7 +92,7 @@ export default {
         },
         ufoHome: {
           position: [4.2, 0, 4.9],
-          rotation: [-Math.PI/16,0,0],
+          rotation: [0,0,0],
           scale: 1
         }
       },
@@ -2060,7 +2060,7 @@ export default {
         },
         ufoHome: {
           position: [4.2, 0, 4.9],
-          rotation: [-Math.PI/16,0,0],
+          rotation: [0,0,0],
           scale: 1
         }
       },

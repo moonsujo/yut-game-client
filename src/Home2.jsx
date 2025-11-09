@@ -198,12 +198,12 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         floatIntensity={1}
         floatingRange={[0, 0.2]}
       >
-        <UfoAnimated rotation={[-Math.PI/4,0,0]} position={[5.0, 0.8, -0.5]} scale={0.5}/>
+        <Ufo rotation={[0,0,0]} position={[5.0, 0.8, -0.5]} scale={1} onBoard/>
       </Float>
       {/* ufo on saturn */}
       <Float rotationIntensity={0.03} speed={3} floatIntensity={1} floatingRange={[-0.2, 0.2]}>
-        <UfoAnimated rotation={[-Math.PI/4,0,0]} position={[-3.3, 0.8, -4.3]} scale={0.5}/>
-        <UfoAnimated rotation={[-Math.PI/4,0,0]} position={[-2.6, 0.8, -4.3]} scale={0.5}/>
+        <Ufo rotation={[0,0,0]} position={[-3.3, 0.8, -4.1]} scale={1} onBoard/>
+        <Ufo rotation={[0,0,0]} position={[-2.6, 0.8, -4.1]} scale={1} onBoard/>
       </Float>
     </group>
   }
