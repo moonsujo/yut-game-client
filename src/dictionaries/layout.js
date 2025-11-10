@@ -3736,7 +3736,7 @@ export default {
         }
       },
       yootNew: {
-        scale: 0.3,
+        scale: 0.28,
         position: [0, 3, 0.5]
       },
       timer: {
@@ -3952,7 +3952,7 @@ export default {
         scale: 0.9
       },
       beamDust: {
-        position: [-4, 0, -1]
+        position: [0, 0, 0]
       }
     },
     rocketsLoseScene: {
@@ -4000,6 +4000,9 @@ export default {
       actionButtons: {
         position: [7.5, 0, 2],
         scale: 0.9
+      },
+      fireworks: {
+        position: [0, -1, 0]
       }
     },
     endSceneActionButtons: {

@@ -235,14 +235,19 @@ export default function UfosWin2New() {
       }
     }, 200)
     const intervalBeamDust = setInterval(() => {
-      const position = new THREE.Vector3(
+      const positionParticles = new THREE.Vector3(
         Math.random() * 3.5 * (Math.random() > 0.5 ? 1 : -1),
         -7.5,
         Math.random() * 1.0 * (Math.random() > 0.5 ? 1 : -1),
       )
       const size = 300.0 + Math.random() * 200 * (Math.random() > 0.5 ? 1 : -1);
       const speed = 15.0 + Math.random() * 5.0 * (Math.random() > 0.5 ? 1 : -1);
-      CreateBeamDust({ position, size, speed });
+      const position = new THREE.Vector3(
+          layout[device].ufoWinScene.beamDust.position[0],
+          layout[device].ufoWinScene.beamDust.position[1],
+          layout[device].ufoWinScene.beamDust.position[2],
+      )
+      CreateBeamDust({ position, positionParticles, size, speed });
     }, 70)
 
     return (() => {
@@ -514,7 +519,7 @@ export default function UfosWin2New() {
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
       device={device}
-      preview/>
+      />
       <ShareLinkButton 
       position={layout[device].endSceneActionButtons.shareLinkButton.position} 
       rotation={layout[device].endSceneActionButtons.shareLinkButton.rotation} 
