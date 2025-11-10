@@ -3369,13 +3369,13 @@ export default {
         }
       },
       spectating: {
-        position: [7.8, 0, -4.0],
+        position: [8.6, 0, -4.0],
         rotation: [-Math.PI/2, 0, 0],
         size: 0.3,
         height: 0.01
       },
       spectatingAndHosting: {
-        line0Pos: [7.8, 0, -4.0],
+        line0Pos: [7.4, 0, -4.0],
         line1Pos: [9.1, 0, -3.5],
         rotation: [-Math.PI/2, 0, 0],
         size: 0.3,
