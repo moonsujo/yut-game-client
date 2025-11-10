@@ -21,8 +21,9 @@ import MilkyWayNew from "../shader/milkyway/MilkyWayNew";
 import Blackhole from "../meshes/Blackhole";
 import BlueMoon from "../meshes/BlueMoon";
 import BlueMoonBright from "../meshes/BlueMoonBright";
+import { animated } from "@react-spring/three";
 
-export default function RocketsWin2() {
+export default function RocketsWin2({ scale }) {
 
   // Hooks
   const [CreateFirework] = useFireworksShader();
@@ -141,7 +142,7 @@ export default function RocketsWin2() {
 
   const meteorShaderColor = new THREE.Color();
   meteorShaderColor.setHSL(0.05, 0.7, 0.4)
-  return <group>
+  return <animated.group scale={scale}>
     <group name='setup'>
       <GameCamera position={layout[device].camera.position}/>
     </group>
@@ -271,18 +272,18 @@ export default function RocketsWin2() {
     <group name='action-buttons' 
     position={layout[device].rocketsWinScene.actionButtons.position} 
     scale={layout[device].rocketsWinScene.actionButtons.scale}>
-      { device === 'landscapeDesktop' && <group name='room-id' >
+      <group name='room-id' >
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
           size={0.5}
           height={0.03} 
-          position={[0, 0, 0]}
+          position={layout[device].endSceneActionButtons.roomId.position}
         >
           {`ROOM ID: ${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group> }
+      </group>
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
@@ -297,7 +298,7 @@ export default function RocketsWin2() {
       device={device}/>
     </group>
     <MeteorsRealShader color={meteorShaderColor}/>
-    <Blackhole scale={1} position={[-9, -8, -1.5]}/>
+    { device === 'landscapeDesktop' && <Blackhole scale={1} position={[-9, -8, -1.5]}/> }
     <MilkyWayNew // will not show without a camera
       rotation={[-Math.PI/2, 0, -35.0]} 
       position={[0, -10, -4]}
@@ -308,5 +309,5 @@ export default function RocketsWin2() {
       colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
     />
     {/* <BlueMoonBright position={[10, 0, -5]} scale={0.8}/> */}
-  </group>
+  </animated.group>
 }

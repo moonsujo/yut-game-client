@@ -13,7 +13,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
-import { useSpring, animated } from "@react-spring/three";
+import { animated } from "@react-spring/three";
 import Blackhole from "../meshes/Blackhole";
 
 export default function RocketsWin2Preview({ position, scale, backButton }) {

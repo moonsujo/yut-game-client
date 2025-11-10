@@ -1,5 +1,5 @@
 // js
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from "./dictionaries/layout.js";
 import { useSpring, animated } from '@react-spring/three';
@@ -1501,6 +1501,15 @@ export default function LobbyNew() {
 
   // Rulebook
   function SecondSection({ position }) {
+    const howToPlay = useMemo(() => {
+      console.log('Rendering HowToPlay in LobbyNew SecondSection', device)
+      return <HowToPlay 
+        device={device} 
+        position={[-1,0,-1]} 
+        scale={0.6}
+        closeButton={false}
+      />
+    }, [device])
     return <group name='rulebook' position={position}>
       {/* <mesh name='background-panel' position={[0.7, -0.5, 0]}>
         <boxGeometry args={[8.4, 0.01, 14]}/>
@@ -1526,12 +1535,7 @@ export default function LobbyNew() {
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </group>
-      <HowToPlay 
-        device={device} 
-        position={[-1,0,-1]} 
-        scale={0.6}
-        closeButton={false}
-      />
+      {howToPlay}
     </group>
   }
 

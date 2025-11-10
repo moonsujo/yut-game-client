@@ -71,6 +71,10 @@ import Chatbox from "./components/Chatbox.jsx";
 import AudioButton from "./soundPlayers/AudioButton.jsx";
 import MilkyWayNew from "./shader/milkyway/MilkyWayNew.jsx";
 import { sendLog } from './api';
+import RocketsWin2 from "./endScenes/RocketsWin2.jsx";
+import RocketsLose from "./endScenes/RocketsLose.jsx";
+import UfosWin2New from "./endScenes/UfosWin2New.jsx";
+import UfosLose from "./endScenes/UfosLose.jsx";
 
 // There should be no state
 export default function Game() {
@@ -80,6 +84,8 @@ export default function Game() {
   const gamePhase = useAtomValue(gamePhaseAtom)
   const pauseGame = useAtomValue(pauseGameAtom)
   const logDisplay = useAtomValue(logDisplayAtom)
+  const winner = useAtomValue(winnerAtom)
+  const client = useAtomValue(clientAtom)
 
   // Animations
   const { gameScale } = useSpring({
@@ -672,16 +678,24 @@ export default function Game() {
           heightMultiplier={layout[device].game.timer.heightMultiplier}
         />
       </animated.group> }
-      <MeteorsRealShader color={meteorShaderColor}/>
-      <MilkyWayNew // will not show without a camera
-        rotation={[-Math.PI/2, 0, -35.0]} 
-        position={[0, -10, -4]}
-        scale={5}
-        brightness={0.5}
-        colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-        colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-        colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-      />
+      { (gamePhase === 'pregame' || gamePhase === 'game') && <>
+        <MeteorsRealShader color={meteorShaderColor}/>
+        <MilkyWayNew // will not show without a camera
+          rotation={[-Math.PI/2, 0, -35.0]} 
+          position={[0, -10, -4]}
+          scale={5}
+          brightness={0.5}
+          colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+          colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+          colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+        />
+      </> }
+      { gamePhase === 'finished' && client.team === 0 && winner === 0 && <RocketsWin2/> }
+      { gamePhase === 'finished' && client.team === 0 && winner === 1 && <RocketsLose/> }
+      { gamePhase === 'finished' && client.team === 1 && winner === 1 && <UfosWin2New/> }
+      { gamePhase === 'finished' && client.team === 1 && winner === 0 && <UfosLose/> }
+      { gamePhase === 'finished' && client.team === -1 && winner === 0 && <RocketsWin2/> }
+      { gamePhase === 'finished' && client.team === -1 && winner === 1 && <UfosWin2New/> }
     </>
   );
 }

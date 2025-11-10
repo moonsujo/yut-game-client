@@ -14,8 +14,6 @@ import StarsPatterns2Shader from "./shader/starsPatterns2/StarsPatterns2Shader.j
 export default function Experience() {
 
   const gamePhase = useAtomValue(gamePhaseAtom)
-  const winner = useAtomValue(winnerAtom)
-  const client = useAtomValue(clientAtom)
   const params = useParams()
   // test
   // const client = { team: 0 }
@@ -34,26 +32,21 @@ export default function Experience() {
     }
   }, [])
 
+  const handleConnect = () => {
+    socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
+      if (response === 'success') {
+        socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
+      } else {
+        // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
+      }
+    })
+  }
+
   useEffect(() => {
     if (socket.connected) {
-      socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
-        if (response === 'success') {
-          socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
-        } else {
-          // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
-        }
-      })
+      handleConnect()
     } else {
       // Wait for connection before joining
-      const handleConnect = () => {
-        socket.emit('addUser', { roomId: params.id.toUpperCase(), savedClient: localStorage.getItem('yootGame') }, (response) => {
-          if (response === 'success') {
-            socket.emit('joinRoom', { roomId: params.id.toUpperCase() })
-          } else {
-            // Display message: 'room doesn't exist. create a new room from the main entrance. <button/>'
-          }
-        })
-      }
       socket.once('connect', handleConnect)
       
       return () => {
@@ -64,14 +57,8 @@ export default function Experience() {
 
   return <>
     { gamePhase === 'lobby' && <LobbyNew/> }
-    { (gamePhase === 'pregame' || gamePhase === 'game') && <Game/> }
+    { (gamePhase === 'pregame' || gamePhase === 'game' || gamePhase === 'finished') && <Game/> }
     {/* win screen experience */}
-    { gamePhase === 'finished' && client.team === 0 && winner === 0 && <RocketsWin2/> }
-    { gamePhase === 'finished' && client.team === 0 && winner === 1 && <RocketsLose/> }
-    { gamePhase === 'finished' && client.team === 1 && winner === 1 && <UfosWin2New/> }
-    { gamePhase === 'finished' && client.team === 1 && winner === 0 && <UfosLose/> }
-    { gamePhase === 'finished' && client.team === -1 && winner === 0 && <RocketsWin2/> }
-    { gamePhase === 'finished' && client.team === -1 && winner === 1 && <UfosWin2New/> }
     <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
     <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/6.png'} size={2}/>
   </>

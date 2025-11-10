@@ -23,7 +23,6 @@ import Barn from "../meshes/Barn";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader";
 import { Llama } from "../meshes/Llama";
 import Ruby from "../meshes/Ruby";
-import MeteorsRealShader from "../shader/meteorsReal/MeteorsRealShader";
 import PlayAgainButton from "./PlayAgainButton";
 import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
@@ -503,7 +502,7 @@ export default function UfosWin2New() {
     <group name='action-buttons' 
     position={layout[device].ufoWinScene.actionButtons.position} 
     scale={layout[device].ufoWinScene.actionButtons.scale}>
-      { device === 'landscapeDesktop' && <group name='room-id'>
+      <group name='room-id'>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -514,7 +513,7 @@ export default function UfosWin2New() {
           ROOM ID: {`${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group> }
+      </group>
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

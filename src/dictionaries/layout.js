@@ -3737,7 +3737,7 @@ export default {
       },
       yootNew: {
         scale: 0.28,
-        position: [0, 3, 0.5]
+        position: [0, 3, 1.2]
       },
       timer: {
         position: [10.2, 0, 4.9],
