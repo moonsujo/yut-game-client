@@ -3660,7 +3660,7 @@ export default {
         scale: 0
       },
       rulebook: {
-        position: [6.9, 3, -0.5],
+        position: [5.9, 3, -0.5],
         scale: 0.6,
         content: {
           position: [0, 0, 0.2]

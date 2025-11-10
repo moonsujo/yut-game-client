@@ -15,10 +15,6 @@ export default function Experience() {
 
   const gamePhase = useAtomValue(gamePhaseAtom)
   const params = useParams()
-  // test
-  // const client = { team: 0 }
-  // const gamePhase = 'finished'
-  // const winner = 1
 
   // Connect to socket when entering a room
   useEffect(() => {

@@ -86,6 +86,10 @@ export default function Game() {
   const logDisplay = useAtomValue(logDisplayAtom)
   const winner = useAtomValue(winnerAtom)
   const client = useAtomValue(clientAtom)
+  // test
+  // const client = { team: 0 }
+  // const gamePhase = 'finished'
+  // const winner = 1
 
   // Animations
   const { gameScale } = useSpring({

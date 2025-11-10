@@ -1502,7 +1502,6 @@ export default function LobbyNew() {
   // Rulebook
   function SecondSection({ position }) {
     const howToPlay = useMemo(() => {
-      console.log('Rendering HowToPlay in LobbyNew SecondSection', device)
       return <HowToPlay 
         device={device} 
         position={[-1,0,-1]} 
