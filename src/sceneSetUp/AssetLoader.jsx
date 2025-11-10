@@ -1,8 +1,9 @@
 import { useLoader } from "@react-three/fiber"
 import { useGLTF } from '@react-three/drei';
 import { useSetAtom } from "jotai"
+import * as THREE from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { fireworkTexturesAtom, meteorTexturesAtom } from "../GlobalState"
+import { fireworkTexturesAtom, meteorTexturesAtom, moonTextureAtom } from "../GlobalState"
 
 export default function AssetLoader() {
   const fireworkTextures = [
@@ -19,6 +20,11 @@ export default function AssetLoader() {
   ]
   const setMeteorTextures = useSetAtom(meteorTexturesAtom)
   setMeteorTextures(meteorTextures)
+
+  const moonTexture = useLoader(TextureLoader, "/textures/moon/moon-color.jpg")
+  moonTexture.colorSpace = THREE.SRGBColorSpace
+  const setMoonTexture = useSetAtom(moonTextureAtom)
+  setMoonTexture(moonTexture)
 
   return
 }

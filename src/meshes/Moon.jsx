@@ -6,11 +6,11 @@ import AtmosphereVertexShader from '../shader/moon/atmosphere/vertex.glsl'
 import FragmentShader from '../shader/moon/fragment.glsl'
 import VertexShader from '../shader/moon/vertex.glsl'
 import { useFrame } from "@react-three/fiber";
+import { useAtomValue } from "jotai";
+import { moonTextureAtom } from "../GlobalState";
 
 export default function Moon({ position=[0,0,0], rotation=[0,0,0], scale=1, shiny=true }) {
-  const textureLoader = new THREE.TextureLoader()
-  const moonTexture = textureLoader.load("/textures/moon/moon-color.jpg") // must use absolute path - string starts with a slash
-  moonTexture.colorSpace = THREE.SRGBColorSpace
+  const moonTexture = useAtomValue(moonTextureAtom);
 
   const moon = useRef();
   useFrame((state) => {
