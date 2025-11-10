@@ -29,6 +29,8 @@ import PregameTieAlert from "../alerts/PregameTieAlert";
 import PregameUfosWinAlert from "../alerts/PregameUfosWinAlert";
 import ScoreAlert from "../alerts/ScoreAlert";
 import TurnAlert from "../alerts/TurnAlert";
+import Catch4UfoAlert from "../alerts/Catch4UfoAlert";
+import Catch3UfoAlert from "../alerts/Catch3UfoAlert";
 
 export default function Alert({ position, rotation }) {
     
@@ -863,12 +865,16 @@ export default function Alert({ position, rotation }) {
         { numCaught === 2 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 3 && teamCaught === 0 && <CatchRocketMemeAlert/> }
         { numCaught === 4 && teamCaught === 0 && <CatchRocketMemeAlert/> }
-        { numCaught === 1 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
+        { numCaught === 1 && teamCaught === 1 && <Catch3UfoAlert/> }
         {/* { numCaught === 1 && teamCaught === 1 && <Catch3UfoAlert/> } */}
         {/* { numCaught === 1 && teamCaught === 1 && <Catch1UfoAlert/> } */}
+        { numCaught === 2 && teamCaught === 1 && <Catch3UfoAlert/> }
+        { numCaught === 3 && teamCaught === 1 && <Catch3UfoAlert/> }
+        { numCaught === 4 && teamCaught === 1 && <Catch3UfoAlert/> }
+        {/* { numCaught === 1 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
         { numCaught === 2 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
         { numCaught === 3 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
-        { numCaught === 4 && teamCaught === 1 && <CatchUfoEnergyAlert/> }
+        { numCaught === 4 && teamCaught === 1 && <CatchUfoEnergyAlert/> } */}
       </animated.group>
     }
 

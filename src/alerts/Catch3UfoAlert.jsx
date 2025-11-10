@@ -1,6 +1,6 @@
 import { useGLTF, Text3D, Float } from "@react-three/drei"
 import { useRef } from "react";
-import Star from "../meshes/Star"
+import Star from "../meshes/Stars/Star"
 import Ufo from "../meshes/Ufo"
 import Rocket from "../meshes/Rocket"
 import { useFrame } from "@react-three/fiber";
@@ -74,6 +74,7 @@ export default function Catch3UfoAlert({ position, rotation }) {
     const ufoGroupRef1 = useRef()
     const ufoGroupRef2 = useRef()
     const ufoGroupRefs = [ufoGroupRef0, ufoGroupRef1, ufoGroupRef2]
+    const rocketRef = useRef()
     useFrame((state, delta) => {
       for (let i = 0; i < ufoGroupRefs.length; i++) {
         ufoGroupRefs[i].current.rotation.x = state.clock.elapsedTime + i * 0.7
@@ -82,11 +83,13 @@ export default function Catch3UfoAlert({ position, rotation }) {
       }
     })
     return <group name='catch-picture'>
-      <Rocket
-        position={[1, 0.4, -1.1]} 
-        rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
-        scale={1}
-      />
+      <group ref={rocketRef} rotation={[0, -Math.PI/2, 0]}>
+        <Rocket
+          position={[-1.2, 0.6, -0.9]} 
+          scale={1.3}
+          onBoard
+        />
+      </group>
       <mesh position={[0.9, 0.4, -0.4]}>
         <sphereGeometry args={[0.05, 32, 16]}/>
         <meshStandardMaterial color='red'/>
@@ -95,28 +98,28 @@ export default function Catch3UfoAlert({ position, rotation }) {
         <sphereGeometry args={[0.05, 32, 16]}/>
         <meshStandardMaterial color='red'/>
       </mesh>
-      <group ref={ufoGroupRef0} position={[0.7, 0.5, 0.5]}>
+      <group ref={ufoGroupRef0} position={[0.8, 0.5, 0.5]}>
         <Ufo 
           rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
           scale={0.7}
           glassOpacity={0.1}
         />
       </group>
-      <group ref={ufoGroupRef1} position={[1.2, 0.5, 0.8]}>
+      <group ref={ufoGroupRef1} position={[1.3, 0.5, 0.8]}>
         <Ufo 
           rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
           scale={0.7}
           glassOpacity={0.1}
         />
       </group>
-      <group ref={ufoGroupRef2} position={[0.7, 0.5, 1.05]}>
+      <group ref={ufoGroupRef2} position={[0.8, 0.5, 1.05]}>
         <Ufo 
           rotation={[Math.PI/2, -Math.PI/8 * 5, Math.PI/2]} 
           scale={0.7}
           glassOpacity={0.1}
         />
       </group>
-      <group position={[0.9, 0.3, 0.8]} scale={1.7}>
+      <group position={[1, 0.3, 0.8]} scale={1.7}>
         <BamImage position={[0, 0, 0]} rotation={[0, -Math.PI, 0]} scale={[1, 2, 1]} color='#E73D3D'/>
         <BamImage position={[0, 0, 0]} rotation={[0, -Math.PI, 0]} scale={[0.8, 3, 0.8]} color='orange'/>
         <BamImage position={[0, 0, 0]} rotation={[0, -Math.PI, 0]} scale={[0.6, 4, 0.6]} color='yellow'/>
@@ -142,7 +145,7 @@ export default function Catch3UfoAlert({ position, rotation }) {
       height={0.1}
     >
       CATCH!
-      <meshStandardMaterial color='turquoise'/>
+      <meshStandardMaterial color='red'/>
     </Text3D>
     <Text3D
       font="/fonts/Luckiest Guy_Regular.json"
@@ -152,28 +155,28 @@ export default function Catch3UfoAlert({ position, rotation }) {
       height={0.1}
     >
       BONUS THROW
-      <meshStandardMaterial color='turquoise'/>
+      <meshStandardMaterial color='red'/>
     </Text3D>
     <group ref={borderMesh0Ref}>
       <YootEmoji/>
     </group>
     <group ref={borderMesh1Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
     <group ref={borderMesh2Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
     <group ref={borderMesh3Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
     <group ref={borderMesh4Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
     <group ref={borderMesh5Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
     <group ref={borderMesh6Ref}>
-      <Star scale={0.2} color='turquoise'/>
+      <Star scale={0.2} color='red'/>
     </group>
   </animated.group>
 }
