@@ -61,9 +61,9 @@ export default function RocketsLose() {
   const progressRef = useRef({ value: 0 })
   const pMax0 = 0.12
   const pMax1 = 0.25
-  const pMax2 = 0.5
-  const pMax3 = 0.63
-  const pMax4 = 0.7
+  const pMax2 = 0.45
+  const pMax3 = 0.58
+  const pMax4 = 0.65
   // const pMax5 = 0.8
   // const pMax6 = 1.0
 
@@ -94,10 +94,10 @@ export default function RocketsLose() {
   const pOpeningStart = 0.0
   const pOpeningEnd = pMax0
   const pClosingStart = pMax3
-  const pClosingEnd = 0.76
-  const pRightEyeCloseStart = 0.82
-  const pRightEyeCloseEnd = 0.84
-  const pRightEyeOpenEnd = 0.86
+  const pClosingEnd = 0.71
+  const pRightEyeCloseStart = 0.77
+  const pRightEyeCloseEnd = 0.79
+  const pRightEyeOpenEnd = 0.81
 
   useEffect(() => {
     gsap.to(progressRef.current, {
