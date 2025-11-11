@@ -137,13 +137,14 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         <meshStandardMaterial color={hover ? "green": [0.8, 0.8, 0]} />
       </Text3D>
       <mesh 
-        position={[0.7, -0.5, 0]} 
+        position={[0.65, -0.5, -0.1]} 
+        scale={[1, 0.01, 2]}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
         onPointerDown={e=>handlePointerDown(e)}
       >
-        <boxGeometry args={[1.5, 1, 0.1]}/>
-        <meshStandardMaterial color="grey" transparent opacity={0}/>
+        <boxGeometry args={[1.5, 0.01, 1.2]}/>
+        <meshStandardMaterial color="yellow" transparent opacity={0}/>
       </mesh>
     </group>
   }
