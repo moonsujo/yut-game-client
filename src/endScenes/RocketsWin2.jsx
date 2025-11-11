@@ -122,8 +122,8 @@ export default function RocketsWin2({ scale }) {
                     position[1] - 1,
                     position[2] + 3 + Math.sin(angle) * radiusCircle - 3
                 )
-                size = 0.15
-                radius = 1.5 + Math.random() * 0.5
+                size = 0.3 + Math.random() * 0.3
+                radius = 1.0 + Math.random() * 1.0
             }
             const color = new THREE.Color();
             color.setHSL(Math.random(), 0.7, 0.4)
