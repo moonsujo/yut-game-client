@@ -2125,7 +2125,7 @@ export default function HowToPlay({
         <Board showArrows={false} highlightShortcuts/>
         <group name='path-0'>
           {dotSpringsCircle.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 1.0, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
@@ -2133,19 +2133,19 @@ export default function HowToPlay({
         </group>
         <group name='path-1'>
           {dotSpringsFirstCorner.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 1.0, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsMiddle.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 1.0, 0.2]}>
+            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsCorner.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 1.0, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(Math.PI + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
@@ -2153,13 +2153,13 @@ export default function HowToPlay({
         </group>
         <group name='path-2'>
           {dotSpringsHalfCircle.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 1.0, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
           })}
           {dotSpringsVertical.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[0, 1.0, -4.5 + 0.4*index]}>
+            return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, -4.5 + 0.4*index]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='limegreen'/>
             </animated.mesh>
@@ -2167,19 +2167,19 @@ export default function HowToPlay({
         </group>
         <group name='path-3'>
           {dotSpringsFirstCornerPath3.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 1.0, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
+            return <animated.mesh key={index} scale={value.scale} position={[5 * Math.cos(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32)), 0.5, 0.2 - 5 * Math.sin(-Math.PI/2 + ((index) / dotSpringsCorner.length) * (Math.PI/2 - Math.PI/32))]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsMiddleHalf.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 1.0, 0.2]}>
+            return <animated.mesh key={index} scale={value.scale} position={[4.2 - 0.4*index, 0.5, 0.2]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
           })}
           {dotSpringsVerticalHalf.map((value, index) => {
-            return <animated.mesh key={index} scale={value.scale} position={[0, 1.0, 0.7 + 0.4*index]}>
+            return <animated.mesh key={index} scale={value.scale} position={[0, 0.5, 0.7 + 0.4*index]}>
               <sphereGeometry args={[1, 32, 16]}/>
               <meshBasicMaterial color='#00f7ff'/>
             </animated.mesh>
