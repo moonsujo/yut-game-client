@@ -897,24 +897,30 @@ export default function HowToPlay({
       document.addEventListener('visibilitychange', handleVisibilityChange)
 
       // When 'welcome home!' displays
+      // anchor fireworks on 'mission accomplished' text
+      let missionAccomplishedTextPosition = new THREE.Vector3()
+      missionAccomplishedTextRef.current.getWorldPosition(missionAccomplishedTextPosition)
       const fireworkTimeout0 = setTimeout(() => {
         if (document.hidden) return
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
+        position = new THREE.Vector3(
+          3 + missionAccomplishedTextPosition.x,
+          2 + missionAccomplishedTextPosition.y,
+          -1.5 + missionAccomplishedTextPosition.z
+        )
         if (device === 'portrait') {
-          position = new THREE.Vector3(3,2,-6)
           size = 0.08 + Math.random() * 0.1
           radius = 0.9 + Math.random() * 0.1
         } else {
-          position = new THREE.Vector3(2,2,-4)
           size = 0.25 + Math.random() * 0.1
           radius = 0.6 + Math.random() * 0.1
         }
         const color = new THREE.Color();
         const hue = 0.01
         color.setHSL(hue, 0.7, 0.5)
-        
+
         CreateFirework({ count, position, size, radius, color });
       }, 4500) 
       const fireworkTimeout1 = setTimeout(() => {
@@ -922,14 +928,17 @@ export default function HowToPlay({
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
+        position = new THREE.Vector3(
+          1 + missionAccomplishedTextPosition.x,
+          2 + missionAccomplishedTextPosition.y,
+          -1.8 + missionAccomplishedTextPosition.z
+        )
         if (device === 'portrait') {
-          position = new THREE.Vector3(1,2,-5.5)
           size = 0.08 + Math.random() * 0.1
           radius = 0.9 + Math.random() * 0.1
         } else {
-          position = new THREE.Vector3(2.5,2,-3)
           size = 0.25 + Math.random() * 0.1
-          radius = 0.6 + Math.random() * 0.1
+          radius = 0.7 + Math.random() * 0.1
         }
 
         const color = new THREE.Color();
@@ -943,14 +952,17 @@ export default function HowToPlay({
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
+        position = new THREE.Vector3(
+          -1 + missionAccomplishedTextPosition.x,
+          2 + missionAccomplishedTextPosition.y,
+          -1.6 + missionAccomplishedTextPosition.z
+        )
         if (device === 'portrait') {
-          position = new THREE.Vector3(-0.5,2,-5.1)
           size = 0.08 + Math.random() * 0.1
           radius = 0.9 + Math.random() * 0.1
         } else {
-          position = new THREE.Vector3(1,2,-3)
           size = 0.25 + Math.random() * 0.1
-          radius = 0.6 + Math.random() * 0.1
+          radius = 0.65 + Math.random() * 0.1
         }
 
         const color = new THREE.Color();
@@ -964,14 +976,17 @@ export default function HowToPlay({
         // firework 1 - left
         const count = Math.round(500 + Math.random() * 400);
         let position, size, radius
+        position = new THREE.Vector3(
+          -3 + missionAccomplishedTextPosition.x,
+          2 + missionAccomplishedTextPosition.y,
+          -1.4 + missionAccomplishedTextPosition.z
+        )
         if (device === 'portrait') {
-          position = new THREE.Vector3(-2,2,-4.6)
           size = 0.08 + Math.random() * 0.1
           radius = 0.9 + Math.random() * 0.1
         } else {
-          position = new THREE.Vector3(-0.5,2,-2.3)
           size = 0.25 + Math.random() * 0.1
-          radius = 0.6 + Math.random() * 0.1
+          radius = 0.7 + Math.random() * 0.1
         }
 
         const color = new THREE.Color();
@@ -1110,6 +1125,8 @@ export default function HowToPlay({
       }
     })
 
+    const missionAccomplishedTextRef = useRef();
+
     function WelcomeHomeAlert({ position, scale }) {
       
       const borderMesh0Ref = useRef();
@@ -1155,7 +1172,8 @@ export default function HowToPlay({
         rotation={layout[device].game.whoGoesFirst.title.rotation}
         size={0.6}
         height={layout[device].game.whoGoesFirst.title.height}
-        lineHeight={0.8}>
+        lineHeight={0.8}
+        ref={missionAccomplishedTextRef}>
           {`MISSION\nACCOMPLISHED!`}
           <meshStandardMaterial color='red'/>
         </Text3D>
