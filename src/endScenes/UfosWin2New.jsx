@@ -29,6 +29,7 @@ import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import { useParams } from "wouter";
 import MilkyWayNew from "../shader/milkyway/MilkyWayNew";
+import FullMoon from "../meshes/FullMoon";
 
 // add falling rocket parts in the background
 export default function UfosWin2New() {
@@ -502,7 +503,7 @@ export default function UfosWin2New() {
     <group name='action-buttons' 
     position={layout[device].ufoWinScene.actionButtons.position} 
     scale={layout[device].ufoWinScene.actionButtons.scale}>
-      <group name='room-id'>
+      { device === 'landscapeDesktop' && <group name='room-id'>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -513,7 +514,7 @@ export default function UfosWin2New() {
           ROOM ID: {`${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
@@ -537,5 +538,6 @@ export default function UfosWin2New() {
       colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
       colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
     />
+    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true} color='blue'/>
   </group>
 }

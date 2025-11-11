@@ -1834,7 +1834,11 @@ export default {
       },
       actionButtons: {
         position: [0, 3, 6.5],
-        scale: 1.1
+        scale: 1.1,
+        preview: {
+          position: [0, 3, 6.5],
+          scale: 1.1,
+        }
       }
     },
     ufoWinScene: {
@@ -1861,7 +1865,11 @@ export default {
       },
       actionButtons: {
         position: [0, 3, 6.5],
-        scale: 1.1
+        scale: 1.1,
+        preview: {
+          position: [0, 3, 6.5],
+          scale: 1.1,
+        }
       },
       beamDust: {
         position: [0, 0, 0]
@@ -1888,6 +1896,10 @@ export default {
       actionButtons: {
         position: [0, 3, 6.5],
         scale: 1.1,
+        preview: {
+          position: [0, 3, 6.5],
+          scale: 1.1,
+        },
         roomId: {
           position: [0.5, 0, 0.5]
         }
@@ -1915,9 +1927,16 @@ export default {
       actionButtons: {
         position: [0, 3, 6.5],
         scale: 1.1,
+        preview: {
+          position: [0, 3, 6.5],
+          scale: 1.1,
+        },
         roomId: {
           position: [0.5, 0, 0.5]
         }
+      },
+      fireworks: {
+        position: [0, -1, 0]
       }
     },
     endSceneActionButtons: {
@@ -3925,8 +3944,12 @@ export default {
         scale: 1.3
       },
       actionButtons: {
-        position: [7.5, 0, 2],
-        scale: 0.9
+        position: [8.5, 0, 2],
+        scale: 0.9,
+        preview: {
+          position: [7.5, 0, 2],
+          scale: 0.9
+        }
       }
     },
     ufoWinScene: {
@@ -3948,8 +3971,12 @@ export default {
         scale: 1
       },
       actionButtons: {
-        position: [7.5, 0, 2],
-        scale: 0.9
+        position: [8.5, 0, 2],
+        scale: 0.9,
+        preview: {
+          position: [7.5, 0, 2],
+          scale: 0.9
+        }
       },
       beamDust: {
         position: [0, 0, 0]
@@ -3974,8 +4001,12 @@ export default {
         scale: 1
       },
       actionButtons: {
-        position: [7.5, 0, 2],
-        scale: 0.9
+        position: [8.5, 0, 2],
+        scale: 0.9,
+        preview: {
+          position: [7.5, 0, 2],
+          scale: 0.9
+        }
       }
     },
     rocketsWinScene: {
@@ -3998,8 +4029,12 @@ export default {
         scale: 1
       },
       actionButtons: {
-        position: [7.5, 0, 2],
-        scale: 0.9
+        position: [8.5, 0, 2],
+        scale: 0.9,
+        preview: {
+          position: [7.5, 0, 2],
+          scale: 0.9
+        }
       },
       fireworks: {
         position: [0, -1, 0]

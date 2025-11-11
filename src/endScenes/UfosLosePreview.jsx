@@ -211,9 +211,9 @@ export default function UfosLosePreview({ position, scale, backButton }) {
     </group>
     {/* room id and buttons */}
     <group name='action-buttons' 
-    position={layout[device].ufoLoseScene.actionButtons.position} 
-    scale={layout[device].ufoLoseScene.actionButtons.scale}>
-      <group name='room-id'>
+    position={layout[device].ufoLoseScene.actionButtons.preview.position} 
+    scale={layout[device].ufoLoseScene.actionButtons.preview.scale}>
+      { device === 'landscapeDesktop' && <group name='room-id'>
         {/* text */}
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
@@ -225,7 +225,7 @@ export default function UfosLosePreview({ position, scale, backButton }) {
           ROOM ID: 9999
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

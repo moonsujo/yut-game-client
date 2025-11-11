@@ -20,6 +20,7 @@ import ShareLinkButton from "./ShareLinkButton";
 import PlayAgainButton from "./PlayAgainButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
 import RedGalaxy from "../meshes/RedGalaxy";
+import Constellation from "../shader/constellation/Constellation";
 
 export default function RocketsLosePreview({ position, scale, backButton, startAnimation=false, onStopAnimation }) {
 
@@ -493,9 +494,9 @@ export default function RocketsLosePreview({ position, scale, backButton, startA
     </group>
     {/* room id and buttons */}
     <group name='action-buttons' 
-    position={layout[device].rocketsLoseScene.actionButtons.position} 
-    scale={layout[device].rocketsLoseScene.actionButtons.scale}>
-      <group name='room-id' >
+    position={layout[device].rocketsLoseScene.actionButtons.preview.position} 
+    scale={layout[device].rocketsLoseScene.actionButtons.preview.scale}>
+      { device === 'landscapeDesktop' && <group name='room-id'>
         {/* text */}
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
@@ -507,7 +508,7 @@ export default function RocketsLosePreview({ position, scale, backButton, startA
           ROOM ID: 9999
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

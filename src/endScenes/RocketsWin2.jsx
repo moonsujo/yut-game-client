@@ -275,7 +275,7 @@ export default function RocketsWin2({ scale }) {
     <group name='action-buttons' 
     position={layout[device].rocketsWinScene.actionButtons.position} 
     scale={layout[device].rocketsWinScene.actionButtons.scale}>
-      <group name='room-id' >
+      { device === 'landscapeDesktop' && <group name='room-id' >
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -286,7 +286,7 @@ export default function RocketsWin2({ scale }) {
           {`ROOM ID: ${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
@@ -311,8 +311,6 @@ export default function RocketsWin2({ scale }) {
       colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
       colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
     />
-    {/* <BlueMoonBright position={[10, 0, -5]} scale={0.8}/> */}
-    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true}/>
-    {/* <Constellation omitFactor={2} position={[8.4,-1,-6]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>   */}
+    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true} color='yellow'/>
   </animated.group>
 }

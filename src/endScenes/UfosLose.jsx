@@ -222,7 +222,7 @@ export default function UfosLose() {
     <group name='action-buttons' 
     position={layout[device].ufoLoseScene.actionButtons.position} 
     scale={layout[device].ufoLoseScene.actionButtons.scale}>
-      <group name='room-id'>
+      { device === 'landscapeDesktop' && <group name='room-id'>
         {/* text */}
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
@@ -234,7 +234,7 @@ export default function UfosLose() {
           ROOM ID: {`${params.id}`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

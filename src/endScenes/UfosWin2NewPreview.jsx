@@ -25,6 +25,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import ShareLinkButton from "./ShareLinkButton";
 import DiscordButton from "./DiscordButton";
 import useResponsiveSetting from "../hooks/useResponsiveSetting";
+import FullMoon from "../meshes/FullMoon";
 
 // add falling rocket parts in the background
 export default function UfosWin2NewPreview({ position, scale, backButton }) {
@@ -426,9 +427,9 @@ export default function UfosWin2NewPreview({ position, scale, backButton }) {
     </group>
     {/* room id and buttons */}
     <group name='action-buttons' 
-    position={layout[device].ufoWinScene.actionButtons.position} 
-    scale={layout[device].ufoWinScene.actionButtons.scale}>
-      <group name='room-id'>
+    position={layout[device].ufoWinScene.actionButtons.preview.position} 
+    scale={layout[device].ufoWinScene.actionButtons.preview.scale}>
+      { device === 'landscapeDesktop' && <group name='room-id'>
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -439,7 +440,7 @@ export default function UfosWin2NewPreview({ position, scale, backButton }) {
           ROOM ID: {`9999`}
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 
@@ -454,5 +455,6 @@ export default function UfosWin2NewPreview({ position, scale, backButton }) {
       device={device}/>
     </group>
     {backButton}
+    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true} color='blue'/>
   </animated.group>
 }

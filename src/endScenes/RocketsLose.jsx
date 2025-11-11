@@ -465,14 +465,14 @@ export default function RocketsLose() {
     <group name='action-buttons' 
     position={layout[device].rocketsLoseScene.actionButtons.position} 
     scale={layout[device].rocketsLoseScene.actionButtons.scale}>
-      { device === 'landscapeDesktop' && <group name='room-id' >
+      { device === 'landscapeDesktop' && <group name='room-id'>
         {/* text */}
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
           size={0.5}
           height={0.03} 
-          position={[0, 0, 0]} // camera is shifted up (y-axis)
+          position={layout[device].endSceneActionButtons.roomId.position} // camera is shifted up (y-axis)
         >
           ROOM ID: {`${params.id}`}
           <meshStandardMaterial color='yellow'/>

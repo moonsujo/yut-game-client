@@ -210,12 +210,12 @@ export default function RocketsWin2Preview({ position, scale, backButton }) {
         </group>
       </Float>
     </group>
-    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true}/>
+    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true} color='yellow'/>
     {/* room id and buttons */}
     <group name='action-buttons' 
-    position={layout[device].rocketsWinScene.actionButtons.position} 
-    scale={layout[device].rocketsWinScene.actionButtons.scale}>
-      <group name='room-id' >
+    position={layout[device].rocketsWinScene.actionButtons.preview.position} 
+    scale={layout[device].rocketsWinScene.actionButtons.preview.scale}>
+      { device === 'landscapeDesktop' && <group name='room-id' >
         <Text3D
           font="/fonts/Luckiest Guy_Regular.json"
           rotation={[-Math.PI/2, 0, 0]}
@@ -226,7 +226,7 @@ export default function RocketsWin2Preview({ position, scale, backButton }) {
           ROOM ID: 9999
           <meshStandardMaterial color='yellow'/>
         </Text3D>
-      </group>
+      </group> }
       <PlayAgainButton 
       position={layout[device].endSceneActionButtons.playAgainButton.position} 
       rotation={layout[device].endSceneActionButtons.playAgainButton.rotation} 

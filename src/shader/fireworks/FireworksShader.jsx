@@ -169,7 +169,6 @@ export function useFireworksShader() {
 
             scene.add(points)
         } else if (type === 'planet') { // refactor to use the constellation shader
-            console.log('planet')
             let nodes, geometry;
             nodes = planetModel.nodes;
             geometry = nodes.Sphere002.geometry
@@ -213,10 +212,8 @@ export function useFireworksShader() {
                 material.uniforms.uProgress,
                 { value: 1, duration: 3, ease: 'linear', onComplete: destroy }
             )
-            console.log('points', points)
 
             scene.add(points)
-            console.log('added planet')
         }
     }
 

@@ -2,6 +2,7 @@ uniform sampler2D uMoonTexture;
 uniform vec3 uSunDirection;
 uniform vec3 uAtmosphereDayColor;
 uniform vec3 uAtmosphereTwilightColor;
+uniform vec3 uMoonColor;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -15,7 +16,7 @@ void main()
 
     // Moon
     vec3 moonColor = texture(uMoonTexture, vUv).rgb;
-    color = moonColor * vec3(1.5, 1.5, 1.0);
+    color = moonColor * uMoonColor;
 
     // Sun orientation
     // float sunOrientation = dot(uSunDirection, normal);
