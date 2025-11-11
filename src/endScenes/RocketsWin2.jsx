@@ -22,6 +22,9 @@ import Blackhole from "../meshes/Blackhole";
 import BlueMoon from "../meshes/BlueMoon";
 import BlueMoonBright from "../meshes/BlueMoonBright";
 import { animated } from "@react-spring/three";
+import Moon from "../meshes/Moon";
+import Constellation from "../shader/constellation/Constellation";
+import FullMoon from "../meshes/FullMoon";
 
 export default function RocketsWin2({ scale }) {
 
@@ -309,5 +312,7 @@ export default function RocketsWin2({ scale }) {
       colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
     />
     {/* <BlueMoonBright position={[10, 0, -5]} scale={0.8}/> */}
+    <FullMoon position={[9.5, 0, -4.5]} rotation={[-Math.PI/2, 0, -Math.PI/8]} scale={0.4} shiny={true}/>
+    {/* <Constellation omitFactor={2} position={[8.4,-1,-6]} rotation={[-Math.PI/2, 0, Math.PI/4]} scale={1.3} modelPath={'/models/star.glb'}/>   */}
   </animated.group>
 }
