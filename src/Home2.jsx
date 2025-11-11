@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import layout from './dictionaries/layout';
 import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
 import { useLocation } from 'wouter';
 import HowToPlay from './components/HowToPlay';
 import { socket } from './SocketManager';
-import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, deviceAtom } from './GlobalState';
+import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, deviceAtom, joinGameModalDisplayAtom } from './GlobalState';
 import Board from './components/Board';
 import GameCamera from './sceneSetUp/GameCamera';
 import Rocket from './meshes/Rocket';
@@ -36,12 +36,14 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
   const [display, setDisplay] = useState(showRulebookDefault ? 'howToPlay' : showAboutDefault ? 'about' : 'title')
   const client = useAtomValue(clientAtom)
   const setBlueMoonBrightness = useSetAtom(blueMoonBrightnessAtom)
+  const setJoinGameModalDisplay = useSetAtom(joinGameModalDisplayAtom);
   const [_location, setLocation] = useLocation();
   const { playSoundEffect } = useSoundEffectsPlayer()
   const { loopMusic } = useMusicPlayer()
   const setAudioVolume = useSetAtom(audioVolumeAtom)
   useEffect(() => {
     sendLog('pageView', { page: 'home' });
+    setJoinGameModalDisplay(false);
   }, [])
   
   // games played, page visits, yut thrown
@@ -353,8 +355,8 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
     </group>
   }
 
-  const [joinGameModalDisplay, setJoinGameModalDisplay] = useState(false);
   function JoinGameButton({ position, rotation, scale }) {
+    const setJoinGameModalDisplay = useSetAtom(joinGameModalDisplayAtom);
     const [hover, setHover] = useState(false)
 
     function handlePointerEnter(e) {
@@ -414,6 +416,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
     const [alert, setAlert] = useState('')
     const [submitHover, setSubmitHover] = useState(false)
     const [cancelHover, setCancelHover] = useState(false)
+    const [joinGameModalDisplay, setJoinGameModalDisplay] = useAtom(joinGameModalDisplayAtom);
     
     function isAlphaNumeric(str) {
       for (let i = 0; i < str.length; i++) {
@@ -475,7 +478,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
       setCancelHover(false)
     }
 
-    return <group 
+    return joinGameModalDisplay && <group 
       position={position}
       rotation={rotation}
       scale={scale}
@@ -786,11 +789,11 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           rotation={layout[device].title.joinGame.rotation}
           scale={layout[device].title.joinGame.scale}
         />
-        { joinGameModalDisplay && <JoinGameModal
+        <JoinGameModal
           position={layout[device].title.joinGameModal.position} 
           rotation={layout[device].title.joinGameModal.rotation}
           scale={layout[device].title.joinGameModal.scale}
-        /> }
+        />
         <LetsPlayButton
           position={layout[device].title.letsPlay.position} 
           rotation={layout[device].title.letsPlay.rotation}

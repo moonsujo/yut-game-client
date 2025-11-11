@@ -118,6 +118,7 @@ export const pieceTeam1Id0AnimationPlayingAtom = atom(false)
 export const pieceTeam1Id1AnimationPlayingAtom = atom(false)
 export const pieceTeam1Id2AnimationPlayingAtom = atom(false)
 export const pieceTeam1Id3AnimationPlayingAtom = atom(false)
+export const joinGameModalDisplayAtom = atom(false)
 export const showFinishMovesAtom = atom(false)
 export const logDisplayAtom = atom('chat')
 
