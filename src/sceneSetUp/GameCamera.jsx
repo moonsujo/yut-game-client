@@ -3,6 +3,7 @@ import mediaValues from '../dictionaries/mediaValues';
 import { CameraControls, OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import { subscribeToResize, unsubscribeFromResize } from '../hooks/useWindowSize';
 
 function calcZoom() {
   if (window.innerWidth < mediaValues.landscapeCutoff) {
@@ -24,9 +25,13 @@ export default function GameCamera({ position=[0, 17, 7], lookAt=[0,0,0], contro
     setZoom(calcZoom())
   }
 
-  // Assign camera to renderer in different components
+  // Subscribe to centralized resize handler
   useEffect(() => {
-    window.addEventListener("resize", handleResize, false);
+    subscribeToResize(handleResize);
+    
+    return () => {
+      unsubscribeFromResize(handleResize);
+    };
   }, []);
 
   const camera = useRef();

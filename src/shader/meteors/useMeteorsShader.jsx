@@ -5,25 +5,14 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useLoader, useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
+import { getWindowSizes } from '../../hooks/useWindowSize';
 
 export default function useMeteorsShader() {
 
     const { scene } = useThree();
-    const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        pixelRatio: Math.min(window.devicePixelRatio, 2)
-    }
-    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio);
-
-    window.addEventListener('resize', () => {
-        // Update sizes
-        sizes.width = window.innerWidth
-        sizes.height = window.innerHeight
-        sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
-        sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-
-    })
+    
+    // Use shared sizes object - no resize listener needed
+    const sizes = getWindowSizes();
 
     // one particle in the center
     // other particles shine around it

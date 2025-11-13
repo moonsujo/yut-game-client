@@ -721,9 +721,11 @@ export default function Alert({ position, rotation }) {
         } else if (alerts[0] && alerts[0].includes('join')) {
         }
       }
+      console.log('alerts changed:', alerts)
     }, [alerts, animationPlaying])
 
     function GameStartAlert() {
+      
       const borderMesh0Ref = useRef();
       const borderMesh1Ref = useRef();
       const borderMesh2Ref = useRef();

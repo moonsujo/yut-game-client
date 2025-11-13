@@ -4,27 +4,15 @@ import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
+import { getWindowSizes } from '../../hooks/useWindowSize';
 
 export function useBeamDustShader() {
 
     const { scene } = useThree();
-    const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        pixelRatio: Math.min(window.devicePixelRatio, 2)
-    }
-    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio);
-
-    // doesn't get called; the one in GameCamera or setDevice does
-    window.addEventListener('resize', () => {
-        // Update sizes
-        sizes.width = window.innerWidth
-        sizes.height = window.innerHeight
-        sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
-        sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-    })
     
-
+    // Use shared sizes object - no resize listener needed
+    const sizes = getWindowSizes();
+    
     // one particle
     // spawn via setInterval
     // randomize position and size

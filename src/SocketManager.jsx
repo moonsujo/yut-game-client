@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAtom, useSetAtom } from "jotai";
 
-import { io } from "socket.io-client";
+import { getSocket } from "./socket.js";
 
 import { 
   pregameAlertAtom, 
@@ -66,16 +66,11 @@ import useStarRoll from "./shader/starRoll/StarRoll.jsx";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import useMeteorsShader from "./shader/meteors/useMeteorsShader.jsx";
-import { SOCKET_ENDPOINT } from "./config/env.js";
 
-export const socket = io(
-  SOCKET_ENDPOINT, { 
-    query: {
-      client: localStorage.getItem('yootGame')
-    },
-    autoConnect: false,
-  },
-)
+// Socket is now lazy-loaded - initialized only when SocketManager mounts
+const socket = getSocket();
+
+export { socket };
 
 export const SocketManager = () => {
   const [client, setClient] = useAtom(clientAtom);

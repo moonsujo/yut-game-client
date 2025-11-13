@@ -4,6 +4,7 @@ import titleStarsVertexShader from './vertex.glsl'
 import titleStarsFragmentShader from './fragment.glsl'
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { getWindowSizes } from "../../hooks/useWindowSize";
 
 // sparkle around the title
 export default function SparkleYutShader({ position=[0,0,0], size=1.0, texturePath }) {
@@ -15,22 +16,8 @@ export default function SparkleYutShader({ position=[0,0,0], size=1.0, texturePa
   const delays = new Float32Array(count);
   const texture = useLoader(TextureLoader, texturePath)
 
-  // Scales the particle by screen height.
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    pixelRatio: Math.min(window.devicePixelRatio, 2)
-  }
-
-  sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-  window.addEventListener('resize', () =>
-  {
-      // Update sizes
-      sizes.width = window.innerWidth
-      sizes.height = window.innerHeight
-      sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
-      sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-  })
+  // Use shared sizes object - no resize listener needed
+  const sizes = getWindowSizes();
 
   // #region particle attributes
   positions[0] = 1.5

@@ -2,9 +2,21 @@ import fireworkVertexShader from './vertex.glsl';
 import fireworkFragmentShader from './fragment.glsl';
 import * as THREE from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { useLoader, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { getWindowSizes } from '../../hooks/useWindowSize';
+
+// Cache for meteor textures
+const meteorTextureCache = new Map();
+
+function loadMeteorTexture(path) {
+  if (!meteorTextureCache.has(path)) {
+    const loader = new TextureLoader();
+    meteorTextureCache.set(path, loader.load(path));
+  }
+  return meteorTextureCache.get(path);
+}
 
 export default function MeteorsRealShader({ 
     position=[0,0,0],
@@ -16,27 +28,21 @@ export default function MeteorsRealShader({
     durationBase=3.0, 
     durationRandom=3.0,
     color,
-    textures=[
-        useLoader(TextureLoader, '/textures/particles/3.png'),
-        useLoader(TextureLoader, '/textures/particles/7.png'), // heart
-    ]
+    textures: texturesProp
 }) {
     const { scene } = useThree();
 
-    const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        pixelRatio: Math.min(window.devicePixelRatio, 1)
-    }
-    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio);
-
-    window.addEventListener('resize', () => {
-        // Update sizes
-        sizes.width = window.innerWidth
-        sizes.height = window.innerHeight
-        sizes.pixelRatio = Math.min(window.devicePixelRatio, 1)
-        sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-    })
+    // Use shared sizes object - no resize listener needed
+    const sizes = getWindowSizes();
+    
+    // Cache textures with useMemo
+    const textures = useMemo(() => {
+        if (texturesProp) return texturesProp;
+        return [
+            loadMeteorTexture('/textures/particles/3.png'),
+            loadMeteorTexture('/textures/particles/7.png'),
+        ];
+    }, [texturesProp]);
 
     // one particle in the center
     // other particles shine around it

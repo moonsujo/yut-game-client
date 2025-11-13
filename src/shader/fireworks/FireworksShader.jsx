@@ -3,41 +3,56 @@ import fireworkFragmentShader from './fragment.glsl';
 import shapeVertexShader from '../fireworksShape/vertex.glsl'
 import shapeFragmentShader from '../fireworksShape/fragment.glsl'
 import * as THREE from 'three';
-import { useLoader, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useGLTF } from '@react-three/drei';
 import { generateRandomNumberInRange } from '../../logicHelpers/helpers';
+import { getWindowSizes } from '../../hooks/useWindowSize';
+import { useMemo } from 'react';
+
+// Cache for textures and models
+const fireworkTextureCache = new Map();
+const fireworkModelCache = new Map();
+
+function loadFireworkTexture(path) {
+  if (!fireworkTextureCache.has(path)) {
+    const loader = new TextureLoader();
+    fireworkTextureCache.set(path, loader.load(path));
+  }
+  return fireworkTextureCache.get(path);
+}
+
+function loadFireworkModel(path, preload = true) {
+  if (!fireworkModelCache.has(path)) {
+    const { nodes } = useGLTF(path, preload);
+    fireworkModelCache.set(path, nodes);
+  }
+  return fireworkModelCache.get(path);
+}
 
 // radius: how far the particles spread
 export function useFireworksShader() {
 
     const { scene } = useThree();
-    const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        pixelRatio: Math.min(window.devicePixelRatio, 2)
-    }
-    sizes.resolution = new THREE.Vector2(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio);
-
-    window.addEventListener('resize', () => {
-        // Update sizes
-        sizes.width = window.innerWidth
-        sizes.height = window.innerHeight
-        sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
-        sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
-    })
-    const fireworkTextures = [
-        useLoader(TextureLoader, '/textures/particles/3.png'),
-        useLoader(TextureLoader, '/textures/particles/5.png'),
-        useLoader(TextureLoader, '/textures/particles/6.png'),
-        useLoader(TextureLoader, '/textures/particles/8.png'),
-    ]
-    const ariesModel = useGLTF('/models/aries-constellation-thin.glb', false, false)
-    const bullModel = useGLTF('/models/bull-constellation-thin.glb')
-    const rhinoModel = useGLTF('/models/rhino-constellation-thin.glb')
-    const wolfModel = useGLTF('/models/wolf-constellation-thin-3.glb')
-    const planetModel = useGLTF("/models/planet-joined.glb");
+    
+    // Use shared sizes object - no resize listener needed
+    const sizes = getWindowSizes();
+    
+    // Cache textures
+    const fireworkTextures = useMemo(() => [
+        loadFireworkTexture('/textures/particles/3.png'),
+        loadFireworkTexture('/textures/particles/5.png'),
+        loadFireworkTexture('/textures/particles/6.png'),
+        loadFireworkTexture('/textures/particles/8.png'),
+    ], []);
+    
+    // Cache models
+    const ariesModel = useMemo(() => ({ nodes: loadFireworkModel('/models/aries-constellation-thin.glb', false) }), []);
+    const bullModel = useMemo(() => ({ nodes: loadFireworkModel('/models/bull-constellation-thin.glb') }), []);
+    const rhinoModel = useMemo(() => ({ nodes: loadFireworkModel('/models/rhino-constellation-thin.glb') }), []);
+    const wolfModel = useMemo(() => ({ nodes: loadFireworkModel('/models/wolf-constellation-thin-3.glb') }), []);
+    const planetModel = useMemo(() => ({ nodes: loadFireworkModel('/models/planet-joined.glb') }), []);
 
     function CreateFirework({count, position, size, radius, color, type='regular'}) {
 

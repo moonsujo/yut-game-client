@@ -1,4 +1,4 @@
-import React, {useRef, useMemo} from 'react'
+import React, {useRef, useMemo, useEffect} from 'react'
 import {useFrame, useThree, useLoader} from '@react-three/fiber'
 import * as THREE from 'three'
 import { OrbitControls } from '@react-three/drei'
@@ -6,27 +6,44 @@ import { useAtomValue } from 'jotai'
 import vertexShader from './vertex.glsl';
 import fragmentShader from './fragment.glsl';
 
+// Cache textures to avoid reloading
+const milkyWayTextureCache = new Map();
+
+function loadTexture(path) {
+  if (!milkyWayTextureCache.has(path)) {
+    const loader = new THREE.TextureLoader();
+    milkyWayTextureCache.set(path, loader.load(path));
+  }
+  return milkyWayTextureCache.get(path);
+}
+
 export default function MilkyWayNew(props) {
     const meshRef = useRef();
     const secondMeshRef = useRef();
     const thirdMeshRef = useRef();
     
-        // Load textures with react-three-fiber's loader so they're cached across renders
-        const sky = useLoader(THREE.TextureLoader, '/textures/star.jpg');
-        const sky2 = useLoader(THREE.TextureLoader, '/textures/Marbles.jpg');
-        const sky3 = useLoader(THREE.TextureLoader, '/textures/Marbles.jpg');
-
-        // Setup wrapping/repeat once (textures are stable thanks to useLoader)
-        useMemo(() => {
-            sky.wrapS = THREE.RepeatWrapping;
-            sky.wrapT = THREE.RepeatWrapping;
-            sky2.wrapS = THREE.RepeatWrapping;
-            sky2.wrapT = THREE.RepeatWrapping;
-            sky3.wrapS = THREE.RepeatWrapping;
-            sky3.wrapT = THREE.RepeatWrapping;
-            sky3.repeat.set(4, 4);
-            return null;
-        }, [sky, sky2, sky3]);
+    // Load textures with caching
+    const sky = useMemo(() => {
+      const texture = loadTexture('/textures/star.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      return texture;
+    }, []);
+    
+    const sky2 = useMemo(() => {
+      const texture = loadTexture('/textures/Marbles.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      return texture;
+    }, []);
+    
+    const sky3 = useMemo(() => {
+      const texture = loadTexture('/textures/Marbles.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(4, 4);
+      return texture;
+    }, []);
 
     const milkyWayUniform = useMemo(
         () => ({

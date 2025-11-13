@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import Experience from './Experience';
 import { Canvas } from '@react-three/fiber';
-import { SocketManager } from './SocketManager';
 import { Route } from "wouter"
 import { Loader } from '@react-three/drei';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
@@ -38,7 +37,6 @@ export default function App () {
         <directionalLight castShadow position={ [ 1, 6, 3 ] } intensity={ 4 } />
         <ambientLight intensity={ 1.5 } />
         {/* <ParticleSystem/> */}
-        <SocketManager/>
         <AssetLoader/>
         <Route path="/">
           <Home2/>

@@ -5,8 +5,11 @@ import starsFragmentShader from './fragment.glsl'
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
-export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count=1000, texturePath }) {
+// Cache for textures - reuse across instances
+const textureCache = new Map();
 
+// Generate star data once per count/size combination
+const generateStarData = (count, size) => {
   const positions1 = new Float32Array(count * 3);
   const colors1 = new Float32Array(count * 3);
   const scales = new Float32Array(count);
@@ -15,10 +18,9 @@ export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count
   const colorTwoHex = '#8484FA';
   const colorInitial = new THREE.Color(colorOneHex);
   const colorFinal = new THREE.Color(colorTwoHex);
-  const texture = useLoader(TextureLoader, texturePath)
 
   const rareStarRate = Math.floor(count * 0.007);
-  // const numPatterns = 5;
+  
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
   
@@ -40,11 +42,9 @@ export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count
 
     if (i % rareStarRate === 0) {
       isRainbowFlags[i] = 1.0;
-      // Scale
       scales[i] = 0.7
     } else {
       isRainbowFlags[i] = 0.0;
-      // Scale
       scales[i] = size
     }
   
@@ -53,17 +53,51 @@ export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count
     colors1[i3 + 2] = mixedColor.b;
   }
 
+  return { positions1, colors1, scales, isRainbowFlags };
+};
+
+// Cache star data by configuration
+const starDataCache = new Map();
+const getStarData = (count, size) => {
+  const key = `${count}-${size}`;
+  if (!starDataCache.has(key)) {
+    starDataCache.set(key, generateStarData(count, size));
+  }
+  return starDataCache.get(key);
+};
+
+export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count=1000, texturePath }) {
+
+  // Memoize star data - only compute once per count/size combination
+  const { positions1, colors1, scales, isRainbowFlags } = useMemo(
+    () => getStarData(count, size),
+    [count, size]
+  );
+
+  // Cache texture loading
+  const texture = useMemo(() => {
+    if (!textureCache.has(texturePath)) {
+      const loader = new TextureLoader();
+      textureCache.set(texturePath, loader.load(texturePath));
+    }
+    return textureCache.get(texturePath);
+  }, [texturePath]);
+
   const { gl } = useThree();
-  gl.setPixelRatio(Math.min(window.devicePixelRatio, 1))
+  
+  // Set pixel ratio once
+  useEffect(() => {
+    gl.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+  }, [gl]);
 
   const uniforms = useMemo(() => ({
-    uSize: { value: 400 * gl.getPixelRatio() },
+    uSize: { value: 400 * Math.min(window.devicePixelRatio, 1) },
     uTime: { value: 0 },
     uTexture: { value: texture }
-  }), []);
+  }), [texture]);
   
   const shaderRef = useRef();
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (shaderRef.current) {
       shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     }
@@ -112,3 +146,4 @@ export default function StarsPatterns2Shader({ position=[0,0,0], size=1.0, count
     </group>
   );
 }
+
