@@ -686,7 +686,6 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
       <PauseGameButton/>,
       // <SetGameRulesButton/>,
       <ViewGameRulesButton/>,
-      <LanguageButton/>
     ]
     let hostPlayerButtons
     if (hasAI) {
@@ -696,7 +695,6 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
         <ResetGameButton/>,
         // <SetGameRulesButton/>,
         <ViewGameRulesButton/>,
-        <LanguageButton/>
       ]
     } else {
       hostPlayerButtons = [
@@ -706,26 +704,23 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
         <PauseGameButton/>,
         // <SetGameRulesButton/>,
         <ViewGameRulesButton/>,
-        <LanguageButton/>
       ]
     }
     // No 'Set Away' button
     const guestSpectatorButtons = [
       <ViewGuestsButton/>,
       <ViewGameRulesButton/>,
-      <LanguageButton/>
     ]
     const guestPlayerButtons = [
       <ViewGuestsButton/>,
       // <SetAwayButton/>,
       <ViewGameRulesButton/>,
-      <LanguageButton/>
     ]
     const backgroundDimensions = {
       'hostSpectator': {
-        position: [0,0,-0.5],
-        scaleOuter: [6, 0.01, 6.95],
-        scaleInner: [5.9, 0.02, 6.85]
+        position: [0, 0, -2.55 + 0.5 * (hostSpectatorButtons.length - 2)],
+        scaleOuter: [6, 0.01, 1 * hostSpectatorButtons.length + 1],
+        scaleInner: [5.9, 0.02, 1 * hostSpectatorButtons.length + 0.9]
       },
       'hostPlayer': {
         position: [0, 0, -2.55 + 0.5 * (hostPlayerButtons.length - 2)],
