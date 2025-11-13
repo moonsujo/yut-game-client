@@ -17,7 +17,7 @@ const resizeHandlers = new Set();
 
 // Single global resize handler
 const handleResize = () => {
-  const pixelRatio = window.devicePixelRatio;
+  const pixelRatio = Math.min(window.devicePixelRatio, 2)
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
   sizes.pixelRatio = pixelRatio;
