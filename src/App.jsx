@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import Experience from './Experience';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { Route } from "wouter"
 import { Loader } from '@react-three/drei';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
@@ -12,6 +12,22 @@ import MusicController from './soundPlayers/MusicController';
 import Home2 from './Home2';
 import RulebookText from './text/RulebookText';
 import Showroom from './components/Showroom';
+import { useWindowSize } from './hooks/useWindowSize';
+
+// Component to handle resize and pixel ratio updates
+function ResizeHandler() {
+  const { gl, camera } = useThree();
+  
+  useWindowSize((sizes) => {
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+    
+    gl.setSize(sizes.width, sizes.height);
+    gl.setPixelRatio(sizes.pixelRatio);
+  });
+  
+  return null;
+}
 
 export default function App () {
 
@@ -34,6 +50,7 @@ export default function App () {
       onCreated={ created }
     >
       <Suspense fallback={null}>
+        <ResizeHandler />
         {/* <Perf/> */}
         <directionalLight castShadow position={ [ 1, 6, 3 ] } intensity={ 4 } />
         <ambientLight intensity={ 1.5 } />
