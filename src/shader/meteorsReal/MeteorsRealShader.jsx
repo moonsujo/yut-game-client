@@ -63,7 +63,7 @@ export default function MeteorsRealShader({
             positionsArray[i3+1] = position.y
             positionsArray[i3+2] = position.z
 
-            sizesArray[i] = 1.1
+            sizesArray[i] = 0.5
 
             trailDurationArray[i] = 0.13 + Math.random()*0.03
 
