@@ -805,12 +805,12 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           rotation={layout[device].title.showroom.rotation}
           scale={layout[device].title.showroom.scale}
         /> }
-        { device === 'portrait' && <animated.group scale={showroomButtonPortraitScale}>
+        {/* { device === 'portrait' && <animated.group scale={showroomButtonPortraitScale}>
           <ShowroomButtonPortrait
           position={layout[device].title.showroom.position} 
           rotation={layout[device].title.showroom.rotation}
           scale={layout[device].title.showroom.scale}
-        /></animated.group> }
+        /></animated.group> } */}
         { device === 'landscapeDesktop' && <AboutButtonLandscape
           position={layout[device].title.about.position} 
           rotation={layout[device].title.about.rotation}

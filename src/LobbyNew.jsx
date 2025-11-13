@@ -1797,7 +1797,7 @@ export default function LobbyNew() {
           <meshStandardMaterial color='yellow'/>
         </Text3D>
       </Center>
-      <Center position={[0,0,1.4]}>
+      <Center key={isHost} position={[0,0,1.4]}>
         <Text3D
         font="/fonts/Luckiest Guy_Regular.json"
         position={[-0.3,0,1.4]}
