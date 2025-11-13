@@ -302,7 +302,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
       // Wait for connection before creating room
       const createRoom = () => {
         socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
-          setLocation(`/game/${shortId}`)
+          setLocation(`/${shortId}`)
         })
 
         // this doesn't play
@@ -443,7 +443,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         const checkAndJoin = () => {
           socket.emit('checkRoomExists', { roomId: roomId.toUpperCase() }, ({ exists }) => {
             if (exists) {
-              setLocation(`/game/${roomId.toUpperCase()}`)
+              setLocation(`/${roomId.toUpperCase()}`)
             } else {
               setAlert("Room with that ID doesn't exist")
             }

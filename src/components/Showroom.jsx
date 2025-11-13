@@ -68,7 +68,6 @@ export default function Showroom(props) {
     const [CreateFirework] = useFireworksShader();
     const [CreateBeamDust] = useBeamDustShader();
     const [startRocketsLoseAnimation, setStartRocketsLoseAnimation] = useState(false)
-    const [_location, setLocation] = useLocation();
 
     // helper function
     function CreateMoMeteor() {
