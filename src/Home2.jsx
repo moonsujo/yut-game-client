@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -27,9 +27,6 @@ import { IS_DEV } from './config/env';
 import About from './components/About';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import Constellation from './shader/constellation/Constellation';
-
-// Lazy load heavy components
-const Showroom = lazy(() => import('./components/Showroom'));
 
 export default function Home2({ showRulebookDefault = false, showAboutDefault = false }) {
 
@@ -304,7 +301,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
       // Wait for connection before creating room
       const createRoom = () => {
         socket.emit('createRoom', { hostId: client._id }, ({ shortId }) => {
-          setLocation(`/${shortId}`)
+          setLocation(`/game/${shortId}`)
         })
 
         // this doesn't play
@@ -445,7 +442,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
         const checkAndJoin = () => {
           socket.emit('checkRoomExists', { roomId: roomId.toUpperCase() }, ({ exists }) => {
             if (exists) {
-              setLocation(`/${roomId.toUpperCase()}`)
+              setLocation(`/game/${roomId.toUpperCase()}`)
             } else {
               setAlert("Room with that ID doesn't exist")
             }
@@ -727,14 +724,13 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
   }
 
   // To make room in portrait mode
-  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, showroomScale, navigationPosition, milkyWayPosition, milkyWayScale, showroomButtonPortraitScale, aboutScale } = useSpring({
+  const { titleScale, titlePosition, titleBoardScale, howToPlayScale, navigationPosition, milkyWayPosition, milkyWayScale, showroomButtonPortraitScale, aboutScale } = useSpring({
     titleScale: display === 'howToPlay' ? 0.5 : 1,
     titlePosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     yutDisplayScale: display === 'howToPlay' ? 0.5 : 1,
     yutDisplayPosition: display === 'howToPlay' ? [-2,0,-5] : [0,0,0],
     titleBoardScale: display === 'title' ? 1 : 0,
     howToPlayScale: display === 'howToPlay' ? 1 : 0,
-    showroomScale: display === 'showroom' ? 1 : 0,
     navigationPosition: display === 'showroom' ? [-13,0,0] : [0,0,0],
     milkyWayPosition: display === 'showroom' ? [-4,0,0] : [0,0,0],
     milkyWayScale: display !== 'showroom' ? 1 : 0,
@@ -857,17 +853,6 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
             scale={layout[device].about.scale}
           />
         </animated.group>
-        { display === 'showroom' && <animated.group scale={showroomScale}>
-          <Suspense fallback={null}>
-            <Showroom
-              position={layout[device].showroom.position}
-              rotation={layout[device].showroom.rotation}
-              scale={layout[device].showroom.scale}
-              setHomeDisplay={setDisplay}
-              homeDisplay={display}
-            />
-          </Suspense>
-        </animated.group> }
       </group>
       {/* { !connectedToServer && <DisconnectModal
         position={layout[device].title.disconnectModal.position}

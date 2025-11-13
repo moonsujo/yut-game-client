@@ -51,7 +51,7 @@ export default function App () {
         <Route path="/about">
           <Home2 showAboutDefault={true}/>
         </Route>
-        <Route path="/:id">
+        <Route path="/game/:id">
           <Experience/>
           <Alert position={[0, 3, 0.5]} rotation={[0,0,0]}/>
         </Route>
