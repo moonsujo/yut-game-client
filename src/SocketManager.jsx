@@ -1069,6 +1069,7 @@ export const SocketManager = () => {
       setTeams(teams);
       setHost(host);
       setGamePhase(gamePhase)
+      console.log('gamePhase on joinRoom:', gamePhase)
 
       findAndStoreClient(spectators, teams[0].players, teams[1].players)
       
