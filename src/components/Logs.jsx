@@ -5,7 +5,9 @@ import { messagesAtom } from "../GlobalState"
 import { logDisplayAtom } from "../GlobalState"
 import { Html } from "@react-three/drei"
 import layout from "../layout"
-import { socket } from "../SocketManager"
+import { getSocket } from "../socket.js"
+
+const socket = getSocket();
 
 export default function Logs({ position, rotation, scale, device }) {
   const gameLogs = useAtomValue(gameLogsAtom)

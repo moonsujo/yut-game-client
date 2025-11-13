@@ -4,7 +4,9 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { backdoLaunchAtom, clientAtom, deviceAtom, gamePhaseAtom, hostAtom, languageAtom, nakAtom, pauseGameAtom, settingsOpenAtom, spectatorsAtom, teamsAtom, timerAtom, yutMoCatchAtom } from "../GlobalState";
 import HtmlColors from "./HtmlColors";
 import layout from '../dictionaries/layout'
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useParams } from "wouter";
 import { useFrame } from "@react-three/fiber";
 import translations from "../components/translations";

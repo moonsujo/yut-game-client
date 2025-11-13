@@ -7,7 +7,9 @@ import RocketAnimated from './meshes/RocketAnimated';
 import UfoAnimated from './meshes/UfoAnimated';
 import { useLocation } from 'wouter';
 import HowToPlay from './components/HowToPlay';
-import { socket } from './SocketManager';
+import { getSocket } from './socket.js';
+
+const socket = getSocket();
 import { audioVolumeAtom, blueMoonBrightnessAtom, clientAtom, deviceAtom, joinGameModalDisplayAtom } from './GlobalState';
 import Board from './components/Board';
 import GameCamera from './sceneSetUp/GameCamera';

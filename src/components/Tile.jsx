@@ -1,6 +1,8 @@
 import { useMemo, useRef } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import React from "react";
 import { useFrame, useGraph } from "@react-three/fiber";
 import { audioVolumeAtom, backdoLaunchAtom, clientAtom, gamePhaseAtom, hasTurnAtom, helperTilesAtom, legalTilesAtom, pauseGameAtom, selectionAtom, shortcutOptionsAtom, showFinishMovesAtom, teamsAtom, tilesAtom, turnAtom } from "../GlobalState";

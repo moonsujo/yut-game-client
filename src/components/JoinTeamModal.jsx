@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Html } from '@react-three/drei';
-import { socket } from '../SocketManager';
+import { getSocket } from '../socket.js';
+
+const socket = getSocket();
 import { useAtom, useAtomValue } from 'jotai';
 import { audioVolumeAtom, clientAtom, joinTeamAtom, teamsAtom } from '../GlobalState';
 import { sendLog } from '../api';

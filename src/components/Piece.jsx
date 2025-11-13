@@ -1,5 +1,7 @@
 
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { useRef } from "react";
 import { getLegalTiles } from "../logicHelpers/legalTiles.jsx";

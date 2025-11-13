@@ -1565,7 +1565,7 @@ export default {
         scale: 1
       },
       rulebook: {
-        position: [-2, 3, -0.5],
+        position: [-2, 10, 3.5],
         scale: 0.75,
         content: {
           position: [0, 0, 0.2]
@@ -3671,15 +3671,15 @@ export default {
         scale: 0.6
       },
       rulebookButton: {
-        position: [9.3, 0, -4.8],
-        scale: 1,
+        position: [10.235, 0, -5.3],
+        scale: 1.1,
       },
       musicButton: {
         position: [9.7,0,-4],
         scale: 0
       },
       rulebook: {
-        position: [5.9, 3, -0.5],
+        position: [4.8, 10, 2.5],
         scale: 0.6,
         content: {
           position: [0, 0, 0.2]

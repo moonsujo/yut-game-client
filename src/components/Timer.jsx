@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { hasTurnAtom, pauseGameAtom, remainingTimeAtom, timeLeftAtom, timerAtom, timerOnAtom, turnExpireTimeAtom, turnStartTimeAtom } from "../GlobalState";
 import { useAtom, useAtomValue } from "jotai";
 import { useFrame } from "@react-three/fiber";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying";
 
 export default function Timer({ position, scale, boxArgs, heightMultiplier }) {

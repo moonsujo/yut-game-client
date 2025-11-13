@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { MeshStandardMaterial } from 'three';
 import { Text3D } from "@react-three/drei";
-import { socket } from "../SocketManager.jsx";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useParams } from "wouter";
 import { useFrame } from "@react-three/fiber";
 import layout from "../dictionaries/layout.js";

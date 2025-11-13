@@ -67,12 +67,9 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import useMeteorsShader from "./shader/meteors/useMeteorsShader.jsx";
 
-// Socket is now lazy-loaded - initialized only when SocketManager mounts
-const socket = getSocket();
-
-export { socket };
-
 export const SocketManager = () => {
+  // Socket is now lazy-loaded - initialized only when SocketManager mounts
+  const socket = getSocket();
   const [client, setClient] = useAtom(clientAtom);
   const [teams, setTeams] = useAtom(teamsAtom)
   const [turn, setTurn] = useAtom(turnAtom);
@@ -1071,6 +1068,7 @@ export const SocketManager = () => {
       setSpectators(spectators);
       setTeams(teams);
       setHost(host);
+      setGamePhase(gamePhase)
 
       findAndStoreClient(spectators, teams[0].players, teams[1].players)
       

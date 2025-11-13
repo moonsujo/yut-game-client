@@ -8,7 +8,9 @@ import YootMeshUnrotated from "../meshes/YutMeshUnrotated"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { clientAtom, hasTurnAtom, pauseGameAtom, showBonusAtom, throwCountAtom, turnAtom, yootAnimationPlayingAtom } from "../GlobalState"
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying"
-import { socket } from "../SocketManager"
+import { getSocket } from "../socket.js"
+
+const socket = getSocket();
 import { useParams } from "wouter"
 
 export default function YutBonus({ position, scale, rotation=[0,0,0], alwaysShow=false, enableClick=true }) {

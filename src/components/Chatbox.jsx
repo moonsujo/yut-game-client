@@ -1,5 +1,7 @@
 import { Html, Scroll, ScrollControls } from "@react-three/drei";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useAtomValue } from "jotai";
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useParams } from "wouter";

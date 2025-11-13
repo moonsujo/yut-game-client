@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 import { clientAtom, hasTurnAtom, pauseGameAtom, showFinishMovesAtom } from '../GlobalState'
 import { useAtomValue } from 'jotai'
 import { MeshStandardMaterial } from 'three'
-import { socket } from '../SocketManager'
+import { getSocket } from '../socket.js'
+
+const socket = getSocket();
 import { useParams } from 'wouter'
 
 // legalTileInfo: moves to finish with

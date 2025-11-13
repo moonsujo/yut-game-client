@@ -4,7 +4,9 @@ import { useRef } from "react"
 import * as THREE from 'three';
 import { useParams } from "wouter";
 import { clientAtom } from "../GlobalState";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { sendLog } from "../api";
 import layout from "../dictionaries/layout";
 

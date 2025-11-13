@@ -14,7 +14,9 @@ import * as THREE from 'three';
 import { Perf } from 'r3f-perf'
 
 // server
-import { socket } from "./SocketManager.jsx";
+import { getSocket } from "./socket.js";
+
+const socket = getSocket();
 import { useParams } from "wouter";
 import { 
   deviceAtom, 

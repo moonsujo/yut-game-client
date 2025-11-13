@@ -3,7 +3,9 @@ import { useFrame } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
 import Star from "../meshes/Stars/Star";
 import MeshColors from "./MeshColors";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useParams } from "wouter";
 import { useAtomValue } from "jotai";
 import { clientAtom, hostAtom } from "../GlobalState";

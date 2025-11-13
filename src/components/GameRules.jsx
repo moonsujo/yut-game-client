@@ -1,7 +1,9 @@
 import { useAtomValue } from "jotai"
 import { audioVolumeAtom, backdoLaunchAtom, clientAtom, gamePhaseAtom, hostAtom, nakAtom, shortcutOptionsAtom, timerAtom, yutMoCatchAtom } from "../GlobalState"
 import { useEffect, useState } from "react"
-import { socket } from "../SocketManager"
+import { getSocket } from "../socket.js"
+
+const socket = getSocket();
 import { useParams } from "wouter"
 import { useSpring, animated } from "@react-spring/three"
 import { MeshDistortMaterial, Text3D } from '@react-three/drei'

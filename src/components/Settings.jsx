@@ -22,7 +22,9 @@ import {
 import { useParams } from "wouter"
 import { useEffect, useState } from "react"
 import { Image, Text3D } from "@react-three/drei"
-import { socket } from "../SocketManager"
+import { getSocket } from "../socket.js"
+
+const socket = getSocket();
 import layout from "../dictionaries/layout"
 import { formatName, roomHasAI } from "../logicHelpers/helpers"
 import GameRules from "./GameRules"

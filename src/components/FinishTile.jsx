@@ -7,7 +7,9 @@ import { useRef } from "react";
 import { clientAtom, gamePhaseAtom, hasTurnAtom, pauseGameAtom, selectionAtom, showFinishMovesAtom, turnAtom } from "../GlobalState";
 import { useAtom, useAtomValue } from "jotai";
 import { useAnimationPlaying } from "../hooks/useAnimationPlaying";
-import { socket } from "../SocketManager";
+import { getSocket } from "../socket.js";
+
+const socket = getSocket();
 import { useParams } from "wouter";
 
 export default function FinishTile({ legalTileInfo }) {

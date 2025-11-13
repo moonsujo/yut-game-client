@@ -121,6 +121,7 @@ export const pieceTeam1Id3AnimationPlayingAtom = atom(false)
 export const joinGameModalDisplayAtom = atom(false)
 export const showFinishMovesAtom = atom(false)
 export const logDisplayAtom = atom('chat')
+export const showGameRulebookAtom = atom(false)
 
 // Settings
 export const settingsOpenAtom = atom(false)

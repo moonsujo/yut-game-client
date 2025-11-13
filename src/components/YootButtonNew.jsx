@@ -3,7 +3,9 @@ import { useFrame } from '@react-three/fiber';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useRef, useState } from 'react';
 import { addingDeviceMotionAtom, audioVolumeAtom, clientAtom, deviceAtom, hasTurnAtom, pauseGameAtom, shakeToThrowEnabledAtom, showShakeMeshAtom, throwCountAtom, turnAtom, yootAnimationPlayingAtom } from '../GlobalState';
-import { socket } from '../SocketManager';
+import { getSocket } from '../socket.js';
+
+const socket = getSocket();
 import { useParams } from "wouter";
 import layout from '../dictionaries/layout';
 import YootMesh from '../meshes/YootMesh';
