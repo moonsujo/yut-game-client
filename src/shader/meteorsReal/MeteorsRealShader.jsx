@@ -1,22 +1,11 @@
 import fireworkVertexShader from './vertex.glsl';
 import fireworkFragmentShader from './fragment.glsl';
 import * as THREE from 'three';
+import { useLoader, useThree } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect, useMemo } from 'react';
 import { useWindowSize } from '../../hooks/useWindowSize';
-
-// Cache for meteor textures
-const meteorTextureCache = new Map();
-
-function loadMeteorTexture(path) {
-  if (!meteorTextureCache.has(path)) {
-    const loader = new TextureLoader();
-    meteorTextureCache.set(path, loader.load(path));
-  }
-  return meteorTextureCache.get(path);
-}
 
 export default function MeteorsRealShader({ 
     position=[0,0,0],
@@ -35,14 +24,14 @@ export default function MeteorsRealShader({
     // Use shared sizes object - no resize listener needed
     const sizes = useWindowSize();
     
-    // Cache textures with useMemo
-    const textures = useMemo(() => {
-        if (texturesProp) return texturesProp;
-        return [
-            loadMeteorTexture('/textures/particles/3.png'),
-            loadMeteorTexture('/textures/particles/7.png'),
-        ];
-    }, [texturesProp]);
+    // Use proper React Three Fiber texture loading with useLoader
+    const defaultTextures = useLoader(TextureLoader, [
+        '/textures/particles/3.png',
+        '/textures/particles/7.png',
+    ]);
+    
+    // Use provided textures or default loaded textures
+    const textures = texturesProp || defaultTextures;
 
     // one particle in the center
     // other particles shine around it

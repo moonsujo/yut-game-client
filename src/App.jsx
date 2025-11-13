@@ -45,9 +45,6 @@ export default function App () {
         <Route path="/how-to-play">
           <Home2 showRulebookDefault={true}/>
         </Route>
-        <Route path='/showroom'>
-          <Showroom/>
-        </Route>
         <Route path="/about">
           <Home2 showAboutDefault={true}/>
         </Route>

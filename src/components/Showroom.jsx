@@ -398,8 +398,7 @@ export default function Showroom(props) {
                 }, 70)
                 setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
             } else {
-                // setHomeDisplay('title')
-                setLocation('/')
+                setHomeDisplay('title')
             } 
         }
         return <animated.group name='back-button' {...props}>
@@ -2273,10 +2272,6 @@ export default function Showroom(props) {
     })
     
     return <group {...props}>
-        <GameCamera
-              position={layout[device].title.camera.position}
-              lookAt={layout[device].title.camera.lookAt}
-        />
         { device === 'landscapeDesktop' && <animated.group name='tab' position={tabPositionLandscapeDesktop}>
             <EndScenesButton position={[6.85, 0.02, -4.5]}/>
             <CatchButton position={[6.35, 0.02, -3.8]}/>
@@ -2350,7 +2345,5 @@ export default function Showroom(props) {
                     colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
                 />
         </animated.group>
-        <StarsPatterns2Shader count={10000} texturePath={'/textures/particles/3.png'}/>
-        <StarsPatterns2Shader count={15000} texturePath={'/textures/particles/6.png'} size={2}/>
     </group>
 }
