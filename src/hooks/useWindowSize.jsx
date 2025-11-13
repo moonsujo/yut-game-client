@@ -5,10 +5,10 @@ import * as THREE from 'three';
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
-  pixelRatio: Math.min(window.devicePixelRatio, 2),
+  pixelRatio: window.devicePixelRatio,
   resolution: new THREE.Vector2(
-    window.innerWidth * Math.min(window.devicePixelRatio, 2),
-    window.innerHeight * Math.min(window.devicePixelRatio, 2)
+    window.innerWidth * window.devicePixelRatio,
+    window.innerHeight * window.devicePixelRatio
   )
 };
 
@@ -17,7 +17,7 @@ const resizeHandlers = new Set();
 
 // Single global resize handler
 const handleResize = () => {
-  const pixelRatio = Math.min(window.devicePixelRatio, 2);
+  const pixelRatio = window.devicePixelRatio;
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
   sizes.pixelRatio = pixelRatio;

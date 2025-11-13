@@ -22,7 +22,7 @@ export default function App () {
     const sizes = {
       width: window.innerWidth,
       height: window.innerHeight,
-      pixelRatio: Math.min(window.devicePixelRatio, 2)
+      pixelRatio: window.devicePixelRatio
     }
     gl.setSize(sizes.width, sizes.height)
     gl.setPixelRatio(sizes.pixelRatio)
