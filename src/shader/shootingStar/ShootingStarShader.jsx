@@ -5,14 +5,14 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useLoader, useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect } from 'react';
-import { getWindowSizes } from '../../hooks/useWindowSize';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 export function useShootingStarShader() {
 
     const { scene } = useThree();
     
     // Use shared sizes object - no resize listener needed
-    const sizes = getWindowSizes();
+    const sizes = useWindowSize();
 
     const textures = [
         useLoader(TextureLoader, '/textures/particles/1.png'),

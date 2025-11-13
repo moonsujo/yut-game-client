@@ -4,7 +4,7 @@ import titleStarsVertexShader from './vertex.glsl'
 import titleStarsFragmentShader from './fragment.glsl'
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { getWindowSizes } from "../../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 // sparkle around the title
 export default function SparkleYutShader({ position=[0,0,0], size=1.0, texturePath }) {
@@ -17,7 +17,7 @@ export default function SparkleYutShader({ position=[0,0,0], size=1.0, texturePa
   const texture = useLoader(TextureLoader, texturePath)
 
   // Use shared sizes object - no resize listener needed
-  const sizes = getWindowSizes();
+  const sizes = useWindowSize();
 
   // #region particle attributes
   positions[0] = 1.5

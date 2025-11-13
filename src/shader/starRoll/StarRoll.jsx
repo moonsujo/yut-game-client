@@ -8,14 +8,14 @@ import fragmentShader from './fragment.glsl'
 import { useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import gsap from 'gsap';
-import { getWindowSizes } from "../../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 export default function useStarRoll() {
   const { nodes } = useGLTF('/models/star.glb')
   const { scene } = useThree();
   
   // Use shared sizes object - no resize listener needed
-  const sizes = getWindowSizes();
+  const sizes = useWindowSize();
 
   function RollStar({ 
     position, 

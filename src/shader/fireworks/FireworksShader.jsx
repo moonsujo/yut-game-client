@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useGLTF } from '@react-three/drei';
 import { generateRandomNumberInRange } from '../../logicHelpers/helpers';
-import { getWindowSizes } from '../../hooks/useWindowSize';
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { useMemo } from 'react';
 
 // Cache for textures and models
@@ -37,7 +37,7 @@ export function useFireworksShader() {
     const { scene } = useThree();
     
     // Use shared sizes object - no resize listener needed
-    const sizes = getWindowSizes();
+    const sizes = useWindowSize();
     
     // Cache textures
     const fireworkTextures = useMemo(() => [

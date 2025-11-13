@@ -2,7 +2,7 @@ import { useSetAtom } from "jotai";
 import mediaValues from "../dictionaries/mediaValues";
 import { useEffect } from "react";
 import { deviceAtom } from "../GlobalState";
-import { subscribeToResize, unsubscribeFromResize } from "./useWindowSize";
+import { useWindowSize } from "./useWindowSize";
 
 export default function useResponsiveSetting() {
     // Responsive UI
@@ -18,12 +18,8 @@ export default function useResponsiveSetting() {
     useEffect(() => {
         // Initial call
         handleResize();
-        
-        // Subscribe to centralized resize handler
-        subscribeToResize(handleResize);
-        
-        return () => {
-            unsubscribeFromResize(handleResize);
-        };
     }, []);
+
+    // Subscribe to centralized resize handler
+    useWindowSize(handleResize);
 }

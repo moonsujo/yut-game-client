@@ -5,14 +5,14 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useLoader, useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
-import { getWindowSizes } from '../../hooks/useWindowSize';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 export function useSparkShader() {
 
     const { scene } = useThree();
     
     // Use shared sizes object - no resize listener needed
-    const sizes = getWindowSizes();
+    const sizes = useWindowSize();
 
     function CreateSpark({ position, texture, color }) {
 

@@ -5,7 +5,7 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import { useEffect, useMemo } from 'react';
-import { getWindowSizes } from '../../hooks/useWindowSize';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 // Cache for meteor textures
 const meteorTextureCache = new Map();
@@ -33,7 +33,7 @@ export default function MeteorsRealShader({
     const { scene } = useThree();
 
     // Use shared sizes object - no resize listener needed
-    const sizes = getWindowSizes();
+    const sizes = useWindowSize();
     
     // Cache textures with useMemo
     const textures = useMemo(() => {
