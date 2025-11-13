@@ -854,7 +854,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
             scale={layout[device].about.scale}
           />
         </animated.group>
-        <animated.group scale={showroomScale}>
+        { display === 'showroom' && device === 'landscapeDesktop' && <animated.group scale={showroomScale}>
           <Showroom
             position={layout[device].showroom.position}
             rotation={layout[device].showroom.rotation}
@@ -862,7 +862,7 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
             setHomeDisplay={setDisplay}
             homeDisplay={display}
           />  
-        </animated.group>
+        </animated.group> }
       </group>
       {/* { !connectedToServer && <DisconnectModal
         position={layout[device].title.disconnectModal.position}
