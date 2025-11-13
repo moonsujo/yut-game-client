@@ -1787,19 +1787,19 @@ export default function Showroom(props) {
             <group name='board-and-animation' 
             scale={layout[device].showroom.score.board.scale} 
             position={layout[device].showroom.score.board.position}>
-                <Board/>
-                    <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
-                        <Rocket onBoard/>
-                    </animated.group>
-                    <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
-                        <Ufo onBoard/>
-                    </animated.group>
-                    <animated.group scale={rocketsScoreAlertSprings.alertScale} position={[0,2,1]}>
-                        <ScoreAlert scoringTeam={0}/>
-                    </animated.group>
-                    <animated.group scale={ufosScoreAlertSprings.alertScale} position={[0,2,1]}>
-                        <ScoreAlert scoringTeam={1}/>
-                    </animated.group>
+                <Board legalTiles={{}} helperTiles={{}}/>
+                <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
+                    <Rocket onBoard/>
+                </animated.group>
+                <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
+                    <Ufo onBoard/>
+                </animated.group>
+                <animated.group scale={rocketsScoreAlertSprings.alertScale} position={[0,2,1]}>
+                    <ScoreAlert scoringTeam={0}/>
+                </animated.group>
+                <animated.group scale={ufosScoreAlertSprings.alertScale} position={[0,2,1]}>
+                    <ScoreAlert scoringTeam={1}/>
+                </animated.group>
             </group>
             <RocketButton 
             scale={layout[device].showroom.score.rocketButton.scale} 

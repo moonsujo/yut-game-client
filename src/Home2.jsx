@@ -835,7 +835,10 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
           <animated.group scale={titleBoardScale}>
             <Board 
               showStart={true} 
-              interactive={false}/>
+              interactive={false}
+              legalTiles={{}} 
+              helperTiles={{}}
+            />
             <Pieces/>
           </animated.group>
         </group>

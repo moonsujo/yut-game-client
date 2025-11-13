@@ -644,7 +644,7 @@ export default function HowToPlay({
       <WelcomeHomeAlert position={[2.8,1,2]} scale={springs.welcomeHomeAlertScale}/>
       <group name='scene' scale={layout[device].howToPlay.overviewPage.scene.scale} position={layout[device].howToPlay.overviewPage.scene.position}>
         <group name='board' position={[2.8, 0, -0.5]} scale={0.9}>
-          <Board showConstellations={false} showStart/>
+          <Board showConstellations={false} showStart legalTiles={{}} helperTiles={{}}/>
           {/* Catch token */}
           <animated.group position={springs.catchTokenPosition} scale={springs.catchTokenScale}>
             <Ufo onBoard/>
