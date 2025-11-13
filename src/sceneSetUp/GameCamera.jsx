@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import mediaValues from '../dictionaries/mediaValues';
 import { CameraControls, OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
@@ -21,9 +21,9 @@ export default function GameCamera({ position=[0, 17, 7], lookAt=[0,0,0], contro
   
   const [zoom, setZoom] = useState(calcZoom());
   
-  function handleResize() {
+  const handleResize = useCallback(() => {
     setZoom(calcZoom())
-  }
+  }, []);
 
   // Subscribe to centralized resize handler
   useWindowSize(handleResize);

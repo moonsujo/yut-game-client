@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Float, Html, Text3D } from "@react-three/drei";
 import { animated, useSpring } from "@react-spring/three";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -21,13 +21,15 @@ import useQueryLogs from './hooks/useQueryLogs';
 import * as THREE from 'three';
 import useSoundEffectsPlayer from './soundPlayers/useSoundEffectsPlayer';
 import useMusicPlayer from './soundPlayers/useMusicPlayer';
-import Showroom from './components/Showroom';
 import MilkyWayNew from './shader/milkyway/MilkyWayNew';
 import { sendLog } from './api';
 import { IS_DEV } from './config/env';
 import About from './components/About';
 import StarsPatterns2Shader from './shader/starsPatterns2/StarsPatterns2Shader';
 import Constellation from './shader/constellation/Constellation';
+
+// Lazy load heavy components
+const Showroom = lazy(() => import('./components/Showroom'));
 
 export default function Home2({ showRulebookDefault = false, showAboutDefault = false }) {
 
@@ -593,7 +595,8 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
 
       playSoundEffect('/sounds/effects/button-click.mp3', 1)
       
-      setDisplay('showroom')
+      // setDisplay('showroom')
+      setLocation('/showroom')
     }
 
     return <group {...props}>
@@ -854,14 +857,16 @@ export default function Home2({ showRulebookDefault = false, showAboutDefault = 
             scale={layout[device].about.scale}
           />
         </animated.group>
-        { display === 'showroom' && device === 'landscapeDesktop' && <animated.group scale={showroomScale}>
-          <Showroom
-            position={layout[device].showroom.position}
-            rotation={layout[device].showroom.rotation}
-            scale={layout[device].showroom.scale}
-            setHomeDisplay={setDisplay}
-            homeDisplay={display}
-          />  
+        { display === 'showroom' && <animated.group scale={showroomScale}>
+          <Suspense fallback={null}>
+            <Showroom
+              position={layout[device].showroom.position}
+              rotation={layout[device].showroom.rotation}
+              scale={layout[device].showroom.scale}
+              setHomeDisplay={setDisplay}
+              homeDisplay={display}
+            />
+          </Suspense>
         </animated.group> }
       </group>
       {/* { !connectedToServer && <DisconnectModal

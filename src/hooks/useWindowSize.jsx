@@ -36,16 +36,29 @@ window.addEventListener('resize', handleResize);
 // React hook
 export function useWindowSize(callback) {
   const sizesRef = useRef(sizes);
+  const callbackRef = useRef(callback);
+
+  // Keep callback ref up to date
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
 
   useEffect(() => {
-    if (callback) {
-      resizeHandlers.add(callback);
-      
-      return () => {
-        resizeHandlers.delete(callback);
-      };
-    }
-  }, [callback]);
+    if (!callback) return;
+
+    // Create a stable wrapper that uses the ref
+    const stableHandler = (sizes) => {
+      if (callbackRef.current) {
+        callbackRef.current(sizes);
+      }
+    };
+
+    resizeHandlers.add(stableHandler);
+    
+    return () => {
+      resizeHandlers.delete(stableHandler);
+    };
+  }, []); // Empty dependency array - only run once
 
   return sizesRef.current;
 }

@@ -11,6 +11,7 @@ import AudioController from './soundPlayers/AudioController';
 import MusicController from './soundPlayers/MusicController';
 import Home2 from './Home2';
 import RulebookText from './text/RulebookText';
+import Showroom from './components/Showroom';
 
 export default function App () {
 
@@ -43,6 +44,9 @@ export default function App () {
         </Route>
         <Route path="/how-to-play">
           <Home2 showRulebookDefault={true}/>
+        </Route>
+        <Route path='/showroom'>
+          <Showroom/>
         </Route>
         <Route path="/about">
           <Home2 showAboutDefault={true}/>

@@ -1,55 +1,58 @@
 import { Float, Text3D } from "@react-three/drei"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, lazy, Suspense } from "react"
 import * as THREE from "three"
 import { useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial } from '@react-three/drei'
 import { animated, useSpring } from '@react-spring/three'
 
-import DoAlert from "../alerts/DoAlert"
-import GeAlert from "../alerts/GeAlert"
-import GulAlert from "../alerts/GulAlert"
-import YootAlert from "../alerts/YootAlert"
-import MoAlert from "../alerts/MoAlert"
-import BackdoAlert from "../alerts/BackdoAlert"
-import OutAlert from "../alerts/OutAlert"
+// Lazy load heavy components
+const DoAlert = lazy(() => import("../alerts/DoAlert"))
+const GeAlert = lazy(() => import("../alerts/GeAlert"))
+const GulAlert = lazy(() => import("../alerts/GulAlert"))
+const YootAlert = lazy(() => import("../alerts/YootAlert"))
+const MoAlert = lazy(() => import("../alerts/MoAlert"))
+const BackdoAlert = lazy(() => import("../alerts/BackdoAlert"))
+const OutAlert = lazy(() => import("../alerts/OutAlert"))
+const TurnAlert = lazy(() => import("../alerts/TurnAlert"))
+const CatchUfoEnergyAlert = lazy(() => import("../alerts/CatchUfoEnergyAlert"))
+const CatchRocketMemeAlert = lazy(() => import("../alerts/CatchRocketMemeAlert"))
+const PregameTieAlert = lazy(() => import("../alerts/PregameTieAlert"))
+const PregameUfosWinAlert = lazy(() => import("../alerts/PregameUfosWinAlert"))
+const PregameRocketsWinAlert = lazy(() => import("../alerts/PregameRocketsWinAlert"))
+const ScoreAlert = lazy(() => import("../alerts/ScoreAlert"))
+const PauseGamePreview = lazy(() => import("../alerts/PauseGamePreview"))
+const Board = lazy(() => import("./Board"))
+const Rocket = lazy(() => import("../meshes/Rocket"))
+const Ufo = lazy(() => import("../meshes/Ufo"))
+const Star = lazy(() => import("../meshes/Stars/Star"))
+const Earth = lazy(() => import("../meshes/Earth"))
+const Wolf = lazy(() => import("../meshes/Wolf"))
+const CyberTruck = lazy(() => import("../meshes/CyberTruck"))
+const Barn = lazy(() => import("../meshes/Barn"))
+const Llama = lazy(() => import("../meshes/Llama").then(module => ({ default: module.Llama })))
+const Ruby = lazy(() => import("../meshes/Ruby"))
+const RocketsWin2Preview = lazy(() => import("../endScenes/RocketsWin2Preview"))
+const UfosWin2NewPreview = lazy(() => import("../endScenes/UfosWin2NewPreview"))
+const RocketsLosePreview = lazy(() => import("../endScenes/RocketsLosePreview"))
+const UfosLosePreview = lazy(() => import("../endScenes/UfosLosePreview"))
+const MilkyWayNew = lazy(() => import("../shader/milkyway/MilkyWayNew"))
+const YootSet = lazy(() => import("../meshes/YootSet"))
+
 import useStarRoll from "../shader/starRoll/StarRoll"
 import useMeteorsShader from "../shader/meteors/useMeteorsShader";
 import useSoundEffectsPlayer from "../soundPlayers/useSoundEffectsPlayer"
 import { pickRandomElement } from "../logicHelpers/helpers.js";
 import { deviceAtom, meteorTexturesAtom } from "../GlobalState.jsx";
 import { useAtomValue } from "jotai";
-import TurnAlert from "../alerts/TurnAlert.jsx";
-import CatchUfoEnergyAlert from "../alerts/CatchUfoEnergyAlert.jsx";
-import CatchRocketMemeAlert from "../alerts/CatchRocketMemeAlert.jsx";
-import PregameTieAlert from "../alerts/PregameTieAlert.jsx";
-import PregameUfosWinAlert from "../alerts/PregameUfosWinAlert.jsx";
-import PregameRocketsWinAlert from "../alerts/PregameRocketsWinAlert.jsx";
-import Board from "./Board.jsx";
-import Rocket from "../meshes/Rocket.jsx";
-import Ufo from "../meshes/Ufo.jsx";
-import Star from "../meshes/Stars/Star.jsx";
-import ScoreAlert from "../alerts/ScoreAlert.jsx";
 import { useFireworksShader } from "../shader/fireworks/FireworksShader.jsx";
-import Earth from "../meshes/Earth.jsx";
-
 import FragmentShaderBeam2 from '../shader/beamShaderSimple/fragment.glsl'
 import VertexShaderBeam2 from '../shader/beamShaderSimple/vertex.glsl'
 import gsap from "gsap";
-import Wolf from "../meshes/Wolf.jsx";
-import CyberTruck from "../meshes/CyberTruck.jsx";
-import Barn from "../meshes/Barn.jsx";
-import { Llama } from "../meshes/Llama.jsx";
-import Ruby from "../meshes/Ruby.jsx";
-import RocketsWin2Preview from "../endScenes/RocketsWin2Preview.jsx";
-import UfosWin2NewPreview from "../endScenes/UfosWin2NewPreview.jsx";
-import RocketsLosePreview from "../endScenes/RocketsLosePreview.jsx";
-import UfosLosePreview from "../endScenes/UfosLosePreview.jsx";
-import MilkyWayNew from "../shader/milkyway/MilkyWayNew.jsx";
-import YootSet from "../meshes/YootSet.jsx";
-import PauseGamePreview from "../alerts/PauseGamePreview.jsx";
 import { useBeamDustShader } from "../shader/beamDust/BeamDustShader.jsx";
 import layout from "../dictionaries/layout.js";
 import { generateRandomNumberInRange } from "../logicHelpers/helpers.js";
+import GameCamera from "../sceneSetUp/GameCamera.jsx";
+import { useLocation } from "wouter";
 
 export default function Showroom(props) {
     const [display, setDisplay] = useState('endScenes')
@@ -65,6 +68,7 @@ export default function Showroom(props) {
     const [CreateFirework] = useFireworksShader();
     const [CreateBeamDust] = useBeamDustShader();
     const [startRocketsLoseAnimation, setStartRocketsLoseAnimation] = useState(false)
+    const [_location, setLocation] = useLocation();
 
     // helper function
     function CreateMoMeteor() {
@@ -394,7 +398,8 @@ export default function Showroom(props) {
                 }, 70)
                 setIntervalBeamDustSmallId(newIntervalBeamDustSmallId)
             } else {
-                setHomeDisplay('title')
+                // setHomeDisplay('title')
+                setLocation('/')
             } 
         }
         return <animated.group name='back-button' {...props}>
@@ -729,12 +734,14 @@ export default function Showroom(props) {
                         DO
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="do"
-                        scale={0.25}
-                        position={[2, 0, -0.5]}
-                    />
-                    <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="do"
+                            scale={0.25}
+                            position={[2, 0, -0.5]}
+                        />
+                        <DoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    </Suspense>
                 </group> }
                 { device === 'landscapeDesktop' && <group name='ge-alert' position={[-14, 0, -3.5]} scale={0.9}>
                     <Text3D
@@ -746,12 +753,14 @@ export default function Showroom(props) {
                         GE
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="ge"
-                        scale={0.25}
-                        position={[2, 0, -0.5]}
-                    />
-                    <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="ge"
+                            scale={0.25}
+                            position={[2, 0, -0.5]}
+                        />
+                        <GeAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    </Suspense>
                 </group> }
                 { device === 'landscapeDesktop' && <group name='gul-alert' position={[-8, 0, -3.5]} scale={0.9}>
                     <Text3D
@@ -763,12 +772,14 @@ export default function Showroom(props) {
                         GUL
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="gul"
-                        scale={0.25}
-                        position={[2, 0, -0.5]}
-                    />
-                    <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="gul"
+                            scale={0.25}
+                            position={[2, 0, -0.5]}
+                        />
+                        <GulAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    </Suspense>
                 </group> }
                 <group name='yut-alert' 
                 position={layout[device].showroom.yutAlert.position} 
@@ -783,18 +794,20 @@ export default function Showroom(props) {
                         YUT
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="yoot"
-                        scale={layout[device].showroom.yutAlert.yutSetScale}
-                        position={layout[device].showroom.yutAlert.yutSetPosition}
-                    />
-                    <YutEffectButton 
-                    position={layout[device].showroom.yutAlert.yutEffectButtonPosition}
-                    scale={layout[device].showroom.yutAlert.yutEffectButtonScale}/>
-                    <YootAlert 
-                    position={layout[device].showroom.yutAlert.yutAlertPosition} 
-                    rotation={layout[device].showroom.yutAlert.yutAlertRotation} 
-                    scale={layout[device].showroom.yutAlert.yutAlertScale}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="yoot"
+                            scale={layout[device].showroom.yutAlert.yutSetScale}
+                            position={layout[device].showroom.yutAlert.yutSetPosition}
+                        />
+                        <YutEffectButton 
+                        position={layout[device].showroom.yutAlert.yutEffectButtonPosition}
+                        scale={layout[device].showroom.yutAlert.yutEffectButtonScale}/>
+                        <YootAlert 
+                        position={layout[device].showroom.yutAlert.yutAlertPosition} 
+                        rotation={layout[device].showroom.yutAlert.yutAlertRotation} 
+                        scale={layout[device].showroom.yutAlert.yutAlertScale}/>
+                    </Suspense>
                 </group>
                 <group name='mo-alert' 
                 position={layout[device].showroom.moAlert.position} 
@@ -809,18 +822,20 @@ export default function Showroom(props) {
                         MO
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="mo"
-                        scale={layout[device].showroom.moAlert.yutSetScale}
-                        position={layout[device].showroom.moAlert.yutSetPosition}
-                    />
-                    <MoEffectButton 
-                    position={layout[device].showroom.moAlert.moEffectButtonPosition} 
-                    scale={layout[device].showroom.moAlert.moEffectButtonScale}/>
-                    <MoAlert 
-                    position={layout[device].showroom.moAlert.moAlertPosition} 
-                    rotation={layout[device].showroom.moAlert.moAlertRotation}
-                    scale={layout[device].showroom.moAlert.moAlertScale}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="mo"
+                            scale={layout[device].showroom.moAlert.yutSetScale}
+                            position={layout[device].showroom.moAlert.yutSetPosition}
+                        />
+                        <MoEffectButton 
+                        position={layout[device].showroom.moAlert.moEffectButtonPosition} 
+                        scale={layout[device].showroom.moAlert.moEffectButtonScale}/>
+                        <MoAlert 
+                        position={layout[device].showroom.moAlert.moAlertPosition} 
+                        rotation={layout[device].showroom.moAlert.moAlertRotation}
+                        scale={layout[device].showroom.moAlert.moAlertScale}/>
+                    </Suspense>
                 </group>
                 { device === 'landscapeDesktop' && <group name='backdo-alert' position={[-5.5, 0, 0.5]} scale={0.9}>
                     <Text3D
@@ -833,12 +848,14 @@ export default function Showroom(props) {
                         BACKDO
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <YootSet 
-                        points="backdo"
-                        scale={0.3}
-                        position={[3, 0, -0.5]}
-                    />
-                    <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    <Suspense fallback={null}>
+                        <YootSet 
+                            points="backdo"
+                            scale={0.3}
+                            position={[3, 0, -0.5]}
+                        />
+                        <BackdoAlert position={[1.5, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    </Suspense>
                 </group> }
                 { device === 'landscapeDesktop' && <group name='nak-alert' position={[-5.5, 0, 4]} scale={0.9}>
                     <Text3D
@@ -850,7 +867,9 @@ export default function Showroom(props) {
                         NAK (OUT)
                         <meshStandardMaterial color='yellow'/>
                     </Text3D>
-                    <OutAlert position={[1.8, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    <Suspense fallback={null}>
+                        <OutAlert position={[1.8, 0, 1.5]} rotation={[0, Math.PI/2, 0]}/>
+                    </Suspense>
                 </group> }
             </group>
         </group>
@@ -937,8 +956,10 @@ export default function Showroom(props) {
                 </group>
             }
             return <group position={position} scale={scale}>
-                <animated.group position={[0, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[0, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
+                <Suspense fallback={null}>
+                    <animated.group position={[0, 0, 0]} scale={ufoEnergyAlertSprings.scale}><CatchUfoEnergyAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                    { !ufoEnergyAlertPlaying && <CatchUfoEnergyAlert position={[0, 0, 0]} rotation={[0, Math.PI/2, 0]} scale={1.1}/> }
+                </Suspense>
                 <PlayUfoEnergyAlertButton 
                 position={layout[device].showroom.catch.rocketsCatchUfoButtonPosition}
                 scale={layout[device].showroom.catch.rocketsCatchUfoButtonScale}
@@ -1028,8 +1049,10 @@ export default function Showroom(props) {
             }
 
             return <group position={position} scale={scale}>
-                <animated.group scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
-                { !rocketMemeAlertPlaying && <CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]}/> }
+                <Suspense fallback={null}>
+                    <animated.group scale={rocketMemeAlertSprings.scale}><CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]} scale={1.1}/></animated.group>
+                    { !rocketMemeAlertPlaying && <CatchRocketMemeAlert rotation={[0, Math.PI/2, 0]}/> }
+                </Suspense>
                 <PlayRocketMemeAlertButton 
                 position={layout[device].showroom.catch.ufosCatchRocketButtonPosition}
                 scale={layout[device].showroom.catch.ufosCatchRocketButtonScale}
@@ -1140,8 +1163,10 @@ export default function Showroom(props) {
             }
 
             return <group {...props}>
-                <animated.group scale={alertSprings.scale}><PregameTieAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
-                { !playing && <PregameTieAlert rotation={[0, Math.PI/2, 0]}/> }
+                <Suspense fallback={null}>
+                    <animated.group scale={alertSprings.scale}><PregameTieAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
+                    { !playing && <PregameTieAlert rotation={[0, Math.PI/2, 0]}/> }
+                </Suspense>
                 <PlayAnimationButton position={[0, 0, 3]}/>
             </group>
         }
@@ -1224,8 +1249,10 @@ export default function Showroom(props) {
             }
 
             return <group scale={scale} position={position}>
-                <animated.group scale={alertSprings.scale}><PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
-                { !playing && <PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/> }
+                <Suspense fallback={null}>
+                    <animated.group scale={alertSprings.scale}><PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
+                    { !playing && <PregameRocketsWinAlert rotation={[0, Math.PI/2, 0]}/> }
+                </Suspense>
                 {/* need to raise y to 1. otherwise, clicks won't register consistently */}
                 <PlayAnimationButton position={[0, 1, 3.5]}/>
             </group>
@@ -1312,8 +1339,10 @@ export default function Showroom(props) {
             }
 
             return <group scale={scale} position={position}>
-                <animated.group scale={alertSprings.scale}><PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
-                { !playing && <PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/> }
+                <Suspense fallback={null}>
+                    <animated.group scale={alertSprings.scale}><PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/></animated.group>
+                    { !playing && <PregameUfosWinAlert rotation={[0, Math.PI/2, 0]}/> }
+                </Suspense>
                 {/* need to raise y by 1 to consistently click */}
                 {/* wrapping with group with raised y and undoing it in component doesn't work */}
                 <PlayAnimationButton position={[0, 1, 3.5]}/>
@@ -1399,16 +1428,18 @@ export default function Showroom(props) {
                 </group>
             }
             return <group {...props}>
-                <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
-                { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
+                <Suspense fallback={null}>
+                    <animated.group scale={alertSprings.scale}><TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/></animated.group>
+                    { !playing && <TurnAlert name='albert' rotation={[0, Math.PI/2, 0]}/> }
+                </Suspense>
                 <PlayAnimationButton position={[0, 0, 3]}/>
             </group>
         }
         function PauseGameGuestSection(props) {
-            return <PauseGamePreview {...props} isHost={false}/>
+            return <Suspense fallback={null}><PauseGamePreview {...props} isHost={false}/></Suspense>
         }
         function PauseGameHostSection(props) {
-            return <PauseGamePreview {...props} isHost={true}/>
+            return <Suspense fallback={null}><PauseGamePreview {...props} isHost={true}/></Suspense>
         }
         return <group {...props}>
             <Text3D
@@ -1659,7 +1690,9 @@ export default function Showroom(props) {
             }
             
             return <group scale={scale} position={position}>
-                <Rocket scale={1.8}/>
+                <Suspense fallback={null}>
+                    <Rocket scale={1.8}/>
+                </Suspense>
                 <PlayAnimationButton 
                     position={[2, 0, 0]} 
                     onPointerEnter={e => onPointerEnter(e)}
@@ -1760,7 +1793,9 @@ export default function Showroom(props) {
             }
         
             return <group scale={scale} position={position}>
-                <Ufo scale={1.6}/>
+                <Suspense fallback={null}>
+                    <Ufo scale={1.6}/>
+                </Suspense>
                 <PlayAnimationButton 
                     position={[2, 0, 0]} 
                     onPointerEnter={e => onPointerEnter(e)}
@@ -1784,19 +1819,21 @@ export default function Showroom(props) {
             <group name='board-and-animation' 
             scale={layout[device].showroom.score.board.scale} 
             position={layout[device].showroom.score.board.position}>
-                <Board/>
-                <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
-                    <Rocket onBoard/>
-                </animated.group>
-                <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
-                    <Ufo onBoard/>
-                </animated.group>
-                <animated.group scale={rocketsScoreAlertSprings.alertScale} position={[0,2,1]}>
-                    <ScoreAlert scoringTeam={0}/>
-                </animated.group>
-                <animated.group scale={ufosScoreAlertSprings.alertScale} position={[0,2,1]}>
-                    <ScoreAlert scoringTeam={1}/>
-                </animated.group>
+                <Suspense fallback={null}>
+                    <Board/>
+                    <animated.group scale={rocketSprings.rocketScale} position={rocketSprings.rocketPosition}>
+                        <Rocket onBoard/>
+                    </animated.group>
+                    <animated.group scale={ufoSprings.ufoScale} position={ufoSprings.ufoPosition}>
+                        <Ufo onBoard/>
+                    </animated.group>
+                    <animated.group scale={rocketsScoreAlertSprings.alertScale} position={[0,2,1]}>
+                        <ScoreAlert scoringTeam={0}/>
+                    </animated.group>
+                    <animated.group scale={ufosScoreAlertSprings.alertScale} position={[0,2,1]}>
+                        <ScoreAlert scoringTeam={1}/>
+                    </animated.group>
+                </Suspense>
             </group>
             <RocketButton 
             scale={layout[device].showroom.score.rocketButton.scale} 
@@ -1916,12 +1953,16 @@ export default function Showroom(props) {
             }
             return <group name='rockets-win' position={position} scale={scale}>
                 <group name='picture'>
-                    <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
-                    <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    <Suspense fallback={null}>
+                        <Rocket position={[-0.6, 2, -0.6]} scale={1.2} onBoard/>
+                        <Rocket position={[0.6, 2, -0.6]} scale={1.2} onBoard/>
+                        <Rocket position={[0.6, 2, 0.6]} scale={1.2} onBoard/>
+                        <Rocket position={[-0.6, 2, 0.6]} scale={1.2} onBoard/>
+                    </Suspense>
                     <group onPointerDown={e=>onPointerDown(e)}>
-                        <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                        <Suspense fallback={null}>
+                            <Earth position={[0, 0, -0.3]} rotation={[-Math.PI/2, 0, 0]} scale={0.9} showParticles={false}/>
+                        </Suspense>
                     </group>
                 </group>
                 <PlayAnimationButton 
@@ -2131,28 +2172,32 @@ export default function Showroom(props) {
             return <group name='ufos-win' position={position} scale={scale}>
                 <group name='picture'>
                     <group onPointerDown={e=>onPointerDown(e)}>
-                        <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
+                        <Suspense fallback={null}>
+                            <Ufo position={[0, 2, 0]} scale={2.5} onBoard/>
+                        </Suspense>
                     </group>
                     <mesh name='beam' rotation={[-Math.PI/2 + Math.PI/9, Math.PI, 0]} position={[0, -2.2, 2.0]} scale={0.45} material={shaderMaterialBeam2}>
                         <cylinderGeometry args={[1, 3, 13, 32]}/>
                     </mesh>
-                    <animated.group name='wolf' position={wolfPosition} scale={wolfScale}>
-                        <Wolf rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.5}/>
-                    </animated.group>
-                    <animated.group name='cybertruck' position={cybertruckPosition} scale={cybertruckScale}>
-                        <CyberTruck rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.4}/>
-                    </animated.group>
-                    <animated.group name='barn' position={barnPosition} scale={barnScale}>
-                        <Barn rotation={[-Math.PI/8, Math.PI/4, -Math.PI/4]} scale={0.5}/>
-                    </animated.group>
-                    <animated.group name='llama' position={llamaPosition} scale={llamaScale}>
-                        <Llama rotation={[-Math.PI/4, Math.PI/2, 0]} scale={0.5}/>
-                    </animated.group>
-                    <animated.group name='gem' position={gemPosition} scale={gemScale} rotation={[-Math.PI/16, 0, 0]}>
-                        <Ruby rotation={[-Math.PI/4, Math.PI/2, 0]} scale={1}/>
-                        <Ruby position={[1, 0, 0.5]} rotation={[-Math.PI/6, Math.PI, 0]} scale={0.5} color='#0055FF'/>
-                        <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
-                    </animated.group>
+                    <Suspense fallback={null}>
+                        <animated.group name='wolf' position={wolfPosition} scale={wolfScale}>
+                            <Wolf rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='cybertruck' position={cybertruckPosition} scale={cybertruckScale}>
+                            <CyberTruck rotation={[0, Math.PI/2, -Math.PI/2]} scale={0.4}/>
+                        </animated.group>
+                        <animated.group name='barn' position={barnPosition} scale={barnScale}>
+                            <Barn rotation={[-Math.PI/8, Math.PI/4, -Math.PI/4]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='llama' position={llamaPosition} scale={llamaScale}>
+                            <Llama rotation={[-Math.PI/4, Math.PI/2, 0]} scale={0.5}/>
+                        </animated.group>
+                        <animated.group name='gem' position={gemPosition} scale={gemScale} rotation={[-Math.PI/16, 0, 0]}>
+                            <Ruby rotation={[-Math.PI/4, Math.PI/2, 0]} scale={1}/>
+                            <Ruby position={[1, 0, 0.5]} rotation={[-Math.PI/6, Math.PI, 0]} scale={0.5} color='#0055FF'/>
+                            <Ruby position={[-0.7, 0, 0.5]} rotation={[Math.PI/3, Math.PI, Math.PI/6]} scale={0.3} color='green'/>
+                        </animated.group>
+                    </Suspense>
                 </group>
                 <PlayAnimationButton 
                     position={layout[device].showroom.endScenes.ufosWin.playAnimationButton.position} 
@@ -2184,10 +2229,12 @@ export default function Showroom(props) {
             }
             return <group name='rockets-lose' position={position} scale={scale} onPointerDown={e=>onPointerDown(e)}>
                 <group name='picture'>
-                    <Float>
-                        <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4 - Math.PI/8, 0]}/>
-                    </Float>
-                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                    <Suspense fallback={null}>
+                        <Float>
+                            <Rocket position={[-0.1, 0, -0.3]} rotation={[Math.PI/8, -Math.PI/4 - Math.PI/8, 0]}/>
+                        </Float>
+                        <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                    </Suspense>
                 </group>
                 <PlayAnimationButton 
                     position={layout[device].showroom.endScenes.rocketsLose.playAnimationButton.position} 
@@ -2218,10 +2265,12 @@ export default function Showroom(props) {
             }
             return <group name='ufos-lose' position={position} scale={scale} onPointerDown={e=>onPointerDown(e)}>
                 <group name='picture'>
-                    <Float>
-                        <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
-                    </Float>
-                    <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                    <Suspense fallback={null}>
+                        <Float>
+                            <Ufo rotation={[Math.PI/4, Math.PI, 0]} scale={1}/>
+                        </Float>
+                        <Star color='grey' position={[0, -1, -0.5]} scale={0.9}/>
+                    </Suspense>
                 </group>
                 <PlayAnimationButton 
                     position={layout[device].showroom.endScenes.ufosLose.playAnimationButton.position} 
@@ -2268,6 +2317,10 @@ export default function Showroom(props) {
     })
     
     return <group {...props}>
+        <GameCamera
+              position={layout[device].title.camera.position}
+              lookAt={layout[device].title.camera.lookAt}
+        />
         { device === 'landscapeDesktop' && <animated.group name='tab' position={tabPositionLandscapeDesktop}>
             <EndScenesButton position={[6.85, 0.02, -4.5]}/>
             <CatchButton position={[6.35, 0.02, -3.8]}/>
@@ -2289,57 +2342,67 @@ export default function Showroom(props) {
         <animated.group position={scorePosition} scale={scoreScale}><Score/></animated.group>
         <animated.group position={endScenesPosition} scale={endScenesScale}><EndScenes/></animated.group>
         <animated.group scale={rocketsWinScale}>
-            <RocketsWin2Preview 
-            position={layout[device].showroom.rocketsWinPreview.position} 
-            scale={layout[device].showroom.rocketsWinPreview.scale}
-            backButton={<BackButton 
-            position={layout[device].showroom.rocketsWinPreview.backButton.position} 
-            rotation={layout[device].showroom.rocketsWinPreview.backButton.rotation} 
-            scale={layout[device].showroom.rocketsWinPreview.backButton.scale}/>}/>
+            <Suspense fallback={null}>
+                <RocketsWin2Preview 
+                position={layout[device].showroom.rocketsWinPreview.position} 
+                scale={layout[device].showroom.rocketsWinPreview.scale}
+                backButton={<BackButton 
+                position={layout[device].showroom.rocketsWinPreview.backButton.position} 
+                rotation={layout[device].showroom.rocketsWinPreview.backButton.rotation} 
+                scale={layout[device].showroom.rocketsWinPreview.backButton.scale}/>}/>
+            </Suspense>
         </animated.group>
         <animated.group scale={ufosWinScale}>
-            <UfosWin2NewPreview 
-            position={layout[device].showroom.ufosWinPreview.position}
-            scale={layout[device].showroom.ufosWinPreview.scale} 
-            backButton={<BackButton 
-            position={layout[device].showroom.ufosWinPreview.backButton.position} 
-            rotation={layout[device].showroom.ufosWinPreview.backButton.rotation} 
-            scale={layout[device].showroom.ufosWinPreview.backButton.scale}/>}/>
+            <Suspense fallback={null}>
+                <UfosWin2NewPreview 
+                position={layout[device].showroom.ufosWinPreview.position}
+                scale={layout[device].showroom.ufosWinPreview.scale} 
+                backButton={<BackButton 
+                position={layout[device].showroom.ufosWinPreview.backButton.position} 
+                rotation={layout[device].showroom.ufosWinPreview.backButton.rotation} 
+                scale={layout[device].showroom.ufosWinPreview.backButton.scale}/>}/>
+            </Suspense>
         </animated.group>
         <animated.group scale={rocketsLoseScale}>
-            <RocketsLosePreview 
-            position={layout[device].showroom.rocketsLosePreview.position} 
-            scale={layout[device].showroom.rocketsLosePreview.scale}
-            startAnimation={startRocketsLoseAnimation}
-            onStopAnimation={() => setStartRocketsLoseAnimation(false)}
-            backButton={<BackButton 
-            position={layout[device].showroom.rocketsLosePreview.backButton.position} 
-            rotation={layout[device].showroom.rocketsLosePreview.backButton.rotation} 
-            scale={layout[device].showroom.rocketsLosePreview.backButton.scale}/>}/>
+            <Suspense fallback={null}>
+                <RocketsLosePreview 
+                position={layout[device].showroom.rocketsLosePreview.position} 
+                scale={layout[device].showroom.rocketsLosePreview.scale}
+                startAnimation={startRocketsLoseAnimation}
+                onStopAnimation={() => setStartRocketsLoseAnimation(false)}
+                backButton={<BackButton 
+                position={layout[device].showroom.rocketsLosePreview.backButton.position} 
+                rotation={layout[device].showroom.rocketsLosePreview.backButton.rotation} 
+                scale={layout[device].showroom.rocketsLosePreview.backButton.scale}/>}/>
+            </Suspense>
         </animated.group>
         <animated.group scale={ufosLoseScale}>
-            <UfosLosePreview 
-            position={layout[device].showroom.ufosLosePreview.position} 
-            scale={layout[device].showroom.ufosLosePreview.scale}
-            backButton={<BackButton 
-            position={layout[device].showroom.ufosLosePreview.backButton.position} 
-            rotation={layout[device].showroom.ufosLosePreview.backButton.rotation} 
-            scale={layout[device].showroom.ufosLosePreview.backButton.scale}/>}/>
+            <Suspense fallback={null}>
+                <UfosLosePreview 
+                position={layout[device].showroom.ufosLosePreview.position} 
+                scale={layout[device].showroom.ufosLosePreview.scale}
+                backButton={<BackButton 
+                position={layout[device].showroom.ufosLosePreview.backButton.position} 
+                rotation={layout[device].showroom.ufosLosePreview.backButton.rotation} 
+                scale={layout[device].showroom.ufosLosePreview.backButton.scale}/>}/>
+            </Suspense>
         </animated.group>
         <mesh name='background-curtain' rotation={[-Math.PI/2, 0, 0]} position={[0, 3, 0]} scale={10}>
             <boxGeometry args={[20, 10, 0.1]}/>
             <AnimatedMeshDistortMaterial color='black' transparent opacity={ curtainSprings.opacity }/>
         </mesh>
         <animated.group scale={milkyWayScale}>
-            <MilkyWayNew
-                rotation={[-Math.PI/2, 0, -35.0]} 
-                position={layout[device].showroom.milkyWay.position} 
-                scale={4}
-                brightness={0.5}
-                colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-                colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-                colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
-            />
+            <Suspense fallback={null}>
+                <MilkyWayNew
+                    rotation={[-Math.PI/2, 0, -35.0]} 
+                    position={layout[device].showroom.milkyWay.position} 
+                    scale={4}
+                    brightness={0.5}
+                    colorTint1={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+                    colorTint2={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+                    colorTint3={new THREE.Vector4(0.0, 1.0, 1.0, 1.0)}
+                />
+            </Suspense>
         </animated.group>
     </group>
 }
