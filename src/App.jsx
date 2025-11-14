@@ -13,11 +13,13 @@ import Home2 from './Home2';
 import RulebookText from './text/RulebookText';
 import Showroom from './components/Showroom';
 import { useWindowSize } from './hooks/useWindowSize';
+import React from 'react';
 
 // Component to handle resize and pixel ratio updates
 function ResizeHandler() {
   const { gl, camera } = useThree();
   
+  // Call on mount AND on resize
   useWindowSize((sizes) => {
     camera.aspect = sizes.width / sizes.height;
     camera.updateProjectionMatrix();
@@ -25,6 +27,14 @@ function ResizeHandler() {
     gl.setSize(sizes.width, sizes.height);
     gl.setPixelRatio(sizes.pixelRatio);
   });
+  
+  // Also run immediately on mount
+  React.useEffect(() => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    gl.setSize(window.innerWidth, window.innerHeight);
+    gl.setPixelRatio(window.devicePixelRatio);
+  }, [gl, camera]);
   
   return null;
 }
