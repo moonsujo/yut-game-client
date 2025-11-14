@@ -41,12 +41,11 @@ export default function App () {
       pixelRatio: window.devicePixelRatio
     }
     gl.setSize(sizes.width, sizes.height)
-    gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    gl.setPixelRatio(sizes.pixelRatio)
   }
 
   return (<>
     <Canvas
-      style={{ width: '100vw', height: '100vh' }}
       className='r3f'
       onCreated={ created }
     >
