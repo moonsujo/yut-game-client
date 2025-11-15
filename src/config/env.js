@@ -11,8 +11,8 @@ const ENV = isLocalhost ? 'development' : (import.meta.env.VITE_MODE || 'product
 
 const config = {
   development: {
-    // SOCKET_ENDPOINT: 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/',
-    SOCKET_ENDPOINT: 'http://localhost:5000',
+    SOCKET_ENDPOINT: 'https://yut-game-server-dev-6734615ef53a.herokuapp.com/',
+    // SOCKET_ENDPOINT: 'http://localhost:5000',
     ENABLE_LOGGING: false
   },
   production: {

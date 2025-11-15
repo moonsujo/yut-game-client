@@ -730,9 +730,9 @@ export default function Settings({ position=[0,0,0], rotation=[0,0,0], scale=1 }
         scaleInner: [5.9, 0.02, 1 * hostPlayerButtons.length + 0.9]
       },
       'guestSpectator': {
-        position: [0,0,-1.5],
-        scaleOuter: [6, 0.01, 5],
-        scaleInner: [5.9, 0.02, 4.9]
+        position: [0, 0, -2.55 + 0.5 * (guestPlayerButtons.length - 2)],
+        scaleOuter: [6, 0.01, 1 * guestSpectatorButtons.length + 1],
+        scaleInner: [5.9, 0.02, 1 * guestSpectatorButtons.length + 0.9]
       },
       'guestPlayer': {
         position: [0, 0, -2.55 + 0.5 * (guestPlayerButtons.length - 2)],
